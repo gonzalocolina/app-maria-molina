@@ -72,7 +72,7 @@ fun AppNavigation() {
                             unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             // 4. CAMBIO AQUÍ:
                             // Le damos color al indicador por defecto (forma de píldora)
-                            indicatorColor = MaterialTheme.colorScheme.primaryContainer
+                            indicatorColor = Color.Transparent
                         )
                     )
                 }

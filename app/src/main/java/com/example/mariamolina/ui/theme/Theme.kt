@@ -14,13 +14,19 @@ import androidx.compose.ui.platform.LocalContext
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
-    tertiary = Pink80
+    tertiary = Pink80,
+    primaryContainer = AppIndicatorBackgroundDark,
+    onSurfaceVariant = AppUnselectedGrayDark
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    primary = AppPrimaryBrown,
     secondary = PurpleGrey40,
-    tertiary = Pink40
+    tertiary = Pink40,
+    // Color del fondo del indicador (la píldora)
+    primaryContainer = AppIndicatorBackground,
+    // Color del icono/texto NO seleccionado
+    onSurfaceVariant = AppUnselectedGray
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -37,7 +43,7 @@ private val LightColorScheme = lightColorScheme(
 fun MariaMolinaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
