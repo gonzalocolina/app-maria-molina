@@ -7,7 +7,8 @@ val AppPrimaryBrown = Color(0xFF8B3626)
 // Color para el icono/texto NO SELECCIONADO
 val AppUnselectedGray = Color(0xFFA1A1A1)
 // Color para el fondo del indicador
-val AppIndicatorBackground = Color(0xFFD4AF69)
+val AppTextPrimaryColor = Color(0xFFD4AF69)
+val AppTextSecondaryColor = Color(0xFFC9A86A)
 
 // Colores para el modo oscuro (puedes ajustarlos también)
 val AppPrimaryBlueDark = Color(0xFFBBDEFB)
