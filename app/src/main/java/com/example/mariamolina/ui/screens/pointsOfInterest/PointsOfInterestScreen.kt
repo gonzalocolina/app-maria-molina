@@ -1,32 +1,34 @@
 package com.example.mariamolina.ui.screens.pointsOfInterest
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.mariamolina.ui.theme.MariaMolinaTheme
-
-
-// Nueva pantalla de "Puntos de interés"
+import androidx.navigation.NavHostController // ¡Importante!
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import com.example.mariamolina.data.model.puntosDeInteresMock
 
 @Composable
-fun PointsOfInterestScreen() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+fun PointsOfInterestScreen(
+    // ¡Asegúrate de que recibe el NavHostController!
+    navControllerAnidado: NavHostController
+) {
+    NavHost(
+        navController = navControllerAnidado,
+        startDestination = PoiRoutes.LIST // Usa la ruta del archivo nuevo
     ) {
-        Text(text = "Puntos de Interés", style = MaterialTheme.typography.headlineMedium)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PointsOfInterestScreenPreview() {
-    MariaMolinaTheme {
-        PointsOfInterestScreen()
+        composable(route = PoiRoutes.LIST) {
+            PointsListScreen(
+                puntos = puntosDeInteresMock,
+                onPuntoClick = { puntoId ->
+                    navControllerAnidado.navigate("${PoiRoutes.DETAIL_PREFIX}/$puntoId")
+                }
+            )
+        }
+        composable(route = PoiRoutes.DETAIL) { backStackEntry ->
+            val puntoId = backStackEntry.arguments?.getString(PoiRoutes.DETAIL_ARG)
+            val punto = puntosDeInteresMock.find { it.id == puntoId }
+            if (punto != null) {
+                PointDetailScreen(punto = punto)
+            }
+        }
     }
 }
