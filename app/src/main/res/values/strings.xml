@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">MariaMolina</string>
+    <string name="home_screen_title">María de Molina</string>
+    <string name="home_screen_intro_paragraph">María de Molina (1264-1321) fue una de las mujeres más importantes de la historia de Castilla ya que dedicó su vida a mantener la paz y la estabilidad del reino. Fue reina, madre de rey y abuela de rey, pero sobre todo una gobernante prudente y respetada, que supo ganarse el apoyo del pueblo y la nobleza en tiempos difíciles.</string>
+    <string name="section_title_childhood_family">Infancia y familia</string>
+    <string name="paragraph_childhood_family_1">Nació hacia 1264, probablemente cerca del monasterio de Santa María de Palazuelos situado entre los actuales Corcos del Valle y Cabezón de Pisuerga.</string>
+    <string name="paragraph_childhood_family_2">María pertenecía a una familia noble y poderosa. Era hija de Alfonso de Molina, hermano del rey Fernando III, y de Mayor Alfonso de Meneses. Desde pequeña creció rodeada de la vida política de la corte castellana. Su educación la preparó para asumir responsabilidades, aprendiendo a leer, escribir y comprender los asuntos del reino, algo poco común en las mujeres de su tiempo.</string>
+    <string name="section_title_marriage_sancho">Matrimonio con Sancho</string>
+    <string name="paragraph_marriage_sancho">En 1282 se casó con el infante Sancho, futuro rey Sancho IV. Su matrimonio no fue bien recibido por todos: eran parientes cercanos y necesitaban una dispensa papal que tardó años en llegar. Aun así, María acompañó a su esposo en los momentos más duros, incluso cuando su derecho al trono fue cuestionado. Tras la muerte de su suegro Alfonso X, Sancho fue coronado rey y ella se convirtió en reina de Castilla.</string>
+    <string name="section_title_queen_sancho_iv">Reina junto a Sancho IV</string>
+    <string name="paragraph_queen_sancho_iv">Durante el reinado de Sancho IV (1284–1295), María participó activamente en las decisiones políticas. Se ganó fama de mujer inteligente, prudente y justa. Acompañó al rey en campañas y defendió la legitimidad de su familia frente a los enemigos internos del reino. Su reinado estuvo marcado por las luchas entre nobles y la consolidación de la monarquía castellana.</string>
+    <string name="section_title_regencies">Las regencias de María de Molina</string>
+    <string name="paragraph_regencies">Tras la muerte de su esposo Sancho IV en 1295, María asumió la regencia por su hijo Fernando IV, que solo tenía nueve años. Con prudencia y firmeza, logró mantener la corona en medio de conflictos internos, ganándose el respeto de nobles y concejos. Años después, en 1312, volvió a gobernar como regente de su nieto Alfonso XI, demostrando una vez más su sabiduría y su capacidad para mantener la paz y la unidad del reino en tiempos difíciles.</string>
+    <string name="section_title_legacy_works">Legado y obras</string>
+    <string name="paragraph_legacy_works">María de Molina es recordada como una de las grandes reinas de Castilla por su capacidad política y su sentido de justicia. Fundó y apoyó numerosos monasterios, como el de Las Huelgas de Valladolid, donde fue enterrada. Promovió la educación, la religión y la paz en tiempos de guerra. Su figura simboliza la prudencia, la lealtad y la defensa del bien común.</string>
 </resources>
