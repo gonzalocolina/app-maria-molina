@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController // ¡Importante!
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mariamolina.data.model.puntosDeInteresMock
+import com.example.mariamolina.ui.screens.poi.PointDetailScreen
 
 @Composable
 fun PointsOfInterestScreen(
@@ -27,7 +28,13 @@ fun PointsOfInterestScreen(
             val puntoId = backStackEntry.arguments?.getString(PoiRoutes.DETAIL_ARG)
             val punto = puntosDeInteresMock.find { it.id == puntoId }
             if (punto != null) {
-                PointDetailScreen(punto = punto)
+                PointDetailScreen(
+                    punto = punto,
+                    onBackClick = {
+                        navControllerAnidado.popBackStack()
+                    }
+
+                )
             }
         }
     }
