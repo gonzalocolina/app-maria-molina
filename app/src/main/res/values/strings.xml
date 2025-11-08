@@ -15,4 +15,48 @@
     <string name="section_title_legacy_works">Legado y obras</string>
     <string name="paragraph_legacy_works">María de Molina es recordada como una de las grandes reinas de Castilla por su capacidad política y su sentido de justicia. Fundó y apoyó numerosos monasterios, como el de Las Huelgas de Valladolid, donde fue enterrada. Promovió la educación, la religión y la paz en tiempos de guerra. Su figura simboliza la prudencia, la lealtad y la defensa del bien común.</string>
     //Vista puntos de interes
+    <!-- Texto de la UI para la pantalla de detalle -->
+    <string name="detalle_descripcion">Descripción</string>
+    <string name="detalle_info_practica">Información práctica</string>
+    <string name="detalle_horarios">Horarios:</string>
+    <string name="detalle_ubicacion">Ubicación:</string>
+    <string name="detalle_ver_en_mapa">Ver en mapa</string>
+    <string name="detalle_consejos">Consejos de visita</string>
+    <string name="detalle_marcar_visitado">Marcar como visitado</string>
+    <string name="detalle_duracion">Duración</string>
+    <string name="detalle_rating">Rating</string>
+
+    <!-- Mock Data: Punto 1 (Palazuelos) -->
+    <string name="p1_titulo">Palazuelos</string>
+    <string name="p1_duracion">2 horas</string>
+    <string name="p1_desc">Palazuelos es un encantador pueblo de Castilla y León que conserva el encanto de la arquitectura tradicional castellana. Sus calles empedradas y casas de piedra y adobe nos transportan a épocas pasadas. El pueblo destaca por su iglesia parroquial y las construcciones rurales tradicionales que reflejan el modo de vida de la región.</string>
+    <string name="p1_horarios">Acceso libre todo el día</string>
+    <string name="p1_ubicacion">Palazuelos de Eresma, Segovia</string>
+    <string-array name="p1_consejos">
+        <item>Visita la iglesia parroquial del siglo XVI</item>
+        <item>Pasea por sus calles empedradas tradicionales</item>
+        <item>Ideal para fotografía de arquitectura rural</item>
+    </string-array>
+
+    <!-- Mock Data: Punto 2 (Plaza Mayor) -->
+    <string name="p2_titulo">Plaza Mayor</string>
+    <string name="p2_duracion">1 hora</string>
+    <string name="p2_desc">La Plaza Mayor de Valladolid es una de las más antiguas de España y ha servido de modelo para muchas otras...</string>
+    <string name="p2_horarios">Siempre abierta</string>
+    <string name="p2_ubicacion">Plaza Mayor, 47001 Valladolid</string>
+    <string-array name="p2_consejos">
+        <item>Ideal para tomar algo en las terrazas</item>
+        <item>Visita la estatua del Conde Ansúrez</item>
+    </string-array>
+
+    <!-- Mock Data: Punto 3 (Iglesia de San Pablo) -->
+    <string name="p3_titulo">Iglesia de San Pablo</string>
+    <string name="p3_duracion">45 min</string>
+    <string name="p3_desc">La fachada de la iglesia de San Pablo es uno de los ejemplos más impresionantes del gótico isabelino...</string>
+    <string name="p3_horarios">Horario de misas</string>
+    <string name="p3_ubicacion">Plaza de San Pablo, 47011 Valladolid</string>
+    <string-array name="p3_consejos">
+        <item>Fíjate en los detalles de la fachada</item>
+        <item>Visita el Colegio de San Gregorio al lado</item>
+    </string-array>
 </resources>

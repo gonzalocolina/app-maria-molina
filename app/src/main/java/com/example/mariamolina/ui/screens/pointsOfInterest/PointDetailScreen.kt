@@ -22,6 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.data.model.PuntoInteres
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
+import androidx.compose.ui.res.stringArrayResource
+import com.example.mariamolina.R
+import androidx.compose.ui.res.stringResource
+import androidx.annotation.ArrayRes
+import androidx.annotation.StringRes
 // import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,16 +91,16 @@ fun PointDetailScreen(
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
                     TituloSection(
-                        titulo = punto.titulo,
-                        duracion = punto.duracion,
+                        tituloResId = punto.tituloResId,
+                        duracionResId = punto.duracionResId,
                         rating = punto.rating
                     )
-                    DescripcionSection(descripcion = punto.descripcionLarga)
+                    DescripcionSection(descripcionResId = punto.descripcionLargaResId)
                     InfoPracticaSection(
-                        horarios = punto.horarios,
-                        ubicacion = punto.ubicacion
+                        horariosResId = punto.horariosResId,
+                        ubicacionResId = punto.ubicacionResId
                     )
-                    ConsejosSection(consejos = punto.consejos)
+                    ConsejosSection(consejosArrayResId = punto.consejosArrayResId)
                 }
             } // Fin Column (scrollable)
 
@@ -117,26 +122,25 @@ fun PointDetailScreen(
     } // Fin Scaffold
 }
 
-// --- (El resto de tus Composables privados: TituloSection, DescripcionSection, etc.
-//      no necesitan cambios y se quedan igual) ---
+// --- COMPOSABLES INTERNOS (Ahora leen los IDs de recurso) ---
 
 @Composable
-private fun TituloSection(titulo: String, duracion: String, rating: Double) {
+private fun TituloSection(@StringRes tituloResId: Int, @StringRes duracionResId: Int, rating: Double) {
     Column {
         Text(
-            text = titulo,
+            text = stringResource(id = tituloResId),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.AccessTime, contentDescription = "Duración", modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.AccessTime, contentDescription = stringResource(R.string.detalle_duracion), modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
-                Text(duracion, style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(id = duracionResId), style = MaterialTheme.typography.bodyMedium)
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Star, contentDescription = "Rating", modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.Star, stringResource(R.string.detalle_rating), modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(4.dp))
                 Text("$rating/5", style = MaterialTheme.typography.bodyMedium)
             }
@@ -145,7 +149,7 @@ private fun TituloSection(titulo: String, duracion: String, rating: Double) {
 }
 
 @Composable
-private fun DescripcionSection(descripcion: String) {
+private fun DescripcionSection(@StringRes descripcionResId: Int) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -153,13 +157,13 @@ private fun DescripcionSection(descripcion: String) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Descripción",
+                text = stringResource(id = R.string.detalle_descripcion),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = descripcion,
+                text = stringResource(id = descripcionResId),
                 style = MaterialTheme.typography.bodyLarge
             )
         }
@@ -167,7 +171,7 @@ private fun DescripcionSection(descripcion: String) {
 }
 
 @Composable
-private fun InfoPracticaSection(horarios: String, ubicacion: String) {
+private fun InfoPracticaSection(@StringRes horariosResId: Int, @StringRes ubicacionResId: Int) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -175,7 +179,7 @@ private fun InfoPracticaSection(horarios: String, ubicacion: String) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Información práctica",
+                text = stringResource(id = R.string.detalle_info_practica),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -185,28 +189,30 @@ private fun InfoPracticaSection(horarios: String, ubicacion: String) {
                 Spacer(Modifier.width(8.dp))
                 Text("Horarios:", fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(8.dp))
-                Text(horarios, style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(id = R.string.detalle_horarios), style = MaterialTheme.typography.bodyMedium)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.Top) {
                 Icon(Icons.Default.LocationOn, contentDescription = "Ubicación", modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(8.dp))
-                Text("Ubicación:", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(id = R.string.detalle_ubicacion), fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(8.dp))
-                Text(ubicacion, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                Text(stringResource(id = ubicacionResId), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
             }
             Spacer(modifier = Modifier.height(16.dp))
             TextButton(onClick = { /* TODO: Abrir mapa */ }) {
                 Icon(Icons.Default.Map, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text("Ver en mapa")
+                Text(stringResource(id = R.string.detalle_ver_en_mapa))
             }
         }
     }
 }
 
 @Composable
-private fun ConsejosSection(consejos: List<String>) {
+private fun ConsejosSection(@ArrayRes consejosArrayResId: Int) {
+    // Leemos el array de strings desde los recursos
+    val consejos = stringArrayResource(id = consejosArrayResId)
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -214,7 +220,7 @@ private fun ConsejosSection(consejos: List<String>) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = "Consejos de visita",
+                text = stringResource(id = R.string.detalle_consejos),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )

@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mariamolina.data.model.PuntoInteres
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+
 
 // NOTA: Para cargar la imagen desde URL (punto.urlImagen) necesitarás
 // la librería Coil. Por ahora, usamos un Box de color como placeholder.
@@ -78,7 +80,7 @@ fun PuntoInteresCard(
 
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = punto.titulo,
+                    text = stringResource(id = punto.tituloResId),
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -91,7 +93,7 @@ fun PuntoInteresCard(
                 ) {
                     InfoChip(
                         icono = Icons.Default.Schedule,
-                        texto = punto.duracion
+                        texto = stringResource(id = punto.duracionResId)
                     )
                     InfoChip(
                         icono = Icons.Default.StarBorder,

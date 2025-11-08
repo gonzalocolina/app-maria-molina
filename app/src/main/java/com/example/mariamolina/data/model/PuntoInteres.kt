@@ -1,61 +1,55 @@
 package com.example.mariamolina.data.model
 
+import androidx.annotation.StringRes
+import androidx.annotation.ArrayRes
+import com.example.mariamolina.R
+
 // 1. Definimos la estructura de datos actualizada
 data class PuntoInteres(
     val id: String,
-    val titulo: String,
+    @StringRes val tituloResId: Int,
     val urlImagen: String,
-    val duracion: String, // ej: "2 horas"
-    val rating: Double, // ej: 4.3
-    val descripcionLarga: String,
-    val horarios: String, // ej: "Acceso libre todo el día"
-    val ubicacion: String, // ej: "Plaza de la Universidad, 1"
-    val consejos: List<String> // Una lista de consejos
+    @StringRes val duracionResId: Int,
+    val rating: Double,
+    @StringRes val descripcionLargaResId: Int,
+    @StringRes val horariosResId: Int,
+    @StringRes val ubicacionResId: Int,
+    @ArrayRes val consejosArrayResId: Int
 )
 
 // 2. Creamos una lista de datos de prueba (mock data) con los nuevos campos
 val puntosDeInteresMock = listOf(
     PuntoInteres(
         id = "p1",
-        titulo = "Palazuelos",
+        tituloResId = R.string.p1_titulo, // <-- CAMBIO
         urlImagen = "https://placehold.co/600x400/8B261E/FFFFFF?text=Palazuelos",
-        duracion = "2 horas",
+        duracionResId = R.string.p1_duracion, // <-- CAMBIO
         rating = 4.3,
-        descripcionLarga = "Palazuelos es un encantador pueblo de Castilla y León que conserva el encanto de la arquitectura tradicional castellana. Sus calles empedradas y casas de piedra y adobe nos transportan a épocas pasadas. El pueblo destaca por su iglesia parroquial y las construcciones rurales tradicionales que reflejan el modo de vida de la región.",
-        horarios = "Acceso libre todo el día",
-        ubicacion = "Palazuelos de Eresma, Segovia",
-        consejos = listOf(
-            "Visita la iglesia parroquial del siglo XVI",
-            "Pasea por sus calles empedradas tradicionales",
-            "Ideal para fotografía de arquitectura rural"
-        )
-    ),
+        descripcionLargaResId = R.string.p1_desc, // <-- CAMBIO
+        horariosResId = R.string.p1_horarios, // <-- CAMBIO
+        ubicacionResId = R.string.p1_ubicacion, // <-- CAMBIO
+        consejosArrayResId = R.array.p1_consejos // <-- CAMBIO
+        ),
     PuntoInteres(
         id = "p2",
-        titulo = "Plaza Mayor",
+        tituloResId = R.string.p2_titulo,
         urlImagen = "https://placehold.co/600x400/D4AF69/000000?text=Plaza+Mayor",
-        duracion = "1 hora",
+        duracionResId = R.string.p2_duracion,
         rating = 4.8,
-        descripcionLarga = "La Plaza Mayor de Valladolid es una de las más antiguas de España y ha servido de modelo para muchas otras...",
-        horarios = "Siempre abierta",
-        ubicacion = "Plaza Mayor, 47001 Valladolid",
-        consejos = listOf(
-            "Ideal para tomar algo en las terrazas",
-            "Visita la estatua del Conde Ansúrez"
-        )
-    ),
+        descripcionLargaResId = R.string.p2_desc,
+        horariosResId = R.string.p2_horarios,
+        ubicacionResId = R.string.p2_ubicacion,
+        consejosArrayResId = R.array.p2_consejos
+        ),
     PuntoInteres(
         id = "p3",
-        titulo = "Iglesia de San Pablo",
+        tituloResId = R.string.p3_titulo, // <-- CAMBIO
         urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
-        duracion = "45 min",
+        duracionResId = R.string.p3_duracion, // <-- CAMBIO
         rating = 4.7,
-        descripcionLarga = "La fachada de la iglesia de San Pablo es uno de los ejemplos más impresionantes del gótico isabelino...",
-        horarios = "Horario de misas",
-        ubicacion = "Plaza de San Pablo, 47011 Valladolid",
-        consejos = listOf(
-            "Fíjate en los detalles de la fachada",
-            "Visita el Colegio de San Gregorio al lado"
-        )
+        descripcionLargaResId = R.string.p3_desc, // <-- CAMBIO
+        horariosResId = R.string.p3_horarios, // <-- CAMBIO
+        ubicacionResId = R.string.p3_ubicacion, // <-- CAMBIO
+        consejosArrayResId = R.array.p3_consejos // <-- CAMBIO
     )
 )
