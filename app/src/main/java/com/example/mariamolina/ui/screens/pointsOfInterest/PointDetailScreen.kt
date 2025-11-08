@@ -27,6 +27,9 @@ import com.example.mariamolina.R
 import androidx.compose.ui.res.stringResource
 import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.shape.RoundedCornerShape
 // import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,26 +40,41 @@ fun PointDetailScreen(
 ) {
     Scaffold(
         bottomBar = {
-            BottomAppBar(
-                containerColor = AppPrimaryBrown,
-            ) {
-                Button(
-                    onClick = { /* TODO: Lógica de Firebase para marcar visitado */ },
+                // ¡CAMBIO! Reemplazamos el Button por un Row clicable
+                Surface(
+                    color = AppPrimaryBrown,
+                    shadowElevation = 8.dp,
+                    shape = RoundedCornerShape(
+                        topStart = 16.dp, // Redondea la esquina superior izquierda
+                        topEnd = 16.dp,   // Redondea la esquina superior derecha
+                        bottomStart = 16.dp, // Deja esta plana
+                        bottomEnd = 16.dp    // Deja esta plana
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.primaryContainer
-                    )
-                ) {
+                        // 1. Hacemos que toda la barra sea clicable
+                        .clickable { /* TODO: Lógica de Firebase para marcar visitado */ }
+                )  {
+                    // 2. Usamos un Row para centrar el contenido
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            // 3. Este padding controla la altura. ¡Prueba a cambiarlo!
+                            .padding(vertical = 12.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                     Icon(
                         imageVector = Icons.Default.CheckCircleOutline,
                         contentDescription = null,
                         modifier = Modifier.size(ButtonDefaults.IconSize)
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                    Text("Marcar como visitado")
+                    Text(
+                        stringResource(id = R.string.detalle_marcar_visitado),
+                        // 5. Color del texto
+                        color = MaterialTheme.colorScheme.primaryContainer // Texto dorado
+                    )
                 }
             }
         }
@@ -226,15 +244,21 @@ private fun ConsejosSection(@ArrayRes consejosArrayResId: Int) {
             )
             Spacer(modifier = Modifier.height(16.dp))
             consejos.forEach { consejo ->
-                Row(modifier = Modifier.padding(bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Filled.CheckCircleOutline,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                Row(modifier = Modifier.padding(bottom = 8.dp), verticalAlignment = Alignment.Top) {
+                    // 1. Reemplazamos el Icono por un Text con la viñeta
+                    Text(
+                        text = "•", // Carácter de viñeta
+                        modifier = Modifier.padding(end = 8.dp), // Espacio a la derecha
+                        color = MaterialTheme.colorScheme.primary, // Color marrón
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyMedium // Mismo tamaño de texto
                     )
-                    Spacer(Modifier.width(8.dp))
-                    Text(text = consejo, style = MaterialTheme.typography.bodyMedium)
+                    // 2. El texto del consejo
+                    Text(
+                        text = consejo,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f) // Para que se ajuste
+                    )
                 }
             }
         }
