@@ -30,6 +30,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.ui.screens.home.HomeScreen
+import com.example.mariamolina.ui.screens.home.ImageScreen
 import com.example.mariamolina.ui.screens.kids.KidsScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
 import com.example.mariamolina.ui.screens.pointsOfInterest.PointsOfInterestScreen
@@ -104,7 +105,14 @@ fun AppNavigation() {
             startDestination = Pantalla.Home.ruta,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(Pantalla.Home.ruta) { HomeScreen() }
+            composable(Pantalla.Home.ruta) {
+                HomeScreen(onNavigateToImage = { navControllerPrincipal.navigate("image") })
+            }
+            // nueva ruta para la pantalla de imagen
+            composable("image") {
+                ImageScreen(onBackClick = { navControllerPrincipal.popBackStack() })
+            }
+
 
             // 4. ¡CAMBIO! Pasamos el controlador anidado a la pantalla de POI
             composable(Pantalla.PointsOfInterest.ruta) {

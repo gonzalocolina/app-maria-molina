@@ -24,7 +24,7 @@ import com.example.mariamolina.ui.theme.MariaMolinaTheme
 // convención de nombres más común.
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onNavigateToImage: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -43,6 +43,12 @@ fun HomeScreen() {
                     text = stringResource(R.string.home_screen_intro_paragraph),
                     style = MaterialTheme.typography.bodyLarge
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                androidx.compose.material3.Button(onClick = onNavigateToImage) {
+                    Text("Ver árbol genealógico")
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -109,6 +115,6 @@ fun Paragraph(text: String) {
 @Composable
 fun HomeScreenPreview() {
     MariaMolinaTheme {
-        HomeScreen()
+        HomeScreen(onNavigateToImage = {}) // función vacía para el preview
     }
 }
