@@ -1,9 +1,11 @@
 package com.example.mariamolina.ui.screens.home
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,6 +13,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,16 +43,21 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                     style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.Bold
                 )
+
+                Image(
+                    painter = painterResource(id = R.drawable.mariamolina_menu), // Asegúrate que el nombre coincide
+                    contentDescription = "Imagen principal de Maria Molina", // Descripción para accesibilidad
+                    modifier = Modifier
+                        .fillMaxWidth() // O ajusta según necesites (ej. .height(200.dp))
+                        .height(250.dp), // Define una altura para la imagen
+                    contentScale = ContentScale.Crop // Controla cómo se escala la imagen
+                )
+
+
                 Text(
                     text = stringResource(R.string.home_screen_intro_paragraph),
                     style = MaterialTheme.typography.bodyLarge
                 )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                androidx.compose.material3.Button(onClick = onNavigateToImage) {
-                    Text("Ver árbol genealógico")
-                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -73,6 +82,12 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                 Paragraph(
                     stringResource(R.string.paragraph_queen_sancho_iv)
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                androidx.compose.material3.Button(onClick = onNavigateToImage) {
+                    Text("Ver árbol genealógico")
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 

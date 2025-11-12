@@ -54,6 +54,14 @@ fun AppNavigation() {
     val poiCurrentRoute = poiNavBackStackEntry?.destination?.route
 
 
+    // 2. Sólo escuchamos al controlador ANIDADO cuando la pestaña activa es PointsOfInterest
+//    val poiCurrentRoute = if (currentScreen == Pantalla.PointsOfInterest) {
+//        val poiNavBackStackEntry by navControllerAnidadoPoi.currentBackStackEntryAsState()
+//        poiNavBackStackEntry?.destination?.route
+//    } else {
+//        null
+//    }
+
     Scaffold(
         topBar = {
             // 3. ¡CAMBIO! Lógica condicional para mostrar la barra
