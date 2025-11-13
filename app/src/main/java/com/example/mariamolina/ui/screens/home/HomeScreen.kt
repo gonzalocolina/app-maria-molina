@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -46,7 +49,7 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
 
                 Image(
                     painter = painterResource(id = R.drawable.mariamolina_menu), // Asegúrate que el nombre coincide
-                    contentDescription = "Imagen principal de Maria Molina", // Descripción para accesibilidad
+                    contentDescription = "Imagen inicial de Maria Molina", // Descripción para accesibilidad
                     modifier = Modifier
                         .fillMaxWidth() // O ajusta según necesites (ej. .height(200.dp))
                         .height(250.dp), // Define una altura para la imagen
@@ -85,7 +88,13 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                androidx.compose.material3.Button(onClick = onNavigateToImage) {
+                Button(
+                    onClick = onNavigateToImage,
+                    modifier = Modifier
+                        .fillMaxWidth() // Hace que el botón ocupe todo el ancho disponible
+                        .wrapContentWidth(Alignment.CenterHorizontally) // Centra el contenido del botón dentro de ese ancho
+                        .padding(8.dp)
+                ) {
                     Text("Ver árbol genealógico")
                 }
 

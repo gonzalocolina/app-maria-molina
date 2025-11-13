@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -33,31 +35,19 @@ fun ImageScreen(onBackClick: () -> Unit) {
     val minScale = 1f
     val maxScale = 4f
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-
+    Box(modifier = Modifier.fillMaxSize()) { // Usamos Box para superponer la imagen y el botón
         Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .onSizeChanged { containerSize = it } // guardamos tamaño para los cálculos
-                .clipToBounds() // importante para que no se dibuje fuera
+                .fillMaxSize() // La imagen ocupará todo el espacio disponible
+                .onSizeChanged { containerSize = it }
+                .clipToBounds()
                 .pointerInput(Unit) {
                     detectTransformGestures { _, pan, zoom, _ ->
-                        // actualizar escala
                         val newScale = (scale * zoom).coerceIn(minScale, maxScale)
-                        // cuando cambia la escala, ajustamos offset para que siga dentro de límites
                         scale = newScale
 
-                        // actualizar offset con el pan (ya en px)
                         offset += pan
 
-                        // calcular límites máximos en cada eje
                         val containerWidth = containerSize.width.toFloat()
                         val containerHeight = containerSize.height.toFloat()
                         if (containerWidth > 0f && containerHeight > 0f) {
@@ -79,7 +69,7 @@ fun ImageScreen(onBackClick: () -> Unit) {
                 contentDescription = "Imagen de ejemplo",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize() // La imagen se expandirá para llenar el Box
                     .graphicsLayer {
                         scaleX = scale
                         scaleY = scale
@@ -89,9 +79,13 @@ fun ImageScreen(onBackClick: () -> Unit) {
             )
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(onClick = onBackClick) {
+        // Botón "Volver" alineado en la parte inferior
+        Button(
+            onClick = onBackClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter) // Alineamos el botón en la parte inferior central
+                .padding(16.dp) // Añadimos padding alrededor del botón
+        ) {
             Text("Volver")
         }
     }
