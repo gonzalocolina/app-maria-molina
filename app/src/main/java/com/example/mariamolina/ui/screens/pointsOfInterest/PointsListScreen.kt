@@ -69,14 +69,6 @@ fun PuntoInteresCard(
                     .height(180.dp)
                     .background(MaterialTheme.colorScheme.primaryContainer)
             )
-            /* // CUANDO AÑADAS COIL, usa esto en lugar del Box:
-            AsyncImage(
-                model = punto.urlImagen,
-                contentDescription = "Imagen de ${punto.titulo}",
-                modifier = Modifier.fillMaxWidth().height(180.dp),
-                contentScale = ContentScale.Crop
-            )
-            */
 
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
@@ -91,14 +83,12 @@ fun PuntoInteresCard(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    InfoChip(
-                        icono = Icons.Default.Schedule,
-                        texto = stringResource(id = punto.duracionResId)
-                    )
-                    InfoChip(
-                        icono = Icons.Default.StarBorder,
-                        texto = "${punto.rating}/5"
-                    )
+                    if (punto.rating != null) {
+                        InfoChip(
+                            icono = Icons.Default.StarBorder,
+                            texto = "${punto.rating}/5"
+                        )
+                    }
                 }
             }
         }

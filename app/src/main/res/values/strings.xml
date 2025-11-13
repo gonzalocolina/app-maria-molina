@@ -21,42 +21,138 @@
     <string name="detalle_horarios">Horarios:</string>
     <string name="detalle_ubicacion">Ubicación:</string>
     <string name="detalle_ver_en_mapa">Ver en mapa</string>
-    <string name="detalle_consejos">Consejos de visita</string>
     <string name="detalle_marcar_visitado">Marcar como visitado</string>
-    <string name="detalle_duracion">Duración</string>
-    <string name="detalle_rating">Rating</string>
+    <string name="detalle_rating">Valoración:</string>
 
-    <!-- Mock Data: Punto 1 (Palazuelos) -->
-    <string name="p1_titulo">Palazuelos</string>
-    <string name="p1_duracion">2 horas</string>
-    <string name="p1_desc">Palazuelos es un encantador pueblo de Castilla y León que conserva el encanto de la arquitectura tradicional castellana. Sus calles empedradas y casas de piedra y adobe nos transportan a épocas pasadas. El pueblo destaca por su iglesia parroquial y las construcciones rurales tradicionales que reflejan el modo de vida de la región.</string>
-    <string name="p1_horarios">Acceso libre todo el día</string>
-    <string name="p1_ubicacion">Palazuelos de Eresma, Segovia</string>
-    <string-array name="p1_consejos">
-        <item>Visita la iglesia parroquial del siglo XVI</item>
-        <item>Pasea por sus calles empedradas tradicionales</item>
-        <item>Ideal para fotografía de arquitectura rural</item>
-    </string-array>
+    <string name="detalle_subpuntos_titulo">Lugares del punto</string>
 
-    <!-- Mock Data: Punto 2 (Plaza Mayor) -->
-    <string name="p2_titulo">Plaza Mayor</string>
-    <string name="p2_duracion">1 hora</string>
-    <string name="p2_desc">La Plaza Mayor de Valladolid es una de las más antiguas de España y ha servido de modelo para muchas otras...</string>
-    <string name="p2_horarios">Siempre abierta</string>
-    <string name="p2_ubicacion">Plaza Mayor, 47001 Valladolid</string>
-    <string-array name="p2_consejos">
-        <item>Ideal para tomar algo en las terrazas</item>
-        <item>Visita la estatua del Conde Ansúrez</item>
-    </string-array>
+    <!-- Data: Punto 1 (Palazuelos) -->
+    <string name="p1_titulo">Alcazarejo</string>
+    <string name="p1_desc">El Alcázar Real de Valladolid (siglos XII y XIII), situado en el extremo occidental de la villa medieval, junto a la confluencia del ramal norte del Esgueva con el Pisuerga, fue un conjunto fortificado y palaciego compuesto por dos recintos:
+        el alcazarejo (o alcázar viejo), en la terraza baja junto al río Esgueva, y el alcázar mayor, en la terraza alta, cerca de la parroquia de San Julián. Tras siglos de uso real y diversas reformas, fue donado a los benedictinos en 1390. Sus restos se hallan hoy
+        integrados en el Monasterio de San Benito el Real y en el Museo Patio Herreriano, donde aún pueden apreciarse vestigios del antiguo conjunto. El alcazarejo tenía forma cuadrada —de unos 31 metros de lado según las excavaciones— y contaba con ocho cubos macizos:
+        uno en el centro de cada lienzo y otro en las esquinas.
+    </string>
+    <string name="p1_nombre_a">Museo Patio Herreriano </string>
+    <string name="p1_nombre_b">Monasterio de San Benito </string>
+    <string name="p1_horarios_a">11:00-14:00, 17:00-20:00 (martes-viernes) ; sábados: 11.00-20:00 y domingo de 11:00 a 15:00</string>
+    <string name="p1_horarios_b">No disponible</string>
+    <string name="p1_ubicacion_a">C. Jorge Guillén, 6, 47003 Valladolid</string>
+    <string name="p1_ubicacion_b">C. San Benito, 3, 47003 Valladolid</string>
+    <!-- Data: Punto 2 (Colegiata de Santa María la Mayor) -->
+    <string name="p2_titulo">Colegiata de Santa María la Mayor</string>
+    <string name="p2_desc">La Colegiata de Santa María la Mayor de Valladolid fue construida, en su primera versión románica, en el último cuarto del siglo XI hacia 1180, por mandato del conde Pedro Ansurez. Más tarde, en la década de los años 20 del siglo XIII don Juan Domínguez Medina, abad de la colegiata, mandó derribar el primitivo templo románico para levantar otro de estilo protogótico, conservándose únicamente la torre del conjunto inicial.
+        En siglos venideros sufrió otras transformaciones. Hoy sólo conservamos una de las puertas de entrada.
+    </string>
+    <string name="p2_horarios">Abierto 24h</string>
+    <string name="p2_ubicacion">C. Arribas, 1, 47002 Valladolid</string>
 
-    <!-- Mock Data: Punto 3 (Iglesia de San Pablo) -->
-    <string name="p3_titulo">Iglesia de San Pablo</string>
-    <string name="p3_duracion">45 min</string>
-    <string name="p3_desc">La fachada de la iglesia de San Pablo es uno de los ejemplos más impresionantes del gótico isabelino...</string>
-    <string name="p3_horarios">Horario de misas</string>
-    <string name="p3_ubicacion">Plaza de San Pablo, 47011 Valladolid</string>
-    <string-array name="p3_consejos">
-        <item>Fíjate en los detalles de la fachada</item>
-        <item>Visita el Colegio de San Gregorio al lado</item>
-    </string-array>
+    <!-- Data: Punto 3 (Iglesia de Santa María de la Antigua) -->
+    <string name="p3_titulo">Iglesia de Santa María de la Antigua</string>
+    <string name="p3_desc">La Iglesia de Santa María de la Antigua de Valladolid es una iglesia románica del siglo XII, pero finalizada en estilo gótico. Del siglo XII conserva la torre y un pórtico. La torre, con una altura cercana a los 50 m y rematada con una flecha, hace que sea el campanario románico más alto de España.
+        El resto del edificio es gótico y neogótico, ya que fue posiblemente reedificado en el siglo XIV bajo el reinado de Alfonso XI de Castilla, con notables influencias de la Catedral de Santa María de Burgos.
+    </string>
+    <string name="p3_horarios">Lunes-viernes: 9:00-10:00, 18:30-20:00</string>
+    <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
+
+    <!-- Data: Punto 4 (Iglesia de San Miguel) -->
+    <string name="p4_titulo">Iglesia de San Miguel</string>
+    <string name="p4_desc">La primitiva iglesia estaba situada en el centro de la actual Plaza de San Miguel.
+        Primero estuvo dedicada a la advocación de San Pelayo, cambiando a la de San Miguel a mediados del siglo XII.
+        En una escritura del 18 de enero de 1151 ya se habla de ella como la Iglesia de San Miguel, y está considerada como la parroquia más antigua de Valladolid.
+        En 1478 se quemó la primitiva iglesia y fue reedificada en el mismo lugar por mandato de los Reyes Católicos a finales del siglo XV. En el incendio se perdieron todos los documentos sobre la ciudad que en ella se guardaban.
+    </string>
+    <string name="p4_horarios">No disponible</string>
+    <string name="p4_ubicacion">No disponible</string>
+    <string name="p4_rating">No disponible</string>
+
+    <!-- Data: Punto 5 (Ermita de Santa María Magdalena) -->
+    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_desc">Se construyó sobre una de las puertas de la antigua muralla de la ciudad, situada en las afueras, en el lugar que posteriormente se llamó Prado de la Magdalena, una zona que en esos siglos era de campo y huertas.
+        Esta pequeña capilla se mantuvo con su aspecto original hasta 1538, cuando se añadió una capilla sepulcral ordenada por el doctor Corral, oídor de la Real Chancillería y miembro del Consejo Real, asegurándose de esta forma un sitio con buenas vistas para ser enterrado y el protagonismo absoluto como única persona sepultada en el lugar.
+        Posteriormente a la ampliación, se construyó la iglesia mayor renacentista/gótica.
+    </string>
+    <string name="p5_horarios">Lunes 18:00–20:15; Martes 10:00–13:00, 16:00–20:15; Miércoles 10:00–13:00, 18:00–22:00; Jueves 10:00–13:00, 18:00–20:30, 22:00–23:00; Viernes 18:00–20:30; Sábado 18:30–22:00; Domingo 11:15–14:00, 19:00–20:15</string>
+    <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
+
+    <!-- Data: Punto 6 (Plaza del Mercado) -->
+    <string name="p6_titulo">Plaza del Mercado</string>
+    <string name="p6_desc">La actual Plaza Mayor de Valladolid era conocida originalmente como la "Plaza del Mercado", porque en la Edad Media se realizaba allí el mercado central de la villa.
+        Según documentos, en 1260 ya se colocaba en ese lugar el mercado comercial.
+        En la Edad Media, la plaza fue un espacio abierto al exterior de la muralla o en el límite urbano de la villa, donde se estableció el mercado principal de la ciudad: carnes, pescados, verduras y otros productos se vendían allí.
+        Con el paso del tiempo el comercio se fue organizando en calles gremiales alrededor de la plaza —por ejemplo, la calle de la Lencería o la calle de los Torneros— reflejando la actividad artesanal y mercantil que giraba en torno al mercado.
+        En septiembre de 1561, un gran incendio destruyó gran parte del entorno de la plaza, lo que dio pie a reorganizar urbanísticamente el espacio.
+    </string>
+    <string name="p6_horarios">No disponible</string>
+    <string name="p6_ubicacion">No disponible</string>
+    <string name="p6_rating">No disponible</string>
+
+    <!-- Data: Punto 7 (Puente Mayor) -->
+    <string name="p7_titulo">Puente Mayor</string>
+    <string name="p7_desc">Valladolid, asentada en la confluencia del Esgueva con el Pisuerga, contó desde la Edad Media con su principal paso fluvial sobre el Pisuerga —el llamado Puente Mayor—, que unió la villa con las poblaciones del otro lado y favoreció la aparición del barrio de La Victoria.
+        La tradición local atribuye la construcción de un puente de piedra a doña Eylo, esposa de Pedro Ansúrez, hacia finales del siglo XI (alrededor de 1080), probablemente sobre un paso anterior de madera; sin embargo, las partes visibles del puente actual datan en su mayor parte de fases constructivas posteriores (siglos XIII-XIV), y la atribución a Eylo pertenece al ámbito legendario-tradicional más que a una certeza arqueológica.
+    </string>
+    <string name="p7_horarios">No disponible</string>
+    <string name="p7_ubicacion">C. del Puente Mayor, 47003 Valladolid</string>
+
+    <!-- Data: Punto 8 (Monasterio de Santa María de Palazuelos) -->
+    <string name="p8_titulo">Monasterio de Santa María de Palazuelos</string>
+    <string name="p8_desc">El origen del monasterio se vincula al linaje de los señores de Meneses. En 1213, Alfonso Téllez de Meneses recibió la villa de Palazuelos de manos de Alfonso VIII como recompensa por su participación en la batalla de Las Navas de Tolosa. Posteriormente, Alfonso Téllez y su esposa cedieron esas tierras al convento cisterciense de San Andrés de Valvení para que se trasladara allí.
+        En 1313, los concejos de Castilla se reunieron en este monasterio para establecer la regencia del joven rey Alfonso XI.
+        María nace hacia 1264 en algún lugar próximo al monasterio de Santa María de Palazuelos, situado entre los actuales Corcos del Valle y Cabezón de Pisuerga.
+        Se trata de un complejo monástico cisterciense en estilo de transición del románico al gótico: sobrio, austero, con escasa ornamentación, en sillería potente, muros amplios y bóvedas de gran tamaño.
+        La iglesia tiene planta basilical, tres naves de cuatro tramos y cabecera orientada al este con tres capillas: la central de cabecera poligonal y las laterales semicirculares, característica poco común en los monasterios cistercienses.
+    </string>
+    <string name="p8_horarios">Llamada telefónica al 605 68 20 97</string>
+    <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
+
+    <!-- Data: Punto 9 (Palacio de la Magdalena) -->
+    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_desc">El palacio fue residencia de la realeza, entre ellos del rey Sancho IV de Castilla junto con su esposa María de Molina, en un solar que se adaptó como residencia real en tiempos del siglo XIII.
+        Tras la muerte de Sancho IV en 1295, su viuda María de Molina ejerció la regencia y entró en conflicto político que motivó reforzar la seguridad del palacio, convirtiéndolo en recinto fortificado.
+        Con el tiempo, los edificios fueron abandonados o reutilizados. Finalmente, la mayor parte del palacio desapareció, y hoy sólo sobreviven algunos restos, entre los que destaca la puerta mudéjar denominada “Puerta de la Magdalena” o “Puerta del Palacio de María de Molina”.
+        La puerta fortificada presenta rasgos mudéjares: arco de herradura exterior, acceso en recodo (es decir, con giro para dificultar la entrada directa) y dos huecos en su interior que probablemente servían como garitas de guardia.
+    </string>
+    <string name="p9_horarios">Cerrado permanentemente</string>
+    <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>
+
+    <!-- Data: Punto 10 (Castillo de Tiedra) -->
+    <string name="p10_titulo">Castillo de Tiedra</string>
+    <string name="p10_desc">El castillo se encuentra en la villa de Tiedra, en la provincia de Valladolid. Está situado sobre un cerro que domina la llanura de los Montes Torozos, lo que le otorga una posición estratégica y defensiva.
+        La primera mención documental del castillo o de la torre de Tiedra se remonta al siglo XI, en tiempos del rey Sancho II de Castilla, cuando ordenó a El Cid mediar con la infanta Urraca de Zamora para la entrega de la ciudad de Zamora a cambio, entre otros bienes, del castillo de Tiedra.
+        En los siglos XII y XIII, el castillo pasó por diversas manos nobiliarias: en 1203, el rey Alfonso IX de León cedió la torre y la villa de Tiedra a su esposa, Berenguela de Castilla, tras la anulación de su matrimonio.
+        En 1285, el rey Sancho IV de Castilla otorgó la villa con su torre a Pedro Álvarez de Asturias. La hija de Pedro se casó con Alfonso Téllez de Meneses, del poderoso linaje de los Téllez de Meneses, por lo que el castillo pasó a formar parte de dicho señorío.
+        Antes de esa fecha, la familia Meneses ya controlaba varias villas cercanas —como Meneses o Montealegre—, por lo que se considera que María de Molina, perteneciente a este linaje por parte materna, pasó su infancia en este entorno familiar, vinculado al castillo de Tiedra.
+        La parte más antigua conservada corresponde a la torre defensiva o torre del homenaje, datada a finales del siglo XII o principios del XIII. Esta torre, de planta cuadrada y construida en sillería, cuenta con varias plantas: un sótano-calabozo, niveles intermedios abovedados y una azotea-mirador que ofrece una amplia panorámica sobre la llanura.
+    </string>
+    <string name="p10_horarios">983 791 405 / 667 763 852</string>
+    <string name="p10_ubicacion">Calle del Castillo, 47870 Tiedra, Valladolid</string>
+
+    <!-- Data: Punto 11 (Castillo de Montealegre) -->
+    <string name="p11_titulo">Castillo de Montealegre</string>
+    <string name="p11_desc">El castillo se encuentra en la localidad de Montealegre de Campos, en la provincia de Valladolid. Se tiene constancia de construcciones defensivas en el lugar desde el año 967, enmarcadas en las disputas entre los reinos de Castilla y León.
+        El castillo se eleva estratégicamente en el punto más alto del cerro, dominando la llanura de Tierra de Campos.
+        El edificio actual fue mandado construir en el siglo XIII por Alfonso Téllez de Meneses, miembro de un poderoso linaje nobiliario castellano. Más adelante, pasó a manos del linaje de los Alburquerque (duques de Alburquerque) y estuvo involucrado en diversas luchas nobiliarias, como las que enfrentaron a Pedro I de Castilla con los partidarios de Enrique de Trastámara.
+        Durante la Guerra de las Comunidades de Castilla (1520-1521) también desempeñó un papel defensivo y de refugio.
+        El castillo de Montealegre, perteneciente al linaje de los Téllez de Meneses —familia materna de María de Molina—, fue uno de los lugares vinculados a su infancia, pues formaba parte del entorno señorial en el que creció y se educó antes de su matrimonio con Sancho IV de Castilla.
+        Es una de las fortalezas medievales mejor conservadas de la provincia de Valladolid, tanto por su estado como por su visibilidad, ya que domina el paisaje circundante y se mantuvo inexpugnable durante toda su historia.
+        En cuanto a sus características arquitectónicas, presenta una planta casi cuadrada o trapezoidal, con muros robustos de hasta 4 o 5 metros de grosor. En tres de sus esquinas se levantan torres de planta rectangular, mientras que en la cuarta destaca la torre del homenaje, de planta pentagonal, rasgo característico de las fortalezas castellanas del siglo XIV. La torre alcanza unos 20 metros de altura, desde los que se domina la llanura de los Montes Torozos.
+    </string>
+    <string name="p11_horarios">Cerrado temporalmente</string>
+    <string name="p11_ubicacion">C. Nicolás Rodríguez, 1, 47816 Montealegre de Campos, Valladolid</string>
+
+    <!-- Data: Punto 12 (Monasterio de las Huelgas Reales) -->
+    <string name="p12_titulo">Monasterio de las Huelgas Reales</string>
+    <string name="p12_desc">El monasterio está situado en el entorno extramuros de la ciudad medieval, en lo que fue el paraje del antiguo palacio de la reina fundadora, cerca del arrabal de la Magdalena.
+        Su establecimiento se vincula a la reina María de Molina, quien en torno al año 1282 cedió su propio palacio para fundar un monasterio de la orden del Císter bajo la advocación de “Santa María la Real de las Huelgas”.
+        Poco antes de su muerte, María de Molina pidió en su testamento que fuera enterrada en este monasterio.
+        En 1328, el monasterio fue parcialmente destruido por un incendio derivado de la represión de la ciudad por parte de tropas reales.
+        La iglesia presenta planta de cruz latina inscrita en un rectángulo, con una nave única dividida en tramos y capillas laterales entre contrafuertes.
+        Destacan en su interior obras de gran valor, entre ellas:
+        El sepulcro de María de Molina, en el centro del crucero, en alabastro, con figuras de la reina yacente y relieves decorativos con los escudos de la Casa Real de Borgoña representados por dos castillos y dos leones (leones que desde Sancho IV llevarían corona).
+        Y por otro lado, el que heredó de su padre Alfonso de Molina, un león sin corona enmarcado por una serie de castillos.
+        También destaca un retablo mayor diseñado por Francisco de Praves, con esculturas de Gregorio Fernández (≈1613) y pinturas de Tomás de Prado.
+    </string>
+    <string name="p12_horarios">Lunes cerrado; Martes-sábado: 10:00-14:00 (Acceso hasta las 13:00) y 16:00-18:30 (Acceso hasta las 17:30); Acceso gratuito: miércoles y jueves de 16:00 a 18:30 (último acceso a las 17:30); Domingos y festivos: 10:30-15:00 (Acceso hasta las 14:00)</string>
+    <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 </resources>

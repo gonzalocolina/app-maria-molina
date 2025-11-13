@@ -1,13 +1,17 @@
 package com.example.mariamolina.ui.screens.poi
 
+import androidx.annotation.ArrayRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape // ¡CAMBIO! Importación añadida
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack // ¡CAMBIO! Importación añadida
-import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+// import androidx.compose.material.icons.filled.AccessTime // Eliminado
 import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
@@ -18,132 +22,130 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.data.model.PuntoInteres
-import com.example.mariamolina.ui.theme.AppPrimaryBrown
-import androidx.compose.ui.res.stringArrayResource
+import com.example.mariamolina.data.model.SubPuntoInteres // ¡Importamos SubPuntoInteres!
 import com.example.mariamolina.R
-import androidx.compose.ui.res.stringResource
-import androidx.annotation.ArrayRes
-import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.RoundedCornerShape
+import com.example.mariamolina.ui.theme.AppPrimaryBrown
 // import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PointDetailScreen(
     punto: PuntoInteres,
-    onBackClick: () -> Unit // ¡CAMBIO! Añadimos el parámetro
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         bottomBar = {
-                // ¡CAMBIO! Reemplazamos el Button por un Row clicable
-                Surface(
-                    color = AppPrimaryBrown,
-                    shadowElevation = 8.dp,
-                    shape = RoundedCornerShape(
-                        topStart = 16.dp, // Redondea la esquina superior izquierda
-                        topEnd = 16.dp,   // Redondea la esquina superior derecha
-                        bottomStart = 16.dp, // Deja esta plana
-                        bottomEnd = 16.dp    // Deja esta plana
-                    ),
+            Surface(
+                color = AppPrimaryBrown,
+                shadowElevation = 8.dp,
+                shape = RoundedCornerShape(
+                    topStart = 16.dp,
+                    topEnd = 16.dp,
+                    bottomStart = 0.dp,
+                    bottomEnd = 0.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { /* TODO: Lógica de Firebase para marcar visitado */ }
+            ) {
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        // 1. Hacemos que toda la barra sea clicable
-                        .clickable { /* TODO: Lógica de Firebase para marcar visitado */ }
-                )  {
-                    // 2. Usamos un Row para centrar el contenido
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            // 3. Este padding controla la altura. ¡Prueba a cambiarlo!
-                            .padding(vertical = 12.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                        .padding(vertical = 12.dp),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Icon(
                         imageVector = Icons.Default.CheckCircleOutline,
                         contentDescription = null,
-                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                        tint = MaterialTheme.colorScheme.primaryContainer
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text(
                         stringResource(id = R.string.detalle_marcar_visitado),
-                        // 5. Color del texto
-                        color = MaterialTheme.colorScheme.primaryContainer // Texto dorado
+                        color = MaterialTheme.colorScheme.primaryContainer
                     )
                 }
             }
         }
     ) { innerPadding ->
-
-        // ¡CAMBIO! Envolvemos todo en un Box para superponer el botón
         Box(modifier = Modifier.fillMaxSize()) {
-
-            // Contenido principal con scroll (va al fondo)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    // ¡CAMBIO! Aplicamos el padding de la barra inferior
-                    // solo al final del contenido que se desplaza
                     .padding(bottom = innerPadding.calculateBottomPadding())
             ) {
-
-                // --- Imagen Superior ---
+                // ... (Imagen) ...
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(250.dp)
                         .background(MaterialTheme.colorScheme.primaryContainer)
-                ) {
-                    /* ... Tu código de AsyncImage ... */
-                }
+                )
 
-                // --- Contenido de Texto (se desplaza) ---
+                // --- Contenido de Texto ---
                 Column(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
+                    // ¡CAMBIO! Ya no pasamos duracionResId
                     TituloSection(
                         tituloResId = punto.tituloResId,
-                        duracionResId = punto.duracionResId,
-                        rating = punto.rating
+                        rating = punto.rating // Pasamos el rating nullable
                     )
-                    DescripcionSection(descripcionResId = punto.descripcionLargaResId)
-                    InfoPracticaSection(
-                        horariosResId = punto.horariosResId,
-                        ubicacionResId = punto.ubicacionResId
-                    )
-                    ConsejosSection(consejosArrayResId = punto.consejosArrayResId)
-                }
-            } // Fin Column (scrollable)
 
-            // --- Botón "Atrás" Flotante (va encima) ---
+                    // Esta sigue igual, descripcionLargaResId no es nullable
+                    DescripcionSection(descripcionResId = punto.descripcionLargaResId)
+
+                    // ¡CAMBIO! Comprobamos si hay datos antes de llamar
+                    if (punto.horariosResId != null && punto.ubicacionResId != null) {
+                        InfoPracticaSection(
+                            horariosResId = punto.horariosResId,
+                            ubicacionResId = punto.ubicacionResId
+                        )
+                    }
+
+                    // ¡CAMBIO! Comprobamos si hay subpuntos
+                    if (punto.subpuntos.isNotEmpty()) {
+                        SubPuntosSection(subpuntos = punto.subpuntos)
+                    }
+
+                    // ¡CAMBIO! La sección Consejos ya no existe
+                }
+            }
+
+            // ... (Botón "Atrás" flotante) ...
             IconButton(
-                onClick = onBackClick, // Usa la función que recibimos
+                onClick = onBackClick,
                 modifier = Modifier
-                    .padding(16.dp) // Padding desde la esquina
-                    .align(Alignment.TopStart) // Alineado arriba a la izquierda
-                    .background(Color.Black.copy(alpha = 0.3f), CircleShape) // Fondo circular
+                    .padding(16.dp)
+                    .align(Alignment.TopStart)
+                    .background(Color.Black.copy(alpha = 0.3f), CircleShape)
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Volver",
-                    tint = Color.White // Icono blanco
+                    tint = Color.White
                 )
             }
-        } // Fin Box (superposición)
-    } // Fin Scaffold
+        }
+    }
 }
 
-// --- COMPOSABLES INTERNOS (Ahora leen los IDs de recurso) ---
+// --- COMPOSABLES INTERNOS (Actualizados) ---
 
 @Composable
-private fun TituloSection(@StringRes tituloResId: Int, @StringRes duracionResId: Int, rating: Double) {
+private fun TituloSection(
+    @StringRes tituloResId: Int,
+    rating: Double? // ¡CAMBIO! Acepta nullable
+) {
     Column {
         Text(
             text = stringResource(id = tituloResId),
@@ -152,20 +154,21 @@ private fun TituloSection(@StringRes tituloResId: Int, @StringRes duracionResId:
         )
         Spacer(modifier = Modifier.height(8.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.AccessTime, contentDescription = stringResource(R.string.detalle_duracion), modifier = Modifier.size(16.dp))
-                Spacer(Modifier.width(4.dp))
-                Text(stringResource(id = duracionResId), style = MaterialTheme.typography.bodyMedium)
-            }
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Star, stringResource(R.string.detalle_rating), modifier = Modifier.size(16.dp))
-                Spacer(Modifier.width(4.dp))
-                Text("$rating/5", style = MaterialTheme.typography.bodyMedium)
+            // ¡CAMBIO! La duración se ha ido
+
+            // ¡CAMBIO! Mostramos el rating solo si no es nulo
+            if (rating != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.detalle_rating), modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text("$rating/5", style = MaterialTheme.typography.bodyMedium)
+                }
             }
         }
     }
 }
 
+// ... (DescripcionSection no cambia) ...
 @Composable
 private fun DescripcionSection(@StringRes descripcionResId: Int) {
     Card(
@@ -189,7 +192,10 @@ private fun DescripcionSection(@StringRes descripcionResId: Int) {
 }
 
 @Composable
-private fun InfoPracticaSection(@StringRes horariosResId: Int, @StringRes ubicacionResId: Int) {
+private fun InfoPracticaSection(
+    @StringRes horariosResId: Int, // ¡CAMBIO! Ya no es nullable aquí
+    @StringRes ubicacionResId: Int // ¡CAMBIO! Ya no es nullable aquí
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -205,9 +211,9 @@ private fun InfoPracticaSection(@StringRes horariosResId: Int, @StringRes ubicac
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Info, contentDescription = "Horarios", modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(8.dp))
-                Text("Horarios:", fontWeight = FontWeight.SemiBold)
+                Text(stringResource(id = R.string.detalle_horarios), fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(8.dp))
-                Text(stringResource(id = R.string.detalle_horarios), style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(id = horariosResId), style = MaterialTheme.typography.bodyMedium)
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.Top) {
@@ -227,10 +233,11 @@ private fun InfoPracticaSection(@StringRes horariosResId: Int, @StringRes ubicac
     }
 }
 
+// ¡CAMBIO! Sección Consejos eliminada
+
+// --- ¡NUEVA SECCIÓN! ---
 @Composable
-private fun ConsejosSection(@ArrayRes consejosArrayResId: Int) {
-    // Leemos el array de strings desde los recursos
-    val consejos = stringArrayResource(id = consejosArrayResId)
+private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -238,28 +245,65 @@ private fun ConsejosSection(@ArrayRes consejosArrayResId: Int) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
-                text = stringResource(id = R.string.detalle_consejos),
+                text = stringResource(id = R.string.detalle_subpuntos_titulo), // Necesitarás añadir esto a strings.xml
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(16.dp))
-            consejos.forEach { consejo ->
-                Row(modifier = Modifier.padding(bottom = 8.dp), verticalAlignment = Alignment.Top) {
-                    // 1. Reemplazamos el Icono por un Text con la viñeta
-                    Text(
-                        text = "•", // Carácter de viñeta
-                        modifier = Modifier.padding(end = 8.dp), // Espacio a la derecha
-                        color = MaterialTheme.colorScheme.primary, // Color marrón
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.bodyMedium // Mismo tamaño de texto
-                    )
-                    // 2. El texto del consejo
-                    Text(
-                        text = consejo,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.weight(1f) // Para que se ajuste
-                    )
+
+            // Iteramos sobre los subpuntos
+            subpuntos.forEachIndexed { index, subpunto ->
+                SubPuntoItem(subpunto = subpunto)
+                if (index < subpuntos.lastIndex) {
+                    Divider(modifier = Modifier.padding(vertical = 12.dp))
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SubPuntoItem(subpunto: SubPuntoInteres) {
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        // Título y Rating
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = subpunto.nombreResId),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold
+            )
+            if (subpunto.rating != null) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(Icons.Default.Star, contentDescription = "Rating", modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                    Spacer(Modifier.width(4.dp))
+                    Text("${subpunto.rating}/5", style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+
+        // Horarios
+        if (subpunto.horariosResId != null) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.Info, contentDescription = "Horarios", modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(id = R.string.detalle_horarios), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(id = subpunto.horariosResId), style = MaterialTheme.typography.bodySmall)
+            }
+        }
+
+        // Ubicación
+        if (subpunto.ubicacionResId != null) {
+            Row(verticalAlignment = Alignment.Top) {
+                Icon(Icons.Default.LocationOn, contentDescription = "Ubicación", modifier = Modifier.size(16.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(id = R.string.detalle_ubicacion), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
+                Spacer(Modifier.width(8.dp))
+                Text(stringResource(id = subpunto.ubicacionResId), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
             }
         }
     }
