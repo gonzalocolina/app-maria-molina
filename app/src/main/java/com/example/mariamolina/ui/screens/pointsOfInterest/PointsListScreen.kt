@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mariamolina.data.model.PuntoInteres
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+
 
 // NOTA: Para cargar la imagen desde URL (punto.urlImagen) necesitarás
 // la librería Coil. Por ahora, usamos un Box de color como placeholder.
@@ -67,18 +69,10 @@ fun PuntoInteresCard(
                     .height(180.dp)
                     .background(MaterialTheme.colorScheme.primaryContainer)
             )
-            /* // CUANDO AÑADAS COIL, usa esto en lugar del Box:
-            AsyncImage(
-                model = punto.urlImagen,
-                contentDescription = "Imagen de ${punto.titulo}",
-                modifier = Modifier.fillMaxWidth().height(180.dp),
-                contentScale = ContentScale.Crop
-            )
-            */
 
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = punto.titulo,
+                    text = stringResource(id = punto.tituloResId),
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -89,14 +83,12 @@ fun PuntoInteresCard(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    InfoChip(
-                        icono = Icons.Default.Schedule,
-                        texto = punto.duracion
-                    )
-                    InfoChip(
-                        icono = Icons.Default.StarBorder,
-                        texto = "${punto.rating}/5"
-                    )
+                    if (punto.rating != null) {
+                        InfoChip(
+                            icono = Icons.Default.StarBorder,
+                            texto = "${punto.rating}/5"
+                        )
+                    }
                 }
             }
         }
