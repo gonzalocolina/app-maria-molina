@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.mariamolina.data.model.PuntoInteres
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import com.example.mariamolina.R
 
 
 // NOTA: Para cargar la imagen desde URL (punto.urlImagen) necesitarás
@@ -83,7 +84,7 @@ fun PuntoInteresCard(
                     if (punto.rating != null) {
                         InfoChip(
                             icono = Icons.Default.StarBorder,
-                            texto = "${punto.rating}/5"
+                            texto = stringResource(R.string.fmt_rating_per_5, punto.rating)
                         )
                     }
                 }

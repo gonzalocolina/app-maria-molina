@@ -49,7 +49,7 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
 
                 Image(
                     painter = painterResource(id = R.drawable.mariamolina_menu), // Asegúrate que el nombre coincide
-                    contentDescription = "Imagen inicial de Maria Molina", // Descripción para accesibilidad
+                    contentDescription = stringResource(R.string.cd_imagen_inicial), // Descripción para accesibilidad
                     modifier = Modifier
                         .fillMaxWidth() // O ajusta según necesites (ej. .height(200.dp))
                         .height(250.dp), // Define una altura para la imagen
@@ -95,7 +95,7 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                         .wrapContentWidth(Alignment.CenterHorizontally) // Centra el contenido del botón dentro de ese ancho
                         .padding(8.dp)
                 ) {
-                    Text("Ver árbol genealógico")
+                    Text(stringResource(R.string.btn_ver_arbol))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
