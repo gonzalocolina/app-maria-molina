@@ -23,7 +23,6 @@ import androidx.compose.ui.text.style.TextOverflow // ¡Importado!
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController // ¡CAMBIO! Importación añadida
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -33,15 +32,15 @@ import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
 import com.example.mariamolina.ui.screens.kids.KidsScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
-import com.example.mariamolina.ui.screens.pointsOfInterest.PointsOfInterestScreen
-import com.example.mariamolina.ui.screens.pointsOfInterest.PoiRoutes // ¡CAMBIO! Importación añadida
+import com.example.mariamolina.ui.screens.pointsOfInterest.PointsListScreen
+import com.example.mariamolina.ui.screens.poi.PointDetailScreen
+import com.example.mariamolina.data.model.puntosDeInteres
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
     val navControllerPrincipal = rememberNavController()
-    val navControllerAnidadoPoi = rememberNavController()
 
     // 1. Escuchamos al controlador principal (para títulos y barra inferior)
     val navBackStackEntry by navControllerPrincipal.currentBackStackEntryAsState()
@@ -49,27 +48,13 @@ fun AppNavigation() {
     val currentScreen = itemsNavegacion.find { it.ruta == currentDestination?.route }
         ?: Pantalla.Home
 
-    // 2. ¡CAMBIO! Escuchamos al controlador ANIDADO (para saber si ocultar la TopBar)
-    val poiNavBackStackEntry by navControllerAnidadoPoi.currentBackStackEntryAsState()
-    val poiCurrentRoute = poiNavBackStackEntry?.destination?.route
-
-
-    // 2. Sólo escuchamos al controlador ANIDADO cuando la pestaña activa es PointsOfInterest
-//    val poiCurrentRoute = if (currentScreen == Pantalla.PointsOfInterest) {
-//        val poiNavBackStackEntry by navControllerAnidadoPoi.currentBackStackEntryAsState()
-//        poiNavBackStackEntry?.destination?.route
-//    } else {
-//        null
-//    }
-
     Scaffold(
         topBar = {
-            // 3. ¡CAMBIO! Lógica condicional para mostrar la barra
-            // Comprobamos si la ruta anidada actual EMPIEZA CON "poi_detail"
-            val esRutaDetalle = poiCurrentRoute?.startsWith(PoiRoutes.DETAIL_PREFIX) == true
+            // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
+            val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
 
             // Solo mostramos la barra si NO estamos en el detalle
-            if (!esRutaDetalle) {
+            if (!esRutaDetallePoi) {
                 AppTopBar(
                     titulo = currentScreen.tituloTopBar,
                     subtitulo = currentScreen.subtitulo
@@ -94,8 +79,7 @@ fun AppNavigation() {
                             }
                         },
                         label = { Text(pantalla.tituloBottomBar) },
-                        icon = { Icon(pantalla.icono, contentDescription = pantalla.tituloBottomBar) },
-                        //alwaysShowLabel = false, // Lo tenías comentado, lo dejo así
+                        icon = { androidx.compose.material3.Icon(pantalla.icono, contentDescription = pantalla.tituloBottomBar) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedIconColor = MaterialTheme.colorScheme.primary,
                             selectedTextColor = MaterialTheme.colorScheme.primary,
@@ -121,10 +105,25 @@ fun AppNavigation() {
                 ImageScreen(onBackClick = { navControllerPrincipal.popBackStack() })
             }
 
-
-            // 4. ¡CAMBIO! Pasamos el controlador anidado a la pantalla de POI
+            // Rutas de Puntos de Interés (ahora en el NavHost principal para evitar NavHost anidado)
             composable(Pantalla.PointsOfInterest.ruta) {
-                PointsOfInterestScreen(navControllerAnidado = navControllerAnidadoPoi)
+                PointsListScreen(
+                    puntos = puntosDeInteres,
+                    onPuntoClick = { puntoId ->
+                        navControllerPrincipal.navigate("${Pantalla.PointsOfInterest.ruta}/detail/$puntoId")
+                    }
+                )
+            }
+
+            composable("${Pantalla.PointsOfInterest.ruta}/detail/{puntoId}") { backStackEntry ->
+                val puntoId = backStackEntry.arguments?.getString("puntoId")
+                val punto = puntosDeInteres.find { it.id == puntoId }
+                if (punto != null) {
+                    PointDetailScreen(
+                        punto = punto,
+                        onBackClick = { navControllerPrincipal.popBackStack() }
+                    )
+                }
             }
 
             composable(Pantalla.Map.ruta) { MapScreen() }
