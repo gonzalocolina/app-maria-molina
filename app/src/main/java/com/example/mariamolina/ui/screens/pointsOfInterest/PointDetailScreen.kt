@@ -131,7 +131,7 @@ fun PointDetailScreen(
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Volver",
+                    contentDescription = stringResource(R.string.cd_volver),
                     tint = Color.White
                 )
             }
@@ -159,9 +159,9 @@ private fun TituloSection(
             // ¡CAMBIO! Mostramos el rating solo si no es nulo
             if (rating != null) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.detalle_rating), modifier = Modifier.size(16.dp))
+                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.cd_rating), modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(4.dp))
-                    Text("$rating/5", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.fmt_rating_per_5, rating), style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }
@@ -209,7 +209,7 @@ private fun InfoPracticaSection(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Info, contentDescription = "Horarios", modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.Info, contentDescription = stringResource(R.string.cd_horarios), modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(id = R.string.detalle_horarios), fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(8.dp))
@@ -217,7 +217,7 @@ private fun InfoPracticaSection(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.LocationOn, contentDescription = "Ubicación", modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.LocationOn, contentDescription = stringResource(R.string.cd_ubicacion), modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(id = R.string.detalle_ubicacion), fontWeight = FontWeight.SemiBold)
                 Spacer(Modifier.width(8.dp))
@@ -233,9 +233,7 @@ private fun InfoPracticaSection(
     }
 }
 
-// ¡CAMBIO! Sección Consejos eliminada
-
-// --- ¡NUEVA SECCIÓN! ---
+// --- NUEVA SECCIÓN! ---
 @Composable
 private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
     Card(
@@ -278,9 +276,9 @@ private fun SubPuntoItem(subpunto: SubPuntoInteres) {
             )
             if (subpunto.rating != null) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Star, contentDescription = "Rating", modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
+                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.cd_rating), modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(Modifier.width(4.dp))
-                    Text("${subpunto.rating}/5", style = MaterialTheme.typography.bodyMedium)
+                    Text(stringResource(R.string.fmt_rating_per_5, subpunto.rating), style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }
@@ -288,7 +286,7 @@ private fun SubPuntoItem(subpunto: SubPuntoInteres) {
         // Horarios
         if (subpunto.horariosResId != null) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Default.Info, contentDescription = "Horarios", modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.Info, contentDescription = stringResource(R.string.cd_horarios), modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(id = R.string.detalle_horarios), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
                 Spacer(Modifier.width(8.dp))
@@ -299,7 +297,7 @@ private fun SubPuntoItem(subpunto: SubPuntoInteres) {
         // Ubicación
         if (subpunto.ubicacionResId != null) {
             Row(verticalAlignment = Alignment.Top) {
-                Icon(Icons.Default.LocationOn, contentDescription = "Ubicación", modifier = Modifier.size(16.dp))
+                Icon(Icons.Default.LocationOn, contentDescription = stringResource(R.string.cd_ubicacion), modifier = Modifier.size(16.dp))
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(id = R.string.detalle_ubicacion), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodySmall)
                 Spacer(Modifier.width(8.dp))

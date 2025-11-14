@@ -15,6 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.input.pointer.pointerInput
@@ -66,7 +67,7 @@ fun ImageScreen(onBackClick: () -> Unit) {
         ) {
             Image(
                 painter = painter,
-                contentDescription = "Imagen de ejemplo",
+                contentDescription = stringResource(R.string.cd_imagen_ejemplo),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize() // La imagen se expandirá para llenar el Box
@@ -86,7 +87,7 @@ fun ImageScreen(onBackClick: () -> Unit) {
                 .align(Alignment.BottomCenter) // Alineamos el botón en la parte inferior central
                 .padding(16.dp) // Añadimos padding alrededor del botón
         ) {
-            Text("Volver")
+            Text(stringResource(R.string.btn_volver))
         }
     }
 }
