@@ -45,9 +45,15 @@ fun ImageScreen(onBackClick: () -> Unit) {
                 .pointerInput(Unit) {
                     detectTransformGestures { _, pan, zoom, _ ->
                         val newScale = (scale * zoom).coerceIn(minScale, maxScale)
-                        scale = newScale
 
-                        offset += pan
+                        // Si volvemos a la escala mínima, centramos la imagen
+                        if (newScale == minScale) {
+                            scale = newScale
+                            offset = Offset.Zero
+                        } else {
+                            scale = newScale
+                            offset += pan
+                        }
 
                         val containerWidth = containerSize.width.toFloat()
                         val containerHeight = containerSize.height.toFloat()
@@ -68,9 +74,9 @@ fun ImageScreen(onBackClick: () -> Unit) {
             Image(
                 painter = painter,
                 contentDescription = stringResource(R.string.cd_imagen_ejemplo),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
-                    .fillMaxSize() // La imagen se expandirá para llenar el Box
+                    .fillMaxSize() // La imagen se expandirá para llenar el Box manteniendo el aspecto
                     .graphicsLayer {
                         scaleX = scale
                         scaleY = scale
