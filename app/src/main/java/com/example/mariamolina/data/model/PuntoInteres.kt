@@ -1,61 +1,158 @@
 package com.example.mariamolina.data.model
 
+import androidx.annotation.StringRes
+import androidx.annotation.ArrayRes
+import com.example.mariamolina.R
+
 // 1. Definimos la estructura de datos actualizada
 data class PuntoInteres(
     val id: String,
-    val titulo: String,
+    @StringRes val tituloResId: Int,
     val urlImagen: String,
-    val duracion: String, // ej: "2 horas"
-    val rating: Double, // ej: 4.3
-    val descripcionLarga: String,
-    val horarios: String, // ej: "Acceso libre todo el día"
-    val ubicacion: String, // ej: "Plaza de la Universidad, 1"
-    val consejos: List<String> // Una lista de consejos
+    val rating: Double?,
+    @StringRes val descripcionLargaResId: Int,
+    @StringRes val horariosResId: Int? ,
+    @StringRes val ubicacionResId: Int?,
+    val subpuntos: List<SubPuntoInteres> = emptyList()
 )
 
-// 2. Creamos una lista de datos de prueba (mock data) con los nuevos campos
-val puntosDeInteresMock = listOf(
+data class SubPuntoInteres(
+    @StringRes val nombreResId: Int,
+    val rating: Double?,
+    @StringRes val horariosResId: Int?,
+    @StringRes val ubicacionResId: Int?,
+)
+
+// 2. Creamos una lista de datos con los diferentes campos
+val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p1",
-        titulo = "Palazuelos",
+        tituloResId = R.string.p1_titulo,
         urlImagen = "https://placehold.co/600x400/8B261E/FFFFFF?text=Palazuelos",
-        duracion = "2 horas",
-        rating = 4.3,
-        descripcionLarga = "Palazuelos es un encantador pueblo de Castilla y León que conserva el encanto de la arquitectura tradicional castellana. Sus calles empedradas y casas de piedra y adobe nos transportan a épocas pasadas. El pueblo destaca por su iglesia parroquial y las construcciones rurales tradicionales que reflejan el modo de vida de la región.",
-        horarios = "Acceso libre todo el día",
-        ubicacion = "Palazuelos de Eresma, Segovia",
-        consejos = listOf(
-            "Visita la iglesia parroquial del siglo XVI",
-            "Pasea por sus calles empedradas tradicionales",
-            "Ideal para fotografía de arquitectura rural"
+        rating = null,
+        descripcionLargaResId = R.string.p1_desc,
+        horariosResId = null,
+        ubicacionResId = null,
+        subpuntos = listOf(
+            SubPuntoInteres(
+                nombreResId = R.string.p1_nombre_a,
+                rating = 4.4,
+                horariosResId = R.string.p1_horarios_a,
+                ubicacionResId = R.string.p1_ubicacion_a,
+            ),
+            SubPuntoInteres(
+                nombreResId = R.string.p1_nombre_b,
+                rating = 4.9,
+                horariosResId = R.string.p1_horarios_b,
+                ubicacionResId = R.string.p1_ubicacion_b,
+            )
         )
-    ),
+        ),
     PuntoInteres(
         id = "p2",
-        titulo = "Plaza Mayor",
+        tituloResId = R.string.p2_titulo,
         urlImagen = "https://placehold.co/600x400/D4AF69/000000?text=Plaza+Mayor",
-        duracion = "1 hora",
-        rating = 4.8,
-        descripcionLarga = "La Plaza Mayor de Valladolid es una de las más antiguas de España y ha servido de modelo para muchas otras...",
-        horarios = "Siempre abierta",
-        ubicacion = "Plaza Mayor, 47001 Valladolid",
-        consejos = listOf(
-            "Ideal para tomar algo en las terrazas",
-            "Visita la estatua del Conde Ansúrez"
-        )
-    ),
+        rating = 4.6,
+        descripcionLargaResId = R.string.p2_desc,
+        horariosResId = R.string.p2_horarios,
+        ubicacionResId = R.string.p2_ubicacion
+        ),
     PuntoInteres(
         id = "p3",
-        titulo = "Iglesia de San Pablo",
+        tituloResId = R.string.p3_titulo,
         urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
-        duracion = "45 min",
         rating = 4.7,
-        descripcionLarga = "La fachada de la iglesia de San Pablo es uno de los ejemplos más impresionantes del gótico isabelino...",
-        horarios = "Horario de misas",
-        ubicacion = "Plaza de San Pablo, 47011 Valladolid",
-        consejos = listOf(
-            "Fíjate en los detalles de la fachada",
-            "Visita el Colegio de San Gregorio al lado"
-        )
+        descripcionLargaResId = R.string.p3_desc,
+        horariosResId = R.string.p3_horarios,
+        ubicacionResId = R.string.p3_ubicacion,
+        ),
+    PuntoInteres(
+        id = "p4",
+        tituloResId = R.string.p4_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = null,
+        descripcionLargaResId = R.string.p4_desc,
+        horariosResId = R.string.p4_horarios,
+        ubicacionResId = R.string.p4_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p5",
+        tituloResId = R.string.p5_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = 4.5,
+        descripcionLargaResId = R.string.p5_desc,
+        horariosResId = R.string.p5_horarios,
+        ubicacionResId = R.string.p5_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p6",
+        tituloResId = R.string.p6_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = null,
+        descripcionLargaResId = R.string.p6_desc,
+        horariosResId = R.string.p6_horarios,
+        ubicacionResId = R.string.p6_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p7",
+        tituloResId = R.string.p7_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = 4.4,
+        descripcionLargaResId = R.string.p7_desc,
+        horariosResId = R.string.p7_horarios,
+        ubicacionResId = R.string.p7_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p8",
+        tituloResId = R.string.p8_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = 4.3,
+        descripcionLargaResId = R.string.p8_desc,
+        horariosResId = R.string.p8_horarios,
+        ubicacionResId = R.string.p8_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p9",
+        tituloResId = R.string.p9_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = 3.5,
+        descripcionLargaResId = R.string.p9_desc,
+        horariosResId = R.string.p9_horarios,
+        ubicacionResId = R.string.p9_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p10",
+        tituloResId = R.string.p10_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = 4.7,
+        descripcionLargaResId = R.string.p10_desc,
+        horariosResId = R.string.p10_horarios,
+        ubicacionResId = R.string.p10_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p11",
+        tituloResId = R.string.p11_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = 4.5,
+        descripcionLargaResId = R.string.p11_desc,
+        horariosResId = R.string.p11_horarios,
+        ubicacionResId = R.string.p11_ubicacion,
+    ),
+
+    PuntoInteres(
+        id = "p12",
+        tituloResId = R.string.p12_titulo,
+        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        rating = 3.9,
+        descripcionLargaResId = R.string.p12_desc,
+        horariosResId = R.string.p12_horarios,
+        ubicacionResId = R.string.p12_ubicacion,
     )
 )

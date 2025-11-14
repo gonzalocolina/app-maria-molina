@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -16,12 +15,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mariamolina.data.model.PuntoInteres
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import com.example.mariamolina.R
+
 
 // NOTA: Para cargar la imagen desde URL (punto.urlImagen) necesitarás
 // la librería Coil. Por ahora, usamos un Box de color como placeholder.
@@ -67,18 +67,10 @@ fun PuntoInteresCard(
                     .height(180.dp)
                     .background(MaterialTheme.colorScheme.primaryContainer)
             )
-            /* // CUANDO AÑADAS COIL, usa esto en lugar del Box:
-            AsyncImage(
-                model = punto.urlImagen,
-                contentDescription = "Imagen de ${punto.titulo}",
-                modifier = Modifier.fillMaxWidth().height(180.dp),
-                contentScale = ContentScale.Crop
-            )
-            */
 
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(
-                    text = punto.titulo,
+                    text = stringResource(id = punto.tituloResId),
                     style = MaterialTheme.typography.titleLarge
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -89,14 +81,12 @@ fun PuntoInteresCard(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    InfoChip(
-                        icono = Icons.Default.Schedule,
-                        texto = punto.duracion
-                    )
-                    InfoChip(
-                        icono = Icons.Default.StarBorder,
-                        texto = "${punto.rating}/5"
-                    )
+                    if (punto.rating != null) {
+                        InfoChip(
+                            icono = Icons.Default.StarBorder,
+                            texto = stringResource(R.string.fmt_rating_per_5, punto.rating)
+                        )
+                    }
                 }
             }
         }
