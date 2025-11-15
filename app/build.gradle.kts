@@ -43,6 +43,7 @@ android {
 
 dependencies {
 
+    implementation(libs.coil.compose)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.androidx.core.ktx)
@@ -64,4 +65,5 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended-android:1.6.8")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("org.osmdroid:osmdroid-android:6.1.18")
+
 }

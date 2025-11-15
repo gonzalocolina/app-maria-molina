@@ -21,13 +21,8 @@ import com.example.mariamolina.data.model.PuntoInteres
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.example.mariamolina.R
-
-
-// NOTA: Para cargar la imagen desde URL (punto.urlImagen) necesitarás
-// la librería Coil. Por ahora, usamos un Box de color como placeholder.
-// Para añadirla, ve a tu build.gradle.kts y añade:
-// implementation("io.coil-kt:coil-compose:2.6.0")
-// import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 
 @Composable
 fun PointsListScreen(
@@ -60,12 +55,13 @@ fun PuntoInteresCard(
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column {
-            // Placeholder para la imagen
-            Box(
+            AsyncImage(
+                model = punto.urlImagen,
+                contentDescription = stringResource(id = punto.tituloResId),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(180.dp)
-                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .height(180.dp),
+                contentScale = ContentScale.Crop // Esto hace que la imagen "rellene" el espacio
             )
 
             Column(modifier = Modifier.padding(16.dp)) {

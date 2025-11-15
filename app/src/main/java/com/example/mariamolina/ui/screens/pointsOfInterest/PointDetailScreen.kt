@@ -27,10 +27,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.data.model.PuntoInteres
-import com.example.mariamolina.data.model.SubPuntoInteres // ¡Importamos SubPuntoInteres!
+import com.example.mariamolina.data.model.SubPuntoInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
-// import coil.compose.AsyncImage
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,12 +83,14 @@ fun PointDetailScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(bottom = innerPadding.calculateBottomPadding())
             ) {
-                // ... (Imagen) ...
-                Box(
+                // ... Imagen ...
+                AsyncImage(
+                    model = punto.urlImagen,
+                    contentDescription = stringResource(id = punto.tituloResId),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp)
-                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .height(250.dp),
+                    contentScale = ContentScale.Crop
                 )
 
                 // --- Contenido de Texto ---
