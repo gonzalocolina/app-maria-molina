@@ -28,7 +28,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p1",
         tituloResId = R.string.p1_titulo,
-        urlImagen = "https://placehold.co/600x400/8B261E/FFFFFF?text=Palazuelos",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Alcazarejo.JPG",
         rating = null,
         descripcionLargaResId = R.string.p1_desc,
         horariosResId = null,
@@ -51,7 +51,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p2",
         tituloResId = R.string.p2_titulo,
-        urlImagen = "https://placehold.co/600x400/D4AF69/000000?text=Plaza+Mayor",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Santa-Maria-la-Mayor.jpg",
         rating = 4.6,
         descripcionLargaResId = R.string.p2_desc,
         horariosResId = R.string.p2_horarios,
@@ -60,7 +60,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p3",
         tituloResId = R.string.p3_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Valladolid_Antigua.jpg",
         rating = 4.7,
         descripcionLargaResId = R.string.p3_desc,
         horariosResId = R.string.p3_horarios,
@@ -69,7 +69,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p4",
         tituloResId = R.string.p4_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Iglesia%20de%20San%20Miguel%20001.jpg",
         rating = null,
         descripcionLargaResId = R.string.p4_desc,
         horariosResId = R.string.p4_horarios,
@@ -79,7 +79,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p5",
         tituloResId = R.string.p5_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Santa-Maria-la-Mayor.jpg",
         rating = 4.5,
         descripcionLargaResId = R.string.p5_desc,
         horariosResId = R.string.p5_horarios,
@@ -89,7 +89,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p6",
         tituloResId = R.string.p6_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/PlazaMercado.jpg",
         rating = null,
         descripcionLargaResId = R.string.p6_desc,
         horariosResId = R.string.p6_horarios,
@@ -99,7 +99,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p7",
         tituloResId = R.string.p7_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/PuenteMayor.jpg",
         rating = 4.4,
         descripcionLargaResId = R.string.p7_desc,
         horariosResId = R.string.p7_horarios,
@@ -109,7 +109,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p8",
         tituloResId = R.string.p8_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Palazuelos.jpg",
         rating = 4.3,
         descripcionLargaResId = R.string.p8_desc,
         horariosResId = R.string.p8_horarios,
@@ -119,7 +119,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p9",
         tituloResId = R.string.p9_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/PuertaMagdalena.jpg",
         rating = 3.5,
         descripcionLargaResId = R.string.p9_desc,
         horariosResId = R.string.p9_horarios,
@@ -129,7 +129,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p10",
         tituloResId = R.string.p10_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Castillo%20de%20Tiedra.jpg",
         rating = 4.7,
         descripcionLargaResId = R.string.p10_desc,
         horariosResId = R.string.p10_horarios,
@@ -139,7 +139,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p11",
         tituloResId = R.string.p11_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/CastilloMontealegre.jpg",
         rating = 4.5,
         descripcionLargaResId = R.string.p11_desc,
         horariosResId = R.string.p11_horarios,
@@ -149,7 +149,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p12",
         tituloResId = R.string.p12_titulo,
-        urlImagen = "https://placehold.co/600x400/757575/FFFFFF?text=San+Pablo",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/HuelgasReales_Valladolid.jpg",
         rating = 3.9,
         descripcionLargaResId = R.string.p12_desc,
         horariosResId = R.string.p12_horarios,
