@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -25,7 +26,7 @@ fun ProfileScreen(onBackClick: () -> Unit) {
     val currentLanguageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("language", "es") ?: "es"
     val defaultLanguage = if (currentLanguageCode == "es") spanish else english
     var selectedLanguage by remember { mutableStateOf(defaultLanguage) }
-    var expanded by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -52,35 +53,40 @@ fun ProfileScreen(onBackClick: () -> Unit) {
                 fontWeight = FontWeight.Bold
             )
 
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = it }
+            Button(
+                onClick = { showDialog = true },
+                modifier = Modifier.fillMaxWidth()
             ) {
-                OutlinedTextField(
-                    value = selectedLanguage,
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text(stringResource(R.string.language_label)) },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    modifier = Modifier.menuAnchor()
-                )
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                Text(selectedLanguage)
+                Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+            }
+
+            if (showDialog) {
+                BasicAlertDialog(
+                    onDismissRequest = { showDialog = false }
                 ) {
-                    languages.forEach { language ->
-                        DropdownMenuItem(
-                            text = { Text(language) },
-                            onClick = {
-                                selectedLanguage = language
-                                expanded = false
-                                val languageCode = if (language == spanish) "es" else "en"
-                                val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-                                prefs.edit().putString("language", languageCode).apply()
-                                Toast.makeText(context, context.getString(R.string.language_changed_toast, language), Toast.LENGTH_SHORT).show()
-                                (context as? androidx.activity.ComponentActivity)?.recreate()
-                            }
+                    Column {
+                        Text(
+                            text = stringResource(R.string.select_language_title),
+                            style = MaterialTheme.typography.headlineSmall
                         )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        languages.forEach { language ->
+                            TextButton(
+                                onClick = {
+                                    selectedLanguage = language
+                                    showDialog = false
+                                    val languageCode = if (language == spanish) "es" else "en"
+                                    val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                                    prefs.edit().putString("language", languageCode).apply()
+                                    Toast.makeText(context, context.getString(R.string.language_changed_toast, language), Toast.LENGTH_SHORT).show()
+                                    (context as? androidx.activity.ComponentActivity)?.recreate()
+                                },
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                Text(language)
+                            }
+                        }
                     }
                 }
             }
