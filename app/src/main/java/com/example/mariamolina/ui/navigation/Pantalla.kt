@@ -5,6 +5,7 @@ import androidx.compose.material.icons.filled.ChildCare
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Map
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.ui.graphics.vector.ImageVector
 
 // --- ¡Añadimos el parámetro "subtitulo"! ---
@@ -46,6 +47,14 @@ sealed class Pantalla(
         tituloBottomBar = "Infantil",
         subtitulo = "Planes con niños", // (Ejemplo)
         icono = Icons.Default.ChildCare
+    )
+
+    data object Profile : Pantalla(
+        ruta = "profile",
+        tituloTopBar = "Perfil",
+        tituloBottomBar = "",
+        subtitulo = null,
+        icono = Icons.Default.AccountCircle
     )
 }
 

@@ -43,6 +43,7 @@ import com.example.mariamolina.ui.screens.kids.KidsScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
 import com.example.mariamolina.ui.screens.pointsOfInterest.PointsListScreen
 import com.example.mariamolina.ui.screens.poi.PointDetailScreen
+import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 
@@ -70,7 +71,8 @@ fun AppNavigation() {
             if (!esRutaDetallePoi) {
                 AppTopBar(
                     titulo = currentScreen.tituloTopBar,
-                    subtitulo = currentScreen.subtitulo
+                    subtitulo = currentScreen.subtitulo,
+                    onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) }
                 )
             }
         },
@@ -158,6 +160,7 @@ fun AppNavigation() {
 
             composable(Pantalla.Map.ruta) { MapScreen() }
             composable(Pantalla.Kids.ruta) { KidsScreen() }
+            composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }
 }
@@ -165,7 +168,7 @@ fun AppNavigation() {
 // (Tu función AppTopBar y el Preview quedan exactamente igual)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar(titulo: String, subtitulo: String?) {
+fun AppTopBar(titulo: String, subtitulo: String?, onProfileClick: () -> Unit) {
     TopAppBar(
         title = {
             Column {
@@ -192,7 +195,7 @@ fun AppTopBar(titulo: String, subtitulo: String?) {
             actionIconContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         actions = {
-            IconButton(onClick = { /* TODO: Aquí iría la navegación a Perfil */ }) {
+            IconButton(onClick = onProfileClick) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = stringResource(R.string.cd_perfil),
