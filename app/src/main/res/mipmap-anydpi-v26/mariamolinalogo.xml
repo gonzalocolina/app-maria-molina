@@ -3,3 +3,4 @@
     <background android:drawable="@color/mariamolinalogo_background"/>
     <foreground android:drawable="@drawable/mariamolinalogo_foreground"/>
     <monochrome android:drawable="@drawable/mariamolinalogo_monochrome"/>
+</adaptive-icon>
