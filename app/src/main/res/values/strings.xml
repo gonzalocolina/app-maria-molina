@@ -26,6 +26,19 @@
 
     <string name="detalle_subpuntos_titulo">Lugares del punto</string>
 
+    <!-- Profile Screen -->
+    <string name="profile_title">Perfil</string>
+    <string name="back_button_description">Volver</string>
+    <string name="select_language_title">Seleccionar idioma</string>
+    <string name="language_label">Idioma</string>
+    <string name="language_changed_toast">Idioma cambiado a %s</string>
+    <string name="about_title">Acerca de</string>
+    <string name="about_description">Esta aplicación es un ejemplo sobre María Molina.</string>
+
+    <!-- Language options -->
+    <string name="spanish">Español</string>
+    <string name="english">Inglés</string>
+
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
     <string name="p1_desc">El Alcázar Real de Valladolid (siglos XII y XIII), situado en el extremo occidental de la villa medieval, junto a la confluencia del ramal norte del Esgueva con el Pisuerga, fue un conjunto fortificado y palaciego compuesto por dos recintos:
@@ -155,6 +168,21 @@
     </string>
     <string name="p12_horarios">Lunes cerrado; Martes–sábado: 10:00–14:00 (Acceso hasta las 13:00) y 16:00–18:30 (Acceso hasta las 17:30); Acceso gratuito: miércoles y jueves de 16:00 a 18:30 (último acceso a las 17:30); Domingos y festivos: 10:30–15:00 (Acceso hasta las 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
+
+    <!-- Navigation -->
+    <string name="nav_home_title">Valladolid histórico</string>
+    <string name="nav_home_subtitle">Descubre la historia de María de Molina</string>
+    <string name="nav_points_title">Puntos interés</string>
+    <string name="nav_points_subtitle">Valladolid Histórico</string>
+    <string name="nav_map_title">Mapa</string>
+    <string name="nav_map_subtitle">Encuentra tu ruta</string>
+    <string name="nav_kids_title">Infantil</string>
+    <string name="nav_kids_subtitle">Planes con niños</string>
+    <string name="nav_profile_title">Perfil</string>
+    <string name="nav_home_bottom">Home</string>
+    <string name="nav_points_bottom">Puntos interés</string>
+    <string name="nav_map_bottom">Mapa</string>
+    <string name="nav_kids_bottom">Infantil</string>
 
     <!-- Strings extraídos (botones, contentDescriptions y formatos) -->
     <string name="btn_volver">Volver</string>

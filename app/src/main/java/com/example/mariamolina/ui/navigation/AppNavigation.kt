@@ -72,8 +72,8 @@ fun AppNavigation() {
             // Solo mostramos la barra si NO estamos en el detalle y NO en perfil
             if (!esRutaDetallePoi && !isProfile) {
                 AppTopBar(
-                    titulo = currentScreen.tituloTopBar,
-                    subtitulo = currentScreen.subtitulo,
+                    titulo = stringResource(currentScreen.tituloTopBarResId),
+                    subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
                     onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) }
                 )
             }
@@ -107,11 +107,11 @@ fun AppNavigation() {
                                     ) {
                                         Icon(
                                             pantalla.icono,
-                                            contentDescription = pantalla.tituloBottomBar,
+                                            contentDescription = stringResource(pantalla.tituloBottomBarResId),
                                             tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                         Text(
-                                            pantalla.tituloBottomBar,
+                                            stringResource(pantalla.tituloBottomBarResId),
                                             style = MaterialTheme.typography.labelSmall,
                                             color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                                             textAlign = TextAlign.Center

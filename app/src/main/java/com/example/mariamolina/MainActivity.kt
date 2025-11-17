@@ -13,10 +13,15 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Set the locale based on saved preference
+        val language = getSharedPreferences("app_prefs", MODE_PRIVATE).getString("language", "es") ?: "es"
+        setLocale(language)
 
         // Nota: se ha eliminado la llamada a installSplashScreen() para evitar dependencias faltantes.
 
@@ -47,5 +52,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun setLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }
