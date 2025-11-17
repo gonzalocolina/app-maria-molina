@@ -38,6 +38,8 @@
     <!-- Language options -->
     <string name="spanish">Español</string>
     <string name="english">Inglés</string>
+    <string name="german">Alemán</string>
+    <string name="french">Francés</string>
 
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>

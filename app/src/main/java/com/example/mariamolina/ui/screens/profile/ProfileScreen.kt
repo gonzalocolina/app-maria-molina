@@ -14,17 +14,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.edit
 import com.example.mariamolina.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(onBackClick: () -> Unit) {
     val context = LocalContext.current
-    val spanish = stringResource(R.string.spanish)
-    val english = stringResource(R.string.english)
-    val languages = listOf(spanish, english)
+    val spanish = "Español"
+    val english = "English"
+    val german = "Deutsch"
+    val french = "Français"
+    val languages = listOf(spanish, english, german, french)
     val currentLanguageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("language", "es") ?: "es"
-    val defaultLanguage = if (currentLanguageCode == "es") spanish else english
+    val defaultLanguage = when (currentLanguageCode) {
+        "es" -> spanish
+        "en" -> english
+        "de" -> german
+        "fr" -> french
+        else -> spanish
+    }
     var selectedLanguage by remember { mutableStateOf(defaultLanguage) }
     var showDialog by remember { mutableStateOf(false) }
 
@@ -76,9 +85,15 @@ fun ProfileScreen(onBackClick: () -> Unit) {
                                 onClick = {
                                     selectedLanguage = language
                                     showDialog = false
-                                    val languageCode = if (language == spanish) "es" else "en"
+                                    val languageCode = when (language) {
+                                        spanish -> "es"
+                                        english -> "en"
+                                        german -> "de"
+                                        french -> "fr"
+                                        else -> "es"
+                                    }
                                     val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-                                    prefs.edit().putString("language", languageCode).apply()
+                                    prefs.edit { putString("language", languageCode) }
                                     Toast.makeText(context, context.getString(R.string.language_changed_toast, language), Toast.LENGTH_SHORT).show()
                                     (context as? androidx.activity.ComponentActivity)?.recreate()
                                 },
