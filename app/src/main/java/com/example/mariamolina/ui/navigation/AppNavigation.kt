@@ -121,7 +121,7 @@ fun AppNavigation() {
         NavHost(
             navController = navControllerPrincipal,
             startDestination = Pantalla.Home.ruta,
-            //modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable(Pantalla.Home.ruta) {
                 HomeScreen(onNavigateToImage = { navControllerPrincipal.navigate("image") })
