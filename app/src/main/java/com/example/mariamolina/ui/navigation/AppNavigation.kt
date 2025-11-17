@@ -1,8 +1,8 @@
 package com.example.mariamolina.ui.navigation
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -20,6 +20,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -74,7 +75,7 @@ fun AppNavigation() {
         },
         bottomBar = {
             NavigationBar(
-                modifier = Modifier.height(if (isLandscape) 50.dp else 80.dp)
+                modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
             ) {
                 itemsNavegacion.forEach { pantalla ->
                     val isSelected =
@@ -91,13 +92,25 @@ fun AppNavigation() {
                                 restoreState = true
                             }
                         },
-                        label = { if (!isLandscape) Text(pantalla.tituloBottomBar, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
-                        icon = { Icon(pantalla.icono, contentDescription = pantalla.tituloBottomBar) },
+                        icon = {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.spacedBy(2.dp)
+                            ) {
+                                Icon(
+                                    pantalla.icono,
+                                    contentDescription = pantalla.tituloBottomBar,
+                                    tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Text(
+                                    pantalla.tituloBottomBar,
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
                             indicatorColor = Color.Transparent
                         )
                     )
@@ -108,7 +121,7 @@ fun AppNavigation() {
         NavHost(
             navController = navControllerPrincipal,
             startDestination = Pantalla.Home.ruta,
-            modifier = Modifier.padding(innerPadding)
+            //modifier = Modifier.padding(innerPadding)
         ) {
             composable(Pantalla.Home.ruta) {
                 HomeScreen(onNavigateToImage = { navControllerPrincipal.navigate("image") })
