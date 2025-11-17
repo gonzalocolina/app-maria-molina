@@ -62,7 +62,7 @@ fun ProfileScreen(onBackClick: () -> Unit) {
                     readOnly = true,
                     label = { Text(stringResource(R.string.language_label)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    modifier = Modifier.C()
+                    modifier = Modifier.menuAnchor()
                 )
                 ExposedDropdownMenu(
                     expanded = expanded,
