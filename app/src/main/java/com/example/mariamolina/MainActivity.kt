@@ -13,18 +13,12 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import org.osmdroid.config.Configuration
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Instalar la splash screen antes de cualquier setContent
-        val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
 
-        Configuration.getInstance().load(applicationContext, getSharedPreferences("osm_prefs", MODE_PRIVATE))
+        // Nota: se ha eliminado la llamada a installSplashScreen() para evitar dependencias faltantes.
 
         val permissions = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -42,14 +36,13 @@ class MainActivity : ComponentActivity() {
         if (notGranted.isNotEmpty()) {
             requestPermissionLauncher.launch(notGranted.toTypedArray())
         }
+
         setContent {
             MariaMolinaTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // 1. MainActivity ahora solo llama a nuestro
-                    // Composable de navegación principal. ¡Mucho más limpio!
                     AppNavigation()
                 }
             }
