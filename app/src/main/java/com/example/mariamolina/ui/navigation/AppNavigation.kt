@@ -1,10 +1,14 @@
 package com.example.mariamolina.ui.navigation
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -17,11 +21,15 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -44,6 +52,9 @@ import com.example.mariamolina.R
 fun AppNavigation() {
     val navControllerPrincipal = rememberNavController()
 
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     // 1. Escuchamos al controlador principal (para títulos y barra inferior)
     val navBackStackEntry by navControllerPrincipal.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -64,32 +75,49 @@ fun AppNavigation() {
             }
         },
         bottomBar = {
-            NavigationBar {
-                itemsNavegacion.forEach { pantalla ->
-                    val isSelected =
-                        currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
+            Column {
+                HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                NavigationBar(
+                    modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
+                ) {
+                    itemsNavegacion.forEach { pantalla ->
+                        val isSelected =
+                            currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
 
-                    NavigationBarItem(
-                        selected = isSelected,
-                        onClick = {
-                            navControllerPrincipal.navigate(pantalla.ruta) {
-                                popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
-                                    saveState = true
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = {
+                                navControllerPrincipal.navigate(pantalla.ruta) {
+                                    popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        label = { Text(pantalla.tituloBottomBar) },
-                        icon = { androidx.compose.material3.Icon(pantalla.icono, contentDescription = pantalla.tituloBottomBar) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            indicatorColor = Color.Transparent
+                            },
+                            icon = {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                                ) {
+                                    Icon(
+                                        pantalla.icono,
+                                        contentDescription = pantalla.tituloBottomBar,
+                                        tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Text(
+                                        pantalla.tituloBottomBar,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = Color.Transparent
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
