@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -74,46 +75,49 @@ fun AppNavigation() {
             }
         },
         bottomBar = {
-            NavigationBar(
-                modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
-            ) {
-                itemsNavegacion.forEach { pantalla ->
-                    val isSelected =
-                        currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
+            Column {
+                HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                NavigationBar(
+                    modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
+                ) {
+                    itemsNavegacion.forEach { pantalla ->
+                        val isSelected =
+                            currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
 
-                    NavigationBarItem(
-                        selected = isSelected,
-                        onClick = {
-                            navControllerPrincipal.navigate(pantalla.ruta) {
-                                popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
-                                    saveState = true
+                        NavigationBarItem(
+                            selected = isSelected,
+                            onClick = {
+                                navControllerPrincipal.navigate(pantalla.ruta) {
+                                    popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = {
-                            Column(
-                                horizontalAlignment = Alignment.CenterHorizontally,
-                                verticalArrangement = Arrangement.spacedBy(2.dp)
-                            ) {
-                                Icon(
-                                    pantalla.icono,
-                                    contentDescription = pantalla.tituloBottomBar,
-                                    tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                                Text(
-                                    pantalla.tituloBottomBar,
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                    textAlign = TextAlign.Center
-                                )
-                            }
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = Color.Transparent
+                            },
+                            icon = {
+                                Column(
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.spacedBy(2.dp)
+                                ) {
+                                    Icon(
+                                        pantalla.icono,
+                                        contentDescription = pantalla.tituloBottomBar,
+                                        tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Text(
+                                        pantalla.tituloBottomBar,
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                        textAlign = TextAlign.Center
+                                    )
+                                }
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = Color.Transparent
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
