@@ -1,5 +1,6 @@
 package com.example.mariamolina.ui.screens.map
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,32 +11,42 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import coil.compose.AsyncImage
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.data.model.PuntoInteres
 import com.example.mariamolina.data.model.puntosDeInteres
-import androidx.compose.ui.viewinterop.AndroidView
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 
 @Composable
-fun MapScreen() {
-    var selectedDestino by remember { mutableStateOf<PuntoInteres?>(null) }
+fun MapScreen(
+    onNavigateToDetail: (PuntoInteres) -> Unit = {}   // callback para navegación
+) {
+    var selectedDestinoForMap by remember { mutableStateOf<PuntoInteres?>(null) }
+    var expandedCardId by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Mapa (arriba)
+
         MapViewComposable(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth(),
-            selectedDestino = selectedDestino
+            selectedDestino = selectedDestinoForMap
         )
 
-        // Lista (abajo)
         DestinosList(
             destinos = puntosDeInteres,
-            onDestinoClick = { destino -> selectedDestino = destino },
+            expandedCardId = expandedCardId,
+            onExpandToggle = { id ->
+                expandedCardId = if (expandedCardId == id) null else id
+            },
+            onShowOnMap = { destino ->
+                selectedDestinoForMap = destino
+            },
+            onNavigate = onNavigateToDetail,
             modifier = Modifier.weight(1f)
         )
     }
@@ -116,36 +127,91 @@ fun MapViewComposable(
 @Composable
 fun DestinosList(
     destinos: List<PuntoInteres>,
-    onDestinoClick: (PuntoInteres) -> Unit,
+    expandedCardId: String?,
+    onExpandToggle: (String) -> Unit,
+    onShowOnMap: (PuntoInteres) -> Unit,
+    onNavigate: (PuntoInteres) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Surface(color = MaterialTheme.colorScheme.surfaceVariant, modifier = modifier.fillMaxSize()) {
+    Surface(
+        color = MaterialTheme.colorScheme.background,
+        modifier = modifier.fillMaxSize()
+    ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
             items(destinos) { destino ->
-                DestinoCard(destino = destino, onClick = { onDestinoClick(destino) })
+                DestinoCard(
+                    destino = destino,
+                    expanded = destino.id == expandedCardId,
+                    onExpandToggle = { onExpandToggle(destino.id) },
+                    onShowOnMap = { onShowOnMap(destino) },
+                    onNavigate = { onNavigate(destino) }
+                )
             }
         }
     }
 }
 
 @Composable
-fun DestinoCard(destino: PuntoInteres, onClick: () -> Unit) {
+fun DestinoCard(
+    destino: PuntoInteres,
+    expanded: Boolean,
+    onExpandToggle: () -> Unit,
+    onShowOnMap: () -> Unit,
+    onNavigate: () -> Unit
+) {
     Card(
-        onClick = onClick,
+        onClick = onExpandToggle,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Text(
-            text = stringResource(id = destino.tituloResId),
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(16.dp)
-        )
+
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+            // Título
+            Text(
+                text = stringResource(id = destino.tituloResId),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(16.dp)
+            )
+
+            AnimatedVisibility(visible = expanded) {
+
+                Column(modifier = Modifier.padding(16.dp)) {
+
+                    // Imagen desde URL
+                    AsyncImage(
+                        model = destino.urlImagen,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(160.dp)
+                    )
+
+                    Spacer(Modifier.height(12.dp))
+
+                    // Botones
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+
+                        Button(onClick = onShowOnMap) {
+                            Text("Ver en el mapa")
+                        }
+
+                        OutlinedButton(onClick = onNavigate) {
+                            Text("Más información")
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

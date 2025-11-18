@@ -162,7 +162,15 @@ fun AppNavigation() {
                 }
             }
 
-            composable(Pantalla.Map.ruta) { MapScreen() }
+            composable(Pantalla.Map.ruta) {
+                MapScreen(
+                    onNavigateToDetail = { punto ->
+                        navControllerPrincipal.navigate(
+                            "${Pantalla.PointsOfInterest.ruta}/detail/${punto.id}"
+                        )
+                    }
+                )
+            }
             composable(Pantalla.Kids.ruta) { KidsScreen() }
             composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
