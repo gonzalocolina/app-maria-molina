@@ -43,6 +43,7 @@ import com.example.mariamolina.ui.screens.kids.KidsScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
 import com.example.mariamolina.ui.screens.pointsOfInterest.PointsListScreen
 import com.example.mariamolina.ui.screens.poi.PointDetailScreen
+import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 
@@ -61,62 +62,67 @@ fun AppNavigation() {
     val currentScreen = itemsNavegacion.find { it.ruta == currentDestination?.route }
         ?: Pantalla.Home
 
+    val isProfile = currentDestination?.route == Pantalla.Profile.ruta
+
     Scaffold(
         topBar = {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
 
-            // Solo mostramos la barra si NO estamos en el detalle
-            if (!esRutaDetallePoi) {
+            // Solo mostramos la barra si NO estamos en el detalle y NO en perfil
+            if (!esRutaDetallePoi && !isProfile) {
                 AppTopBar(
-                    titulo = currentScreen.tituloTopBar,
-                    subtitulo = currentScreen.subtitulo
+                    titulo = stringResource(currentScreen.tituloTopBarResId),
+                    subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
+                    onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) }
                 )
             }
         },
         bottomBar = {
-            Column {
-                HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-                NavigationBar(
-                    modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
-                ) {
-                    itemsNavegacion.forEach { pantalla ->
-                        val isSelected =
-                            currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
+            if (!isProfile) {
+                Column {
+                    HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                    NavigationBar(
+                        modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
+                    ) {
+                        itemsNavegacion.forEach { pantalla ->
+                            val isSelected =
+                                currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
 
-                        NavigationBarItem(
-                            selected = isSelected,
-                            onClick = {
-                                navControllerPrincipal.navigate(pantalla.ruta) {
-                                    popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
-                                        saveState = true
+                            NavigationBarItem(
+                                selected = isSelected,
+                                onClick = {
+                                    navControllerPrincipal.navigate(pantalla.ruta) {
+                                        popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
                                     }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
-                            },
-                            icon = {
-                                Column(
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    verticalArrangement = Arrangement.spacedBy(2.dp)
-                                ) {
-                                    Icon(
-                                        pantalla.icono,
-                                        contentDescription = pantalla.tituloBottomBar,
-                                        tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
-                                    Text(
-                                        pantalla.tituloBottomBar,
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            },
-                            colors = NavigationBarItemDefaults.colors(
-                                indicatorColor = Color.Transparent
+                                },
+                                icon = {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                                    ) {
+                                        Icon(
+                                            pantalla.icono,
+                                            contentDescription = stringResource(pantalla.tituloBottomBarResId),
+                                            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Text(
+                                            stringResource(pantalla.tituloBottomBarResId),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
+                                },
+                                colors = NavigationBarItemDefaults.colors(
+                                    indicatorColor = Color.Transparent
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }
@@ -158,6 +164,7 @@ fun AppNavigation() {
 
             composable(Pantalla.Map.ruta) { MapScreen() }
             composable(Pantalla.Kids.ruta) { KidsScreen() }
+            composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }
 }
@@ -165,7 +172,7 @@ fun AppNavigation() {
 // (Tu función AppTopBar y el Preview quedan exactamente igual)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar(titulo: String, subtitulo: String?) {
+fun AppTopBar(titulo: String, subtitulo: String?, onProfileClick: () -> Unit) {
     TopAppBar(
         title = {
             Column {
@@ -192,7 +199,7 @@ fun AppTopBar(titulo: String, subtitulo: String?) {
             actionIconContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         actions = {
-            IconButton(onClick = { /* TODO: Aquí iría la navegación a Perfil */ }) {
+            IconButton(onClick = onProfileClick) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = stringResource(R.string.cd_perfil),

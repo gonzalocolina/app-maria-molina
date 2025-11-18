@@ -1,6 +1,10 @@
 package com.example.mariamolina
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.LocaleList
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,12 +13,20 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.mariamolina.ui.navigation.AppNavigation
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
-import android.Manifest
-import android.content.pm.PackageManager
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        val language = newBase.getSharedPreferences("app_prefs", MODE_PRIVATE).getString("language", "es") ?: "es"
+        val locale = Locale.forLanguageTag(language)
+        val config = newBase.resources.configuration
+        config.setLocales(LocaleList(locale))
+        val context = newBase.createConfigurationContext(config)
+        super.attachBaseContext(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

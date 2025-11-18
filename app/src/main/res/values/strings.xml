@@ -1,5 +1,5 @@
-<resources>
-    //Vista inicio
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <!-- Vista inicio -->
     <string name="app_name">MariaMolina</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) fue una de las mujeres más importantes de la historia de Castilla ya que dedicó su vida a mantener la paz y la estabilidad del reino. Fue reina, madre de rey y abuela de rey, pero sobre todo una gobernante prudente y respetada, que supo ganarse el apoyo del pueblo y la nobleza en tiempos difíciles.</string>
@@ -14,7 +14,7 @@
     <string name="paragraph_regencies">Tras la muerte de su esposo Sancho IV en 1295, María asumió la regencia por su hijo Fernando IV, que solo tenía nueve años. Con prudencia y firmeza, logró mantener la corona en medio de conflictos internos, ganándose el respeto de nobles y concejos. Años después, en 1312, volvió a gobernar como regente de su nieto Alfonso XI, demostrando una vez más su sabiduría y su capacidad para mantener la paz y la unidad del reino en tiempos difíciles.</string>
     <string name="section_title_legacy_works">Legado y obras</string>
     <string name="paragraph_legacy_works">María de Molina es recordada como una de las grandes reinas de Castilla por su capacidad política y su sentido de justicia. Fundó y apoyó numerosos monasterios, como el de Las Huelgas de Valladolid, donde fue enterrada. Promovió la educación, la religión y la paz en tiempos de guerra. Su figura simboliza la prudencia, la lealtad y la defensa del bien común.</string>
-    //Vista puntos de interes
+    <!-- Vista puntos de interes -->
     <!-- Texto de la UI para la pantalla de detalle -->
     <string name="detalle_descripcion">Descripción</string>
     <string name="detalle_info_practica">Información práctica</string>
@@ -25,6 +25,21 @@
     <string name="detalle_rating">Valoración:</string>
 
     <string name="detalle_subpuntos_titulo">Lugares del punto</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Perfil</string>
+    <string name="back_button_description">Volver</string>
+    <string name="select_language_title">Seleccionar idioma</string>
+    <string name="language_label">Idioma</string>
+    <string name="language_changed_toast">Idioma cambiado a %s</string>
+    <string name="about_title">Acerca de</string>
+    <string name="about_description">Esta aplicación es un ejemplo sobre María Molina.</string>
+
+    <!-- Language options -->
+    <string name="spanish">Español</string>
+    <string name="english">Inglés</string>
+    <string name="german">Alemán</string>
+    <string name="french">Francés</string>
 
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
@@ -155,6 +170,21 @@
     </string>
     <string name="p12_horarios">Lunes cerrado; Martes–sábado: 10:00–14:00 (Acceso hasta las 13:00) y 16:00–18:30 (Acceso hasta las 17:30); Acceso gratuito: miércoles y jueves de 16:00 a 18:30 (último acceso a las 17:30); Domingos y festivos: 10:30–15:00 (Acceso hasta las 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
+
+    <!-- Navigation -->
+    <string name="nav_home_title">Valladolid histórico</string>
+    <string name="nav_home_subtitle">Descubre la historia de María de Molina</string>
+    <string name="nav_points_title">Puntos interés</string>
+    <string name="nav_points_subtitle">Valladolid Histórico</string>
+    <string name="nav_map_title">Mapa</string>
+    <string name="nav_map_subtitle">Encuentra tu ruta</string>
+    <string name="nav_kids_title">Infantil</string>
+    <string name="nav_kids_subtitle">Planes con niños</string>
+    <string name="nav_profile_title">Perfil</string>
+    <string name="nav_home_bottom">Home</string>
+    <string name="nav_points_bottom">Puntos interés</string>
+    <string name="nav_map_bottom">Mapa</string>
+    <string name="nav_kids_bottom">Infantil</string>
 
     <!-- Strings extraídos (botones, contentDescriptions y formatos) -->
     <string name="btn_volver">Volver</string>
