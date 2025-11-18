@@ -7,29 +7,21 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
+import com.example.mariamolina.data.model.PuntoInteres
+import com.example.mariamolina.data.model.puntosDeInteres
 import androidx.compose.ui.viewinterop.AndroidView
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 
-// Modelo de destino
-data class Destino(val nombre: String, val lat: Double, val lon: Double)
-
-// Lista de destinos de ejemplo
-val destinos = listOf(
-    Destino("Monasterio de las Huelgas Reales", 41.6542, -4.7165),
-    Destino("Monasterio de Santa María de Palazuelos", 41.7527, -4.63383),
-    Destino("Meneses de Campos", 41.94296, -4.92032),
-    Destino("Montealegre", 41.90226, -4.8998)
-)
-
 @Composable
 fun MapScreen() {
-    var selectedDestino by remember { mutableStateOf<Destino?>(null) }
+    var selectedDestino by remember { mutableStateOf<PuntoInteres?>(null) }
 
     Column(modifier = Modifier.fillMaxSize()) {
         // Mapa (arriba)
@@ -42,7 +34,7 @@ fun MapScreen() {
 
         // Lista (abajo)
         DestinosList(
-            destinos = destinos,
+            destinos = puntosDeInteres,
             onDestinoClick = { destino -> selectedDestino = destino },
             modifier = Modifier.weight(1f)
         )
@@ -52,7 +44,7 @@ fun MapScreen() {
 @Composable
 fun MapViewComposable(
     modifier: Modifier = Modifier,
-    selectedDestino: Destino?
+    selectedDestino: PuntoInteres?
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
@@ -78,7 +70,7 @@ fun MapViewComposable(
                 it.overlays.clear()
 
                 val startPoint = GeoPoint(41.65213, -4.72856)
-                val destinoPoint = GeoPoint(destino.lat, destino.lon)
+                val destinoPoint = GeoPoint(destino.latitud, destino.longitud)
 
                 val markerInicio = Marker(it).apply {
                     position = startPoint
@@ -86,7 +78,7 @@ fun MapViewComposable(
                 }
                 val markerDestino = Marker(it).apply {
                     position = destinoPoint
-                    title = destino.nombre
+                    title = context.getString(destino.tituloResId)
                 }
 
                 val line = Polyline().apply {
@@ -123,8 +115,8 @@ fun MapViewComposable(
 
 @Composable
 fun DestinosList(
-    destinos: List<Destino>,
-    onDestinoClick: (Destino) -> Unit,
+    destinos: List<PuntoInteres>,
+    onDestinoClick: (PuntoInteres) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Surface(color = MaterialTheme.colorScheme.surfaceVariant, modifier = modifier.fillMaxSize()) {
@@ -141,7 +133,7 @@ fun DestinosList(
 }
 
 @Composable
-fun DestinoCard(destino: Destino, onClick: () -> Unit) {
+fun DestinoCard(destino: PuntoInteres, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         modifier = Modifier
@@ -150,7 +142,7 @@ fun DestinoCard(destino: Destino, onClick: () -> Unit) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Text(
-            text = destino.nombre,
+            text = stringResource(id = destino.tituloResId),
             style = MaterialTheme.typography.bodyLarge,
             modifier = Modifier.padding(16.dp)
         )
