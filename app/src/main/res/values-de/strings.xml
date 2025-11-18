@@ -1,0 +1,16 @@
+<resources>
+    <!-- Profile Screen -->
+    <string name="profile_title">Profil</string>
+    <string name="back_button_description">Zurück</string>
+    <string name="select_language_title">Sprache auswählen</string>
+    <string name="language_label">Sprache</string>
+    <string name="language_changed_toast">Sprache geändert zu %s</string>
+    <string name="about_title">Über</string>
+    <string name="about_description">Diese Anwendung ist ein Beispiel über María Molina.</string>
+
+    <!-- Language options -->
+    <string name="spanish">Spanisch</string>
+    <string name="english">Englisch</string>
+    <string name="german">Deutsch</string>
+    <string name="french">Französisch</string>
+</resources>

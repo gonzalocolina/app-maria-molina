@@ -7,4 +7,6 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- App primary brown used for splash background -->
+    <color name="app_primary_brown">#621909</color>
 </resources>

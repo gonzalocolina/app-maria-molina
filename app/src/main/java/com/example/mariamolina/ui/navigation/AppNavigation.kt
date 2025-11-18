@@ -1,10 +1,14 @@
 package com.example.mariamolina.ui.navigation
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -15,13 +19,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -34,6 +44,7 @@ import com.example.mariamolina.ui.screens.home.ImageScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
 import com.example.mariamolina.ui.screens.pointsOfInterest.PointsListScreen
 import com.example.mariamolina.ui.screens.poi.PointDetailScreen
+import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
@@ -42,10 +53,14 @@ import com.example.mariamolina.ui.screens.kids.QuizGameScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
     val navControllerPrincipal = rememberNavController()
+
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     // 1. Escuchamos al controlador principal (para títulos y barra inferior)
     val navBackStackEntry by navControllerPrincipal.currentBackStackEntryAsState()
@@ -53,46 +68,73 @@ fun AppNavigation() {
     val currentScreen = itemsNavegacion.find { it.ruta == currentDestination?.route }
         ?: Pantalla.Home
 
+    val isProfile = currentDestination?.route == Pantalla.Profile.ruta
+
+    // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
+    val topAppBarScrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
         topBar = {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
 
-            // Solo mostramos la barra si NO estamos en el detalle
-            if (!esRutaDetallePoi) {
+            // Solo mostramos la barra si NO estamos en el detalle y NO en perfil
+            if (!esRutaDetallePoi && !isProfile) {
                 AppTopBar(
-                    titulo = currentScreen.tituloTopBar,
-                    subtitulo = currentScreen.subtitulo
+                    titulo = stringResource(currentScreen.tituloTopBarResId),
+                    subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
+                    onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) },
+                    scrollBehavior = topAppBarScrollBehavior
                 )
             }
         },
         bottomBar = {
-            NavigationBar {
-                itemsNavegacion.forEach { pantalla ->
-                    val isSelected =
-                        currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
+            if (!isProfile) {
+                Column {
+                    HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                    NavigationBar(
+                        modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
+                    ) {
+                        itemsNavegacion.forEach { pantalla ->
+                            val isSelected =
+                                currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
 
-                    NavigationBarItem(
-                        selected = isSelected,
-                        onClick = {
-                            navControllerPrincipal.navigate(pantalla.ruta) {
-                                popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        label = { Text(pantalla.tituloBottomBar) },
-                        icon = { androidx.compose.material3.Icon(pantalla.icono, contentDescription = pantalla.tituloBottomBar) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.primary,
-                            selectedTextColor = MaterialTheme.colorScheme.primary,
-                            unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                            indicatorColor = Color.Transparent
-                        )
-                    )
+                            NavigationBarItem(
+                                selected = isSelected,
+                                onClick = {
+                                    navControllerPrincipal.navigate(pantalla.ruta) {
+                                        popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                },
+                                icon = {
+                                    Column(
+                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                                    ) {
+                                        Icon(
+                                            pantalla.icono,
+                                            contentDescription = stringResource(pantalla.tituloBottomBarResId),
+                                            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                        Text(
+                                            stringResource(pantalla.tituloBottomBarResId),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                            textAlign = TextAlign.Center
+                                        )
+                                    }
+                                },
+                                colors = NavigationBarItemDefaults.colors(
+                                    indicatorColor = Color.Transparent
+                                )
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -132,6 +174,7 @@ fun AppNavigation() {
             }
 
             composable(Pantalla.Map.ruta) { MapScreen() }
+
             //Seccion infantil
             composable(Pantalla.Kids.ruta) {
                 KidsMenuScreen(
@@ -175,6 +218,9 @@ fun AppNavigation() {
                     onBackClick = { navControllerPrincipal.popBackStack() }
                 )
             }
+
+
+            composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }
 }
@@ -182,7 +228,7 @@ fun AppNavigation() {
 // (Tu función AppTopBar y el Preview quedan exactamente igual)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar(titulo: String, subtitulo: String?) {
+fun AppTopBar(titulo: String, subtitulo: String?, onProfileClick: () -> Unit, scrollBehavior: TopAppBarScrollBehavior? = null) {
     TopAppBar(
         title = {
             Column {
@@ -204,12 +250,15 @@ fun AppTopBar(titulo: String, subtitulo: String?) {
                 }
             }
         },
+        scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
+            scrolledContainerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
             actionIconContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         actions = {
-            IconButton(onClick = { /* TODO: Aquí iría la navegación a Perfil */ }) {
+            IconButton(onClick = onProfileClick) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = stringResource(R.string.cd_perfil),
