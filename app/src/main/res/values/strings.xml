@@ -227,26 +227,4 @@
     <string name="kids_slides_descripcion">Aquí puedes ver las diapositivas de la historia adaptadas para niños.</string>
     <string name="cd_back">Volver</string>
 
-    <!-- Mock Data: Preguntas Fáciles -->
-    <string name="q_facil_1_pregunta">¿Cómo se llamaba la reina protagonista de la historia?</string>
-    <string name="q_facil_1_r1_correcta">María de Molina</string>
-    <string name="q_facil_1_r2">Isabel la Católica</string>
-    <string name="q_facil_1_r3">Juana la Loca</string>
-
-    <string name="q_facil_2_pregunta">¿Dónde nació María de Molina?</string>
-    <string name="q_facil_2_r1">En Burgos</string>
-    <string name="q_facil_2_r2_correcta">En Cigales, cerca de Valladolid</string>
-    <string name="q_facil_2_r3">En Madrid</string>
-    <string name="q_facil_2_r4">En Sevilla</string>
-
-    <!-- Mock Data: Preguntas Medias -->
-    <string name="q_media_1_pregunta">¿Con quién se casó María de Molina?</string>
-    <string name="q_media_1_r1_correcta">Sancho IV "El Bravo"</string>
-    <string name="q_media_1_r2">Alfonso X "El Sabio"</string>
-    <string name="q_media_1_r3">Fernando III "El Santo"</string>
-
-    <string name="q_media_2_pregunta">¿Por qué tuvo que defender el trono para su hijo Fernando?</string>
-    <string name="q_media_2_r1">Porque era muy joven</string>
-    <string name="q_media_2_r2">Porque el rey Sancho murió</string>
-    <string name="q_media_2_r3_correcta">Ambas son correctas</string>
 </resources>

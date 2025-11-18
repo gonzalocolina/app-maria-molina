@@ -1,6 +1,9 @@
 package com.example.mariamolina.ui.screens.kids
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -10,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun KidsMenuScreen(
@@ -18,12 +22,16 @@ fun KidsMenuScreen(
 ) {
     var dificultadSeleccionada by remember { mutableStateOf(Dificultad.FACIL) }
 
+    val context = LocalContext.current
+    var isUploading by remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         // (Aquí irían las diapositivas de tu historia)
         Text(
@@ -83,6 +91,8 @@ fun KidsMenuScreen(
         ) {
             Text(stringResource(id = R.string.kids_quiz_ranking))
         }
+
+
     }
 }
 
