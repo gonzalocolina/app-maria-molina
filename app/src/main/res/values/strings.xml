@@ -220,6 +220,13 @@
     <string name="kids_quiz_volver_menu">Volver al menú</string>
     <string name="kids_quiz_ranking">Ver Ranking</string>
 
+    <!-- Nuevas strings para la sección Kids añadidas por la navegación -->
+    <string name="kids_ver_diapositivas">Ver diapositivas</string>
+    <string name="kids_opcion_cuestionarios">Cuestionarios</string>
+    <string name="kids_slides_titulo">Diapositivas infantiles</string>
+    <string name="kids_slides_descripcion">Aquí puedes ver las diapositivas de la historia adaptadas para niños.</string>
+    <string name="cd_back">Volver</string>
+
     <!-- Mock Data: Preguntas Fáciles -->
     <string name="q_facil_1_pregunta">¿Cómo se llamaba la reina protagonista de la historia?</string>
     <string name="q_facil_1_r1_correcta">María de Molina</string>

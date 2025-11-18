@@ -48,9 +48,10 @@ import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
-import com.example.mariamolina.ui.screens.kids.KidsMenuScreen
 import com.example.mariamolina.ui.screens.kids.QuizGameScreen
-import com.example.mariamolina.ui.screens.kids.RankingScreen
+import com.example.mariamolina.ui.screens.kids.KidsEntryScreen
+import com.example.mariamolina.ui.screens.kids.KidsSlidesScreen
+import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 
 
 
@@ -177,47 +178,58 @@ fun AppNavigation() {
 
             //Seccion infantil
             composable(Pantalla.Kids.ruta) {
-                KidsMenuScreen(
+                // Pantalla de entrada para la sección Kids: elegir entre Diapositivas o Cuestionarios
+                KidsEntryScreen(
+                    onNavigateToSlides = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/slides") },
+                    onNavigateToQuizzes = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") }
+                )
+            }
+
+            // Ruta para el sub-menú de cuestionarios (antes KidsMenuScreen)
+            composable("${Pantalla.Kids.ruta}/quiz") {
+                KidsQuizMenuScreen(
+                    onBack = { navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
+                        popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
+                    } },
                     onStartQuiz = { dificultad ->
-                        // Navega al juego
                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/${dificultad.name}")
                     },
                     onNavigateToRanking = {
-                        // Navega al ranking
                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking")
                     }
                 )
             }
 
+            // Ruta para las diapositivas
+            composable("${Pantalla.Kids.ruta}/slides") {
+                KidsSlidesScreen(onBackToEntry = { navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
+                    popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
+                } })
+            }
+
             // 2. Ruta del juego (Quiz)
             composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
-                val dificultadString = backStackEntry.arguments?.getString("dificultad")
-                val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
+                 val dificultadString = backStackEntry.arguments?.getString("dificultad")
+                 val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
 
-                QuizGameScreen(
-                    dificultad = dificultad,
-                    onQuizFinished = {
-                        // Vuelve al menú principal del quiz
-                        navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
-                            popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                 QuizGameScreen(
+                     dificultad = dificultad,
+                     onQuizFinished = {
+                        // Vuelve al sub-menú de cuestionarios (/quiz)
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
+                            popUpTo("${Pantalla.Kids.ruta}/quiz") { inclusive = true }
                         }
-                    },
-                    onNavigateToRanking = {
-                        // Navega al ranking desde la pantalla de resultados
-                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
-                            // Opcional: cierra la pantalla de quiz
+                     },
+                     onNavigateToRanking = {
+                         // Navega al ranking desde la pantalla de resultados
+                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
+                             // Opcional: cierra la pantalla de quiz
                             popUpTo(Pantalla.Kids.ruta) { inclusive = true }
-                        }
-                    }
-                )
-            }
+                         }
+                     }
+                 )
+             }
 
-            // 3. Ruta del Ranking
-            composable("${Pantalla.Kids.ruta}/ranking") {
-                RankingScreen(
-                    onBackClick = { navControllerPrincipal.popBackStack() }
-                )
-            }
 
 
             composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
