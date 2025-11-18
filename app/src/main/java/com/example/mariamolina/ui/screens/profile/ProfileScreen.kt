@@ -9,9 +9,11 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
@@ -21,10 +23,10 @@ import com.example.mariamolina.R
 @Composable
 fun ProfileScreen(onBackClick: () -> Unit) {
     val context = LocalContext.current
-    val spanish = "Español"
-    val english = "English"
-    val german = "Deutsch"
-    val french = "Français"
+    val spanish = "\uD83C\uDDEA\uD83C\uDDF8  Español"
+    val english = "\uD83C\uDDEC\uD83C\uDDE7  English"
+    val german = "\uD83C\uDDE9\uD83C\uDDEA  Deutsch"
+    val french = "\uD83C\uDDEB\uD83C\uDDF7  Français"
     val languages = listOf(spanish, english, german, french)
     val currentLanguageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("language", "es") ?: "es"
     val defaultLanguage = when (currentLanguageCode) {
@@ -74,32 +76,36 @@ fun ProfileScreen(onBackClick: () -> Unit) {
                 BasicAlertDialog(
                     onDismissRequest = { showDialog = false }
                 ) {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.select_language_title),
-                            style = MaterialTheme.typography.headlineSmall
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        languages.forEach { language ->
-                            TextButton(
-                                onClick = {
-                                    selectedLanguage = language
-                                    showDialog = false
-                                    val languageCode = when (language) {
-                                        spanish -> "es"
-                                        english -> "en"
-                                        german -> "de"
-                                        french -> "fr"
-                                        else -> "es"
-                                    }
-                                    val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-                                    prefs.edit { putString("language", languageCode) }
-                                    Toast.makeText(context, context.getString(R.string.language_changed_toast, language), Toast.LENGTH_SHORT).show()
-                                    (context as? androidx.activity.ComponentActivity)?.recreate()
-                                },
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                Text(language)
+                    Card(colors = CardDefaults.cardColors(containerColor = Color.White)) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                text = stringResource(R.string.select_language_title),
+                                style = MaterialTheme.typography.headlineSmall,
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
+                            languages.forEach { language ->
+                                TextButton(
+                                    onClick = {
+                                        selectedLanguage = language
+                                        showDialog = false
+                                        val languageCode = when (language) {
+                                            spanish -> "es"
+                                            english -> "en"
+                                            german -> "de"
+                                            french -> "fr"
+                                            else -> "es"
+                                        }
+                                        val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                                        prefs.edit { putString("language", languageCode) }
+                                        Toast.makeText(context, context.getString(R.string.language_changed_toast, language), Toast.LENGTH_SHORT).show()
+                                        (context as? androidx.activity.ComponentActivity)?.recreate()
+                                    },
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(language)
+                                }
                             }
                         }
                     }
