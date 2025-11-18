@@ -95,8 +95,26 @@ fun MapViewComposable(
                 }
 
                 it.overlays.addAll(listOf(markerInicio, markerDestino, line))
-                it.controller.setZoom(16.0)
-                it.controller.animateTo(destinoPoint)
+
+                // Encuadrar ambos puntos en la pantalla
+                val boundingBox = org.osmdroid.util.BoundingBox(
+                    maxOf(startPoint.latitude, destinoPoint.latitude),
+                    maxOf(startPoint.longitude, destinoPoint.longitude),
+                    minOf(startPoint.latitude, destinoPoint.latitude),
+                    minOf(startPoint.longitude, destinoPoint.longitude)
+                )
+
+                // Expandir el bounding box para que haya más zoom-out
+                val expandFactor = 1.4
+                val expandedBox = org.osmdroid.util.BoundingBox(
+                    boundingBox.latNorth + (boundingBox.latNorth - boundingBox.latSouth) * (expandFactor - 1f),
+                    boundingBox.lonEast + (boundingBox.lonEast - boundingBox.lonWest) * (expandFactor - 1f),
+                    boundingBox.latSouth - (boundingBox.latNorth - boundingBox.latSouth) * (expandFactor - 1f),
+                    boundingBox.lonWest - (boundingBox.lonEast - boundingBox.lonWest) * (expandFactor - 1f)
+                )
+
+                // Aplicar zoom-out
+                it.zoomToBoundingBox(expandedBox, true)
                 it.invalidate()
             }
         }
