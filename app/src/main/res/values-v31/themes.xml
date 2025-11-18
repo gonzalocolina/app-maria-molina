@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MariaMolina" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Background used by the splash screen on Android 12+ -->
+        <item name="android:windowSplashScreenBackground">@color/app_primary_brown</item>
+        <!-- Optional: control the animated icon shown in the splash screen -->
+        <!-- <item name="android:windowSplashScreenAnimatedIcon">@drawable/mariamolinalogo_foreground</item> -->
+    </style>
+</resources>
+

@@ -1,0 +1,71 @@
+<resources>
+    <!-- Home Screen -->
+    <string name="app_name">MariaMolina</string>
+    <string name="home_screen_title">María de Molina</string>
+    <string name="home_screen_intro_paragraph">María de Molina (1264–1321) was one of the most important women in the history of Castile as she dedicated her life to maintaining peace and stability in the kingdom. She was queen, mother of a king, and grandmother of a king, but above all a prudent and respected ruler who knew how to gain the support of the people and nobility in difficult times.</string>
+    <string name="section_title_childhood_family">Childhood and family</string>
+    <string name="paragraph_childhood_family_1">She was born around 1264, probably near the monastery of Santa María de Palazuelos located between the current Corcos del Valle and Cabezón de Pisuerga.</string>
+    <string name="paragraph_childhood_family_2">María belonged to a noble and powerful family. She was the daughter of Alfonso de Molina, brother of King Fernando III, and Mayor Alfonso de Meneses. From a young age, she grew up surrounded by the political life of the Castilian court. Her education prepared her to assume responsibilities, learning to read, write, and understand the affairs of the kingdom, something uncommon for women of her time.</string>
+    <string name="section_title_marriage_sancho">Marriage to Sancho</string>
+    <string name="paragraph_marriage_sancho">In 1282 she married the infante Sancho, future king Sancho IV. Their marriage was not well received by everyone: they were close relatives and needed a papal dispensation that took years to arrive. Nevertheless, María accompanied her husband in the toughest moments, even when his right to the throne was questioned. After the death of her father-in-law Alfonso X, Sancho was crowned king and she became queen of Castile.</string>
+    <string name="section_title_queen_sancho_iv">Queen alongside Sancho IV</string>
+    <string name="paragraph_queen_sancho_iv">During the reign of Sancho IV (1284–1295), María actively participated in political decisions. She gained fame as an intelligent, prudent, and just woman. She accompanied the king on campaigns and defended the legitimacy of her family against internal enemies of the kingdom. Her reign was marked by struggles between nobles and the consolidation of the Castilian monarchy.</string>
+    <string name="section_title_regencies">The regencies of María de Molina</string>
+    <string name="paragraph_regencies">After the death of her husband Sancho IV in 1295, María assumed the regency for her son Fernando IV, who was only nine years old. With prudence and firmness, she managed to keep the crown amidst internal conflicts, earning the respect of nobles and councils. Years later, in 1312, she governed again as regent for her grandson Alfonso XI, once again demonstrating her wisdom and ability to maintain peace and unity in the kingdom in difficult times.</string>
+    <string name="section_title_legacy_works">Legacy and works</string>
+    <string name="paragraph_legacy_works">María de Molina is remembered as one of the great queens of Castile for her political capacity and sense of justice. She founded and supported numerous monasteries, such as Las Huelgas in Valladolid, where she was buried. She promoted education, religion, and peace in times of war. Her figure symbolizes prudence, loyalty, and the defense of the common good.</string>
+
+    <!-- Points of Interest Screen -->
+    <!-- UI text for the detail screen -->
+    <string name="detalle_descripcion">Description</string>
+    <string name="detalle_info_practica">Practical information</string>
+    <string name="detalle_horarios">Hours:</string>
+    <string name="detalle_ubicacion">Location:</string>
+    <string name="detalle_ver_en_mapa">View on map</string>
+    <string name="detalle_marcar_visitado">Mark as visited</string>
+    <string name="detalle_rating">Rating:</string>
+    <string name="detalle_subpuntos_titulo">Places of the point</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Profile</string>
+    <string name="back_button_description">Back</string>
+    <string name="select_language_title">Select language</string>
+    <string name="language_label">Language</string>
+    <string name="language_changed_toast">Language changed to %s</string>
+    <string name="about_title">About</string>
+    <string name="about_description">This application is an example about María Molina.</string>
+
+    <!-- Language options -->
+    <string name="spanish">Spanish</string>
+    <string name="english">English</string>
+    <string name="german">German</string>
+    <string name="french">French</string>
+
+    <!-- Navigation -->
+    <string name="nav_home_title">Historic Valladolid</string>
+    <string name="nav_home_subtitle">Discover the history of María de Molina</string>
+    <string name="nav_points_title">Points of interest</string>
+    <string name="nav_points_subtitle">Historic Valladolid</string>
+    <string name="nav_map_title">Map</string>
+    <string name="nav_map_subtitle">Find your route</string>
+    <string name="nav_kids_title">Kids</string>
+    <string name="nav_kids_subtitle">Plans with kids</string>
+    <string name="nav_profile_title">Profile</string>
+    <string name="nav_home_bottom">Home</string>
+    <string name="nav_points_bottom">Points of interest</string>
+    <string name="nav_map_bottom">Map</string>
+    <string name="nav_kids_bottom">Kids</string>
+
+    <!-- Extracted strings (buttons, contentDescriptions and formats) -->
+    <string name="btn_volver">Back</string>
+    <string name="btn_ver_arbol">View family tree</string>
+    <string name="cd_imagen_ejemplo">Example image</string>
+    <string name="cd_imagen_inicial">Initial image of María de Molina</string>
+    <string name="cd_volver">Back</string>
+    <string name="cd_horarios">Hours</string>
+    <string name="cd_ubicacion">Location</string>
+    <string name="cd_rating">Rating</string>
+    <string name="cd_perfil">Profile</string>
+    <!-- Format for displaying rating (one decimal) -->
+    <string name="fmt_rating_per_5">%1$.1f/5</string>
+</resources>
