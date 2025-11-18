@@ -19,6 +19,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -48,6 +50,7 @@ import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
@@ -64,7 +67,11 @@ fun AppNavigation() {
 
     val isProfile = currentDestination?.route == Pantalla.Profile.ruta
 
+    // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
+    val topAppBarScrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
         topBar = {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
@@ -74,7 +81,8 @@ fun AppNavigation() {
                 AppTopBar(
                     titulo = stringResource(currentScreen.tituloTopBarResId),
                     subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
-                    onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) }
+                    onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) },
+                    scrollBehavior = topAppBarScrollBehavior
                 )
             }
         },
@@ -172,7 +180,7 @@ fun AppNavigation() {
 // (Tu función AppTopBar y el Preview quedan exactamente igual)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar(titulo: String, subtitulo: String?, onProfileClick: () -> Unit) {
+fun AppTopBar(titulo: String, subtitulo: String?, onProfileClick: () -> Unit, scrollBehavior: TopAppBarScrollBehavior? = null) {
     TopAppBar(
         title = {
             Column {
@@ -194,8 +202,11 @@ fun AppTopBar(titulo: String, subtitulo: String?, onProfileClick: () -> Unit) {
                 }
             }
         },
+        scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
+            scrolledContainerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
             actionIconContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         actions = {
