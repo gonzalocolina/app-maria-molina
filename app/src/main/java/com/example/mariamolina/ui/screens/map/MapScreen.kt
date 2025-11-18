@@ -64,62 +64,46 @@ fun MapViewComposable(
         factory = {
             mapView.apply {
                 setMultiTouchControls(true)
-                val startPoint = GeoPoint(41.65213, -4.72856)
-                controller.setZoom(15.0)
-                controller.setCenter(startPoint)
+                controller.setZoom(16.0)
 
-                // Marcador inicial
-                val marker = Marker(this)
-                marker.position = startPoint
-                marker.title = "Valladolid"
-                overlays.add(marker)
+                // Centrar inicialmente en Valladolid
+                controller.setCenter(GeoPoint(41.65213, -4.72856))
             }
         },
         modifier = modifier,
-        update = {
-            selectedDestino?.let { destino ->
-                it.overlays.clear()
+        update = { map ->
 
-                val startPoint = GeoPoint(41.65213, -4.72856)
+            map.overlays.clear()
+
+            // ----------- 1) MARCADORES DE TODOS LOS DESTINOS -----------
+            val markers = puntosDeInteres.map { destino ->
+                Marker(map).apply {
+                    position = GeoPoint(destino.latitud, destino.longitud)
+                    title = context.getString(destino.tituloResId)
+                }.also { marker ->
+                    map.overlays.add(marker)
+                }
+            }
+
+            // ----------- 2) SI HAY DESTINO SELECCIONADO → CENTRAR Y RUTA -----------
+            selectedDestino?.let { destino ->
+
                 val destinoPoint = GeoPoint(destino.latitud, destino.longitud)
 
-                val markerInicio = Marker(it).apply {
-                    position = startPoint
-                    title = "Inicio"
-                }
-                val markerDestino = Marker(it).apply {
-                    position = destinoPoint
-                    title = context.getString(destino.tituloResId)
-                }
+                // Línea desde el centro actual (del usuario) hacia el destino
+                val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
 
-                val line = Polyline().apply {
-                    addPoint(startPoint)
+                val polyline = Polyline().apply {
+                    addPoint(currentCenter)
                     addPoint(destinoPoint)
                 }
+                map.overlays.add(polyline)
 
-                it.overlays.addAll(listOf(markerInicio, markerDestino, line))
-
-                // Encuadrar ambos puntos en la pantalla
-                val boundingBox = org.osmdroid.util.BoundingBox(
-                    maxOf(startPoint.latitude, destinoPoint.latitude),
-                    maxOf(startPoint.longitude, destinoPoint.longitude),
-                    minOf(startPoint.latitude, destinoPoint.latitude),
-                    minOf(startPoint.longitude, destinoPoint.longitude)
-                )
-
-                // Expandir el bounding box para que haya más zoom-out
-                val expandFactor = 1.4
-                val expandedBox = org.osmdroid.util.BoundingBox(
-                    boundingBox.latNorth + (boundingBox.latNorth - boundingBox.latSouth) * (expandFactor - 1f),
-                    boundingBox.lonEast + (boundingBox.lonEast - boundingBox.lonWest) * (expandFactor - 1f),
-                    boundingBox.latSouth - (boundingBox.latNorth - boundingBox.latSouth) * (expandFactor - 1f),
-                    boundingBox.lonWest - (boundingBox.lonEast - boundingBox.lonWest) * (expandFactor - 1f)
-                )
-
-                // Aplicar zoom-out
-                it.zoomToBoundingBox(expandedBox, true)
-                it.invalidate()
+                // Hacer zoom hacia el destino
+                map.controller.animateTo(destinoPoint, 16.0, 1000L)
             }
+
+            map.invalidate()
         }
     )
 }
@@ -140,7 +124,7 @@ fun DestinosList(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp)
+                //.padding(8.dp)
         ) {
             items(destinos) { destino ->
                 DestinoCard(
