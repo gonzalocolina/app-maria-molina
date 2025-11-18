@@ -41,13 +41,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
-import com.example.mariamolina.ui.screens.kids.KidsScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
 import com.example.mariamolina.ui.screens.pointsOfInterest.PointsListScreen
 import com.example.mariamolina.ui.screens.poi.PointDetailScreen
 import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
+import com.example.mariamolina.data.model.Dificultad
+import com.example.mariamolina.ui.screens.kids.KidsMenuScreen
+import com.example.mariamolina.ui.screens.kids.QuizGameScreen
+import com.example.mariamolina.ui.screens.kids.RankingScreen
 
 
 
@@ -171,7 +174,52 @@ fun AppNavigation() {
             }
 
             composable(Pantalla.Map.ruta) { MapScreen() }
-            composable(Pantalla.Kids.ruta) { KidsScreen() }
+
+            //Seccion infantil
+            composable(Pantalla.Kids.ruta) {
+                KidsMenuScreen(
+                    onStartQuiz = { dificultad ->
+                        // Navega al juego
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/${dificultad.name}")
+                    },
+                    onNavigateToRanking = {
+                        // Navega al ranking
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking")
+                    }
+                )
+            }
+
+            // 2. Ruta del juego (Quiz)
+            composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
+                val dificultadString = backStackEntry.arguments?.getString("dificultad")
+                val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
+
+                QuizGameScreen(
+                    dificultad = dificultad,
+                    onQuizFinished = {
+                        // Vuelve al menú principal del quiz
+                        navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
+                            popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                        }
+                    },
+                    onNavigateToRanking = {
+                        // Navega al ranking desde la pantalla de resultados
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
+                            // Opcional: cierra la pantalla de quiz
+                            popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            // 3. Ruta del Ranking
+            composable("${Pantalla.Kids.ruta}/ranking") {
+                RankingScreen(
+                    onBackClick = { navControllerPrincipal.popBackStack() }
+                )
+            }
+
+
             composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }
