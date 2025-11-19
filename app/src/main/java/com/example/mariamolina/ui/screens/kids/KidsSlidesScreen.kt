@@ -1,5 +1,6 @@
 package com.example.mariamolina.ui.screens.kids
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.R
 import androidx.compose.material.icons.Icons
@@ -18,6 +20,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.draw.clip
 import com.example.mariamolina.data.model.Slide
 import com.example.mariamolina.data.model.SlidesProvider
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +29,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.foundation.shape.RoundedCornerShape as _RoundedCornerShape
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun KidsSlidesScreen(
@@ -64,7 +69,7 @@ fun KidsSlidesScreen(
                 // Imagen con detección de arrastre horizontal
                 Box(modifier = Modifier
                     .fillMaxWidth()
-                    .height(300.dp)
+                    .weight(1f)
                     .pointerInput(Unit) {
                         detectHorizontalDragGestures { change, dragAmount ->
                             // dragAmount positivo = arrastre a la derecha (quieres ir al slide anterior)
@@ -80,18 +85,20 @@ fun KidsSlidesScreen(
                         }
                     }
                 ) {
-                    // Placeholder de imagen (caja gris) en lugar de cargar desde red
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(0xFFCCCCCC)),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text(text = stringResource(id = R.string.cd_imagen_ejemplo), fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(6.dp))
-                            Text(text = slide.imageUrl, style = MaterialTheme.typography.bodySmall)
+                    // Cargar imagen desde drawable
+                    val context = androidx.compose.ui.platform.LocalContext.current
+                    val imageResId = remember(slide.imageUrl) {
+                        context.resources.getIdentifier(slide.imageUrl, "drawable", context.packageName).let {
+                            if (it != 0) it else R.drawable.mariademolina_photoroom
                         }
                     }
+
+                    Image(
+                        painter = painterResource(id = imageResId),
+                        contentDescription = slide.title,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Fit
+                    )
 
                     // Botón atrás flotante en esquina superior izquierda
                     IconButton(
@@ -130,18 +137,44 @@ fun KidsSlidesScreen(
                         }
                     }
 
-                    // Título sobre la imagen (parte inferior)
-                    Card(
-                        modifier = Modifier
-                            .align(Alignment.BottomStart)
-                            .fillMaxWidth(),
-                        shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.45f))
-                    ) {
-                        Column(modifier = Modifier.padding(12.dp)) {
-                            Text(text = slide.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyMedium)
+                    // Mostrar texto según el tipo de diapositiva
+                    if (slide.hasSpeechBubble) {
+                        // Bocadillo de diálogo (speech bubble) en la parte inferior
+                        Card(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .fillMaxWidth(0.85f)
+                                .padding(bottom = 24.dp),
+                            shape = RoundedCornerShape(20.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.White),
+                            border = BorderStroke(3.dp, Color(0xFF6200EE))
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(
+                                    text = slide.description,
+                                    color = Color.Black,
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    fontWeight = FontWeight.Medium,
+                                    fontSize = 16.sp,
+                                    textAlign = TextAlign.Center,
+                                    modifier = Modifier.fillMaxWidth()
+                                )
+                            }
+                        }
+                    } else {
+                        // Texto simple sin bocadillo
+                        Card(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
+                        ) {
+                            Column(modifier = Modifier.padding(16.dp)) {
+                                Text(text = slide.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                                Spacer(modifier = Modifier.height(8.dp))
+                                Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyMedium, fontSize = 16.sp)
+                            }
                         }
                     }
                 }
