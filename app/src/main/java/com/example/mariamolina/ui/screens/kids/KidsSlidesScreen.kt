@@ -1,5 +1,7 @@
+@file:SuppressLint("DiscouragedApi")
 package com.example.mariamolina.ui.screens.kids
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,19 +22,30 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import com.example.mariamolina.data.model.Slide
 import com.example.mariamolina.data.model.SlidesProvider
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.text.style.TextAlign
+
+// Mapea los nombres de imagen (tal como aparecen en SlidesProvider.imageUrl) a R.drawable IDs.
+private fun resolveDrawableId(name: String): Int = when (name) {
+    "mariademolina_photoroom" -> R.drawable.mariademolina_photoroom
+    "mayor_de_meneses_photoroom" -> R.drawable.mayor_de_meneses_photoroom
+    "escudo_de_castilla_y_leon_sin_corona" -> R.drawable.escudo_de_castilla_y_leon_sin_corona
+    "sancho_principe_photoroom" -> R.drawable.sancho_principe_photoroom
+    "maria_adolescente" -> R.drawable.maria_adolescente
+    "sancho_rey_photoroom" -> R.drawable.sancho_rey_photoroom
+    "maria_molina_batalla_photoroom" -> R.drawable.maria_molina_batalla_photoroom
+    "maria_molina_pie_photoroom" -> R.drawable.maria_molina_pie_photoroom
+    "maria_molina_bebe_photoroom" -> R.drawable.maria_molina_bebe_photoroom
+    "escudo_alfonso" -> R.drawable.escudo_alfonso
+    else -> R.drawable.mariademolina_photoroom
+}
 
 @Composable
 fun KidsSlidesScreen(
@@ -47,8 +60,7 @@ fun KidsSlidesScreen(
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(0.dp)) {
+        .fillMaxSize()) {
 
         if (slides.isEmpty()) {
             // Mensaje si no hay diapositivas
@@ -87,13 +99,8 @@ fun KidsSlidesScreen(
                             }
                         }
                     ) {
-                        // Cargar imagen desde drawable
-                        val context = androidx.compose.ui.platform.LocalContext.current
-                        val imageResId = remember(slide.imageUrl) {
-                            context.resources.getIdentifier(slide.imageUrl, "drawable", context.packageName).let {
-                                if (it != 0) it else R.drawable.mariademolina_photoroom
-                            }
-                        }
+                        // Cargar imagen desde drawable usando el mapeo seguro
+                        val imageResId = remember(slide.imageUrl) { resolveDrawableId(slide.imageUrl) }
 
                         Image(
                             painter = painterResource(id = imageResId),
@@ -244,13 +251,8 @@ fun KidsSlidesScreen(
                             }
                         }
                     ) {
-                        // Cargar imagen desde drawable
-                        val context = androidx.compose.ui.platform.LocalContext.current
-                        val imageResId = remember(slide.imageUrl) {
-                            context.resources.getIdentifier(slide.imageUrl, "drawable", context.packageName).let {
-                                if (it != 0) it else R.drawable.mariademolina_photoroom
-                            }
-                        }
+                        // Cargar imagen desde drawable usando el mapeo seguro
+                        val imageResId = remember(slide.imageUrl) { resolveDrawableId(slide.imageUrl) }
 
                         Image(
                             painter = painterResource(id = imageResId),
