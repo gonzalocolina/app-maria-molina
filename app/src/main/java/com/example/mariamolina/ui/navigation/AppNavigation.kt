@@ -80,8 +80,11 @@ fun AppNavigation() {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
 
-            // Solo mostramos la barra si NO estamos en el detalle y NO en perfil
-            if (!esRutaDetallePoi && !isProfile) {
+            // Comprobamos si estamos en la pantalla de slides
+            val esRutaSlides = currentDestination?.route == "${Pantalla.Kids.ruta}/slides"
+
+            // Solo mostramos la barra si NO estamos en el detalle, NO en perfil, y NO en slides en modo horizontal
+            if (!esRutaDetallePoi && !isProfile && !(esRutaSlides && isLandscape)) {
                 AppTopBar(
                     titulo = stringResource(currentScreen.tituloTopBarResId),
                     subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
