@@ -157,7 +157,8 @@ fun AppNavigation() {
                 if (punto != null) {
                     PointDetailScreen(
                         punto = punto,
-                        onBackClick = { navControllerPrincipal.popBackStack() }
+                        onBackClick = { navControllerPrincipal.popBackStack() },
+                        onOpenMapClick = { navControllerPrincipal.navigate(Pantalla.Map.ruta) }
                     )
                 }
             }
