@@ -76,6 +76,13 @@ fun MapViewComposable(
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
 
+    val defaultMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!
+    val selectedMarkerDrawable = defaultMarkerDrawable.constantState?.newDrawable()?.mutate()!!
+    selectedMarkerDrawable.setColorFilter(
+        android.graphics.PorterDuffColorFilter(android.graphics.Color.RED, android.graphics.PorterDuff.Mode.SRC_IN)
+    )
+
+
     AndroidView(
         factory = {
             mapView.apply {
@@ -94,10 +101,11 @@ fun MapViewComposable(
                 val marker = Marker(map).apply {
                     position = GeoPoint(destino.latitud, destino.longitud)
                     title = context.getString(destino.tituloResId)
+                    icon = if (destino == selectedDestino) selectedMarkerDrawable else defaultMarkerDrawable
 
                     setOnMarkerClickListener { _, _ ->
                         onMarkerClick(destino)
-                        true // consumimos el click
+                        true
                     }
                 }
                 map.overlays.add(marker)
