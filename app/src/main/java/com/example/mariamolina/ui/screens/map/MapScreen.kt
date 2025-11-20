@@ -2,17 +2,17 @@ package com.example.mariamolina.ui.screens.map
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import coil.compose.AsyncImage
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.data.model.PuntoInteres
 import com.example.mariamolina.data.model.puntosDeInteres
@@ -26,37 +26,44 @@ fun MapScreen(
     destinoInicial: PuntoInteres? = null,
     onNavigateToDetail: (PuntoInteres) -> Unit = {}
 ) {
-    var selectedDestinoForMap by remember { mutableStateOf(destinoInicial) }
-    var expandedCardId by remember { mutableStateOf<String?>(null) }
+    var selectedDestino by remember { mutableStateOf(destinoInicial) }
+    var showPanel by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize()) {
 
         MapViewComposable(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-            selectedDestino = selectedDestinoForMap
+            selectedDestino = selectedDestino,
+            onMarkerClick = { destino ->
+                selectedDestino = destino
+                showPanel = true
+            },
+            modifier = Modifier.fillMaxSize()
         )
 
-        DestinosList(
-            destinos = puntosDeInteres,
-            expandedCardId = expandedCardId,
-            onExpandToggle = { id ->
-                expandedCardId = if (expandedCardId == id) null else id
-            },
-            onShowOnMap = { destino ->
-                selectedDestinoForMap = destino
-            },
-            onNavigate = onNavigateToDetail,
-            modifier = Modifier.weight(1f)
-        )
+        // ------- PANEL INFERIOR CUANDO SE PULSA UN DESTINO -------
+        AnimatedVisibility(
+            visible = showPanel && selectedDestino != null,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            selectedDestino?.let { destino ->
+                DestinoPanel(
+                    destino = destino,
+                    onNavigate = { onNavigateToDetail(destino) },
+                    onShowRoute = {
+                        // solo mostramos la ruta, MapViewComposable la dibuja automáticamente cuando selectedDestino cambia
+                    },
+                    onClose = { showPanel = false }
+                )
+            }
+        }
     }
 }
 
 @Composable
 fun MapViewComposable(
     modifier: Modifier = Modifier,
-    selectedDestino: PuntoInteres?
+    selectedDestino: PuntoInteres?,
+    onMarkerClick: (PuntoInteres) -> Unit
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
@@ -66,8 +73,6 @@ fun MapViewComposable(
             mapView.apply {
                 setMultiTouchControls(true)
                 controller.setZoom(16.0)
-
-                // Centrar inicialmente en Valladolid
                 controller.setCenter(GeoPoint(41.65213, -4.72856))
             }
         },
@@ -77,31 +82,33 @@ fun MapViewComposable(
             map.overlays.clear()
 
             // ----------- 1) MARCADORES DE TODOS LOS DESTINOS -----------
-            val markers = puntosDeInteres.map { destino ->
-                Marker(map).apply {
+            puntosDeInteres.forEach { destino ->
+                val marker = Marker(map).apply {
                     position = GeoPoint(destino.latitud, destino.longitud)
                     title = context.getString(destino.tituloResId)
-                }.also { marker ->
-                    map.overlays.add(marker)
+
+                    setOnMarkerClickListener { _, _ ->
+                        onMarkerClick(destino)
+                        true // consumimos el click
+                    }
                 }
+                map.overlays.add(marker)
             }
 
-            // ----------- 2) SI HAY DESTINO SELECCIONADO → CENTRAR Y RUTA -----------
+            // ----------- 2) RUTA CUANDO HAY DESTINO SELECCIONADO -----------
             selectedDestino?.let { destino ->
 
                 val destinoPoint = GeoPoint(destino.latitud, destino.longitud)
-
-                // Línea desde el centro actual (del usuario) hacia el destino
                 val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
 
                 val polyline = Polyline().apply {
                     addPoint(currentCenter)
                     addPoint(destinoPoint)
                 }
+
                 map.overlays.add(polyline)
 
-                // Hacer zoom hacia el destino
-                map.controller.animateTo(destinoPoint, 16.0, 1000L)
+                map.controller.animateTo(destinoPoint, 16.0, 1000)
             }
 
             map.invalidate()
@@ -110,96 +117,48 @@ fun MapViewComposable(
 }
 
 @Composable
-fun DestinosList(
-    destinos: List<PuntoInteres>,
-    expandedCardId: String?,
-    onExpandToggle: (String) -> Unit,
-    onShowOnMap: (PuntoInteres) -> Unit,
-    onNavigate: (PuntoInteres) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Surface(
-        color = MaterialTheme.colorScheme.background,
-        modifier = modifier.fillMaxSize()
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                //.padding(8.dp)
-        ) {
-            items(destinos) { destino ->
-                DestinoCard(
-                    destino = destino,
-                    expanded = destino.id == expandedCardId,
-                    onExpandToggle = { onExpandToggle(destino.id) },
-                    onShowOnMap = { onShowOnMap(destino) },
-                    onNavigate = { onNavigate(destino) }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun DestinoCard(
+fun DestinoPanel(
     destino: PuntoInteres,
-    expanded: Boolean,
-    onExpandToggle: () -> Unit,
-    onShowOnMap: () -> Unit,
-    onNavigate: () -> Unit
+    onNavigate: () -> Unit,
+    onShowRoute: () -> Unit,
+    onClose: () -> Unit
 ) {
     Card(
-        onClick = onExpandToggle,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
     ) {
+        Column(modifier = Modifier.padding(16.dp)) {
 
-        Column(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text(
+                    text = stringResource(destino.tituloResId),
+                    style = MaterialTheme.typography.titleMedium
+                )
 
-            // Título
-            Text(
-                text = stringResource(id = destino.tituloResId),
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.padding(16.dp)
-            )
+                IconButton(onClick = onClose) {
+                    Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                }
+            }
 
-            AnimatedVisibility(visible = expanded) {
+            Spacer(Modifier.height(12.dp))
 
-                Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(onClick = onShowRoute) {
+                    Text("Cómo llegar")
+                }
 
-                    // Imagen desde URL
-                    AsyncImage(
-                        model = destino.urlImagen,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(160.dp)
-                    )
-
-                    Spacer(Modifier.height(12.dp))
-
-                    // Botones
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceEvenly,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-
-                        Button(onClick = onShowOnMap) {
-                            Text("Ver en el mapa")
-                        }
-
-                        OutlinedButton(onClick = onNavigate) {
-                            Text("Más información")
-                        }
-                    }
+                OutlinedButton(onClick = onNavigate) {
+                    Text("Más información")
                 }
             }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
