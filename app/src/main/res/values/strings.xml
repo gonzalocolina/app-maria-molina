@@ -41,6 +41,13 @@
     <string name="german">Alemán</string>
     <string name="french">Francés</string>
 
+    <!-- Datos de usuario -->
+    <string name="profile_user_section_title">Tu Nickname</string>
+    <string name="profile_nickname_label">Nickname</string>
+    <string name="profile_save_button">Guardar Nickname</string>
+    <string name="profile_saved_success">¡Guardado!</string>
+    <string name="profile_error_message">Error: %1$s</string>
+
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
     <string name="p1_desc">El Alcázar Real de Valladolid (siglos XII y XIII), situado en el extremo occidental de la villa medieval, junto a la confluencia del ramal norte del Esgueva con el Pisuerga, fue un conjunto fortificado y palaciego compuesto por dos recintos:
