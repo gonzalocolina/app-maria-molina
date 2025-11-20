@@ -15,10 +15,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel // Importante para obtener el ViewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.OpcionRespuesta
-import com.example.mariamolina.data.model.quizMockData
+import com.example.mariamolina.ui.viewmodel.QuizViewModel // Importante
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
 
@@ -26,57 +27,116 @@ import kotlin.math.ceil
 fun QuizGameScreen(
     dificultad: Dificultad,
     onQuizFinished: () -> Unit,
-    onNavigateToRanking: () -> Unit
+    onNavigateToRanking: () -> Unit,
+    // Obtenemos el ViewModel. Si usas Hilt sería hiltViewModel(), si no, viewModel() está bien.
+    viewModel: QuizViewModel = viewModel()
 ) {
-    val preguntas by remember(dificultad) {
-        mutableStateOf(
-            quizMockData
-                .filter { it.dificultad == dificultad }
-                .shuffled()
-        )
+    // 1. Observamos el estado del ViewModel
+    val uiState by viewModel.uiState.collectAsState()
+    val preguntas = uiState.questions
+    val puntuacion = uiState.puntuacion
+    val indicePreguntaActual = uiState.indicePreguntaActual
+
+    // 2. Carga inicial de preguntas desde Firebase
+    LaunchedEffect(key1 = dificultad) {
+        // Solo cargamos si la lista está vacía para evitar recargas al rotar pantalla
+        if (preguntas.isEmpty()) {
+            viewModel.loadQuestions(dificultad)
+        }
     }
 
+    // --- ESTADO LOCAL (Temporizador y selección) ---
     val tiempoTotalPorPregunta = 20000L
-    var tiempoRestante by remember { mutableStateOf(tiempoTotalPorPregunta) }
-
-    var puntuacion by remember { mutableStateOf(0) }
-    var indicePreguntaActual by remember { mutableStateOf(0) }
+    // Usamos 'remember(indicePreguntaActual)' para reiniciar el timer en cada pregunta nueva
+    var tiempoRestante by remember(indicePreguntaActual) { mutableStateOf(tiempoTotalPorPregunta) }
     var respuestaSeleccionada by remember { mutableStateOf<OpcionRespuesta?>(null) }
     var estadoRespuesta by remember { mutableStateOf<EstadoRespuesta?>(null) }
 
-    LaunchedEffect(key1 = indicePreguntaActual) {
-        tiempoRestante = tiempoTotalPorPregunta
 
-        while (tiempoRestante > 0 && estadoRespuesta == null) {
-            delay(100L)
-            tiempoRestante -= 100L
-        }
-
-        if (estadoRespuesta == null && tiempoRestante <= 0) {
-            estadoRespuesta = EstadoRespuesta.INCORRECTA
-            respuestaSeleccionada = null
+    // --- LÓGICA DEL TEMPORIZADOR ---
+    LaunchedEffect(key1 = indicePreguntaActual, key2 = estadoRespuesta, key3 = preguntas.size) {
+        // Solo corre el tiempo si hay preguntas cargadas y no se ha respondido aún
+        if (indicePreguntaActual < preguntas.size && estadoRespuesta == null) {
+            tiempoRestante = tiempoTotalPorPregunta
+            while (tiempoRestante > 0 && estadoRespuesta == null) {
+                delay(100L)
+                tiempoRestante -= 100L
+            }
+            // Si el tiempo llega a 0 y no se respondió -> INCORRECTA
+            if (estadoRespuesta == null && tiempoRestante <= 0) {
+                estadoRespuesta = EstadoRespuesta.INCORRECTA
+            }
         }
     }
 
+    // --- AVANCE AUTOMÁTICO ---
+    // Cuando estadoRespuesta cambia (se responde o se acaba el tiempo), esperamos y avanzamos
     LaunchedEffect(key1 = estadoRespuesta) {
         if (estadoRespuesta != null) {
-            delay(1500)
-            indicePreguntaActual++
+            delay(1500) // Pausa para ver el resultado (verde/rojo)
+
+            // Calculamos puntos
+            val puntosGanados = calcularPuntos(
+                respuesta = respuestaSeleccionada,
+                tiempoRestante = tiempoRestante,
+                tiempoTotal = tiempoTotalPorPregunta
+            )
+
+            // Llamamos al ViewModel para actualizar puntuación y pasar de pregunta
+            viewModel.scoreAndAdvance(puntosGanados)
+
+            // Reseteamos estado local para la siguiente
             respuestaSeleccionada = null
             estadoRespuesta = null
         }
     }
 
-    if (indicePreguntaActual >= preguntas.size) {
+
+    // --- GESTIÓN DE PANTALLAS (Carga, Error, Juego, Fin) ---
+
+    // 1. Pantalla de Carga
+    if (uiState.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    // 2. Pantalla de Error
+    if (uiState.errorMessage != null) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text(
+                text = "Error: ${uiState.errorMessage}",
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(16.dp)
+            )
+            // Podrías añadir un botón de "Reintentar" aquí llamando a viewModel.loadQuestions(dificultad)
+        }
+        return
+    }
+
+    // 3. Pantalla de Fin de Juego
+    if (preguntas.isNotEmpty() && indicePreguntaActual >= preguntas.size) {
+        // Limpiamos el quiz al salir (efecto de un solo uso)
+        DisposableEffect(Unit) {
+            onDispose { viewModel.resetQuiz() }
+        }
+
         QuizResultScreen(
             puntuacion = puntuacion,
             totalPreguntas = preguntas.size,
             onVolverAlMenu = onQuizFinished,
             onNavigateToRanking = onNavigateToRanking
         )
-    } else {
+        return
+    }
+
+    // 4. Pantalla de Juego (Si hay preguntas y no hemos terminado)
+    if (preguntas.isNotEmpty()) {
         val preguntaActual = preguntas[indicePreguntaActual]
 
+        // Opciones mezcladas (lo hacemos una vez por pregunta)
         val opcionesAleatorias by remember(preguntaActual) {
             mutableStateOf(preguntaActual.opciones.shuffled())
         }
@@ -85,11 +145,11 @@ fun QuizGameScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState()), // Scroll para pantallas pequeñas
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            // Parte Superior: Puntos, Barra y RELOJ
+            // --- ENCABEZADO (Puntos, Barra, Reloj, Pregunta) ---
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = stringResource(id = R.string.kids_quiz_puntuacion, puntuacion),
@@ -103,6 +163,7 @@ fun QuizGameScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
+                // Widget Reloj
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.size(80.dp)
@@ -124,46 +185,55 @@ fun QuizGameScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+
+                // Pregunta (Desde Firebase es String)
                 Text(
-                    text = stringResource(id = preguntaActual.preguntaResId),
+                    text = preguntaActual.pregunta,
                     style = MaterialTheme.typography.headlineSmall,
                     textAlign = TextAlign.Center
                 )
             }
 
-            // Parte Central: Opciones
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
+            // --- OPCIONES DE RESPUESTA ---
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 opcionesAleatorias.forEach { opcion ->
                     OpcionCard(
-                        texto = stringResource(id = opcion.textoResId),
+                        texto = opcion.texto, // Desde Firebase es String
                         seleccionada = respuestaSeleccionada == opcion,
                         estadoRespuesta = if (respuestaSeleccionada == opcion) estadoRespuesta else null,
                         esLaCorrecta = opcion.esCorrecta,
                         onClick = {
+                            // Solo permitimos responder si no hay estado (no respondido ni tiempo agotado)
                             if (estadoRespuesta == null) {
                                 respuestaSeleccionada = opcion
-                                if (opcion.esCorrecta) {
-                                    val puntosBase = 1000
-                                    val porcentajeTiempo = tiempoRestante.toFloat() / tiempoTotalPorPregunta.toFloat()
-                                    val puntosGanados = (puntosBase * porcentajeTiempo).toInt()
-
-                                    puntuacion += puntosGanados
-                                    estadoRespuesta = EstadoRespuesta.CORRECTA
-                                } else {
-                                    estadoRespuesta = EstadoRespuesta.INCORRECTA
-                                }
+                                estadoRespuesta = if (opcion.esCorrecta) EstadoRespuesta.CORRECTA else EstadoRespuesta.INCORRECTA
+                                // El LaunchedEffect se encarga de calcular puntos y avanzar
                             }
                         }
                     )
                 }
             }
 
-            // Espacio de relleno al final
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+}
+
+// --- LÓGICA AUXILIAR ---
+
+// Función pura para calcular puntos
+private fun calcularPuntos(respuesta: OpcionRespuesta?, tiempoRestante: Long, tiempoTotal: Long): Int {
+    // Si no respondió o respondió mal -> 0 puntos
+    if (respuesta?.esCorrecta != true) {
+        return 0
+    }
+
+    // Puntuación Kahoot: Base + Bonus por velocidad
+    val puntosBase = 1000
+    val factorTiempo = tiempoRestante.toFloat() / tiempoTotal.toFloat()
+
+    // Mínimo 1 punto si acierta en el último milisegundo
+    return (puntosBase * factorTiempo).toInt().coerceAtLeast(1)
 }
 
 enum class EstadoRespuesta { CORRECTA, INCORRECTA }
@@ -177,9 +247,13 @@ fun OpcionCard(
     onClick: () -> Unit
 ) {
     val colorBorde = when {
+        // Seleccionada y Correcta -> Verde
         seleccionada && estadoRespuesta == EstadoRespuesta.CORRECTA -> Color(0xFF4CAF50)
+        // Seleccionada e Incorrecta -> Rojo
         seleccionada && estadoRespuesta == EstadoRespuesta.INCORRECTA -> Color(0xFFF44336)
+        // No seleccionada, pero era la correcta (mostrar solución) -> Verde
         !seleccionada && estadoRespuesta == EstadoRespuesta.INCORRECTA && esLaCorrecta -> Color(0xFF4CAF50)
+        // Por defecto -> Gris/Outline del tema
         else -> MaterialTheme.colorScheme.outline
     }
 
