@@ -28,13 +28,16 @@ fun MapScreen(
 ) {
     var selectedDestino by remember { mutableStateOf(destinoInicial) }
     var showPanel by remember { mutableStateOf(false) }
+    var drawRoute by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
         MapViewComposable(
             selectedDestino = selectedDestino,
+            drawRoute = drawRoute,
             onMarkerClick = { destino ->
                 selectedDestino = destino
+                drawRoute = false   // 🔥 NO dibujar ruta al pulsar un marcador
                 showPanel = true
             },
             modifier = Modifier.fillMaxSize()
@@ -50,7 +53,7 @@ fun MapScreen(
                     destino = destino,
                     onNavigate = { onNavigateToDetail(destino) },
                     onShowRoute = {
-                        // solo mostramos la ruta, MapViewComposable la dibuja automáticamente cuando selectedDestino cambia
+                        drawRoute = true
                     },
                     onClose = { showPanel = false }
                 )
@@ -63,6 +66,7 @@ fun MapScreen(
 fun MapViewComposable(
     modifier: Modifier = Modifier,
     selectedDestino: PuntoInteres?,
+    drawRoute: Boolean,
     onMarkerClick: (PuntoInteres) -> Unit
 ) {
     val context = LocalContext.current
@@ -96,9 +100,9 @@ fun MapViewComposable(
             }
 
             // ----------- 2) RUTA CUANDO HAY DESTINO SELECCIONADO -----------
-            selectedDestino?.let { destino ->
+            if (drawRoute && selectedDestino != null) {
 
-                val destinoPoint = GeoPoint(destino.latitud, destino.longitud)
+                val destinoPoint = GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
                 val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
 
                 val polyline = Polyline().apply {
@@ -107,8 +111,6 @@ fun MapViewComposable(
                 }
 
                 map.overlays.add(polyline)
-
-                map.controller.animateTo(destinoPoint, 16.0, 1000)
             }
 
             map.invalidate()
