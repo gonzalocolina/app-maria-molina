@@ -82,5 +82,21 @@ class QuizViewModel(
             indicePreguntaActual = 0
         )
     }
+
+    //Para que el ranking se mueva
+    // Añadir dentro de QuizViewModel
+
+    fun guardarPuntuacionEnFirebase(pinPartida: String, puntuacionFinal: Int) {
+        val currentUser = com.google.firebase.auth.ktx.auth.currentUser
+        if (currentUser != null) {
+            val db = FirebaseFirestore.getInstance()
+            // Actualizamos SOLO el campo puntuación de este jugador en esa partida
+            db.collection("partidas").document(pinPartida)
+                .collection("jugadores").document(currentUser.uid)
+                .update("puntuacion", puntuacionFinal)
+        }
+    }
+
+    Y luego, en tu `QuizGameScreen.kt`, cuando el juego termina (`onQuizFinished`), llamas a esta función: `viewModel.guardarPuntuacionEnFirebase("1234", puntuacion)`. (Recuerda que necesitarás pasarle el PIN real a la pantalla de juego para que sepa dónde guardar).
 }
 
