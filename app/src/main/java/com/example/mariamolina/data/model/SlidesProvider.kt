@@ -97,14 +97,14 @@ object SlidesProvider {
         Slide(
             id = "slide14",
             title = "El Secreto de mi Tumba",
-            description = "Con mi tumba, se puede saber si va a llover, ya que unas horas antes aparecen unas manchas en la parte superior, pero ten cuidado… ¡si las tocas pica!",
+            description = "Con mi tumba se puede saber si va a llover, ya que unas horas antes aparecen unas manchas encima. Pero ten cuidado… ¡si las tocas pica!",
             imageUrl = "mariademolina_photoroom",
             hasSpeechBubble = false
         ),
         Slide(
             id = "slide15",
             title = "Figuras Escondidas",
-            description = "Además, en mi tumba están escondidas las figuras de una lagartija, un monje y un escudo.",
+            description = "Además, en mi tumba están escondidas las figuras de una lagartija, un monje tapándose los oídos y un monstruo. ¡Intenta encontrarlas!",
             imageUrl = "escudo_de_castilla_y_leon_sin_corona",
             hasSpeechBubble = false
         )
