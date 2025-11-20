@@ -87,22 +87,26 @@ fun AppNavigation() {
 
             // Solo mostramos la barra si NO estamos en el detalle, NO en perfil, y NO en slides en modo horizontal
             if (!esRutaDetallePoi && !isProfile && !(esRutaSlides && isLandscape)) {
-            //Ocultamos también en el Admin Lobby
-            val esRutaAdmin = currentDestination?.route == "admin_lobby"
-            val esRutaJoin = currentDestination?.route == "join_game"
-            val esRutaStudentLobby = currentDestination?.route?.startsWith("student_lobby") == true
-            val esRutaJuego = currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/game") == true
+                //Ocultamos también en el Admin Lobby
+                val esRutaAdmin = currentDestination?.route == "admin_lobby"
+                val esRutaJoin = currentDestination?.route == "join_game"
+                val esRutaStudentLobby =
+                    currentDestination?.route?.startsWith("student_lobby") == true
+                val esRutaJuego =
+                    currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/game") == true
 
-            //Solo mostramos la barra si NO estamos en ninguna de esas pantallas
-            if (!esRutaDetallePoi && !isProfile && !esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
-                AppTopBar(
-                    titulo = stringResource(currentScreen.tituloTopBarResId),
-                    subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
-                    onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) },
-                    scrollBehavior = topAppBarScrollBehavior
-                )
+                //Solo mostramos la barra si NO estamos en ninguna de esas pantallas
+                if (!esRutaDetallePoi && !isProfile && !esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
+                    AppTopBar(
+                        titulo = stringResource(currentScreen.tituloTopBarResId),
+                        subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
+                        onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) },
+                        scrollBehavior = topAppBarScrollBehavior
+                    )
+                }
             }
         },
+
         bottomBar = {
             if (!isProfile) {
                 Column {
