@@ -64,6 +64,7 @@ fun AppNavigation() {
 
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val isTablet = configuration.smallestScreenWidthDp >= 600
 
     // 1. Escuchamos al controlador principal (para títulos y barra inferior)
     val navBackStackEntry by navControllerPrincipal.currentBackStackEntryAsState()
@@ -74,10 +75,21 @@ fun AppNavigation() {
     val isProfile = currentDestination?.route == Pantalla.Profile.ruta
 
     // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
-    val topAppBarScrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
+    val topAppBarScrollBehavior: TopAppBarScrollBehavior? = if (!isTablet) {
+        TopAppBarDefaults.enterAlwaysScrollBehavior()
+    } else {
+        null
+    }
+
+    val scaffoldModifier = if (topAppBarScrollBehavior != null) {
+        Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+    } else {
+        Modifier
+    }
 
     Scaffold(
-        modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
+        modifier = scaffoldModifier,
         topBar = {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true

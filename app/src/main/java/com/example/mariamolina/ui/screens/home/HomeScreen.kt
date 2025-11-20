@@ -2,12 +2,18 @@ package com.example.mariamolina.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
@@ -17,11 +23,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import android.content.res.Configuration
 import com.example.mariamolina.R
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 
@@ -32,85 +43,223 @@ import com.example.mariamolina.ui.theme.MariaMolinaTheme
 
 @Composable
 fun HomeScreen(onNavigateToImage: () -> Unit) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        item {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        // Consideramos "phone" a cualquier dispositivo cuya smallestScreenWidthDp < 600.
+        // Los phones usarán siempre la vista vertical (imagen encima del texto), incluso en landscape.
+        // Solo los tablets (smallestScreenWidthDp >= 600) podrán usar el layout lado-a-lado en landscape.
+        val isPhone = configuration.smallestScreenWidthDp < 600
+        val isTablet = !isPhone
+
+        // Padding dinámico según tamaño
+        val horizontalPadding = if (isTablet) 32.dp else 16.dp
+
+        // Row lateral: solo en tablets en landscape y con ancho/alto suficientes
+        val availableWidth = this.maxWidth
+        val screenHeightDp = configuration.screenHeightDp
+        val useSideBySide = isTablet && isLandscape && availableWidth >= 900.dp && screenHeightDp >= 600
+
+        if (useSideBySide) {
+            // Layout en Row para tablets o landscape: imagen a la izquierda, contenido a la derecha
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = horizontalPadding, vertical = 16.dp)
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    text = stringResource(R.string.home_screen_title),
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Image(
-                    painter = painterResource(id = R.drawable.mariamolina_menu), // Asegúrate que el nombre coincide
-                    contentDescription = stringResource(R.string.cd_imagen_inicial), // Descripción para accesibilidad
+                // Contenedor de imagen: ocupa máximo la mitad izquierda pero limitado en ancho
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth() // O ajusta según necesites (ej. .height(200.dp))
-                        .height(250.dp), // Define una altura para la imagen
-                    contentScale = ContentScale.Crop // Controla cómo se escala la imagen
-                )
-
-
-                Text(
-                    text = stringResource(R.string.home_screen_intro_paragraph),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                SectionTitle(stringResource(R.string.section_title_childhood_family))
-                Paragraph(
-                    stringResource(R.string.paragraph_childhood_family_1)
-                )
-                Paragraph(
-                    stringResource(R.string.paragraph_childhood_family_2)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                SectionTitle(stringResource(R.string.section_title_marriage_sancho))
-                Paragraph(
-                    stringResource(R.string.paragraph_marriage_sancho)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                SectionTitle(stringResource(R.string.section_title_queen_sancho_iv))
-                Paragraph(
-                    stringResource(R.string.paragraph_queen_sancho_iv)
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Button(
-                    onClick = onNavigateToImage,
-                    modifier = Modifier
-                        .fillMaxWidth() // Hace que el botón ocupe todo el ancho disponible
-                        .wrapContentWidth(Alignment.CenterHorizontally) // Centra el contenido del botón dentro de ese ancho
-                        .padding(8.dp)
+                        .fillMaxHeight()
+                        .width(560.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(stringResource(R.string.btn_ver_arbol))
+                    Image(
+                        painter = painterResource(id = R.drawable.mariamolina_menu),
+                        contentDescription = stringResource(R.string.cd_imagen_inicial),
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(560.dp),
+                        contentScale = ContentScale.Fit // En pantallas grandes mostramos la imagen completa sin recortar
+                    )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                // Contenido textual en columna con ancho limitado para mejorar legibilidad
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .width(560.dp)
+                        // Al tener un ancho mínimo fijo, el Row puede exceder el ancho
+                        // de la pantalla y permitir horizontalScroll cuando sea necesario
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.home_screen_title),
+                        style = MaterialTheme.typography.headlineLarge,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                SectionTitle(stringResource(R.string.section_title_regencies))
-                Paragraph(
-                    stringResource(R.string.paragraph_regencies)
-                )
+                    Text(
+                        text = stringResource(R.string.home_screen_intro_paragraph),
+                        style = MaterialTheme.typography.bodyLarge
+                    )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                SectionTitle(stringResource(R.string.section_title_legacy_works))
-                Paragraph(
-                    stringResource(R.string.paragraph_legacy_works)
-                )
+                    SectionTitle(stringResource(R.string.section_title_childhood_family))
+                    Paragraph(
+                        stringResource(R.string.paragraph_childhood_family_1)
+                    )
+                    Paragraph(
+                        stringResource(R.string.paragraph_childhood_family_2)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    SectionTitle(stringResource(R.string.section_title_marriage_sancho))
+                    Paragraph(
+                        stringResource(R.string.paragraph_marriage_sancho)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    SectionTitle(stringResource(R.string.section_title_queen_sancho_iv))
+                    Paragraph(
+                        stringResource(R.string.paragraph_queen_sancho_iv)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(
+                        onClick = onNavigateToImage,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                            .padding(8.dp)
+                    ) {
+                        Text(stringResource(R.string.btn_ver_arbol))
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    SectionTitle(stringResource(R.string.section_title_regencies))
+                    Paragraph(
+                        stringResource(R.string.paragraph_regencies)
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    SectionTitle(stringResource(R.string.section_title_legacy_works))
+                    Paragraph(
+                        stringResource(R.string.paragraph_legacy_works)
+                    )
+                }
+            }
+        } else {
+            // Comportamiento original para móviles en vertical
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                item {
+                    Column(
+                        modifier = Modifier.padding(horizontal = horizontalPadding, vertical = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = stringResource(R.string.home_screen_title),
+                            style = MaterialTheme.typography.headlineLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        // Ajuste para tablet vertical: mostrar imagen completa sin recortar
+                        val menuPainter = painterResource(id = R.drawable.mariamolina_menu)
+                        val intrinsic = menuPainter.intrinsicSize
+                        val menuAspectRatio = if (intrinsic.width > 0f && intrinsic.height > 0f) {
+                            intrinsic.width / intrinsic.height
+                        } else null
+
+                        if (isTablet && !isLandscape) {
+                            Image(
+                                painter = menuPainter,
+                                contentDescription = stringResource(R.string.cd_imagen_inicial),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .then(if (menuAspectRatio != null) Modifier.aspectRatio(menuAspectRatio) else Modifier.height(400.dp)),
+                                contentScale = ContentScale.Fit
+                            )
+                        } else {
+                            Image(
+                                painter = menuPainter,
+                                contentDescription = stringResource(R.string.cd_imagen_inicial),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(250.dp),
+                                contentScale = ContentScale.Crop
+                            )
+                        }
+
+
+                        Text(
+                            text = stringResource(R.string.home_screen_intro_paragraph),
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        SectionTitle(stringResource(R.string.section_title_childhood_family))
+                        Paragraph(
+                            stringResource(R.string.paragraph_childhood_family_1)
+                        )
+                        Paragraph(
+                            stringResource(R.string.paragraph_childhood_family_2)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        SectionTitle(stringResource(R.string.section_title_marriage_sancho))
+                        Paragraph(
+                            stringResource(R.string.paragraph_marriage_sancho)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        SectionTitle(stringResource(R.string.section_title_queen_sancho_iv))
+                        Paragraph(
+                            stringResource(R.string.paragraph_queen_sancho_iv)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = onNavigateToImage,
+                            modifier = Modifier
+                                .fillMaxWidth() // Hace que el botón ocupe todo el ancho disponible
+                                .wrapContentWidth(Alignment.CenterHorizontally) // Centra el contenido del botón dentro de ese ancho
+                                .padding(8.dp)
+                        ) {
+                            Text(stringResource(R.string.btn_ver_arbol))
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        SectionTitle(stringResource(R.string.section_title_regencies))
+                        Paragraph(
+                            stringResource(R.string.paragraph_regencies)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        SectionTitle(stringResource(R.string.section_title_legacy_works))
+                        Paragraph(
+                            stringResource(R.string.paragraph_legacy_works)
+                        )
+                    }
+                }
             }
         }
     }
