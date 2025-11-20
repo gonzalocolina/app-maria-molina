@@ -1,9 +1,9 @@
 package com.example.mariamolina.ui.screens.kids
 
-import android.widget.Toast
+// Esta pantalla es la versión renombrada de la anterior `KidsMenuScreen`.
+// Se mantiene la funcionalidad: elegir dificultad y empezar el quiz, además de navegar al ranking.
+
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,27 +13,31 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 
 @Composable
-fun KidsMenuScreen(
+fun KidsQuizMenuScreen(
+    onBack: () -> Unit,
     onStartQuiz: (Dificultad) -> Unit,
-    onNavigateToRanking: () -> Unit // ¡CAMBIO! Añadido
+    onNavigateToRanking: () -> Unit
 ) {
     var dificultadSeleccionada by remember { mutableStateOf(Dificultad.FACIL) }
-
-    val context = LocalContext.current
-    var isUploading by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+        verticalArrangement = Arrangement.Center
     ) {
-        // (Aquí irían las diapositivas de tu historia)
+        // Botón superior izquierdo para volver al menú principal (EntryScreen)
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
+            IconButton(onClick = onBack) {
+                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = stringResource(id = R.string.cd_back))
+            }
+        }
+
         Text(
             text = stringResource(id = R.string.kids_menu_titulo),
             style = MaterialTheme.typography.headlineMedium,
@@ -47,7 +51,6 @@ fun KidsMenuScreen(
         )
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Selector de dificultad
         Text("Elige dificultad:", style = MaterialTheme.typography.titleMedium)
         Row(
             Modifier.fillMaxWidth(),
@@ -73,7 +76,6 @@ fun KidsMenuScreen(
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        // Botón de Empezar
         Button(
             onClick = { onStartQuiz(dificultadSeleccionada) },
             modifier = Modifier
@@ -83,7 +85,6 @@ fun KidsMenuScreen(
             Text(stringResource(id = R.string.kids_iniciar_quiz))
         }
 
-        // ¡CAMBIO! Botón de Ranking
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedButton(
             onClick = onNavigateToRanking,
@@ -91,8 +92,6 @@ fun KidsMenuScreen(
         ) {
             Text(stringResource(id = R.string.kids_quiz_ranking))
         }
-
-
     }
 }
 
