@@ -77,25 +77,31 @@ fun KidsSlidesScreen(
             val slide = slides.getOrNull(currentIndex) ?: slides.first()
 
             if (isLandscape) {
-                // Layout horizontal: controles en la parte derecha
+                // Layout horizontal: imagen a la izquierda, texto e indicadores a la derecha
+                // Calculamos la mitad del ancho de pantalla para que el panel de texto llegue hasta el centro
+                val halfWidth = (configuration.screenWidthDp.dp) / 2
+                // Espacio reservado para el botón derecho para evitar solapamiento con el texto
+                val buttonSpace = 80.dp
+
                 Row(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    // Imagen ocupa el espacio principal
-                    Box(modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .pointerInput(Unit) {
-                            detectHorizontalDragGestures { change, dragAmount ->
-                                if (dragAmount > 20) {
-                                    currentIndex = (currentIndex - 1).coerceAtLeast(0)
-                                    change.consume()
-                                } else if (dragAmount < -20) {
-                                    currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex)
-                                    change.consume()
+                    // Lado izquierdo: imagen y botones de navegación sobre la imagen
+                    Box(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .pointerInput(Unit) {
+                                detectHorizontalDragGestures { change, dragAmount ->
+                                    if (dragAmount > 20) {
+                                        currentIndex = (currentIndex - 1).coerceAtLeast(0)
+                                        change.consume()
+                                    } else if (dragAmount < -20) {
+                                        currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex)
+                                        change.consume()
+                                    }
                                 }
                             }
-                        }
                     ) {
                         // Cargar imagen: si `imageUrl` es una URL -> usar Coil AsyncImage; si no -> cargar drawable mapeado
                         val ctx = LocalContext.current
@@ -122,7 +128,7 @@ fun KidsSlidesScreen(
                             )
                         }
 
-                        // Botón atrás flotante en esquina superior izquierda
+                        // Botón atrás flotante en esquina superior izquierda (sobre la imagen)
                         IconButton(
                             onClick = onBackToEntry,
                             modifier = Modifier
@@ -134,107 +140,108 @@ fun KidsSlidesScreen(
                             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(id = R.string.cd_back), tint = Color.White)
                         }
 
-                        // Botón anterior (centro-izquierda)
-                        if (currentIndex > 0) {
-                            IconButton(
-                                onClick = { currentIndex = (currentIndex - 1).coerceAtLeast(0) },
-                                modifier = Modifier
-                                    .align(Alignment.CenterStart)
-                                    .padding(start = 8.dp)
-                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
-                                    .size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.ChevronLeft,
-                                    contentDescription = "Anterior",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-                        }
-
-                        // Botón siguiente (centro-derecha)
-                        if (currentIndex < slides.lastIndex) {
-                            IconButton(
-                                onClick = { currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex) },
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .padding(end = 8.dp)
-                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
-                                    .size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.ChevronRight,
-                                    contentDescription = "Siguiente",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-                        }
-
-                        // Mostrar texto según el tipo de diapositiva (versión compacta)
-                        if (slide.hasSpeechBubble) {
-                            Card(
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .fillMaxWidth(0.9f)
-                                    .padding(bottom = 12.dp, start = 40.dp, end = 40.dp),
-                                shape = RoundedCornerShape(16.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White),
-                                border = BorderStroke(2.dp, Color(0xFF6200EE))
-                            ) {
-                                Text(
-                                    text = slide.description,
-                                    color = Color.Black,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    fontWeight = FontWeight.Medium,
-                                    fontSize = 14.sp,
-                                    textAlign = TextAlign.Center,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(12.dp)
-                                )
-                            }
-                        } else {
-                            Card(
-                                modifier = Modifier
-                                    .align(Alignment.BottomStart)
-                                    .fillMaxWidth(),
-                                shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
-                            ) {
-                                Column(modifier = Modifier.padding(12.dp)) {
-                                    Text(text = slide.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodySmall, fontSize = 13.sp)
-                                }
-                            }
-                        }
+                        // Nota: botón 'Anterior' interno removido para evitar duplicados; los controles Prev/Next se dibujan
+                        // en el Box padre para que estén siempre centrados verticalmente.
                     }
 
-                    // Panel lateral derecho con indicadores
+                    // Lado derecho: panel de texto e indicadores — ocupará hasta el centro de la pantalla
+                    // y deja un padding end suficiente para el botón.
                     Column(
                         modifier = Modifier
-                            .width(60.dp)
+                            .width(halfWidth)
                             .fillMaxHeight()
-                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.95f))
-                            .padding(8.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.03f))
+                            .padding(start = 16.dp, top = 16.dp, bottom = 16.dp, end = buttonSpace),
+                        verticalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Indicadores de páginas (puntos) verticales
-                        slides.forEachIndexed { index, _ ->
-                            val selected = index == currentIndex
-                            Box(
-                                modifier = Modifier
-                                    .padding(vertical = 3.dp)
-                                    .size(if (selected) 12.dp else 8.dp)
-                                    .background(
-                                        color = if (selected) MaterialTheme.colorScheme.primary else Color.Gray,
-                                        shape = CircleShape
+                        // Contenido principal: título y descripción / bocadillo
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(text = slide.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (slide.hasSpeechBubble) {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                    border = BorderStroke(2.dp, Color(0xFF6200EE))
+                                ) {
+                                    Text(
+                                        text = slide.description,
+                                        color = Color.Black,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(12.dp),
+                                        textAlign = TextAlign.Start
                                     )
-                            )
+                                }
+                            } else {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
+                                ) {
+                                    Column(modifier = Modifier.padding(12.dp)) {
+                                        Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyMedium)
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            // NOTE: controles Prev/Next removidos de aquí (mostraremos sólo los extremos)
                         }
+
+                        // Indicadores y número de slide en la parte inferior
+                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                                slides.forEachIndexed { index, _ ->
+                                    val selected = index == currentIndex
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                            .size(if (selected) 12.dp else 8.dp)
+                                            .background(
+                                                color = if (selected) MaterialTheme.colorScheme.primary else Color.Gray,
+                                                shape = CircleShape
+                                            )
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(text = "${currentIndex + 1} / ${slides.size}", style = MaterialTheme.typography.bodySmall)
+                        }
+                    }
+                }
+
+                // Ahora dibujamos los botones Prev/Next a nivel del Box contenedor (heredado por la composición) para
+                // que estén alineados al centro vertical de la pantalla y a los extremos horizontales.
+                if (currentIndex > 0) {
+                    IconButton(
+                        onClick = { currentIndex = (currentIndex - 1).coerceAtLeast(0) },
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(start = 12.dp)
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
+                            .size(56.dp)
+                    ) {
+                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = "Anterior", tint = Color.White, modifier = Modifier.size(32.dp))
+                    }
+                }
+
+                if (currentIndex < slides.lastIndex) {
+                    IconButton(
+                        onClick = { currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex) },
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .padding(end = 12.dp)
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
+                            .size(56.dp)
+                    ) {
+                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = "Siguiente", tint = Color.White, modifier = Modifier.size(32.dp))
                     }
                 }
             } else {
@@ -400,10 +407,6 @@ fun KidsSlidesScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Botón para volver o finalizar
-                    Button(onClick = onBackToEntry, modifier = Modifier.fillMaxWidth().height(50.dp)) {
-                        Text(stringResource(id = R.string.cd_back))
-                    }
                 }
             }
         }
