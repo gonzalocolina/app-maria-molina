@@ -26,9 +26,9 @@ import kotlin.math.ceil
 @Composable
 fun QuizGameScreen(
     dificultad: Dificultad,
+    pinPartida: String? = null, // Recibimos el PIN para multijugador
     onQuizFinished: () -> Unit,
     onNavigateToRanking: () -> Unit,
-    // Obtenemos el ViewModel. Si usas Hilt sería hiltViewModel(), si no, viewModel() está bien.
     viewModel: QuizViewModel = viewModel()
 ) {
     // 1. Observamos el estado del ViewModel
@@ -116,8 +116,15 @@ fun QuizGameScreen(
         return
     }
 
-    // 3. Pantalla de Fin de Juego
+    // 3. Pantalla de FIN DE JUEGO
     if (preguntas.isNotEmpty() && indicePreguntaActual >= preguntas.size) {
+        // Guardamos puntuación en Firebase si es multijugador
+        LaunchedEffect(Unit) {
+            if (pinPartida != null) {
+                viewModel.guardarPuntuacion(pinPartida)
+            }
+        }
+
         // Limpiamos el quiz al salir (efecto de un solo uso)
         DisposableEffect(Unit) {
             onDispose { viewModel.resetQuiz() }
@@ -132,7 +139,7 @@ fun QuizGameScreen(
         return
     }
 
-    // 4. Pantalla de Juego (Si hay preguntas y no hemos terminado)
+    // 4. PANTALLA DE JUEGO (Si hay preguntas y no hemos terminado)
     if (preguntas.isNotEmpty()) {
         val preguntaActual = preguntas[indicePreguntaActual]
 

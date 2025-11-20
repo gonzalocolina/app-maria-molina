@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.data.model.Jugador
 import com.example.mariamolina.ui.viewmodel.RankingViewModel
@@ -23,21 +23,24 @@ import com.example.mariamolina.ui.viewmodel.RankingViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RankingScreen(
-    pinPartida: String = "1234", // TODO: Recibir esto por navegación real
+    pinPartida: String?, // ¡CAMBIO! Ahora puede ser nulo y no tiene valor por defecto fijo
     onBackClick: () -> Unit,
     viewModel: RankingViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Cargamos el ranking al entrar
+    // Cargamos el ranking al entrar, solo si hay PIN
     LaunchedEffect(pinPartida) {
-        viewModel.escucharRanking(pinPartida)
+        if (!pinPartida.isNullOrBlank()) {
+            viewModel.escucharRanking(pinPartida)
+        }
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Ranking - Sala $pinPartida") },
+                // Mostramos el PIN si existe, si no, un título genérico
+                title = { Text(if (pinPartida != null) "Ranking - Sala $pinPartida" else "Ranking Global") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
@@ -51,14 +54,26 @@ fun RankingScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            if (uiState.isLoading) {
+            // Caso A: No hay PIN (Entró desde el menú principal)
+            if (pinPartida.isNullOrBlank()) {
+                Column(
+                    modifier = Modifier.align(Alignment.Center),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Introduce un PIN para ver el ranking", style = MaterialTheme.typography.bodyLarge)
+                    // Aquí podrías poner un campo de texto para buscar un ranking manual si quisieras
+                }
+            }
+            // Caso B: Cargando
+            else if (uiState.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-            } else {
+            }
+            // Caso C: Mostramos lista
+            else {
                 LazyColumn(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    // Cabecera
                     item {
                         Column(
                             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
@@ -68,15 +83,24 @@ fun RankingScreen(
                                 imageVector = Icons.Default.EmojiEvents,
                                 contentDescription = null,
                                 modifier = Modifier.size(64.dp),
-                                tint = Color(0xFFFFD700) // Dorado
+                                tint = Color(0xFFFFD700)
                             )
                             Text("Tabla de Clasificación", style = MaterialTheme.typography.headlineSmall)
                         }
                     }
 
-                    // Lista de Jugadores
-                    itemsIndexed(uiState.jugadores) { index, jugador ->
-                        RankingItem(posicion = index + 1, jugador = jugador)
+                    if (uiState.jugadores.isEmpty()) {
+                        item {
+                            Text(
+                                "Aún no hay jugadores en este ranking.",
+                                modifier = Modifier.fillMaxWidth(),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                    } else {
+                        itemsIndexed(uiState.jugadores) { index, jugador ->
+                            RankingItem(posicion = index + 1, jugador = jugador)
+                        }
                     }
                 }
             }
@@ -95,9 +119,9 @@ fun RankingScreen(
 @Composable
 fun RankingItem(posicion: Int, jugador: Jugador) {
     val colorTrofeo = when (posicion) {
-        1 -> Color(0xFFFFD700) // Oro
-        2 -> Color(0xFFC0C0C0) // Plata
-        3 -> Color(0xFFCD7F32) // Bronce
+        1 -> Color(0xFFFFD700)
+        2 -> Color(0xFFC0C0C0)
+        3 -> Color(0xFFCD7F32)
         else -> MaterialTheme.colorScheme.surfaceVariant
     }
 
@@ -111,7 +135,6 @@ fun RankingItem(posicion: Int, jugador: Jugador) {
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Círculo con la posición
             Box(
                 modifier = Modifier
                     .size(40.dp)

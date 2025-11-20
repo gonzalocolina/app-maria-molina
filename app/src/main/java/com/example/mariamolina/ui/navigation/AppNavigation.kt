@@ -34,10 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
@@ -87,9 +89,10 @@ fun AppNavigation() {
             val esRutaJoin = currentDestination?.route == "join_game"
             val esRutaStudentLobby = currentDestination?.route?.startsWith("student_lobby") == true
             val esRutaJuego = currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/game") == true
+            val esRutaRanking = currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/ranking") == true
 
             //Solo mostramos la barra si NO estamos en ninguna de esas pantallas
-            if (!esRutaDetallePoi && !isProfile && !esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
+            if (!esRutaDetallePoi && !isProfile && !esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego && !esRutaRanking) {
                 AppTopBar(
                     titulo = stringResource(currentScreen.tituloTopBarResId),
                     subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
@@ -182,6 +185,8 @@ fun AppNavigation() {
                 }
             }
 
+            // --- MAPA ---
+
             composable(Pantalla.Map.ruta) { MapScreen() }
 
             // --- SECCION INFANTIL ---
@@ -226,12 +231,24 @@ fun AppNavigation() {
             }
 
             // D. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
-            composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
-                 val dificultadString = backStackEntry.arguments?.getString("dificultad")
-                 val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
+            composable(
+                route = "${Pantalla.Kids.ruta}/game/{dificultad}?pin={pin}",
+                arguments = listOf(
+                    navArgument("dificultad") { type = NavType.StringType },
+                    navArgument("pin") {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
+            ) { backStackEntry ->
+                val dificultadString = backStackEntry.arguments?.getString("dificultad")
+                val pin = backStackEntry.arguments?.getString("pin") // Recuperamos el PIN
+                val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
 
                  QuizGameScreen(
                      dificultad = dificultad,
+                     pinPartida = pin,
                      onQuizFinished = {
                         // Vuelve al sub-menú de cuestionarios (/quiz)
                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
@@ -239,17 +256,28 @@ fun AppNavigation() {
                         }
                      },
                      onNavigateToRanking = {
-                         // Navega al ranking desde la pantalla de resultados
-                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
-                             // Opcional: cierra la pantalla de quiz
-                            popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                         // Pasamos el PIN al ranking si existe
+                         val rutaRanking = if (pin != null) "${Pantalla.Kids.ruta}/ranking?pin=$pin" else "${Pantalla.Kids.ruta}/ranking"
+                         navControllerPrincipal.navigate(rutaRanking) {
+                             popUpTo(Pantalla.Kids.ruta) { inclusive = true }
                          }
                      }
                  )
             }
-            // E. Pantalla de Ranking
-            composable("${Pantalla.Kids.ruta}/ranking") {
+            // E. Pantalla de Ranking - Acepta PIN opcional
+            composable(
+                route = "${Pantalla.Kids.ruta}/ranking?pin={pin}",
+                arguments = listOf(
+                    navArgument("pin") {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    }
+                )
+            ) { backStackEntry ->
+                val pin = backStackEntry.arguments?.getString("pin")
                 RankingScreen(
+                    pinPartida = pin,
                     onBackClick = { navControllerPrincipal.popBackStack() }
                 )
             }
@@ -284,8 +312,8 @@ fun AppNavigation() {
                     onBack = { navControllerPrincipal.popBackStack() },
                     onGameStarted = { dificultad ->
                         // ¡El juego empieza! Navegamos a la pantalla de juego
-                        // Usamos replace (popUpTo) para que no pueda volver a la sala de espera
-                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/$dificultad") {
+                        // Pasamos el PIN al juego para que guarde la puntuación en la partida correcta
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/$dificultad?pin=$pin") {
                             popUpTo("student_lobby/{pin}") { inclusive = true }
                         }
                     }

@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 // Estado de la UI del Quiz:
 data class QuizUiState(
@@ -84,19 +86,22 @@ class QuizViewModel(
     }
 
     //Para que el ranking se mueva
-    // Añadir dentro de QuizViewModel
+    fun guardarPuntuacion(pinPartida: String?) {
+        // Solo guardamos si hay un PIN (es decir, si es modo multijugador)
+        if (pinPartida.isNullOrBlank()) return
 
-    fun guardarPuntuacionEnFirebase(pinPartida: String, puntuacionFinal: Int) {
-        val currentUser = com.google.firebase.auth.ktx.auth.currentUser
+        val currentUser = Firebase.auth.currentUser
         if (currentUser != null) {
             val db = FirebaseFirestore.getInstance()
-            // Actualizamos SOLO el campo puntuación de este jugador en esa partida
+            val puntuacionFinal = _uiState.value.puntuacion
+
+            // Actualizamos la puntuación del jugador en esa partida específica
             db.collection("partidas").document(pinPartida)
                 .collection("jugadores").document(currentUser.uid)
                 .update("puntuacion", puntuacionFinal)
+                .addOnSuccessListener { println("Puntuación guardada!") }
+                .addOnFailureListener { e -> println("Error al guardar: $e") }
         }
     }
-
-    Y luego, en tu `QuizGameScreen.kt`, cuando el juego termina (`onQuizFinished`), llamas a esta función: `viewModel.guardarPuntuacionEnFirebase("1234", puntuacion)`. (Recuerda que necesitarás pasarle el PIN real a la pantalla de juego para que sepa dónde guardar).
 }
 
