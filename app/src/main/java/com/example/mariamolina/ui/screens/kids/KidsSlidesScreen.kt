@@ -17,7 +17,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.mariamolina.R
+import android.content.Context
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ChevronLeft
@@ -32,19 +36,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.text.style.TextAlign
 
-// Mapea los nombres de imagen (tal como aparecen en SlidesProvider.imageUrl) a R.drawable IDs.
-private fun resolveDrawableId(name: String): Int = when (name) {
-    "mariademolina_photoroom" -> R.drawable.mariademolina_photoroom
-    "mayor_de_meneses_photoroom" -> R.drawable.mayor_de_meneses_photoroom
-    "escudo_de_castilla_y_leon_sin_corona" -> R.drawable.escudo_de_castilla_y_leon_sin_corona
-    "sancho_principe_photoroom" -> R.drawable.sancho_principe_photoroom
-    "maria_adolescente" -> R.drawable.maria_adolescente
-    "sancho_rey_photoroom" -> R.drawable.sancho_rey_photoroom
-    "maria_molina_batalla_photoroom" -> R.drawable.maria_molina_batalla_photoroom
-    "maria_molina_pie_photoroom" -> R.drawable.maria_molina_pie_photoroom
-    "maria_molina_bebe_photoroom" -> R.drawable.maria_molina_bebe_photoroom
-    "escudo_alfonso" -> R.drawable.escudo_alfonso
-    else -> R.drawable.mariademolina_photoroom
+// Resuelve el nombre de recurso drawable a un id usando el Context en runtime.
+// Si no existe, retorna un drawable del sistema como fallback.
+private fun resolveDrawableId(context: Context, name: String): Int {
+    // Si el nombre contiene '/' o 'http' no es un nombre de recurso, retornamos 0 y usaremos fallback
+    val sanitized = name.substringAfterLast('/').substringBefore('?')
+    val resId = context.resources.getIdentifier(sanitized, "drawable", context.packageName)
+    return if (resId != 0) resId else android.R.drawable.ic_menu_report_image
 }
 
 @Composable
@@ -52,7 +50,7 @@ fun KidsSlidesScreen(
     onBackToEntry: () -> Unit,
     slides: List<Slide> = SlidesProvider.testSlides
 ) {
-    // Estado del índice actual
+    // Estado del índice currente
     var currentIndex by remember { mutableIntStateOf(0) }
 
     // Detectar orientación
@@ -99,15 +97,30 @@ fun KidsSlidesScreen(
                             }
                         }
                     ) {
-                        // Cargar imagen desde drawable usando el mapeo seguro
-                        val imageResId = remember(slide.imageUrl) { resolveDrawableId(slide.imageUrl) }
-
-                        Image(
-                            painter = painterResource(id = imageResId),
-                            contentDescription = slide.title,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
-                        )
+                        // Cargar imagen: si `imageUrl` es una URL -> usar Coil AsyncImage; si no -> cargar drawable mapeado
+                        val ctx = LocalContext.current
+                        val imageUrl = slide.imageUrl
+                        if (imageUrl.startsWith("http") || imageUrl.contains("://")) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(ctx)
+                                    .data(imageUrl)
+                                    .crossfade(true)
+                                    .error(resolveDrawableId(ctx, imageUrl))
+                                    .placeholder(resolveDrawableId(ctx, imageUrl))
+                                    .build(),
+                                contentDescription = slide.title,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Fit
+                            )
+                        } else {
+                            val imageResId = remember(imageUrl) { resolveDrawableId(ctx, imageUrl) }
+                            Image(
+                                painter = painterResource(id = imageResId),
+                                contentDescription = slide.title,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
 
                         // Botón atrás flotante en esquina superior izquierda
                         IconButton(
@@ -251,15 +264,30 @@ fun KidsSlidesScreen(
                             }
                         }
                     ) {
-                        // Cargar imagen desde drawable usando el mapeo seguro
-                        val imageResId = remember(slide.imageUrl) { resolveDrawableId(slide.imageUrl) }
-
-                        Image(
-                            painter = painterResource(id = imageResId),
-                            contentDescription = slide.title,
-                            modifier = Modifier.fillMaxSize(),
-                            contentScale = ContentScale.Fit
-                        )
+                        // Cargar imagen: si `imageUrl` es una URL -> usar Coil AsyncImage; si no -> cargar drawable mapeado
+                        val ctx2 = LocalContext.current
+                        val imageUrl2 = slide.imageUrl
+                        if (imageUrl2.startsWith("http") || imageUrl2.contains("://")) {
+                            AsyncImage(
+                                model = ImageRequest.Builder(ctx2)
+                                    .data(imageUrl2)
+                                    .crossfade(true)
+                                    .error(resolveDrawableId(ctx2, imageUrl2))
+                                    .placeholder(resolveDrawableId(ctx2, imageUrl2))
+                                    .build(),
+                                contentDescription = slide.title,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Fit
+                            )
+                        } else {
+                            val imageResId2 = remember(imageUrl2) { resolveDrawableId(ctx2, imageUrl2) }
+                            Image(
+                                painter = painterResource(id = imageResId2),
+                                contentDescription = slide.title,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
 
                         // Botón atrás flotante en esquina superior izquierda
                         IconButton(

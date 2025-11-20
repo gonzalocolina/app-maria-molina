@@ -63,7 +63,7 @@ object SlidesProvider {
             id = "slide9",
             title = "Las Batallas",
             description = "Durante el reinado, ayudé a Sancho a pelear en muchas batallas.",
-            imageUrl = "https://ik.imagekit.io/vy6xp2vke/maria-sancho-boda.PNG",
+            imageUrl = "https://ik.imagekit.io/vy6xp2vke/maria-sancho-batalla.PNG",
             hasSpeechBubble = true
         ),
         Slide(
