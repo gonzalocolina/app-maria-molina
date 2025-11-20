@@ -82,6 +82,11 @@ fun AppNavigation() {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
 
+            // Comprobamos si estamos en la pantalla de slides
+            val esRutaSlides = currentDestination?.route == "${Pantalla.Kids.ruta}/slides"
+
+            // Solo mostramos la barra si NO estamos en el detalle, NO en perfil, y NO en slides en modo horizontal
+            if (!esRutaDetallePoi && !isProfile && !(esRutaSlides && isLandscape)) {
             //Ocultamos también en el Admin Lobby
             val esRutaAdmin = currentDestination?.route == "admin_lobby"
             val esRutaJoin = currentDestination?.route == "join_game"

@@ -232,6 +232,7 @@
     <string name="kids_opcion_cuestionarios">Cuestionarios</string>
     <string name="kids_slides_titulo">Diapositivas infantiles</string>
     <string name="kids_slides_descripcion">Aquí puedes ver las diapositivas de la historia adaptadas para niños.</string>
+    <string name="kids_no_slides">No hay diapositivas disponibles</string>
     <string name="cd_back">Volver</string>
 
 </resources>
