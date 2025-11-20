@@ -27,7 +27,7 @@ fun MapScreen(
     onNavigateToDetail: (PuntoInteres) -> Unit = {}
 ) {
     var selectedDestino by remember { mutableStateOf(destinoInicial) }
-    var showPanel by remember { mutableStateOf(false) }
+    var showPanel by remember { mutableStateOf(destinoInicial != null) }
     var drawRoute by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
