@@ -53,7 +53,7 @@ fun KidsSlidesScreen(
     slides: List<Slide> = SlidesProvider.testSlides
 ) {
     // Estado del índice actual
-    var currentIndex by remember { mutableStateOf(0) }
+    var currentIndex by remember { mutableIntStateOf(0) }
 
     // Detectar orientación
     val configuration = LocalConfiguration.current
