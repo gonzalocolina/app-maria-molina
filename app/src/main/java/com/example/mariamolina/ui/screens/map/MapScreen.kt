@@ -23,9 +23,10 @@ import org.osmdroid.views.overlay.Polyline
 
 @Composable
 fun MapScreen(
-    onNavigateToDetail: (PuntoInteres) -> Unit = {}   // callback para navegación
+    destinoInicial: PuntoInteres? = null,
+    onNavigateToDetail: (PuntoInteres) -> Unit = {}
 ) {
-    var selectedDestinoForMap by remember { mutableStateOf<PuntoInteres?>(null) }
+    var selectedDestinoForMap by remember { mutableStateOf(destinoInicial) }
     var expandedCardId by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.fillMaxSize()) {
