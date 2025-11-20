@@ -48,12 +48,14 @@ import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
+import com.example.mariamolina.ui.screens.kids.AdminLobbyScreen
 import com.example.mariamolina.ui.screens.kids.QuizGameScreen
 import com.example.mariamolina.ui.screens.kids.KidsEntryScreen
 import com.example.mariamolina.ui.screens.kids.KidsSlidesScreen
 import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
-
-
+import com.example.mariamolina.ui.screens.kids.RankingScreen
+import com.example.mariamolina.ui.screens.kids.JoinGameScreen
+import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -80,8 +82,14 @@ fun AppNavigation() {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
 
-            // Solo mostramos la barra si NO estamos en el detalle y NO en perfil
-            if (!esRutaDetallePoi && !isProfile) {
+            //Ocultamos también en el Admin Lobby
+            val esRutaAdmin = currentDestination?.route == "admin_lobby"
+            val esRutaJoin = currentDestination?.route == "join_game"
+            val esRutaStudentLobby = currentDestination?.route?.startsWith("student_lobby") == true
+            val esRutaJuego = currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/game") == true
+
+            //Solo mostramos la barra si NO estamos en ninguna de esas pantallas
+            if (!esRutaDetallePoi && !isProfile && !esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
                 AppTopBar(
                     titulo = stringResource(currentScreen.tituloTopBarResId),
                     subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
@@ -176,7 +184,9 @@ fun AppNavigation() {
 
             composable(Pantalla.Map.ruta) { MapScreen() }
 
-            //Seccion infantil
+            // --- SECCION INFANTIL ---
+
+            // A. Pantalla de Entrada (Elegir Diapositivas o Quiz)
             composable(Pantalla.Kids.ruta) {
                 // Pantalla de entrada para la sección Kids: elegir entre Diapositivas o Cuestionarios
                 KidsEntryScreen(
@@ -185,7 +195,7 @@ fun AppNavigation() {
                 )
             }
 
-            // Ruta para el sub-menú de cuestionarios (antes KidsMenuScreen)
+            // B. Menú del Quiz (Elegir Dificultad / Admin / Unirse)
             composable("${Pantalla.Kids.ruta}/quiz") {
                 KidsQuizMenuScreen(
                     onBack = { navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
@@ -196,18 +206,26 @@ fun AppNavigation() {
                     },
                     onNavigateToRanking = {
                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking")
+                    },
+                    // Conectamos la navegación al admin
+                    onNavigateToAdmin = {
+                        navControllerPrincipal.navigate("admin_lobby")
+                    },
+                    // Navegamos a la pantalla de unirse
+                    onJoinGame = {
+                        navControllerPrincipal.navigate("join_game")
                     }
                 )
             }
 
-            // Ruta para las diapositivas
+            // C. Diapositivas
             composable("${Pantalla.Kids.ruta}/slides") {
                 KidsSlidesScreen(onBackToEntry = { navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
                     popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
                 } })
             }
 
-            // 2. Ruta del juego (Quiz)
+            // D. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
             composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
                  val dificultadString = backStackEntry.arguments?.getString("dificultad")
                  val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
@@ -228,10 +246,53 @@ fun AppNavigation() {
                          }
                      }
                  )
-             }
+            }
+            // E. Pantalla de Ranking
+            composable("${Pantalla.Kids.ruta}/ranking") {
+                RankingScreen(
+                    onBackClick = { navControllerPrincipal.popBackStack() }
+                )
+            }
 
+            // F. Admin Lobby (Profesor - Crear Partida)
+            composable("admin_lobby") {
+                AdminLobbyScreen(
+                    onBack = { navControllerPrincipal.popBackStack() }
+                )
+            }
 
+            // G. Unirse a Partida (Alumno - Introducir PIN)
+            composable("join_game") {
+                JoinGameScreen(
+                    onBack = { navControllerPrincipal.popBackStack() },
+                    onJoinSuccess = { pin ->
+                        // Navegamos a la SALA DE ESPERA
+                        navControllerPrincipal.navigate("student_lobby/$pin") {
+                            // Borramos la pantalla de "poner PIN" del historial para no volver a ella
+                            popUpTo("join_game") { inclusive = true }
+                        }
+                    }
+                )
+            }
 
+            // H. Sala de Espera (Alumno - Esperando al profesor)
+            composable("student_lobby/{pin}") { backStackEntry ->
+                val pin = backStackEntry.arguments?.getString("pin") ?: ""
+
+                StudentLobbyScreen(
+                    pin = pin,
+                    onBack = { navControllerPrincipal.popBackStack() },
+                    onGameStarted = { dificultad ->
+                        // ¡El juego empieza! Navegamos a la pantalla de juego
+                        // Usamos replace (popUpTo) para que no pueda volver a la sala de espera
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/$dificultad") {
+                            popUpTo("student_lobby/{pin}") { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            // --- 5. PERFIL ---
             composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }
