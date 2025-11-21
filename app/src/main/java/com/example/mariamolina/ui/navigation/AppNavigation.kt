@@ -116,7 +116,7 @@ fun AppNavigation() {
                     ) {
                         itemsNavegacion.forEach { pantalla ->
                             val isSelected =
-                                currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
+                                currentDestination?.route?.startsWith(pantalla.ruta) == true
 
                             NavigationBarItem(
                                 selected = isSelected,
@@ -126,7 +126,6 @@ fun AppNavigation() {
                                             saveState = true
                                         }
                                         launchSingleTop = true
-                                        restoreState = true
                                     }
                                 },
                                 icon = {
@@ -186,12 +185,15 @@ fun AppNavigation() {
                 if (punto != null) {
                     PointDetailScreen(
                         punto = punto,
-                        onBackClick = { navControllerPrincipal.popBackStack() }
+                        onBackClick = { navControllerPrincipal.popBackStack() },
+                        onOpenMapClick = {
+                            navControllerPrincipal.navigate("map?destinoId=${punto.id}") {
+                                launchSingleTop = true
+                            }
+                        }
                     )
                 }
             }
-
-            composable(Pantalla.Map.ruta) { MapScreen() }
 
             // --- SECCION INFANTIL ---
 
@@ -223,6 +225,17 @@ fun AppNavigation() {
                     // Navegamos a la pantalla de unirse
                     onJoinGame = {
                         navControllerPrincipal.navigate("join_game")
+
+            composable("map?destinoId={destinoId}") { backStackEntry ->
+                val destinoId = backStackEntry.arguments?.getString("destinoId")
+                val destino = puntosDeInteres.find { it.id == destinoId }
+
+                MapScreen(
+                    destinoInicial = destino,
+                    onNavigateToDetail = { punto ->
+                        navControllerPrincipal.navigate(
+                            "${Pantalla.PointsOfInterest.ruta}/detail/${punto.id}"
+                        )
                     }
                 )
             }
@@ -302,6 +315,7 @@ fun AppNavigation() {
             }
 
             // --- 5. PERFIL ---
+            composable(Pantalla.Kids.ruta) { KidsScreen() }
             composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }

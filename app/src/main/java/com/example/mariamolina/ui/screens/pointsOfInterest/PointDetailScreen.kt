@@ -37,7 +37,8 @@ import androidx.compose.ui.layout.ContentScale
 @Composable
 fun PointDetailScreen(
     punto: PuntoInteres,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onOpenMapClick: () -> Unit
 ) {
     Scaffold(
         bottomBar = {
@@ -111,7 +112,8 @@ fun PointDetailScreen(
                     if (punto.horariosResId != null && punto.ubicacionResId != null) {
                         InfoPracticaSection(
                             horariosResId = punto.horariosResId,
-                            ubicacionResId = punto.ubicacionResId
+                            ubicacionResId = punto.ubicacionResId,
+                            onOpenMapClick = onOpenMapClick
                         )
                     }
 
@@ -197,7 +199,8 @@ private fun DescripcionSection(@StringRes descripcionResId: Int) {
 @Composable
 private fun InfoPracticaSection(
     @StringRes horariosResId: Int, // ¡CAMBIO! Ya no es nullable aquí
-    @StringRes ubicacionResId: Int // ¡CAMBIO! Ya no es nullable aquí
+    @StringRes ubicacionResId: Int, // ¡CAMBIO! Ya no es nullable aquí
+    onOpenMapClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -227,7 +230,7 @@ private fun InfoPracticaSection(
                 Text(stringResource(id = ubicacionResId), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
             }
             Spacer(modifier = Modifier.height(16.dp))
-            TextButton(onClick = { /* TODO: Abrir mapa */ }) {
+            TextButton(onClick = onOpenMapClick ) {
                 Icon(Icons.Default.Map, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(stringResource(id = R.string.detalle_ver_en_mapa))
