@@ -159,7 +159,7 @@ fun ProfileScreen(
 
             // ¡CAMBIO! Mostramos el Nickname real si existe, o el título genérico
             Text(
-                text = if (uiState.nickname.isNotBlank()) uiState.nickname else stringResource(id = R.string.profile_user_section_title),
+                text = uiState.nickname.ifBlank { stringResource(id = R.string.profile_user_section_title) },
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
