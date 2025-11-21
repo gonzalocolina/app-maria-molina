@@ -83,5 +83,7 @@ captures/
 # Local Gradle cache
 .gradle
 
-# End of file
+# Ignore Android Studio deployment target selector (can contain local settings)
+**/deploymentTargetSelector.xml
 
+# End of file
