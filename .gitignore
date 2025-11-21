@@ -8,7 +8,6 @@ build/
 
 # Local configuration
 /local.properties
-.gradle/
 
 # Signing keys
 *.jks
@@ -77,8 +76,6 @@ coverage/
 Thumbs.db
 desktop.ini
 
-# Captured screenshots and builds
-captures/
 
 # Local Gradle cache
 .gradle
