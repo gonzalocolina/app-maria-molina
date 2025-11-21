@@ -54,7 +54,7 @@ fun ImageScreen(onBackClick: () -> Unit) {
         }
 
         // Ajustamos contentScale según tamaño/orientación (se usará por defecto)
-        val imageContentScaleDefault = if (isTablet || isLandscape) ContentScale.Fit else ContentScale.Crop
+        val imageContentScaleDefault = ContentScale.Fit
 
         // Ajustamos maxScale para que no sea excesivo en pantallas grandes
         val maxScale = if (isTablet) {
