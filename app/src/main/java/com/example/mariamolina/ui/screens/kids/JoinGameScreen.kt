@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.ui.viewmodel.JoinGameViewModel
@@ -24,6 +25,8 @@ fun JoinGameScreen(
 
     var nickname by remember { mutableStateOf("") }
     var pin by remember { mutableStateOf("") }
+
+    val maxCharNickname = 20
 
     // Reaccionar al estado de éxito
     LaunchedEffect(uiState) {
@@ -63,10 +66,23 @@ fun JoinGameScreen(
 
             OutlinedTextField(
                 value = nickname,
-                onValueChange = { nickname = it },
+                onValueChange = {
+                    // Solo actualizamos si no supera el límite
+                    if (it.length <= maxCharNickname) {
+                        nickname = it
+                    }
+                },
                 label = { Text("Tu Nickname (Nombre)") },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                supportingText = {
+                    Text(
+                        text = "${nickname.length} / $maxCharNickname",
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = if (nickname.length == maxCharNickname) MaterialTheme.colorScheme.error else Color.Unspecified
+                    )
+                }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
