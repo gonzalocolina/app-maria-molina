@@ -108,7 +108,7 @@ fun AppNavigation() {
                     currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/game") == true
 
                 //Solo mostramos la barra si NO estamos en ninguna de esas pantallas
-                if (!esRutaDetallePoi && !isProfile && !esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
+                if (!esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
                     AppTopBar(
                         titulo = stringResource(currentScreen.tituloTopBarResId),
                         subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },

@@ -13,4 +13,166 @@
     <string name="english">Anglais</string>
     <string name="german">Allemand</string>
     <string name="french">Français</string>
+
+    <!-- Chaînes générales (traduction du espagnol) -->
+    <string name="app_name">MariaMolina</string>
+    <string name="home_screen_title">María de Molina</string>
+    <string name="home_screen_intro_paragraph">María de Molina (1264–1321) fut l\'une des femmes les plus importantes de l\'histoire de Castille ; elle consacra sa vie à préserver la paix et la stabilité du royaume. Reine, mère de roi et grand‑mère de roi, elle reste surtout une gouvernante prudente et respectée, qui sut gagner le soutien du peuple et de la noblesse en des temps difficiles.</string>
+    <string name="section_title_childhood_family">Enfance et famille</string>
+    <string name="paragraph_childhood_family_1">Elle naquit vers 1264, probablement près du monastère de Santa María de Palazuelos, situé entre les actuels Corcos del Valle et Cabezón de Pisuerga.</string>
+    <string name="paragraph_childhood_family_2">María appartenait à une famille noble et puissante. Elle était la fille d\'Alfonso de Molina, frère du roi Fernando III, et de Mayor Alfonso de Meneses. Dès son plus jeune âge, elle grandit entourée de la vie politique de la cour castillane. Son éducation la prépara à assumer des responsabilités : elle apprit à lire, écrire et à comprendre les affaires du royaume, ce qui était rare pour les femmes de son époque.</string>
+    <string name="section_title_marriage_sancho">Mariage avec Sancho</string>
+    <string name="paragraph_marriage_sancho">En 1282, elle épousa l\'infant Sancho, futur roi Sancho IV. Leur mariage ne fut pas bien accueilli par tous : ils étaient proches parents et eurent besoin d\'une dispense papale qui tarda des années à arriver. Néanmoins, María soutint son mari dans les moments les plus difficiles, même lorsque ses droits au trône furent contestés. Après la mort de son beau‑père Alfonso X, Sancho fut couronné et elle devint reine de Castille.</string>
+    <string name="section_title_queen_sancho_iv">Reine aux côtés de Sancho IV</string>
+    <string name="paragraph_queen_sancho_iv">Pendant le règne de Sancho IV (1284–1295), María participa activement aux décisions politiques. Elle se fit connaître comme une femme intelligente, prudente et juste. Elle accompagna le roi lors de campagnes et défendit la légitimité de sa famille face aux ennemis intérieurs du royaume. Son époque fut marquée par des luttes entre les nobles et la consolidation de la monarchie castillane.</string>
+    <string name="section_title_regencies">Les régences de María de Molina</string>
+    <string name="paragraph_regencies">Après la mort de son époux Sancho IV en 1295, María assuma la régence pour son fils Fernando IV, qui n\'avait que neuf ans. Avec prudence et fermeté, elle parvint à maintenir la couronne au milieu de conflits internes, gagnant le respect des nobles et des conseils municipaux. Des années plus tard, en 1312, elle gouverna de nouveau comme régente pour son petit‑fils Alfonso XI, démontrant une fois de plus sa sagesse et sa capacité à préserver la paix et l\'unité du royaume en des temps difficiles.</string>
+    <string name="section_title_legacy_works">Héritage et œuvres</string>
+    <string name="paragraph_legacy_works">María de Molina est rappelée comme l\'une des grandes reines de Castille en raison de ses capacités politiques et de son sens de la justice. Elle fonda et soutint de nombreux monastères, comme celui de Las Huelgas de Valladolid, où elle fut enterrée. Elle promut l\'éducation, la religion et la paix en temps de guerre. Sa figure symbolise la prudence, la loyauté et la défense du bien commun.</string>
+
+    <!-- Détails des points d'intérêt / UI détail -->
+    <string name="detalle_descripcion">Description</string>
+    <string name="detalle_info_practica">Informations pratiques</string>
+    <string name="detalle_horarios">Horaires :</string>
+    <string name="detalle_ubicacion">Emplacement :</string>
+    <string name="detalle_ver_en_mapa">Voir sur la carte</string>
+    <string name="detalle_marcar_visitado">Marquer comme visité</string>
+    <string name="detalle_rating">Évaluation :</string>
+
+    <string name="detalle_subpuntos_titulo">Lieux associés</string>
+
+    <!-- Données utilisateur -->
+    <string name="profile_user_section_title">Ton pseudonyme</string>
+    <string name="profile_nickname_label">Pseudonyme</string>
+    <string name="profile_save_button">Enregistrer le pseudonyme</string>
+    <string name="profile_saved_success">Enregistré !</string>
+    <string name="profile_error_message">Erreur : %1$s</string>
+
+    <!-- Point 1 (Palazuelos) -->
+    <string name="p1_titulo">Alcazarejo</string>
+    <string name="p1_desc">Le Alcázar Real de Valladolid (XIIe–XIIIe siècles), situé à l\'extrémité ouest de la ville médiévale près de la confluence du bras nord de l\'Esgueva avec le Pisuerga, était un ensemble fortifié et palatial composé de deux enceintes : l\'alcazarejo (ou vieux alcázar), sur la terrasse basse au bord de l\'Esgueva, et l\'alcázar majeur sur la terrasse haute, près de la paroisse de San Julián. Après des siècles d\'utilisation royale et plusieurs réformes, il fut donné aux bénédictins en 1390. Aujourd\'hui, ses vestiges font partie du Monastère de San Benito el Real et du Museo Patio Herreriano.</string>
+    <string name="p1_nombre_a">Museo Patio Herreriano</string>
+    <string name="p1_nombre_b">Monastère de San Benito</string>
+    <string name="p1_horarios_a">11:00–14:00, 17:00–20:00 (mardi–vendredi) ; samedi : 11:00–20:00 et dimanche 11:00–15:00</string>
+    <string name="p1_horarios_b">Non disponible</string>
+    <string name="p1_ubicacion_a">C. Jorge Guillén, 6, 47003 Valladolid</string>
+    <string name="p1_ubicacion_b">C. San Benito, 3, 47003 Valladolid</string>
+
+    <!-- Point 2 -->
+    <string name="p2_titulo">Colegiata de Santa María la Mayor</string>
+    <string name="p2_desc">La Colegiata de Santa María la Mayor de Valladolid fut construite dans sa première version romane à la fin du XIe siècle vers 1180, par ordre du comte Pedro Ansurez. Plus tard, dans les années 1220, Juan Domínguez Medina, doyen de la collégiale, fit démolir l\'édifice roman primitif pour en élever un autre de style protogothique, ne conservant que la tour de l\'ensemble initial. L\'édifice subit d\'autres transformations aux siècles suivants.</string>
+    <string name="p2_horarios">Ouvert 24h</string>
+    <string name="p2_ubicacion">C. Arribas, 1, 47002 Valladolid</string>
+
+    <!-- Point 3 -->
+    <string name="p3_titulo">Église Santa María de la Antigua</string>
+    <string name="p3_desc">L\'église Santa María de la Antigua de Valladolid est une église romane du XIIe siècle, mais achevée dans un style gothique. Du XIIe siècle subsistent la tour et un porche. La tour, haute d\'environ 50 m, est considérée comme le clocher roman le plus haut d\'Espagne. Le reste du bâtiment est gothique et néogothique, probablement reconstruit au XIVe siècle sous le règne d\'Alfonso XI.</string>
+    <string name="p3_horarios">Lundi–vendredi : 9:00–10:00, 18:30–20:00</string>
+    <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
+
+    <!-- Point 4 -->
+    <string name="p4_titulo">Iglesia de San Miguel</string>
+    <string name="p4_desc">L\'église primitive se trouvait au centre de l\'actuelle Plaza de San Miguel. Elle fut d\'abord dédiée à San Pelayo, puis à San Miguel au milieu du XIIe siècle. Une charte du 18 janvier 1151 la mentionne déjà comme l\'église de San Miguel, et elle est considérée comme la paroisse la plus ancienne de Valladolid. En 1478, elle fut détruite par un incendie et reconstruite par la volonté des Rois Catholiques à la fin du XVe siècle.</string>
+    <string name="p4_horarios">Non disponible</string>
+    <string name="p4_ubicacion">Non disponible</string>
+    <string name="p4_rating">Non disponible</string>
+
+    <!-- Point 5 -->
+    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_desc">Elle fut construite sur l\'un des portails de l\'ancienne muraille de la ville, à l\'extérieur, dans le lieu qui fut plus tard appelé Prado de la Magdalena, une zone alors constituée de champs et de potagers. Cette petite chapelle conserva son aspect d\'origine jusqu\'en 1538, lorsqu\'une chapelle funéraire fut ajoutée sur ordre du docteur Corral, haut magistrat, assurant ainsi un emplacement d\'inhumation choisi.</string>
+    <string name="p5_horarios">Lundi 18:00–20:15 ; Mardi 10:00–13:00, 16:00–20:15 ; Mercredi 10:00–13:00, 18:00–22:00 ; Jeudi 10:00–13:00, 18:00–20:30, 22:00–23:00 ; Vendredi 18:00–20:30 ; Samedi 18:30–22:00 ; Dimanche 11:15–14:00, 19:00–20:15</string>
+    <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
+
+    <!-- Point 6 -->
+    <string name="p6_titulo">Plaza del Mercado</string>
+    <string name="p6_desc">La actuelle Plaza Mayor de Valladolid était autrefois connue comme la "Plaza del Mercado", car au Moyen Âge s\'y tenait le marché central de la ville. Des documents attestent qu\'en 1260 un marché s\'y déroulait déjà. Avec le temps, le commerce s\'organisa en rues de métiers autour de la place et, en septembre 1561, un grand incendie détruisit une grande partie de son environnement.</string>
+    <string name="p6_horarios">Non disponible</string>
+    <string name="p6_ubicacion">Non disponible</string>
+    <string name="p6_rating">Non disponible</string>
+
+    <!-- Point 7 -->
+    <string name="p7_titulo">Puente Mayor</string>
+    <string name="p7_desc">Valladolid, située à la confluence de l\'Esgueva et du Pisuerga, disposait depuis le Moyen Âge d\'un passage fluvial principal sur le Pisuerga — la Puente Mayor — qui reliait la ville aux localités de l\'autre rive et favorisa la naissance du quartier de La Victoria. La tradition locale attribue la construction d\'un pont de pierre à Doña Eylo, épouse de Pedro Ansúrez, vers la fin du XIe siècle (vers 1080), probablement sur un passage en bois antérieur ; toutefois, les parties visibles du pont actuel datent surtout de phases de construction postérieures (XIIIe–XIVe siècles), et l\'attribution à Eylo relève davantage de la légende que de la certitude archéologique.</string>
+    <string name="p7_horarios">Non disponible</string>
+    <string name="p7_ubicacion">C. del Puente Mayor, 47003 Valladolid</string>
+
+    <!-- Point 8 -->
+    <string name="p8_titulo">Monasterio de Santa María de Palazuelos</string>
+    <string name="p8_desc">L\'origine du monastère est liée à la lignée des seigneurs de Meneses. En 1213, Alfonso Téllez de Meneses reçut la villa de Palazuelos d\'Alfonso VIII en récompense de sa participation à la bataille de Las Navas de Tolosa. Par la suite, Alfonso Téllez et son épouse cédèrent ces terres au couvent cistercien de San Andrés de Valvení. En 1313, les conseils de Castille se réunirent dans ce monastère pour établir la régence du jeune roi Alfonso XI. María naquit vers 1264 dans les environs de ce monastère.</string>
+    <string name="p8_horarios">Appeler le 605 68 20 97</string>
+    <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
+
+    <!-- Point 9 -->
+    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_desc">Le palais servit de résidence à la famille royale, notamment au roi Sancho IV et à son épouse María de Molina, sur un terrain adapté comme résidence royale au XIIIe siècle. Après la mort de Sancho IV en 1295, sa veuve María de Molina exerça la régence et dut renforcer la sécurité du palais. Avec le temps, la plupart des bâtiments disparurent ; subsiste notamment la porte mudéjar dite "Puerta de la Magdalena".</string>
+    <string name="p9_horarios">Fermé définitivement</string>
+    <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>
+
+    <!-- Point 10 -->
+    <string name="p10_titulo">Château de Tiedra</string>
+    <string name="p10_desc">Le château se situe dans la commune de Tiedra, province de Valladolid, et domine la plaine des Montes Torozos depuis une colline, lui donnant une position stratégique et défensive. La première mention documentaire du château ou de sa tour remonte au XIe siècle, à l\'époque du roi Sancho II de Castille. Au XIIe et XIIIe siècles, le château passa entre différentes mains seigneuriales.</string>
+    <string name="p10_horarios">983 791 405 / 667 763 852</string>
+    <string name="p10_ubicacion">Calle del Castillo, 47870 Tiedra, Valladolid</string>
+
+    <!-- Point 11 -->
+    <string name="p11_titulo">Château de Montealegre</string>
+    <string name="p11_desc">Le château se trouve à Montealegre de Campos dans la province de Valladolid. Des constructions défensives y sont attestées dès 967, dans le contexte des conflits entre les royaumes de Castille et León. L\'édifice actuel fut commandé au XIIIe siècle par Alfonso Téllez de Meneses. Le château domine le paysage et constitue l\'une des forteresses médiévales les mieux conservées de la province.</string>
+    <string name="p11_horarios">Fermé temporairement</string>
+    <string name="p11_ubicacion">C. Nicolás Rodríguez, 1, 47816 Montealegre de Campos, Valladolid</string>
+
+    <!-- Point 12 -->
+    <string name="p12_titulo">Monasterio de las Huelgas Reales</string>
+    <string name="p12_desc">Le monastère est situé hors des murs de la ville médiévale, sur le site de l\'ancien palais fondé par la reine, proche du faubourg de la Magdalena. Sa fondation est liée à la reine María de Molina, qui vers 1282 céda son palais pour fonder un monastère cistercien dédié à "Santa María la Real de las Huelgas". Peu avant sa mort, María de Molina demanda à être inhumée dans ce monastère.</string>
+    <string name="p12_horarios">Lundi fermé ; Mardi–Samedi : 10:00–14:00 (accès jusqu\'à 13:00) et 16:00–18:30 (accès jusqu\'à 17:30) ; Entrée gratuite : mercredi et jeudi 16:00–18:30 (dernier accès 17:30) ; Dimanches et jours fériés : 10:30–15:00 (accès jusqu\'à 14:00)</string>
+    <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
+
+    <!-- Navigation -->
+    <string name="nav_home_title">Valladolid historique</string>
+    <string name="nav_home_subtitle">Découvrez l\'histoire de María de Molina</string>
+    <string name="nav_points_title">Points d\'intérêt</string>
+    <string name="nav_points_subtitle">Valladolid historique</string>
+    <string name="nav_map_title">Carte</string>
+    <string name="nav_map_subtitle">Trouvez votre itinéraire</string>
+    <string name="nav_kids_title">Enfants</string>
+    <string name="nav_kids_subtitle">Activités pour enfants</string>
+    <string name="nav_profile_title">Profil</string>
+    <string name="nav_home_bottom">Accueil</string>
+    <string name="nav_points_bottom">Points d\'intérêt</string>
+    <string name="nav_map_bottom">Carte</string>
+    <string name="nav_kids_bottom">Enfants</string>
+
+    <!-- Extras (boutons, descriptions et formats) -->
+    <string name="btn_volver">Retour</string>
+    <string name="btn_ver_arbol">Voir l\'arbre généalogique</string>
+    <string name="cd_imagen_ejemplo">Image d\'exemple</string>
+    <string name="cd_imagen_inicial">Image initiale de María de Molina</string>
+    <string name="cd_volver">Retour</string>
+    <string name="cd_horarios">Horaires</string>
+    <string name="cd_ubicacion">Emplacement</string>
+    <string name="cd_rating">Évaluation</string>
+    <string name="cd_perfil">Profil</string>
+    <string name="fmt_rating_per_5">%1$.1f/5</string>
+
+    <!-- Section enfants / Quiz -->
+    <string name="kids_menu_titulo">Quiz pour enfants</string>
+    <string name="kids_menu_descripcion">Montre ce que tu as appris sur l\'histoire que nous avons racontée. Choisis une difficulté !</string>
+    <string name="kids_dificultad_facil">Facile</string>
+    <string name="kids_dificultad_media">Moyen</string>
+    <string name="kids_dificultad_dificil">Difficile</string>
+    <string name="kids_iniciar_quiz">Commencer à jouer !</string>
+    <string name="kids_quiz_siguiente">Suivant</string>
+    <string name="kids_quiz_puntuacion">Score : %d</string>
+    <string name="kids_quiz_finalizado">Quiz terminé !</string>
+    <string name="kids_quiz_resultado">Ton score final est : %d / %d</string>
+    <string name="kids_quiz_volver_menu">Retour au menu</string>
+    <string name="kids_quiz_ranking">Voir le classement</string>
+
+    <!-- Nouvelles chaînes pour la section enfants ajoutées par la navigation -->
+    <string name="kids_ver_diapositivas">Voir les diapositives</string>
+    <string name="kids_opcion_cuestionarios">Questionnaires</string>
+    <string name="kids_slides_titulo">Diapositives pour enfants</string>
+    <string name="kids_slides_descripcion">Ici vous pouvez voir les diapositives de l\'histoire adaptées pour les enfants.</string>
+    <string name="kids_no_slides">Aucune diapositive disponible</string>
+    <string name="cd_back">Retour</string>
+
 </resources>

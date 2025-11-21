@@ -30,7 +30,7 @@ import kotlin.math.max
 fun ImageScreen(onBackClick: () -> Unit) {
     val painter = painterResource(id = R.drawable.arbol)
 
-    var scale by remember { mutableStateOf(1f) }
+    var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) } // en px
     var containerSize by remember { mutableStateOf(IntSize.Zero) } // tamaño del área de la imagen
 
