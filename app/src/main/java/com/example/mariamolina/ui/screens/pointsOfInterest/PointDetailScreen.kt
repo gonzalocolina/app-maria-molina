@@ -38,7 +38,8 @@ import androidx.compose.ui.layout.ContentScale
 fun PointDetailScreen(
     punto: PuntoInteres,
     onBackClick: () -> Unit,
-    onOpenMapClick: () -> Unit
+    onOpenMapClick: () -> Unit,
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
 ) {
     Scaffold(
         bottomBar = {
@@ -119,7 +120,10 @@ fun PointDetailScreen(
 
                     // ¡CAMBIO! Comprobamos si hay subpuntos
                     if (punto.subpuntos.isNotEmpty()) {
-                        SubPuntosSection(subpuntos = punto.subpuntos)
+                        SubPuntosSection(
+                            subpuntos = punto.subpuntos,
+                            onOpenSubPointMapClick = onOpenSubPointMapClick
+                        )
                     }
 
                     // ¡CAMBIO! La sección Consejos ya no existe
@@ -241,7 +245,10 @@ private fun InfoPracticaSection(
 
 // --- NUEVA SECCIÓN! ---
 @Composable
-private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
+private fun SubPuntosSection(
+    subpuntos: List<SubPuntoInteres>,
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -257,7 +264,10 @@ private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
 
             // Iteramos sobre los subpuntos
             subpuntos.forEachIndexed { index, subpunto ->
-                SubPuntoItem(subpunto = subpunto)
+                SubPuntoItem(
+                    subpunto = subpunto,
+                    onOpenSubPointMapClick = onOpenSubPointMapClick
+                )
                 if (index < subpuntos.lastIndex) {
                     Divider(modifier = Modifier.padding(vertical = 12.dp))
                 }
@@ -267,7 +277,10 @@ private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
 }
 
 @Composable
-private fun SubPuntoItem(subpunto: SubPuntoInteres) {
+private fun SubPuntoItem(
+    subpunto: SubPuntoInteres,
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         // Título y Rating
         Row(
@@ -309,6 +322,14 @@ private fun SubPuntoItem(subpunto: SubPuntoInteres) {
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(id = subpunto.ubicacionResId), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
             }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextButton(onClick = { onOpenSubPointMapClick(subpunto) }) {
+            Icon(Icons.Default.Map, contentDescription = null, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(stringResource(id = R.string.detalle_ver_en_mapa))
         }
     }
 }

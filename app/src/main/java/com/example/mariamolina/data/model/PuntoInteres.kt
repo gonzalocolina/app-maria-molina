@@ -22,10 +22,15 @@ data class PuntoInteres(
 )
 
 data class SubPuntoInteres(
+    val id: String,
     @StringRes val nombreResId: Int,
     val rating: Double?,
     @StringRes val horariosResId: Int?,
     @StringRes val ubicacionResId: Int?,
+
+    // Para el mapa
+    val latitud: Double,
+    val longitud: Double,
 )
 
 // 2. Creamos una lista de datos con los diferentes campos
@@ -36,24 +41,32 @@ val puntosDeInteres = listOf(
         urlImagen = "https://ik.imagekit.io/fn2wdosiw/Alcazarejo.JPG",
         rating = null,
         descripcionLargaResId = R.string.p1_desc,
-        horariosResId = null,
-        ubicacionResId = null,
+        horariosResId = R.string.p1_horarios,
+        ubicacionResId = R.string.p1_ubicacion,
 
         latitud = 41.65365205507737,
         longitud = -4.730360618893759,
 
         subpuntos = listOf(
             SubPuntoInteres(
+                id = "sp1",
                 nombreResId = R.string.p1_nombre_a,
                 rating = 4.4,
                 horariosResId = R.string.p1_horarios_a,
                 ubicacionResId = R.string.p1_ubicacion_a,
+
+                latitud = 41.654730127801,
+                longitud = -4.73026568816032
             ),
             SubPuntoInteres(
+                id = "sp2",
                 nombreResId = R.string.p1_nombre_b,
                 rating = 4.9,
                 horariosResId = R.string.p1_horarios_b,
                 ubicacionResId = R.string.p1_ubicacion_b,
+
+                latitud = 41.654091266634545,
+                longitud = -4.729607288160295
             )
         )
         ),
@@ -97,7 +110,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p5",
         tituloResId = R.string.p5_titulo,
-        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Santa-Maria-la-Mayor.jpg",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/valladolid-iglesia-magdalena.jpg?updatedAt=1763226656600",
         rating = 4.5,
         descripcionLargaResId = R.string.p5_desc,
         horariosResId = R.string.p5_horarios,
