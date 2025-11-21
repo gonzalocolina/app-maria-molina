@@ -64,6 +64,7 @@ fun AppNavigation() {
 
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    val isTablet = configuration.smallestScreenWidthDp >= 600
 
     // 1. Escuchamos al controlador principal (para títulos y barra inferior)
     val navBackStackEntry by navControllerPrincipal.currentBackStackEntryAsState()
@@ -74,11 +75,21 @@ fun AppNavigation() {
     val isProfile = currentDestination?.route == Pantalla.Profile.ruta
 
     // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
-    val topAppBarScrollBehavior: TopAppBarScrollBehavior =
+    // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
+    val topAppBarScrollBehavior: TopAppBarScrollBehavior? = if (!isTablet) {
         TopAppBarDefaults.enterAlwaysScrollBehavior()
+    } else {
+        null
+    }
+
+    val scaffoldModifier = if (topAppBarScrollBehavior != null) {
+        Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+    } else {
+        Modifier
+    }
 
     Scaffold(
-        modifier = Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
+        modifier = scaffoldModifier,
         topBar = {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
             val esRutaDetallePoi =
@@ -98,7 +109,7 @@ fun AppNavigation() {
                     currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/game") == true
 
                 //Solo mostramos la barra si NO estamos en ninguna de esas pantallas
-                if (!esRutaDetallePoi && !isProfile && !esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
+                if (!esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
                     AppTopBar(
                         titulo = stringResource(currentScreen.tituloTopBarResId),
                         subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
@@ -111,10 +122,25 @@ fun AppNavigation() {
 
         bottomBar = {
             if (!isProfile) {
+                // Calculamos la altura del NavigationBar según el dispositivo y orientación
+                val navBarHeight = when {
+                    isTablet && isLandscape -> 90.dp  // Tablets en horizontal: más grande
+                    isLandscape -> 45.dp              // Teléfonos en horizontal: pequeño
+                    else -> 75.dp                     // Vertical (cualquier dispositivo): estándar
+                }
+
+                // Tamaño de iconos y texto adaptativo
+                val iconSize = if (isTablet && isLandscape) 32.dp else 24.dp
+                val textStyle = if (isTablet && isLandscape) {
+                    MaterialTheme.typography.labelMedium
+                } else {
+                    MaterialTheme.typography.labelSmall
+                }
+
                 Column {
                     HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
                     NavigationBar(
-                        modifier = Modifier.height(if (isLandscape) 45.dp else 75.dp)
+                        modifier = Modifier.height(navBarHeight)
                     ) {
                         itemsNavegacion.forEach { pantalla ->
                             val isSelected =
@@ -133,16 +159,17 @@ fun AppNavigation() {
                                 icon = {
                                     Column(
                                         horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                                        verticalArrangement = Arrangement.spacedBy(4.dp)
                                     ) {
                                         Icon(
                                             pantalla.icono,
                                             contentDescription = stringResource(pantalla.tituloBottomBarResId),
-                                            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                                            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier.height(iconSize)
                                         )
                                         Text(
                                             stringResource(pantalla.tituloBottomBarResId),
-                                            style = MaterialTheme.typography.labelSmall,
+                                            style = textStyle,
                                             color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                                             textAlign = TextAlign.Center
                                         )

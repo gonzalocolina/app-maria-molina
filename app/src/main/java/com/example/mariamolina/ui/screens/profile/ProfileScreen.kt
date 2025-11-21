@@ -39,10 +39,10 @@ fun ProfileScreen(
 
     // --- ESTADO DEL IDIOMA ---
     val context = LocalContext.current
-    val spanish = "\uD83C\uDDEA\uD83C\uDDF8  Español"
-    val english = "\uD83C\uDDEC\uD83C\uDDE7  English"
-    val german = "\uD83C\uDDE9\uD83C\uDDEA  Deutsch"
-    val french = "\uD83C\uDDEB\uD83C\uDDF7  Français"
+    val spanish = "Español"
+    val english = "English"
+    val german = "Deutsch"
+    val french = "Français"
     val languages = listOf(spanish, english, german, french)
 
     val currentLanguageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("language", "es") ?: "es"
@@ -56,6 +56,22 @@ fun ProfileScreen(
 
     var selectedLanguage by remember { mutableStateOf(defaultLanguage) }
     var showDialog by remember { mutableStateOf(false) }
+
+    // --- ESTADO DEL TAMAÑO DE LETRA ---
+    val normal = "Normal"
+    val grande = "Grande"
+    val muyGrande = "Muy grande"
+    val fontSizes = listOf(normal, grande, muyGrande)
+
+    val currentFontSize = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("font_size", "normal") ?: "normal"
+    val defaultFontSize = when (currentFontSize) {
+        "normal" -> normal
+        "large" -> grande
+        "very_large" -> muyGrande
+        else -> normal
+    }
+
+    var selectedFontSize by remember { mutableStateOf(defaultFontSize) }
 
     Scaffold(
         topBar = {
@@ -94,9 +110,10 @@ fun ProfileScreen(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = AppPrimaryBrown)
             ) {
-                Text(selectedLanguage)
-                Spacer(modifier = Modifier.weight(1f))
-                Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Text(selectedLanguage, modifier = Modifier.align(Alignment.Center))
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = null, modifier = Modifier.align(Alignment.CenterEnd))
+                }
             }
 
             if (showDialog) {
@@ -159,7 +176,7 @@ fun ProfileScreen(
 
             // ¡CAMBIO! Mostramos el Nickname real si existe, o el título genérico
             Text(
-                text = if (uiState.nickname.isNotBlank()) uiState.nickname else stringResource(id = R.string.profile_user_section_title),
+                text = uiState.nickname.ifBlank { stringResource(id = R.string.profile_user_section_title) },
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -203,6 +220,49 @@ fun ProfileScreen(
                         text = stringResource(id = R.string.profile_error_message, uiState.error!!),
                         color = MaterialTheme.colorScheme.error
                     )
+                }
+            }
+
+            // Separador
+            Spacer(modifier = Modifier.height(16.dp))
+            HorizontalDivider()
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // --- SECCIÓN 2.5: TAMAÑO DE LETRA ---
+            Text(
+                text = "Tamaño de letra",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+
+            Column {
+                fontSizes.forEach { size ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        RadioButton(
+                            selected = selectedFontSize == size,
+                            onClick = {
+                                selectedFontSize = size
+                                val sizeCode = when (size) {
+                                    normal -> "normal"
+                                    grande -> "large"
+                                    muyGrande -> "very_large"
+                                    else -> "normal"
+                                }
+                                val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+                                prefs.edit { putString("font_size", sizeCode) }
+                                Toast.makeText(
+                                    context,
+                                    "Tamaño de letra cambiado a $size",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                (context as? androidx.activity.ComponentActivity)?.recreate()
+                            }
+                        )
+                        Text(size)
+                    }
                 }
             }
 
