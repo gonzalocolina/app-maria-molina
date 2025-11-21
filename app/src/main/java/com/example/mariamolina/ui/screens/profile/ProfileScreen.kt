@@ -39,10 +39,10 @@ fun ProfileScreen(
 
     // --- ESTADO DEL IDIOMA ---
     val context = LocalContext.current
-    val spanish = "\uD83C\uDDEA\uD83C\uDDF8  Español"
-    val english = "\uD83C\uDDEC\uD83C\uDDE7  English"
-    val german = "\uD83C\uDDE9\uD83C\uDDEA  Deutsch"
-    val french = "\uD83C\uDDEB\uD83C\uDDF7  Français"
+    val spanish = "Español"
+    val english = "English"
+    val german = "Deutsch"
+    val french = "Français"
     val languages = listOf(spanish, english, german, french)
 
     val currentLanguageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("language", "es") ?: "es"
