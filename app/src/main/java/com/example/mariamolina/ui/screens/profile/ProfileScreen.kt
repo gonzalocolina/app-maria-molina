@@ -7,10 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,20 +20,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.R
-import com.example.mariamolina.ui.viewmodel.ProfileViewModel
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    onBackClick: () -> Unit,
-    viewModel: ProfileViewModel = viewModel()
+    onBackClick: () -> Unit
+    // Hemos eliminado el ViewModel ya que no guardamos datos de usuario aquí
 ) {
-    // --- ESTADO DEL USUARIO (Firebase) ---
-    val uiState by viewModel.uiState.collectAsState()
-
     // --- ESTADO DEL IDIOMA ---
     val context = LocalContext.current
     val spanish = "\uD83C\uDDEA\uD83C\uDDF8  Español"
@@ -78,16 +70,18 @@ fun ProfileScreen(
                 .padding(innerPadding)
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             // --- SECCIÓN 1: IDIOMA ---
             Text(
                 text = stringResource(R.string.select_language_title),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = { showDialog = true },
@@ -126,11 +120,13 @@ fun ProfileScreen(
                                         }
                                         val prefs = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
                                         prefs.edit { putString("language", languageCode) }
+
                                         Toast.makeText(
                                             context,
                                             context.getString(R.string.language_changed_toast, language),
                                             Toast.LENGTH_SHORT
                                         ).show()
+
                                         (context as? androidx.activity.ComponentActivity)?.recreate()
                                     },
                                     modifier = Modifier.fillMaxWidth()
@@ -144,85 +140,25 @@ fun ProfileScreen(
             }
 
             // Separador
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             HorizontalDivider()
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-            // --- SECCIÓN 2: DATOS DE USUARIO ---
-
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = null,
-                modifier = Modifier.size(100.dp),
-                tint = AppPrimaryBrown
-            )
-
-            // ¡CAMBIO! Mostramos el Nickname real si existe, o el título genérico
-            Text(
-                text = if (uiState.nickname.isNotBlank()) uiState.nickname else stringResource(id = R.string.profile_user_section_title),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            if (uiState.isLoading) {
-                CircularProgressIndicator()
-            } else {
-                OutlinedTextField(
-                    value = uiState.nickname,
-                    onValueChange = { viewModel.updateNickname(it) },
-                    label = { Text(stringResource(id = R.string.profile_nickname_label)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) }
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Button(
-                    onClick = { viewModel.saveProfile() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = AppPrimaryBrown)
-                ) {
-                    Text(stringResource(id = R.string.profile_save_button))
-                }
-
-                if (uiState.isSaved) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(id = R.string.profile_saved_success), color = Color(0xFF4CAF50))
-                    }
-                }
-
-                if (uiState.error != null) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.profile_error_message, uiState.error!!),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            }
-
-            // Separador
-            Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider()
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // --- SECCIÓN 3: INFORMACIÓN ---
+            // --- SECCIÓN 2: INFORMACIÓN (Sobre la App) ---
 
             Text(
                 text = stringResource(R.string.about_title),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.align(Alignment.Start)
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = stringResource(R.string.about_description),
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
+                modifier = Modifier.align(Alignment.Start)
             )
 
             Spacer(modifier = Modifier.height(32.dp))
