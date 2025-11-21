@@ -33,15 +33,19 @@ fun MapScreen(
     var selectedDestino by remember { mutableStateOf(destinoInicial) }
     var showPanel by remember { mutableStateOf(destinoInicial != null) }
     var drawRoute by remember { mutableStateOf(false) }
+    var centerOnRoute by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
         MapViewComposable(
             selectedDestino = selectedDestino,
             drawRoute = drawRoute,
+            centerOnRoute = centerOnRoute,
+            onFinishCenter = { centerOnRoute = false },
             onMarkerClick = { destino ->
                 selectedDestino = destino
-                drawRoute = false   // 🔥 NO dibujar ruta al pulsar un marcador
+                drawRoute = false
+                centerOnRoute = false
                 showPanel = true
             },
             modifier = Modifier.fillMaxSize()
@@ -58,8 +62,13 @@ fun MapScreen(
                     onNavigate = { onNavigateToDetail(destino) },
                     onShowRoute = {
                         drawRoute = true
+                        centerOnRoute = true
                     },
-                    onClose = { showPanel = false }
+                    onClose = {
+                        selectedDestino = null   // Quitar selección del destino
+                        drawRoute = false        // Quitar la ruta dibujada
+                        showPanel = false        // Ocultar el panel
+                    }
                 )
             }
         }
@@ -71,7 +80,9 @@ fun MapViewComposable(
     modifier: Modifier = Modifier,
     selectedDestino: PuntoInteres?,
     drawRoute: Boolean,
-    onMarkerClick: (PuntoInteres) -> Unit
+    onMarkerClick: (PuntoInteres) -> Unit,
+    centerOnRoute: Boolean,
+    onFinishCenter: () -> Unit
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
@@ -123,6 +134,24 @@ fun MapViewComposable(
                 }
 
                 map.overlays.add(polyline)
+            }
+
+            // ---------- CENTRAR LA RUTA ----------
+            if (centerOnRoute && selectedDestino != null) {
+
+                val destinoPoint = GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
+                val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
+
+                // Calculamos el centro medio entre origen y destino
+                val middleLat = (currentCenter.latitude + destinoPoint.latitude) / 2
+                val middleLon = (currentCenter.longitude + destinoPoint.longitude) / 2
+                val centerPoint = GeoPoint(middleLat, middleLon)
+
+                // Ajustamos zoom para que se vea bien la línea
+                map.controller.setZoom(15.0)
+                map.controller.animateTo(centerPoint)
+
+                onFinishCenter()   // 👈 IMPORTANTE: reseteamos el estado para no repetirlo
             }
 
             map.invalidate()
