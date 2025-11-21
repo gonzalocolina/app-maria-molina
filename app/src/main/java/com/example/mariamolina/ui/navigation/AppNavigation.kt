@@ -192,6 +192,11 @@ fun AppNavigation() {
                             navControllerPrincipal.navigate("map?destinoId=${punto.id}") {
                                 launchSingleTop = true
                             }
+                        },
+                        onOpenSubPointMapClick = { subpunto ->
+                            navControllerPrincipal.navigate("map?destinoId=${subpunto.id}") {
+                                launchSingleTop = true
+                            }
                         }
                     )
                 }

@@ -55,6 +55,8 @@
         integrados en el Monasterio de San Benito el Real y en el Museo Patio Herreriano, donde aún pueden apreciarse vestigios del antiguo conjunto. El alcazarejo tenía forma cuadrada —de unos 31 metros de lado según las excavaciones— y contaba con ocho cubos macizos:
         uno en el centro de cada lienzo y otro en las esquinas.
     </string>
+    <string name="p1_horarios">No disponible</string>
+    <string name="p1_ubicacion">Pl. de la Rinconada, 3, 47001 Valladolid</string>
     <string name="p1_nombre_a">Museo Patio Herreriano </string>
     <string name="p1_nombre_b">Monasterio de San Benito </string>
     <string name="p1_horarios_a">11:00–14:00, 17:00–20:00 (martes–viernes) ; sábados: 11.00–20:00 y domingo de 11:00 a 15:00</string>
