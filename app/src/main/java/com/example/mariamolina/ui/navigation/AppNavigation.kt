@@ -92,7 +92,8 @@ fun AppNavigation() {
         modifier = scaffoldModifier,
         topBar = {
             // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
-            val esRutaDetallePoi = currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
+            val esRutaDetallePoi =
+                currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
 
             // Comprobamos si estamos en la pantalla de slides
             val esRutaSlides = currentDestination?.route == "${Pantalla.Kids.ruta}/slides"
@@ -143,7 +144,7 @@ fun AppNavigation() {
                     ) {
                         itemsNavegacion.forEach { pantalla ->
                             val isSelected =
-                                currentDestination?.hierarchy?.any { it.route == pantalla.ruta } == true
+                                currentDestination?.route?.startsWith(pantalla.ruta) == true
 
                             NavigationBarItem(
                                 selected = isSelected,
@@ -153,7 +154,6 @@ fun AppNavigation() {
                                             saveState = true
                                         }
                                         launchSingleTop = true
-                                        restoreState = true
                                     }
                                 },
                                 icon = {
@@ -214,12 +214,15 @@ fun AppNavigation() {
                 if (punto != null) {
                     PointDetailScreen(
                         punto = punto,
-                        onBackClick = { navControllerPrincipal.popBackStack() }
+                        onBackClick = { navControllerPrincipal.popBackStack() },
+                        onOpenMapClick = {
+                            navControllerPrincipal.navigate("map?destinoId=${punto.id}") {
+                                launchSingleTop = true
+                            }
+                        }
                     )
                 }
             }
-
-            composable(Pantalla.Map.ruta) { MapScreen() }
 
             // --- SECCION INFANTIL ---
 
@@ -235,9 +238,11 @@ fun AppNavigation() {
             // B. Menú del Quiz (Elegir Dificultad / Admin / Unirse)
             composable("${Pantalla.Kids.ruta}/quiz") {
                 KidsQuizMenuScreen(
-                    onBack = { navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
-                        popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
-                    } },
+                    onBack = {
+                        navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
+                            popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
+                        }
+                    },
                     onStartQuiz = { dificultad ->
                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/${dificultad.name}")
                     },
@@ -255,34 +260,50 @@ fun AppNavigation() {
                 )
             }
 
+            composable("map?destinoId={destinoId}") { backStackEntry ->
+                val destinoId = backStackEntry.arguments?.getString("destinoId")
+                val destino = puntosDeInteres.find { it.id == destinoId }
+
+                MapScreen(
+                    destinoInicial = destino,
+                    onNavigateToDetail = { punto ->
+                        navControllerPrincipal.navigate(
+                            "${Pantalla.PointsOfInterest.ruta}/detail/${punto.id}"
+                        )
+                    }
+                )
+            }
+
             // C. Diapositivas
             composable("${Pantalla.Kids.ruta}/slides") {
-                KidsSlidesScreen(onBackToEntry = { navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
-                    popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
-                } })
+                KidsSlidesScreen(onBackToEntry = {
+                    navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
+                        popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
+                    }
+                })
             }
 
             // D. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
             composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
-                 val dificultadString = backStackEntry.arguments?.getString("dificultad")
-                 val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
+                val dificultadString = backStackEntry.arguments?.getString("dificultad")
+                val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
 
-                 QuizGameScreen(
-                     dificultad = dificultad,
-                     onQuizFinished = {
+                QuizGameScreen(
+                    dificultad = dificultad,
+                    onQuizFinished = {
                         // Vuelve al sub-menú de cuestionarios (/quiz)
                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
                             popUpTo("${Pantalla.Kids.ruta}/quiz") { inclusive = true }
                         }
-                     },
-                     onNavigateToRanking = {
-                         // Navega al ranking desde la pantalla de resultados
-                         navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
-                             // Opcional: cierra la pantalla de quiz
+                    },
+                    onNavigateToRanking = {
+                        // Navega al ranking desde la pantalla de resultados
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
+                            // Opcional: cierra la pantalla de quiz
                             popUpTo(Pantalla.Kids.ruta) { inclusive = true }
-                         }
-                     }
-                 )
+                        }
+                    }
+                )
             }
             // E. Pantalla de Ranking
             composable("${Pantalla.Kids.ruta}/ranking") {
@@ -328,8 +349,6 @@ fun AppNavigation() {
                     }
                 )
             }
-
-            // --- 5. PERFIL ---
             composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }
@@ -338,7 +357,12 @@ fun AppNavigation() {
 // (Tu función AppTopBar y el Preview quedan exactamente igual)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopBar(titulo: String, subtitulo: String?, onProfileClick: () -> Unit, scrollBehavior: TopAppBarScrollBehavior? = null) {
+fun AppTopBar(
+    titulo: String,
+    subtitulo: String?,
+    onProfileClick: () -> Unit,
+    scrollBehavior: TopAppBarScrollBehavior? = null
+) {
     TopAppBar(
         title = {
             Column {

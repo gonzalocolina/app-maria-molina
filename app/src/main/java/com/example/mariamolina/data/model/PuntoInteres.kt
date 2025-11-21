@@ -13,6 +13,11 @@ data class PuntoInteres(
     @StringRes val descripcionLargaResId: Int,
     @StringRes val horariosResId: Int? ,
     @StringRes val ubicacionResId: Int?,
+
+    // Para el mapa
+    val latitud: Double,
+    val longitud: Double,
+
     val subpuntos: List<SubPuntoInteres> = emptyList()
 )
 
@@ -33,6 +38,10 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p1_desc,
         horariosResId = null,
         ubicacionResId = null,
+
+        latitud = 41.65365205507737,
+        longitud = -4.730360618893759,
+
         subpuntos = listOf(
             SubPuntoInteres(
                 nombreResId = R.string.p1_nombre_a,
@@ -55,7 +64,10 @@ val puntosDeInteres = listOf(
         rating = 4.6,
         descripcionLargaResId = R.string.p2_desc,
         horariosResId = R.string.p2_horarios,
-        ubicacionResId = R.string.p2_ubicacion
+        ubicacionResId = R.string.p2_ubicacion,
+
+        latitud = 41.65324216039736,
+        longitud = -4.723034965661509
         ),
     PuntoInteres(
         id = "p3",
@@ -65,6 +77,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p3_desc,
         horariosResId = R.string.p3_horarios,
         ubicacionResId = R.string.p3_ubicacion,
+
+        latitud = 41.65393795160224,
+        longitud = -4.722785661247381
         ),
     PuntoInteres(
         id = "p4",
@@ -74,6 +89,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p4_desc,
         horariosResId = R.string.p4_horarios,
         ubicacionResId = R.string.p4_ubicacion,
+
+        latitud = 41.65516875619189,
+        longitud = -4.727215297435327
     ),
 
     PuntoInteres(
@@ -84,6 +102,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p5_desc,
         horariosResId = R.string.p5_horarios,
         ubicacionResId = R.string.p5_ubicacion,
+
+        latitud = 41.65391722856585,
+        longitud = -4.717652346507175
     ),
 
     PuntoInteres(
@@ -94,6 +115,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p6_desc,
         horariosResId = R.string.p6_horarios,
         ubicacionResId = R.string.p6_ubicacion,
+
+        latitud = 41.652197653540284,
+        longitud = -4.728655979541548
     ),
 
     PuntoInteres(
@@ -104,6 +128,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p7_desc,
         horariosResId = R.string.p7_horarios,
         ubicacionResId = R.string.p7_ubicacion,
+
+        latitud = 41.66006310800611,
+        longitud = -4.732774565795078
     ),
 
     PuntoInteres(
@@ -114,6 +141,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p8_desc,
         horariosResId = R.string.p8_horarios,
         ubicacionResId = R.string.p8_ubicacion,
+
+        latitud = 41.75279383945776,
+        longitud = -4.633373559319185
     ),
 
     PuntoInteres(
@@ -124,6 +154,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p9_desc,
         horariosResId = R.string.p9_horarios,
         ubicacionResId = R.string.p9_ubicacion,
+
+        latitud = 41.653613496183674,
+        longitud = -4.717215040419569
     ),
 
     PuntoInteres(
@@ -134,6 +167,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p10_desc,
         horariosResId = R.string.p10_horarios,
         ubicacionResId = R.string.p10_ubicacion,
+
+        latitud = 41.65016227317396,
+        longitud = -5.269390403503933
     ),
 
     PuntoInteres(
@@ -144,6 +180,9 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p11_desc,
         horariosResId = R.string.p11_horarios,
         ubicacionResId = R.string.p11_ubicacion,
+
+        latitud = 41.903087071041696,
+        longitud = -4.903341269408345
     ),
 
     PuntoInteres(
@@ -154,5 +193,8 @@ val puntosDeInteres = listOf(
         descripcionLargaResId = R.string.p12_desc,
         horariosResId = R.string.p12_horarios,
         ubicacionResId = R.string.p12_ubicacion,
+
+        latitud = 41.654132640841034,
+        longitud = -4.716651025115444
     )
 )

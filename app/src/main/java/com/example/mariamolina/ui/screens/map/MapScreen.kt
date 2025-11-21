@@ -1,144 +1,225 @@
 package com.example.mariamolina.ui.screens.map
 
+
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import androidx.compose.ui.viewinterop.AndroidView
+import coil.compose.AsyncImage
+import com.example.mariamolina.ui.theme.MariaMolinaTheme
+import com.example.mariamolina.data.model.PuntoInteres
+import com.example.mariamolina.data.model.puntosDeInteres
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 
-// Modelo de destino
-data class Destino(val nombre: String, val lat: Double, val lon: Double)
-
-// Lista de destinos de ejemplo
-val destinos = listOf(
-    Destino("Monasterio de las Huelgas Reales", 41.6542, -4.7165),
-    Destino("Monasterio de Santa María de Palazuelos", 41.7527, -4.63383),
-    Destino("Meneses de Campos", 41.94296, -4.92032),
-    Destino("Montealegre", 41.90226, -4.8998)
-)
-
 @Composable
-fun MapScreen() {
-    var selectedDestino by remember { mutableStateOf<Destino?>(null) }
+fun MapScreen(
+    destinoInicial: PuntoInteres? = null,
+    onNavigateToDetail: (PuntoInteres) -> Unit = {}
+) {
+    var selectedDestino by remember { mutableStateOf(destinoInicial) }
+    var showPanel by remember { mutableStateOf(destinoInicial != null) }
+    var drawRoute by remember { mutableStateOf(false) }
+    var centerOnRoute by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        // Mapa (arriba)
+    Box(modifier = Modifier.fillMaxSize()) {
+
         MapViewComposable(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth(),
-            selectedDestino = selectedDestino
+            selectedDestino = selectedDestino,
+            drawRoute = drawRoute,
+            centerOnRoute = centerOnRoute,
+            onFinishCenter = { centerOnRoute = false },
+            onMarkerClick = { destino ->
+                selectedDestino = destino
+                drawRoute = false
+                centerOnRoute = false
+                showPanel = true
+            },
+            modifier = Modifier.fillMaxSize()
         )
 
-        // Lista (abajo)
-        DestinosList(
-            destinos = destinos,
-            onDestinoClick = { destino -> selectedDestino = destino },
-            modifier = Modifier.weight(1f)
-        )
+        // ------- PANEL INFERIOR CUANDO SE PULSA UN DESTINO -------
+        AnimatedVisibility(
+            visible = showPanel && selectedDestino != null,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            selectedDestino?.let { destino ->
+                DestinoPanel(
+                    destino = destino,
+                    onNavigate = { onNavigateToDetail(destino) },
+                    onShowRoute = {
+                        drawRoute = true
+                        centerOnRoute = true
+                    },
+                    onClose = {
+                        selectedDestino = null   // Quitar selección del destino
+                        drawRoute = false        // Quitar la ruta dibujada
+                        showPanel = false        // Ocultar el panel
+                    }
+                )
+            }
+        }
     }
 }
 
 @Composable
 fun MapViewComposable(
     modifier: Modifier = Modifier,
-    selectedDestino: Destino?
+    selectedDestino: PuntoInteres?,
+    drawRoute: Boolean,
+    onMarkerClick: (PuntoInteres) -> Unit,
+    centerOnRoute: Boolean,
+    onFinishCenter: () -> Unit
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
+
+    val defaultMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!
+    val selectedMarkerDrawable = defaultMarkerDrawable.constantState?.newDrawable()?.mutate()!!
+    selectedMarkerDrawable.setColorFilter(
+        android.graphics.PorterDuffColorFilter(android.graphics.Color.RED, android.graphics.PorterDuff.Mode.SRC_IN)
+    )
+
 
     AndroidView(
         factory = {
             mapView.apply {
                 setMultiTouchControls(true)
-                val startPoint = GeoPoint(41.65213, -4.72856)
-                controller.setZoom(15.0)
-                controller.setCenter(startPoint)
-
-                // Marcador inicial
-                val marker = Marker(this)
-                marker.position = startPoint
-                marker.title = "Valladolid"
-                overlays.add(marker)
+                controller.setZoom(16.0)
+                controller.setCenter(GeoPoint(41.65213, -4.72856))
             }
         },
         modifier = modifier,
-        update = {
-            selectedDestino?.let { destino ->
-                it.overlays.clear()
+        update = { map ->
 
-                val startPoint = GeoPoint(41.65213, -4.72856)
-                val destinoPoint = GeoPoint(destino.lat, destino.lon)
+            map.overlays.clear()
 
-                val markerInicio = Marker(it).apply {
-                    position = startPoint
-                    title = "Inicio"
+            // ----------- 1) MARCADORES DE TODOS LOS DESTINOS -----------
+            puntosDeInteres.forEach { destino ->
+                val marker = Marker(map).apply {
+                    position = GeoPoint(destino.latitud, destino.longitud)
+                    title = context.getString(destino.tituloResId)
+                    icon = if (destino == selectedDestino) selectedMarkerDrawable else defaultMarkerDrawable
+
+                    setOnMarkerClickListener { _, _ ->
+                        onMarkerClick(destino)
+                        true
+                    }
                 }
-                val markerDestino = Marker(it).apply {
-                    position = destinoPoint
-                    title = destino.nombre
-                }
+                map.overlays.add(marker)
+            }
 
-                val line = Polyline().apply {
-                    addPoint(startPoint)
+            // ----------- 2) RUTA CUANDO HAY DESTINO SELECCIONADO -----------
+            if (drawRoute && selectedDestino != null) {
+
+                val destinoPoint = GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
+                val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
+
+                val polyline = Polyline().apply {
+                    addPoint(currentCenter)
                     addPoint(destinoPoint)
                 }
 
-                it.overlays.addAll(listOf(markerInicio, markerDestino, line))
-                it.controller.setZoom(16.0)
-                it.controller.animateTo(destinoPoint)
-                it.invalidate()
+                map.overlays.add(polyline)
             }
+
+            // ---------- CENTRAR LA RUTA ----------
+            if (centerOnRoute && selectedDestino != null) {
+
+                val destinoPoint = GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
+                val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
+
+                // Calculamos el centro medio entre origen y destino
+                val middleLat = (currentCenter.latitude + destinoPoint.latitude) / 2
+                val middleLon = (currentCenter.longitude + destinoPoint.longitude) / 2
+                val centerPoint = GeoPoint(middleLat, middleLon)
+
+                // Ajustamos zoom para que se vea bien la línea
+                map.controller.setZoom(15.0)
+                map.controller.animateTo(centerPoint)
+
+                onFinishCenter()   // 👈 IMPORTANTE: reseteamos el estado para no repetirlo
+            }
+
+            map.invalidate()
         }
     )
 }
 
 @Composable
-fun DestinosList(
-    destinos: List<Destino>,
-    onDestinoClick: (Destino) -> Unit,
-    modifier: Modifier = Modifier
+fun DestinoPanel(
+    destino: PuntoInteres,
+    onNavigate: () -> Unit,
+    onShowRoute: () -> Unit,
+    onClose: () -> Unit
 ) {
-    Surface(color = MaterialTheme.colorScheme.surfaceVariant, modifier = modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
-        ) {
-            items(destinos) { destino ->
-                DestinoCard(destino = destino, onClick = { onDestinoClick(destino) })
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+
+            // 🔥 IMAGEN DEL DESTINO
+            AsyncImage(
+                model = destino.urlImagen,
+                contentDescription = stringResource(destino.tituloResId),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .padding(bottom = 8.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            // 🔥 TITULO + BOTÓN DE CERRAR
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(destino.tituloResId),
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                IconButton(onClick = onClose) {
+                    Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // 🔥 BOTONES
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button(onClick = onShowRoute) {
+                    Text("Cómo llegar")
+                }
+
+                OutlinedButton(onClick = onNavigate) {
+                    Text("Más información")
+                }
             }
         }
     }
 }
-
-@Composable
-fun DestinoCard(destino: Destino, onClick: () -> Unit) {
-    Card(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Text(
-            text = destino.nombre,
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(16.dp)
-        )
-    }
-}
-
 
 @Preview(showBackground = true)
 @Composable

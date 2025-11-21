@@ -34,6 +34,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // Nota: se ha eliminado la llamada a installSplashScreen() para evitar dependencias faltantes.
+        val ctx = applicationContext
+        org.osmdroid.config.Configuration.getInstance().load(
+            ctx,
+            ctx.getSharedPreferences("osmdroid", MODE_PRIVATE)
+        )
 
         val permissions = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
