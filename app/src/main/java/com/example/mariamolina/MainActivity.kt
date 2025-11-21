@@ -16,6 +16,9 @@ import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import java.util.Locale
+import coil.imageLoader
+import coil.request.ImageRequest
+import com.example.mariamolina.data.model.SlidesProvider
 
 class MainActivity : ComponentActivity() {
     override fun attachBaseContext(newBase: Context) {
@@ -49,6 +52,9 @@ class MainActivity : ComponentActivity() {
             requestPermissionLauncher.launch(notGranted.toTypedArray())
         }
 
+        // Prefetch de las imágenes remotas de las diapositivas
+        prefetchSlideImages(applicationContext)
+
         setContent {
             MariaMolinaTheme {
                 Surface(
@@ -58,6 +64,27 @@ class MainActivity : ComponentActivity() {
                     AppNavigation()
                 }
             }
+        }
+    }
+
+    // Función que recorre las slides y encola peticiones de Coil para cachear las imágenes remotas
+    private fun prefetchSlideImages(context: Context) {
+        try {
+            val loader = context.imageLoader
+            SlidesProvider.testSlides.forEach { slide ->
+                val url = slide.imageUrl
+                if (url.startsWith("http") || url.contains("://")) {
+                    val req = ImageRequest.Builder(context)
+                        .data(url)
+                        .memoryCachePolicy(coil.request.CachePolicy.ENABLED)
+                        .diskCachePolicy(coil.request.CachePolicy.ENABLED)
+                        .build()
+                    loader.enqueue(req)
+                }
+            }
+        } catch (e: Exception) {
+            // No queremos romper el arranque si algo falla en prefetch; sólo logueamos
+            e.printStackTrace()
         }
     }
 }

@@ -33,13 +33,20 @@
     <string name="language_label">Idioma</string>
     <string name="language_changed_toast">Idioma cambiado a %s</string>
     <string name="about_title">Acerca de</string>
-    <string name="about_description">Esta aplicación es un ejemplo sobre María Molina.</string>
+    <string name="about_description">MariaMolina es una guía educativa e interactiva dedicada a divulgar la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid. La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés, rutas en mapa y contenidos adaptados para público infantil. Su objetivo es facilitar el acceso a la historia local de forma didáctica y visual; los datos se han recopilado a partir de fuentes históricas y culturales. La aplicación se ha creado para el Colegio Santa María La Real de Huelgas</string>
 
     <!-- Language options -->
     <string name="spanish">Español</string>
     <string name="english">Inglés</string>
     <string name="german">Alemán</string>
     <string name="french">Francés</string>
+
+    <!-- Datos de usuario -->
+    <string name="profile_user_section_title">Tu Nickname</string>
+    <string name="profile_nickname_label">Nickname</string>
+    <string name="profile_save_button">Guardar Nickname</string>
+    <string name="profile_saved_success">¡Guardado!</string>
+    <string name="profile_error_message">Error: %1$s</string>
 
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
@@ -198,4 +205,34 @@
     <string name="cd_perfil">Perfil</string>
     <!-- Formato para mostrar rating (un decimal) -->
     <string name="fmt_rating_per_5">%1$.1f/5</string>
+
+    //Seccion infantil
+    <!-- ... (El resto de tus strings) ... -->
+
+    <!-- ================== -->
+    <!-- SECCIÓN INFANTIL (QUIZ) -->
+    <!-- ================== -->
+
+    <!-- Texto de la UI -->
+    <string name="kids_menu_titulo">Cuestionario Infantil</string>
+    <string name="kids_menu_descripcion">Demuestra lo que has aprendido sobre la historia que te hemos contado. ¡Elige una dificultad!</string>
+    <string name="kids_dificultad_facil">Fácil</string>
+    <string name="kids_dificultad_media">Media</string>
+    <string name="kids_dificultad_dificil">Difícil</string>
+    <string name="kids_iniciar_quiz">¡Empezar a jugar!</string>
+    <string name="kids_quiz_siguiente">Siguiente</string>
+    <string name="kids_quiz_puntuacion">Puntuación: %d</string> <!-- El %d se reemplaza por un número -->
+    <string name="kids_quiz_finalizado">¡Cuestionario terminado!</string>
+    <string name="kids_quiz_resultado">Tu puntuación final es: %d / %d</string>
+    <string name="kids_quiz_volver_menu">Volver al menú</string>
+    <string name="kids_quiz_ranking">Ver Ranking</string>
+
+    <!-- Nuevas strings para la sección Kids añadidas por la navegación -->
+    <string name="kids_ver_diapositivas">Ver diapositivas</string>
+    <string name="kids_opcion_cuestionarios">Cuestionarios</string>
+    <string name="kids_slides_titulo">Diapositivas infantiles</string>
+    <string name="kids_slides_descripcion">Aquí puedes ver las diapositivas de la historia adaptadas para niños.</string>
+    <string name="kids_no_slides">No hay diapositivas disponibles</string>
+    <string name="cd_back">Volver</string>
+
 </resources>
