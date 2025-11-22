@@ -34,10 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
@@ -48,6 +50,7 @@ import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
+import com.example.mariamolina.ui.screens.kids.AdminGameScreen
 import com.example.mariamolina.ui.screens.kids.AdminLobbyScreen
 import com.example.mariamolina.ui.screens.kids.QuizGameScreen
 import com.example.mariamolina.ui.screens.kids.KidsEntryScreen
@@ -257,7 +260,25 @@ fun AppNavigation() {
             // F. Admin Lobby (Profesor - Crear Partida)
             composable("admin_lobby") {
                 AdminLobbyScreen(
-                    onBack = { navControllerPrincipal.popBackStack() }
+                    onBack = { navControllerPrincipal.popBackStack() },
+                    // AL EMPEZAR JUEGO: Pasamos el PIN a la pantalla de monitorización
+                    onGameStarted = { pin ->
+                        navControllerPrincipal.navigate("admin_game/$pin")
+                    }
+                )
+            }
+
+            composable(
+                route = "admin_game/{pin}",
+                arguments = listOf(navArgument("pin") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val pin = backStackEntry.arguments?.getString("pin") ?: ""
+
+                AdminGameScreen(
+                    pinPartida = pin, // Pasamos el PIN al Composable
+                    onGameFinished = {
+                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking?pin=$pin")
+                    }
                 )
             }
 

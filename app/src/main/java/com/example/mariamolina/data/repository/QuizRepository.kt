@@ -5,7 +5,6 @@ import com.example.mariamolina.data.model.QuizQuestion
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
-// Definimos los posibles estados de carga
 sealed class DataState<out T> {
     data class Success<out T>(val data: T) : DataState<T>()
     data class Error(val message: String) : DataState<Nothing>()
@@ -16,29 +15,29 @@ sealed class DataState<out T> {
 class QuizRepository(
     private val firestore: FirebaseFirestore
 ) {
-    // Función principal para obtener las preguntas de una dificultad específica
     suspend fun getQuestionsByDifficulty(dificultad: Dificultad): DataState<List<QuizQuestion>> {
         return try {
             val dificultadString = dificultad.name.uppercase()
 
-            // 1. Consulta a Firestore
             val snapshot = firestore.collection("quizzes")
-                .whereEqualTo("dificultad", dificultadString) // Filtra por dificultad
+                .whereEqualTo("dificultad", dificultadString)
+                // Mantenemos orderBy de Firestore por eficiencia
+                .orderBy("id")
                 .get()
-                .await() // Espera a que la tarea de Firebase termine
+                .await()
 
-            // 2. Mapea los documentos a objetos QuizQuestion
             val questions = snapshot.documents.mapNotNull { document ->
-                // Firestore no incluye el ID del documento en el objeto, lo añadimos
                 document.toObject(QuizQuestion::class.java)?.copy(id = document.id)
             }
 
-            // 3. Devuelve el éxito con la lista de preguntas
-            DataState.Success(questions)
+            // Ordenamos localmente también para garantizar sincronización total
+            // Esto arregla el problema de que a los alumnos les salgan en distinto orden
+            val questionsSorted = questions.sortedBy { it.id }
+
+            DataState.Success(questionsSorted)
 
         } catch (e: Exception) {
-            // 4. Devuelve el error si algo falla
-            DataState.Error("Error al cargar las preguntas: ${e.message}")
+            DataState.Error("Error: ${e.message}")
         }
     }
 }

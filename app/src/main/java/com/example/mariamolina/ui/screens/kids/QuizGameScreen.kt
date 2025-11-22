@@ -25,6 +25,7 @@ import kotlin.math.ceil
 
 @Composable
 fun QuizGameScreen(
+    pinPartida: String? = null,
     dificultad: Dificultad,
     onQuizFinished: () -> Unit,
     onNavigateToRanking: () -> Unit,
@@ -83,7 +84,7 @@ fun QuizGameScreen(
             )
 
             // Llamamos al ViewModel para actualizar puntuación y pasar de pregunta
-            viewModel.scoreAndAdvance(puntosGanados)
+            viewModel.procesarRespuesta(puntosGanados, pinPartida)
 
             // Reseteamos estado local para la siguiente
             respuestaSeleccionada = null
