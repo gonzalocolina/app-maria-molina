@@ -56,11 +56,15 @@ import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppNavigation() {
     val navControllerPrincipal = rememberNavController()
+
+    val pointsViewModel: PointsOfInterestViewModel = viewModel()
 
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -204,7 +208,8 @@ fun AppNavigation() {
                     puntos = puntosDeInteres,
                     onPuntoClick = { puntoId ->
                         navControllerPrincipal.navigate("${Pantalla.PointsOfInterest.ruta}/detail/$puntoId")
-                    }
+                    },
+                    viewModel = pointsViewModel
                 )
             }
 
@@ -224,7 +229,8 @@ fun AppNavigation() {
                             navControllerPrincipal.navigate("map?destinoId=${subpunto.id}") {
                                 launchSingleTop = true
                             }
-                        }
+                        },
+                        viewModel = pointsViewModel
                     )
                 }
             }

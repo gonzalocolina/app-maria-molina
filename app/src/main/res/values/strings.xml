@@ -22,6 +22,7 @@
     <string name="detalle_ubicacion">Ubicación:</string>
     <string name="detalle_ver_en_mapa">Ver en mapa</string>
     <string name="detalle_marcar_visitado">Marcar como visitado</string>
+    <string name="visitado">Visitado</string>
     <string name="detalle_rating">Valoración:</string>
 
     <string name="detalle_subpuntos_titulo">Lugares del punto</string>

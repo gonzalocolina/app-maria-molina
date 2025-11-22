@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 // import androidx.compose.material.icons.filled.AccessTime // Eliminado
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
@@ -32,6 +33,7 @@ import com.example.mariamolina.R
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale
+import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,12 +41,14 @@ fun PointDetailScreen(
     punto: PuntoInteres,
     onBackClick: () -> Unit,
     onOpenMapClick: () -> Unit,
-    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit,
+    viewModel: PointsOfInterestViewModel
 ) {
     Scaffold(
         bottomBar = {
+            val isVisited = viewModel.isVisited(punto.id)
             Surface(
-                color = AppPrimaryBrown,
+                color = if (isVisited) MaterialTheme.colorScheme.primary else AppPrimaryBrown,
                 shadowElevation = 8.dp,
                 shape = RoundedCornerShape(
                     topStart = 16.dp,
@@ -54,7 +58,7 @@ fun PointDetailScreen(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { /* TODO: Lógica de Firebase para marcar visitado */ }
+                    .clickable { viewModel.markAsVisited(punto.id) }
             ) {
                 Row(
                     modifier = Modifier
@@ -64,14 +68,14 @@ fun PointDetailScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
-                        imageVector = Icons.Default.CheckCircleOutline,
+                        imageVector = if (isVisited) Icons.Default.CheckCircle else Icons.Default.CheckCircleOutline,
                         contentDescription = null,
                         modifier = Modifier.size(ButtonDefaults.IconSize),
-                        tint = MaterialTheme.colorScheme.primaryContainer
+                        tint = if (isVisited) Color.Green else MaterialTheme.colorScheme.primaryContainer
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text(
-                        stringResource(id = R.string.detalle_marcar_visitado),
+                        text = if (isVisited) stringResource(R.string.visitado) else stringResource(R.string.detalle_marcar_visitado),
                         color = MaterialTheme.colorScheme.primaryContainer
                     )
                 }
@@ -269,7 +273,7 @@ private fun SubPuntosSection(
                     onOpenSubPointMapClick = onOpenSubPointMapClick
                 )
                 if (index < subpuntos.lastIndex) {
-                    Divider(modifier = Modifier.padding(vertical = 12.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
                 }
             }
         }
