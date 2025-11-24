@@ -22,17 +22,18 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -42,7 +43,7 @@ import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
-import com.example.mariamolina.ui.screens.pointsOfInterest.PointsListScreen
+import com.example.mariamolina.ui.screens.pointsOfInterest.PointsOfInterestScreen
 import com.example.mariamolina.ui.screens.poi.PointDetailScreen
 import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
@@ -56,6 +57,7 @@ import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
+import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -185,6 +187,15 @@ fun AppNavigation() {
             }
         }
     ) { innerPadding ->
+        // Creamos una sola instancia compartida del ViewModel aquí (scoped al Composable AppNavigation)
+        val sharedPrefs = LocalContext.current.getSharedPreferences("visited_points", android.content.Context.MODE_PRIVATE)
+        val sharedViewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return PointsOfInterestViewModel(sharedPrefs) as T
+            }
+        })
+
         NavHost(
             navController = navControllerPrincipal,
             startDestination = Pantalla.Home.ruta,
@@ -200,18 +211,16 @@ fun AppNavigation() {
 
             // Rutas de Puntos de Interés (ahora en el NavHost principal para evitar NavHost anidado)
             composable(Pantalla.PointsOfInterest.ruta) {
-                PointsListScreen(
-                    puntos = puntosDeInteres,
-                    onPuntoClick = { puntoId ->
-                        navControllerPrincipal.navigate("${Pantalla.PointsOfInterest.ruta}/detail/$puntoId")
-                    }
-                )
+                PointsOfInterestScreen(navController = navControllerPrincipal, viewModel = sharedViewModel)
             }
 
             composable("${Pantalla.PointsOfInterest.ruta}/detail/{puntoId}") { backStackEntry ->
                 val puntoId = backStackEntry.arguments?.getString("puntoId")
                 val punto = puntosDeInteres.find { it.id == puntoId }
                 if (punto != null) {
+                    val visitadosState = sharedViewModel.visitados.collectAsState()
+                    val visitados = visitadosState.value
+                    val isVisited = punto.id in visitados
                     PointDetailScreen(
                         punto = punto,
                         onBackClick = { navControllerPrincipal.popBackStack() },
@@ -224,7 +233,9 @@ fun AppNavigation() {
                             navControllerPrincipal.navigate("map?subPuntoId=${subpunto.id}") {
                                 launchSingleTop = true
                             }
-                        }
+                        },
+                        onMarkAsVisited = { sharedViewModel.toggleVisited(punto.id) },
+                        isVisited = isVisited
                     )
                 }
             }
