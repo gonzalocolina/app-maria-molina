@@ -27,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
@@ -107,14 +106,9 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // Título principal con estilo destacado
-                        Text(
+                        ElegantTitle(
                             text = stringResource(R.string.home_screen_title),
-                            style = MaterialTheme.typography.headlineLarge.copy(
-                                fontSize = 32.sp,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 0.sp
-                            ),
-                            color = MaterialTheme.colorScheme.primary
+                            large = true
                         )
 
                         HorizontalDivider(
@@ -197,14 +191,9 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         // Título principal con estilo destacado
-                        Text(
+                        ElegantTitle(
                             text = stringResource(R.string.home_screen_title),
-                            style = MaterialTheme.typography.headlineLarge.copy(
-                                fontSize = 28.sp,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 0.sp
-                            ),
-                            color = MaterialTheme.colorScheme.primary
+                            large = false
                         )
 
                         // Ajuste para tablet vertical: mostrar imagen completa sin recortar
@@ -358,28 +347,20 @@ fun ContentSection(
     }
 }
 
+// Nuevo composable para un título "elegante" inspirado en las tipografías enviadas.
 @Composable
-fun SectionTitle(title: String) {
+fun ElegantTitle(text: String, large: Boolean = false, modifier: Modifier = Modifier) {
+    // Se usa uppercase para emular el aspecto 'display' y se aplica tracking amplio.
+    val fontSize = if (large) 36.sp else 30.sp
     Text(
-        text = title,
-        style = MaterialTheme.typography.headlineSmall.copy(
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 0.sp
+        text = text.uppercase(),
+        modifier = modifier,
+        style = MaterialTheme.typography.headlineLarge.copy(
+            fontSize = fontSize,
+            fontWeight = FontWeight.Light, // aspecto más fino similar a las muestras
+            letterSpacing = 6.sp
         ),
         color = MaterialTheme.colorScheme.primary
-    )
-}
-
-@Composable
-fun Paragraph(text: String) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.bodyLarge.copy(
-            fontSize = 16.sp,
-            lineHeight = 24.sp
-        ),
-        color = MaterialTheme.colorScheme.onBackground
     )
 }
 
