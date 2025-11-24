@@ -1,6 +1,5 @@
 package com.example.mariamolina.ui.screens.pointsOfInterest
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,13 +26,21 @@ import coil.compose.AsyncImage
 @Composable
 fun PointsListScreen(
     puntos: List<PuntoInteres>,
-    onPuntoClick: (String) -> Unit
+    onPuntoClick: (String) -> Unit,
+    header: (@Composable () -> Unit)? = null // header opcional para que el indicador de progreso scrollee con la lista
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+        // Si se proporciona un header, se añade como primer item de la lista (se desplazará junto a los elementos)
+        if (header != null) {
+            item {
+                header()
+            }
+        }
+
         items(puntos) { punto ->
             PuntoInteresCard(
                 punto = punto,
@@ -85,7 +92,6 @@ fun PuntoInteresCard(
                     }
                 }
 
-                // Quitar el checkbox aquí
             }
         }
     }
