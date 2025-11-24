@@ -194,7 +194,7 @@ fun AppNavigation() {
                             }
                         },
                         onOpenSubPointMapClick = { subpunto ->
-                            navControllerPrincipal.navigate("map?destinoId=${subpunto.id}") {
+                            navControllerPrincipal.navigate("map?subPuntoId=${subpunto.id}") {
                                 launchSingleTop = true
                             }
                         }
@@ -238,12 +238,24 @@ fun AppNavigation() {
                 )
             }
 
-            composable("map?destinoId={destinoId}") { backStackEntry ->
+            composable("map?destinoId={destinoId}&subPuntoId={subPuntoId}") { backStackEntry ->
                 val destinoId = backStackEntry.arguments?.getString("destinoId")
+                val subPuntoId = backStackEntry.arguments?.getString("subPuntoId")
+
                 val destino = puntosDeInteres.find { it.id == destinoId }
+
+                // Buscar el subpunto específico que se quiere mostrar
+                val subPunto = if (!subPuntoId.isNullOrEmpty()) {
+                    puntosDeInteres
+                        .flatMap { it.subpuntos }
+                        .find { it.id == subPuntoId }
+                } else {
+                    null
+                }
 
                 MapScreen(
                     destinoInicial = destino,
+                    subPuntoInicial = subPunto, // Solo se mostrará si no es null
                     onNavigateToDetail = { punto ->
                         navControllerPrincipal.navigate(
                             "${Pantalla.PointsOfInterest.ruta}/detail/${punto.id}"
