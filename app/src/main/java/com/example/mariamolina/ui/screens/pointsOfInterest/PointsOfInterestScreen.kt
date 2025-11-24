@@ -6,22 +6,24 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController // ¡Importante!
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.ui.navigation.Pantalla
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
 
 @Composable
 fun PointsOfInterestScreen(
     // Recibimos el NavHostController para navegar desde aquí
     navController: NavHostController
 ) {
-    val visitados = remember { mutableStateOf(setOf<String>()) }
+    val viewModel: PointsOfInterestViewModel = viewModel()
+    val visitados by viewModel.visitados
     val total = puntosDeInteres.size
-    val visitadosCount = visitados.value.size
+    val visitadosCount = visitados.size
     val restantes = total - visitadosCount
 
     Column {
@@ -35,10 +37,6 @@ fun PointsOfInterestScreen(
             puntos = puntosDeInteres,
             onPuntoClick = { puntoId ->
                 navController.navigate("${Pantalla.PointsOfInterest.ruta}/detail/$puntoId")
-            },
-            visitados = visitados.value,
-            onToggleVisited = { id ->
-                visitados.value = if (id in visitados.value) visitados.value - id else visitados.value + id
             }
         )
     }

@@ -56,6 +56,7 @@ import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
+import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -207,6 +208,9 @@ fun AppNavigation() {
                 val puntoId = backStackEntry.arguments?.getString("puntoId")
                 val punto = puntosDeInteres.find { it.id == puntoId }
                 if (punto != null) {
+                    val viewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+                    val visitados by viewModel.visitados
+                    val isVisited = punto.id in visitados
                     PointDetailScreen(
                         punto = punto,
                         onBackClick = { navControllerPrincipal.popBackStack() },
@@ -219,7 +223,9 @@ fun AppNavigation() {
                             navControllerPrincipal.navigate("map?subPuntoId=${subpunto.id}") {
                                 launchSingleTop = true
                             }
-                        }
+                        },
+                        onMarkAsVisited = { viewModel.toggleVisited(punto.id) },
+                        isVisited = isVisited
                     )
                 }
             }

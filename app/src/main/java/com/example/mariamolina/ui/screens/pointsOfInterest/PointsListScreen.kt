@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -28,9 +27,7 @@ import coil.compose.AsyncImage
 @Composable
 fun PointsListScreen(
     puntos: List<PuntoInteres>,
-    onPuntoClick: (String) -> Unit,
-    visitados: Set<String>,
-    onToggleVisited: (String) -> Unit
+    onPuntoClick: (String) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -40,9 +37,7 @@ fun PointsListScreen(
         items(puntos) { punto ->
             PuntoInteresCard(
                 punto = punto,
-                onClick = { onPuntoClick(punto.id) },
-                isVisited = punto.id in visitados,
-                onToggleVisited = { onToggleVisited(punto.id) }
+                onClick = { onPuntoClick(punto.id) }
             )
         }
     }
@@ -51,9 +46,7 @@ fun PointsListScreen(
 @Composable
 fun PuntoInteresCard(
     punto: PuntoInteres,
-    onClick: () -> Unit,
-    isVisited: Boolean = false,
-    onToggleVisited: () -> Unit = {}
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -92,24 +85,7 @@ fun PuntoInteresCard(
                     }
                 }
 
-                // Checkbox para marcar como visitado
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = isVisited,
-                        onCheckedChange = { onToggleVisited() }
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Visitado",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                // Quitar el checkbox aquí
             }
         }
     }
