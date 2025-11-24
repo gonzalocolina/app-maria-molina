@@ -42,7 +42,7 @@ import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
-import com.example.mariamolina.ui.screens.pointsOfInterest.PointsListScreen
+import com.example.mariamolina.ui.screens.pointsOfInterest.PointsOfInterestScreen
 import com.example.mariamolina.ui.screens.poi.PointDetailScreen
 import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
@@ -200,12 +200,7 @@ fun AppNavigation() {
 
             // Rutas de Puntos de Interés (ahora en el NavHost principal para evitar NavHost anidado)
             composable(Pantalla.PointsOfInterest.ruta) {
-                PointsListScreen(
-                    puntos = puntosDeInteres,
-                    onPuntoClick = { puntoId ->
-                        navControllerPrincipal.navigate("${Pantalla.PointsOfInterest.ruta}/detail/$puntoId")
-                    }
-                )
+                PointsOfInterestScreen(navController = navControllerPrincipal)
             }
 
             composable("${Pantalla.PointsOfInterest.ruta}/detail/{puntoId}") { backStackEntry ->
