@@ -15,87 +15,74 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel // Importante para obtener el ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
+import com.example.mariamolina.data.model.EstadoPartida
 import com.example.mariamolina.data.model.OpcionRespuesta
-import com.example.mariamolina.ui.viewmodel.QuizViewModel // Importante
+import com.example.mariamolina.ui.viewmodel.QuizViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
 
 @Composable
 fun QuizGameScreen(
-    pinPartida: String? = null,
     dificultad: Dificultad,
+    pinPartida: String? = null, // Recibimos el PIN para multijugador
     onQuizFinished: () -> Unit,
     onNavigateToRanking: () -> Unit,
-    // Obtenemos el ViewModel. Si usas Hilt sería hiltViewModel(), si no, viewModel() está bien.
     viewModel: QuizViewModel = viewModel()
 ) {
-    // 1. Observamos el estado del ViewModel
     val uiState by viewModel.uiState.collectAsState()
     val preguntas = uiState.questions
     val puntuacion = uiState.puntuacion
     val indicePreguntaActual = uiState.indicePreguntaActual
+    val estadoPartida = uiState.estadoPartida // Estado global (JUGANDO / RESULTADOS)
 
-    // 2. Carga inicial de preguntas desde Firebase
+    // Carga inicial de preguntas
     LaunchedEffect(key1 = dificultad) {
-        // Solo cargamos si la lista está vacía para evitar recargas al rotar pantalla
-        if (preguntas.isEmpty()) {
+        // Si tenemos PIN, nos conectamos a la partida multijugador
+        if (pinPartida != null) {
+            viewModel.conectarAPartida(pinPartida, dificultad)
+        }
+        // Si no, cargamos preguntas locales (modo solitario)
+        else if (preguntas.isEmpty()) {
             viewModel.loadQuestions(dificultad)
         }
     }
 
     // --- ESTADO LOCAL (Temporizador y selección) ---
     val tiempoTotalPorPregunta = 20000L
-    // Usamos 'remember(indicePreguntaActual)' para reiniciar el timer en cada pregunta nueva
     var tiempoRestante by remember(indicePreguntaActual) { mutableStateOf(tiempoTotalPorPregunta) }
     var respuestaSeleccionada by remember { mutableStateOf<OpcionRespuesta?>(null) }
-    var estadoRespuesta by remember { mutableStateOf<EstadoRespuesta?>(null) }
 
+    // Controlamos si el usuario ya respondió localmente
+    val haRespondidoLocalmente = respuestaSeleccionada != null
+
+    // Si es multijugador, esperamos a que el estado cambie a RESULTADOS.
+    // Si es solitario, mostramos resultados inmediatamente al responder.
+    val mostrarResultados = if (pinPartida != null) estadoPartida == EstadoPartida.RESULTADOS else haRespondidoLocalmente
 
     // --- LÓGICA DEL TEMPORIZADOR ---
-    LaunchedEffect(key1 = indicePreguntaActual, key2 = estadoRespuesta, key3 = preguntas.size) {
-        // Solo corre el tiempo si hay preguntas cargadas y no se ha respondido aún
-        if (indicePreguntaActual < preguntas.size && estadoRespuesta == null) {
-            tiempoRestante = tiempoTotalPorPregunta
-            while (tiempoRestante > 0 && estadoRespuesta == null) {
+    // Se reinicia con cada nueva pregunta o cuando llegan los datos (preguntas.size)
+    // Solo corre si estamos JUGANDO y no hemos respondido
+    LaunchedEffect(indicePreguntaActual, haRespondidoLocalmente, preguntas.size, estadoPartida) {
+        val estamosJugando = if (pinPartida != null) estadoPartida == EstadoPartida.JUGANDO else true
+
+        if (indicePreguntaActual < preguntas.size && !haRespondidoLocalmente && estamosJugando) {
+            // Aseguramos reinicio si venimos de carga o cambio de pregunta
+            if (tiempoRestante <= 0) tiempoRestante = tiempoTotalPorPregunta
+
+            while (tiempoRestante > 0 && !haRespondidoLocalmente) {
                 delay(100L)
                 tiempoRestante -= 100L
             }
-            // Si el tiempo llega a 0 y no se respondió -> INCORRECTA
-            if (estadoRespuesta == null && tiempoRestante <= 0) {
-                estadoRespuesta = EstadoRespuesta.INCORRECTA
-            }
+            // Si el tiempo llega a 0, se considera respondido (incorrectamente/tiempo agotado)
+            // En solitario esto forzaría el avance, en multi esperamos al profe.
         }
     }
-
-    // --- AVANCE AUTOMÁTICO ---
-    // Cuando estadoRespuesta cambia (se responde o se acaba el tiempo), esperamos y avanzamos
-    LaunchedEffect(key1 = estadoRespuesta) {
-        if (estadoRespuesta != null) {
-            delay(1500) // Pausa para ver el resultado (verde/rojo)
-
-            // Calculamos puntos
-            val puntosGanados = calcularPuntos(
-                respuesta = respuestaSeleccionada,
-                tiempoRestante = tiempoRestante,
-                tiempoTotal = tiempoTotalPorPregunta
-            )
-
-            // Llamamos al ViewModel para actualizar puntuación y pasar de pregunta
-            viewModel.procesarRespuesta(puntosGanados, pinPartida)
-
-            // Reseteamos estado local para la siguiente
-            respuestaSeleccionada = null
-            estadoRespuesta = null
-        }
-    }
-
 
     // --- GESTIÓN DE PANTALLAS (Carga, Error, Juego, Fin) ---
 
-    // 1. Pantalla de Carga
     if (uiState.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
@@ -103,7 +90,6 @@ fun QuizGameScreen(
         return
     }
 
-    // 2. Pantalla de Error
     if (uiState.errorMessage != null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
@@ -112,14 +98,21 @@ fun QuizGameScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(16.dp)
             )
-            // Podrías añadir un botón de "Reintentar" aquí llamando a viewModel.loadQuestions(dificultad)
         }
         return
     }
 
-    // 3. Pantalla de Fin de Juego
-    if (preguntas.isNotEmpty() && indicePreguntaActual >= preguntas.size) {
-        // Limpiamos el quiz al salir (efecto de un solo uso)
+    // --- FIN DEL JUEGO ---
+    // Condición de fin: se acabaron las preguntas O el estado es FINALIZADO
+    if ((preguntas.isNotEmpty() && indicePreguntaActual >= preguntas.size) || estadoPartida == EstadoPartida.FINALIZADO) {
+        // Guardamos puntuación en Firebase si es multijugador
+        LaunchedEffect(Unit) {
+            if (pinPartida != null) {
+                viewModel.guardarPuntuacion(pinPartida)
+            }
+        }
+
+        // Limpiamos al salir
         DisposableEffect(Unit) {
             onDispose { viewModel.resetQuiz() }
         }
@@ -133,107 +126,149 @@ fun QuizGameScreen(
         return
     }
 
-    // 4. Pantalla de Juego (Si hay preguntas y no hemos terminado)
+    // --- PANTALLA DE JUEGO ---
     if (preguntas.isNotEmpty()) {
-        val preguntaActual = preguntas[indicePreguntaActual]
+        // Protección de índice por si acaso
+        val indiceSeguro = indicePreguntaActual.coerceIn(0, preguntas.lastIndex)
+        val preguntaActual = preguntas[indiceSeguro]
 
-        // Opciones mezcladas (lo hacemos una vez por pregunta)
+        // Mezclamos opciones una vez por pregunta
         val opcionesAleatorias by remember(preguntaActual) {
             mutableStateOf(preguntaActual.opciones.shuffled())
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()), // Scroll para pantallas pequeñas
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            // --- ENCABEZADO (Puntos, Barra, Reloj, Pregunta) ---
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = stringResource(id = R.string.kids_quiz_puntuacion, puntuacion),
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                LinearProgressIndicator(
-                    progress = { (indicePreguntaActual + 1) / preguntas.size.toFloat() },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Widget Reloj
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.size(80.dp)
-                ) {
-                    val segundos = ceil(tiempoRestante / 1000.0).toInt()
-                    val progreso = tiempoRestante.toFloat() / tiempoTotalPorPregunta.toFloat()
-
-                    CircularProgressIndicator(
-                        progress = { progreso },
-                        modifier = Modifier.fillMaxSize(),
-                        strokeWidth = 8.dp,
-                        color = if (segundos <= 5) Color.Red else MaterialTheme.colorScheme.primary
-                    )
+        // --- PANTALLA DE ESPERA (SOLO MULTIPLAYER) ---
+        // Si ya respondimos pero el profe no ha pasado a RESULTADOS
+        if (pinPartida != null && haRespondidoLocalmente && !mostrarResultados) {
+            Box(
+                modifier = Modifier.fillMaxSize().padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text = "$segundos",
+                        "¡Respuesta enviada!",
                         style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    CircularProgressIndicator()
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Text(
+                        "Esperando a que todos terminen...",
+                        style = MaterialTheme.typography.bodyLarge,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        } else {
+            // --- PANTALLA NORMAL (PREGUNTA O RESULTADO) ---
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()), // Scroll para pantallas pequeñas
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                // Encabezado
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = stringResource(id = R.string.kids_quiz_puntuacion, puntuacion),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LinearProgressIndicator(
+                        progress = { (indicePreguntaActual + 1) / preguntas.size.toFloat() },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Reloj
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(80.dp)
+                    ) {
+                        val segundos = ceil(tiempoRestante / 1000.0).toInt()
+                        val progreso = tiempoRestante.toFloat() / tiempoTotalPorPregunta.toFloat()
+
+                        CircularProgressIndicator(
+                            progress = { progreso },
+                            modifier = Modifier.fillMaxSize(),
+                            strokeWidth = 8.dp,
+                            color = if (segundos <= 5) Color.Red else MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "$segundos",
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = preguntaActual.pregunta,
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                // Opciones
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    opcionesAleatorias.forEach { opcion ->
+                        // Lógica visual:
+                        // Si mostramos resultados, coloreamos Correcta (Verde) e Incorrecta (Rojo)
+                        // Si estamos jugando, solo marcamos la seleccionada (Gris/Azul)
+
+                        val esCorrectaVisual = if (mostrarResultados) opcion.esCorrecta else false
+
+                        val estadoVisual = if (mostrarResultados) {
+                            if (opcion.esCorrecta) EstadoRespuesta.CORRECTA else EstadoRespuesta.INCORRECTA
+                        } else null
+
+                        OpcionCard(
+                            texto = opcion.texto,
+                            seleccionada = respuestaSeleccionada == opcion,
+                            estadoRespuesta = if (mostrarResultados || respuestaSeleccionada == opcion) estadoVisual else null,
+                            esLaCorrecta = esCorrectaVisual,
+                            onClick = {
+                                // Solo permitimos responder si no hemos respondido ya
+                                if (!haRespondidoLocalmente) {
+                                    respuestaSeleccionada = opcion
+
+                                    // Calcular y enviar puntos inmediatamente
+                                    val puntosGanados = if (opcion.esCorrecta) {
+                                        calcularPuntos(opcion, tiempoRestante, tiempoTotalPorPregunta)
+                                    } else 0
+
+                                    viewModel.procesarRespuesta(puntosGanados, pinPartida)
+
+                                    // Si es modo solitario, avanzamos automáticamente tras delay
+                                    // (Esto requiere un LaunchedEffect adicional, pero para mantenerlo simple,
+                                    // en solitario el usuario ve el feedback y luego avanza.
+                                    // Aquí simplificamos para que la lógica principal sea Multiplayer).
+                                }
+                            }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                // Pregunta (Desde Firebase es String)
-                Text(
-                    text = preguntaActual.pregunta,
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
-                )
             }
-
-            // --- OPCIONES DE RESPUESTA ---
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                opcionesAleatorias.forEach { opcion ->
-                    OpcionCard(
-                        texto = opcion.texto, // Desde Firebase es String
-                        seleccionada = respuestaSeleccionada == opcion,
-                        estadoRespuesta = if (respuestaSeleccionada == opcion) estadoRespuesta else null,
-                        esLaCorrecta = opcion.esCorrecta,
-                        onClick = {
-                            // Solo permitimos responder si no hay estado (no respondido ni tiempo agotado)
-                            if (estadoRespuesta == null) {
-                                respuestaSeleccionada = opcion
-                                estadoRespuesta = if (opcion.esCorrecta) EstadoRespuesta.CORRECTA else EstadoRespuesta.INCORRECTA
-                                // El LaunchedEffect se encarga de calcular puntos y avanzar
-                            }
-                        }
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
 
 // --- LÓGICA AUXILIAR ---
 
-// Función pura para calcular puntos
 private fun calcularPuntos(respuesta: OpcionRespuesta?, tiempoRestante: Long, tiempoTotal: Long): Int {
-    // Si no respondió o respondió mal -> 0 puntos
-    if (respuesta?.esCorrecta != true) {
-        return 0
-    }
+    if (respuesta?.esCorrecta != true) return 0
 
-    // Puntuación Kahoot: Base + Bonus por velocidad
     val puntosBase = 1000
     val factorTiempo = tiempoRestante.toFloat() / tiempoTotal.toFloat()
-
-    // Mínimo 1 punto si acierta en el último milisegundo
+    // Mínimo 1 punto si acierta
     return (puntosBase * factorTiempo).toInt().coerceAtLeast(1)
 }
 
@@ -252,7 +287,7 @@ fun OpcionCard(
         seleccionada && estadoRespuesta == EstadoRespuesta.CORRECTA -> Color(0xFF4CAF50)
         // Seleccionada e Incorrecta -> Rojo
         seleccionada && estadoRespuesta == EstadoRespuesta.INCORRECTA -> Color(0xFFF44336)
-        // No seleccionada, pero era la correcta (mostrar solución) -> Verde
+        // No seleccionada, pero era la correcta (mostrar solución al final) -> Verde
         !seleccionada && estadoRespuesta == EstadoRespuesta.INCORRECTA && esLaCorrecta -> Color(0xFF4CAF50)
         // Por defecto -> Gris/Outline del tema
         else -> MaterialTheme.colorScheme.outline

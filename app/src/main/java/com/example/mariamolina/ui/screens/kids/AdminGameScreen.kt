@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.data.model.EstadoPartida
 import com.example.mariamolina.ui.viewmodel.AdminGameViewModel
@@ -114,11 +115,29 @@ fun AdminGameScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Mensaje durante la fase de resultados
+            // --- BOTÓN DE CONTROL ---
             if (partida.estado == EstadoPartida.RESULTADOS) {
                 Text("Mostrando solución a los alumnos...", color = Color.Gray)
-                Spacer(modifier = Modifier.height(8.dp))
-                LinearProgressIndicator(modifier = Modifier.fillMaxWidth()) // Barra de espera de 5s
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Botón para que el profesor avance manualmente
+                Button(
+                    onClick = { viewModel.avanzarSiguientePregunta() },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
+                ) {
+                    Text("SIGUIENTE PREGUNTA ->", fontSize = 18.sp)
+                }
+            } else {
+                // Mensaje de espera mientras juegan
+                OutlinedButton(
+                    onClick = { viewModel.avanzarSiguientePregunta() }, // Forzar fin de tiempo
+                    // Podrías habilitarlo si quieres permitir cortar el tiempo
+                    enabled = false,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Esperando respuestas...")
+                }
             }
         }
 

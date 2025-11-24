@@ -47,19 +47,18 @@ class AdminGameViewModel : ViewModel() {
                     dificultad = dificultad.name
                 )
 
-                // Cargamos preguntas SIN ordenar en la query para evitar errores de índice compuesto
-                // pero las ordenamos EN MEMORIA para garantizar sincronización
+                // Cargamos preguntas ordenadas por ID para asegurar sincronización
                 val preguntasSnapshot = db.collection("quizzes")
                     .whereEqualTo("dificultad", dificultad.name)
                     .get().await()
 
-                // ¡AQUÍ ESTÁ LA CLAVE! .sortedBy { it.id }
                 val listaPreguntas = preguntasSnapshot.documents.mapNotNull { doc ->
                     doc.toObject(QuizQuestion::class.java)?.copy(id = doc.id)
-                }.sortedBy { it.id }
+                }.sortedBy { it.id } // Ordenamos en memoria por seguridad
 
                 if (listaPreguntas.isEmpty()) throw Exception("No hay preguntas disponibles")
 
+                // Guardamos la partida en Firestore
                 db.collection("partidas").document(nuevoPin).set(nuevaPartida).await()
 
                 _uiState.value = AdminUiState(
@@ -76,9 +75,8 @@ class AdminGameViewModel : ViewModel() {
         }
     }
 
-    // --- RECONEXIÓN (Si el profesor sale y vuelve) ---
+    // --- RECONEXIÓN ---
     fun conectarAPartidaExistente(pin: String) {
-        // Si ya estamos conectados y tenemos preguntas, no recargamos
         if (_uiState.value.pinGenerado == pin && _uiState.value.preguntas.isNotEmpty()) return
 
         _uiState.value = _uiState.value.copy(isLoading = true, pinGenerado = pin)
@@ -88,14 +86,13 @@ class AdminGameViewModel : ViewModel() {
                 val partidaDoc = db.collection("partidas").document(pin).get().await()
                 val partida = partidaDoc.toObject(Partida::class.java) ?: throw Exception("Partida no encontrada")
 
-                // Volvemos a cargar las preguntas con el MISMO ORDEN
                 val preguntasSnapshot = db.collection("quizzes")
                     .whereEqualTo("dificultad", partida.dificultad)
                     .get().await()
 
                 val listaPreguntas = preguntasSnapshot.documents.mapNotNull { doc ->
                     doc.toObject(QuizQuestion::class.java)?.copy(id = doc.id)
-                }.sortedBy { it.id } // ¡AQUÍ TAMBIÉN!
+                }.sortedBy { it.id }
 
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -115,25 +112,23 @@ class AdminGameViewModel : ViewModel() {
         listeners.forEach { it.remove() }
         listeners.clear()
 
-        // Listener 1: Estado de la Partida
+        // Listener de Estado
         listeners.add(db.collection("partidas").document(pin)
             .addSnapshotListener { snapshot, _ ->
                 val partida = snapshot?.toObject(Partida::class.java)
                 if (partida != null) {
                     _uiState.value = _uiState.value.copy(partida = partida)
-                    // Comprobamos si hay que avanzar (si todos respondieron)
                     verificarAvanceAutomatico(partida)
                 }
             }
         )
 
-        // Listener 2: Lista de Jugadores
+        // Listener de Jugadores
         listeners.add(db.collection("partidas").document(pin).collection("jugadores")
             .addSnapshotListener { snapshot, _ ->
                 if (snapshot != null) {
                     val jugadores = snapshot.documents.mapNotNull { it.toObject(Jugador::class.java) }
                     _uiState.value = _uiState.value.copy(jugadoresUnidos = jugadores)
-                    // Comprobamos si hay que avanzar
                     verificarAvanceAutomatico(_uiState.value.partida)
                 }
             }
@@ -147,17 +142,22 @@ class AdminGameViewModel : ViewModel() {
         lanzarPregunta(pin, 0)
     }
 
+    // Función para avanzar MANUALMENTE a la siguiente pregunta
+    fun avanzarSiguientePregunta() {
+        val pin = _uiState.value.pinGenerado ?: return
+        val indiceActual = _uiState.value.partida?.indicePreguntaActual ?: 0
+        lanzarPregunta(pin, indiceActual + 1)
+    }
+
     private fun lanzarPregunta(pin: String, indice: Int) {
         val totalPreguntas = _uiState.value.preguntas.size
-
-        // Si ya no hay más preguntas, terminamos
         if (indice >= totalPreguntas && totalPreguntas > 0) {
             db.collection("partidas").document(pin).update("estado", EstadoPartida.FINALIZADO)
             return
         }
 
         viewModelScope.launch {
-            // 1. Resetear "haRespondido" de todos los alumnos
+            // Resetear respuestas de los alumnos
             val jugadoresRefs = db.collection("partidas").document(pin).collection("jugadores").get().await()
             val batch = db.batch()
             jugadoresRefs.documents.forEach { doc ->
@@ -165,7 +165,7 @@ class AdminGameViewModel : ViewModel() {
             }
             batch.commit().await()
 
-            // 2. Actualizar estado a JUGANDO con la nueva pregunta
+            // Actualizar estado de la partida
             db.collection("partidas").document(pin).update(
                 mapOf(
                     "estado" to EstadoPartida.JUGANDO,
@@ -175,25 +175,22 @@ class AdminGameViewModel : ViewModel() {
                 )
             )
 
-            // 3. Iniciar temporizador de seguridad
             gestionarTemporizador(pin, indice)
         }
     }
 
-    // Temporizador de seguridad: Si pasan 22s y nadie avanza, forzamos el fin de la pregunta
     private fun gestionarTemporizador(pin: String, indicePregunta: Int) {
         isGameLoopActive = true
         viewModelScope.launch {
-            delay(22000)
+            delay(20000)
             val estadoActual = _uiState.value.partida
-            // Si seguimos en la misma pregunta y jugando, cortamos
+            // Si seguimos en la misma pregunta y jugando, finalizamos esa pregunta
             if (isGameLoopActive && estadoActual?.indicePreguntaActual == indicePregunta && estadoActual.estado == EstadoPartida.JUGANDO) {
                 finalizarPregunta(pin)
             }
         }
     }
 
-    // Comprueba si todos han respondido para avanzar rápido
     private fun verificarAvanceAutomatico(partida: Partida?) {
         if (partida == null || partida.estado != EstadoPartida.JUGANDO) return
 
@@ -209,16 +206,9 @@ class AdminGameViewModel : ViewModel() {
     }
 
     private fun finalizarPregunta(pin: String) {
+        // Solo cambiamos a RESULTADOS. No avanzamos automáticamente.
         viewModelScope.launch {
-            // 1. Mostrar RESULTADOS
             db.collection("partidas").document(pin).update("estado", EstadoPartida.RESULTADOS)
-
-            // 2. Esperar 5 segundos
-            delay(5000)
-
-            // 3. Siguiente pregunta
-            val siguienteIndice = (_uiState.value.partida?.indicePreguntaActual ?: 0) + 1
-            lanzarPregunta(pin, siguienteIndice)
         }
     }
 
