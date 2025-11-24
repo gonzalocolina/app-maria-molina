@@ -70,7 +70,6 @@ class QuizViewModel(
     // --- MODO MULTIPLAYER: Escuchar al Profesor ---
     fun conectarAPartida(pin: String, dificultad: Dificultad) {
         // 1. Cargamos las preguntas (sin mezclar, para que todos tengan el mismo orden)
-        // Nota: En un caso real ideal, el orden vendría de la partida, pero esto sirve por ahora.
         viewModelScope.launch {
             when (val result = repository.getQuestionsByDifficulty(dificultad)) {
                 is DataState.Success -> {
@@ -96,7 +95,7 @@ class QuizViewModel(
             .addSnapshotListener { snapshot, _ ->
                 val partida = snapshot?.toObject(Partida::class.java)
                 if (partida != null) {
-                    // ¡MAGIA! Aquí actualizamos la pregunta actual según lo que diga Firebase
+                    // Actualizamos la pregunta actual según lo que diga Firebase
                     _uiState.value = _uiState.value.copy(
                         indicePreguntaActual = partida.indicePreguntaActual,
                         estadoPartida = partida.estado
@@ -145,10 +144,8 @@ class QuizViewModel(
         partidaListener?.remove()
     }
 
-    // Mantenemos este nombre por compatibilidad, pero ahora llama a procesarRespuesta
+    // Mantenemos este nombre por compatibilidad
     fun scoreAndAdvance(puntosGanados: Int) {
-        // Esta función asume modo solitario si no se le pasa PIN.
-        // Para multiplayer usaremos la llamada con PIN desde la UI.
         procesarRespuesta(puntosGanados, null)
     }
 
