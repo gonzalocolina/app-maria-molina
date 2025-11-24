@@ -22,10 +22,12 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -208,8 +210,10 @@ fun AppNavigation() {
                 val puntoId = backStackEntry.arguments?.getString("puntoId")
                 val punto = puntosDeInteres.find { it.id == puntoId }
                 if (punto != null) {
-                    val viewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
-                    val visitados by viewModel.visitados
+                    val context = LocalContext.current
+                    val viewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel { PointsOfInterestViewModel(context) }
+                    val visitadosState = viewModel.visitados.collectAsState()
+                    val visitados = visitadosState.value
                     val isVisited = punto.id in visitados
                     PointDetailScreen(
                         punto = punto,

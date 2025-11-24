@@ -7,6 +7,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController // ¡Importante!
 import com.example.mariamolina.data.model.puntosDeInteres
@@ -14,14 +15,17 @@ import com.example.mariamolina.ui.navigation.Pantalla
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun PointsOfInterestScreen(
     // Recibimos el NavHostController para navegar desde aquí
     navController: NavHostController
 ) {
-    val viewModel: PointsOfInterestViewModel = viewModel()
-    val visitados by viewModel.visitados
+    val context = LocalContext.current
+    val viewModel: PointsOfInterestViewModel = viewModel { PointsOfInterestViewModel(context) }
+    val visitadosState = viewModel.visitados.collectAsState()
+    val visitados = visitadosState.value
     val total = puntosDeInteres.size
     val visitadosCount = visitados.size
     val restantes = total - visitadosCount
