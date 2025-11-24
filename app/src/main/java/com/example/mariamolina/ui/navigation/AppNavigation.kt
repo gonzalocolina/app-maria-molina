@@ -34,7 +34,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -188,6 +187,15 @@ fun AppNavigation() {
             }
         }
     ) { innerPadding ->
+        // Creamos una sola instancia compartida del ViewModel aquí (scoped al Composable AppNavigation)
+        val sharedPrefs = LocalContext.current.getSharedPreferences("visited_points", android.content.Context.MODE_PRIVATE)
+        val sharedViewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                @Suppress("UNCHECKED_CAST")
+                return PointsOfInterestViewModel(sharedPrefs) as T
+            }
+        })
+
         NavHost(
             navController = navControllerPrincipal,
             startDestination = Pantalla.Home.ruta,
@@ -203,16 +211,14 @@ fun AppNavigation() {
 
             // Rutas de Puntos de Interés (ahora en el NavHost principal para evitar NavHost anidado)
             composable(Pantalla.PointsOfInterest.ruta) {
-                PointsOfInterestScreen(navController = navControllerPrincipal)
+                PointsOfInterestScreen(navController = navControllerPrincipal, viewModel = sharedViewModel)
             }
 
             composable("${Pantalla.PointsOfInterest.ruta}/detail/{puntoId}") { backStackEntry ->
                 val puntoId = backStackEntry.arguments?.getString("puntoId")
                 val punto = puntosDeInteres.find { it.id == puntoId }
                 if (punto != null) {
-                    val context = LocalContext.current
-                    val viewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel { PointsOfInterestViewModel(context) }
-                    val visitadosState = viewModel.visitados.collectAsState()
+                    val visitadosState = sharedViewModel.visitados.collectAsState()
                     val visitados = visitadosState.value
                     val isVisited = punto.id in visitados
                     PointDetailScreen(
@@ -228,7 +234,7 @@ fun AppNavigation() {
                                 launchSingleTop = true
                             }
                         },
-                        onMarkAsVisited = { viewModel.toggleVisited(punto.id) },
+                        onMarkAsVisited = { sharedViewModel.toggleVisited(punto.id) },
                         isVisited = isVisited
                     )
                 }

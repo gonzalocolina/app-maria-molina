@@ -1,35 +1,26 @@
 package com.example.mariamolina.ui.viewmodel
 
-import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mariamolina.data.model.puntosDeInteres
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class PointsOfInterestViewModel(private val context: Context) : ViewModel() {
-
-    private val prefs = context.getSharedPreferences("visited_points", Context.MODE_PRIVATE)
+class PointsOfInterestViewModel(private val prefs: SharedPreferences) : ViewModel() {
 
     // Estado inicial cargado desde SharedPreferences
     private val _visitados = MutableStateFlow(loadVisitedPoints())
     val visitados: StateFlow<Set<String>> = _visitados
 
     private fun loadVisitedPoints(): Set<String> {
-        val json = prefs.getString("visited", "[]") ?: "[]"
-        return try {
-            // Usar Gson para deserializar, pero como no está importado, usar una lista simple
-            // Para simplicidad, asumir que guardamos como string separado por comas
-            json.split(",").filter { it.isNotEmpty() }.toSet()
-        } catch (e: Exception) {
-            emptySet()
-        }
+        val stored = prefs.getString("visited", "") ?: ""
+        return if (stored.isBlank()) emptySet() else stored.split(",").filter { it.isNotEmpty() }.toSet()
     }
 
     private fun saveVisitedPoints(visited: Set<String>) {
-        val json = visited.joinToString(",")
-        prefs.edit().putString("visited", json).apply()
+        val joined = visited.joinToString(",")
+        prefs.edit().putString("visited", joined).apply()
     }
 
     // Función para alternar el estado de un punto
