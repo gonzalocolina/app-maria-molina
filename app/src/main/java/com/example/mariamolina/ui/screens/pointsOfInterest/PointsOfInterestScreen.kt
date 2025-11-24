@@ -54,7 +54,7 @@ fun PointsOfInterestScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 // Usamos color surface para evitar tonos amarillos llamativos
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             ) {
                 Column(
@@ -114,7 +114,7 @@ fun PointsOfInterestScreen(
                                 Icon(
                                     imageVector = Icons.Default.PinDrop,
                                     contentDescription = "Restantes",
-                                    tint = MaterialTheme.colorScheme.secondary,
+                                    tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.padding(end = 4.dp)
                                 )
                                 Text(

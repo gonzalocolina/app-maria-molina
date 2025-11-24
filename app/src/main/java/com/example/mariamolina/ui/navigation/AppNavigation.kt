@@ -57,7 +57,10 @@ import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
+import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,9 +143,10 @@ fun AppNavigation() {
                 }
 
                 Column {
-                    HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outline, thickness = 1.dp)
                     NavigationBar(
-                        modifier = Modifier.height(navBarHeight)
+                        modifier = Modifier.height(navBarHeight),
+                        containerColor = MaterialTheme.colorScheme.background,
                     ) {
                         itemsNavegacion.forEach { pantalla ->
                             val isSelected =
@@ -424,7 +428,7 @@ fun AppTopBar(
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
                     contentDescription = stringResource(R.string.cd_perfil),
-                    tint = Color(0xFFF5E6D3)
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         }
