@@ -39,7 +39,9 @@ fun PointsOfInterestScreen(
 ) {
     val visitados by viewModel.visitados.collectAsState()
     val total = puntosDeInteres.size
-    val visitadosCount = visitados.size
+    // Contamos únicamente los puntos de interés de primer nivel que estén marcados como visitados.
+    // De esta forma evitamos que los subpuntos (por ejemplo ids como "sp1") influyan en el conteo
+    val visitadosCount = puntosDeInteres.count { it.id in visitados }
     val restantes = total - visitadosCount
 
     Column {
