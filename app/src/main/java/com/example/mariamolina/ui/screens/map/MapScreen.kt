@@ -19,6 +19,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.data.model.PuntoInteres
+import com.example.mariamolina.data.model.SubPuntoInteres
 import com.example.mariamolina.data.model.puntosDeInteres
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -28,10 +29,12 @@ import org.osmdroid.views.overlay.Polyline
 @Composable
 fun MapScreen(
     destinoInicial: PuntoInteres? = null,
+    subPuntoInicial: SubPuntoInteres? = null, // NUEVO: parámetro para subpuntos
     onNavigateToDetail: (PuntoInteres) -> Unit = {}
 ) {
     var selectedDestino by remember { mutableStateOf(destinoInicial) }
-    var showPanel by remember { mutableStateOf(destinoInicial != null) }
+    var selectedSubPunto by remember { mutableStateOf(subPuntoInicial) } // NUEVO: estado para subpunto
+    var showPanel by remember { mutableStateOf(destinoInicial != null || subPuntoInicial != null) } // MODIFICADO
     var drawRoute by remember { mutableStateOf(false) }
     var centerOnRoute by remember { mutableStateOf(false) }
 
@@ -39,11 +42,20 @@ fun MapScreen(
 
         MapViewComposable(
             selectedDestino = selectedDestino,
+            selectedSubPunto = selectedSubPunto, // NUEVO: pasar subpunto seleccionado
             drawRoute = drawRoute,
             centerOnRoute = centerOnRoute,
             onFinishCenter = { centerOnRoute = false },
             onMarkerClick = { destino ->
                 selectedDestino = destino
+                selectedSubPunto = null // NUEVO: limpiar subpunto cuando se selecciona punto principal
+                drawRoute = false
+                centerOnRoute = false
+                showPanel = true
+            },
+            onSubPuntoMarkerClick = { subPunto -> // NUEVO: callback para subpuntos
+                selectedSubPunto = subPunto
+                selectedDestino = null // NUEVO: limpiar punto principal cuando se selecciona subpunto
                 drawRoute = false
                 centerOnRoute = false
                 showPanel = true
@@ -53,23 +65,43 @@ fun MapScreen(
 
         // ------- PANEL INFERIOR CUANDO SE PULSA UN DESTINO -------
         AnimatedVisibility(
-            visible = showPanel && selectedDestino != null,
+            visible = showPanel && (selectedDestino != null || selectedSubPunto != null), // MODIFICADO
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
-            selectedDestino?.let { destino ->
-                DestinoPanel(
-                    destino = destino,
-                    onNavigate = { onNavigateToDetail(destino) },
-                    onShowRoute = {
-                        drawRoute = true
-                        centerOnRoute = true
-                    },
-                    onClose = {
-                        selectedDestino = null   // Quitar selección del destino
-                        drawRoute = false        // Quitar la ruta dibujada
-                        showPanel = false        // Ocultar el panel
-                    }
-                )
+            // MODIFICADO: Mostrar panel según lo que esté seleccionado
+            if (selectedDestino != null) {
+                selectedDestino?.let { destino ->
+                    DestinoPanel(
+                        destino = destino,
+                        onNavigate = { onNavigateToDetail(destino) },
+                        onShowRoute = {
+                            drawRoute = true
+                            centerOnRoute = true
+                        },
+                        onClose = {
+                            selectedDestino = null   // Quitar selección del destino
+                            selectedSubPunto = null  // NUEVO: limpiar también subpunto
+                            drawRoute = false        // Quitar la ruta dibujada
+                            showPanel = false        // Ocultar el panel
+                        }
+                    )
+                }
+            } else if (selectedSubPunto != null) {
+                selectedSubPunto?.let { subPunto ->
+                    SubPuntoPanel( // NUEVO: Panel específico para subpuntos
+                        subPunto = subPunto,
+                        onShowRoute = {
+                            drawRoute = true
+                            centerOnRoute = true
+                        },
+                        onClose = {
+                            selectedSubPunto = null  // Quitar selección del subpunto
+                            selectedDestino = null   // NUEVO: limpiar también punto principal
+                            drawRoute = false        // Quitar la ruta dibujada
+                            showPanel = false        // Ocultar el panel
+                        }
+                    )
+                }
             }
         }
     }
@@ -79,8 +111,10 @@ fun MapScreen(
 fun MapViewComposable(
     modifier: Modifier = Modifier,
     selectedDestino: PuntoInteres?,
+    selectedSubPunto: SubPuntoInteres?, // NUEVO: parámetro para subpunto seleccionado
     drawRoute: Boolean,
     onMarkerClick: (PuntoInteres) -> Unit,
+    onSubPuntoMarkerClick: (SubPuntoInteres) -> Unit, // NUEVO: callback para subpuntos
     centerOnRoute: Boolean,
     onFinishCenter: () -> Unit
 ) {
@@ -89,10 +123,16 @@ fun MapViewComposable(
 
     val defaultMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!
     val selectedMarkerDrawable = defaultMarkerDrawable.constantState?.newDrawable()?.mutate()!!
+    val subPuntoMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!.constantState?.newDrawable()?.mutate()!!
+
     selectedMarkerDrawable.setColorFilter(
         android.graphics.PorterDuffColorFilter(android.graphics.Color.RED, android.graphics.PorterDuff.Mode.SRC_IN)
     )
 
+    // Color diferente para marcadores de subpuntos
+    subPuntoMarkerDrawable.setColorFilter(
+        android.graphics.PorterDuffColorFilter(android.graphics.Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN)
+    )
 
     AndroidView(
         factory = {
@@ -107,7 +147,7 @@ fun MapViewComposable(
 
             map.overlays.clear()
 
-            // ----------- 1) MARCADORES DE TODOS LOS DESTINOS -----------
+            // ----------- 1) MARCADORES DE TODOS LOS DESTINOS PRINCIPALES -----------
             puntosDeInteres.forEach { destino ->
                 val marker = Marker(map).apply {
                     position = GeoPoint(destino.latitud, destino.longitud)
@@ -122,29 +162,48 @@ fun MapViewComposable(
                 map.overlays.add(marker)
             }
 
-            // ----------- 2) RUTA CUANDO HAY DESTINO SELECCIONADO -----------
-            if (drawRoute && selectedDestino != null) {
+            // NUEVO: 2) MARCADORES DE SUBPUNTOS (solo si hay un punto principal seleccionado o hay un subpunto inicial)
+            if (selectedSubPunto != null) {
 
-                val destinoPoint = GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
-                val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
+                val marker = Marker(map).apply {
+                    position = GeoPoint(selectedSubPunto.latitud, selectedSubPunto.longitud)
+                    title = context.getString(selectedSubPunto.nombreResId)
+                    icon = selectedMarkerDrawable
+
+                    setOnMarkerClickListener { _, _ ->
+                        onSubPuntoMarkerClick(selectedSubPunto)
+                        true
+                    }
+                }
+
+                map.overlays.add(marker)
+            }
+
+            // ----------- 3) RUTA CUANDO HAY DESTINO SELECCIONADO -----------
+            val targetPoint = when {
+                selectedDestino != null -> GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
+                selectedSubPunto != null -> GeoPoint(selectedSubPunto.latitud, selectedSubPunto.longitud)
+                else -> null
+            }
+
+            if (drawRoute && targetPoint != null) {
+                val currentCenter = map.mapCenter as? GeoPoint ?: targetPoint
 
                 val polyline = Polyline().apply {
                     addPoint(currentCenter)
-                    addPoint(destinoPoint)
+                    addPoint(targetPoint)
                 }
 
                 map.overlays.add(polyline)
             }
 
             // ---------- CENTRAR LA RUTA ----------
-            if (centerOnRoute && selectedDestino != null) {
-
-                val destinoPoint = GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
-                val currentCenter = map.mapCenter as? GeoPoint ?: destinoPoint
+            if (centerOnRoute && targetPoint != null) {
+                val currentCenter = map.mapCenter as? GeoPoint ?: targetPoint
 
                 // Calculamos el centro medio entre origen y destino
-                val middleLat = (currentCenter.latitude + destinoPoint.latitude) / 2
-                val middleLon = (currentCenter.longitude + destinoPoint.longitude) / 2
+                val middleLat = (currentCenter.latitude + targetPoint.latitude) / 2
+                val middleLon = (currentCenter.longitude + targetPoint.longitude) / 2
                 val centerPoint = GeoPoint(middleLat, middleLon)
 
                 // Ajustamos zoom para que se vea bien la línea
@@ -220,6 +279,53 @@ fun DestinoPanel(
         }
     }
 }
+
+@Composable
+fun SubPuntoPanel(
+    subPunto: SubPuntoInteres,
+    onShowRoute: () -> Unit,
+    onClose: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        elevation = CardDefaults.cardElevation(8.dp),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+
+            // 🔥 TITULO + BOTÓN DE CERRAR (solo título, sin imagen)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(subPunto.nombreResId),
+                    style = MaterialTheme.typography.titleMedium
+                )
+
+                IconButton(onClick = onClose) {
+                    Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                }
+            }
+
+            Spacer(Modifier.height(12.dp))
+
+            // 🔥 SOLO BOTÓN "CÓMO LLEGAR"
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Button(onClick = onShowRoute) {
+                    Text("Cómo llegar")
+                }
+            }
+        }
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
