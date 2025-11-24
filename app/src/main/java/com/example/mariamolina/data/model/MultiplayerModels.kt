@@ -1,29 +1,22 @@
 package com.example.mariamolina.data.model
 
-// Representa al usuario que se une
+// IMPORTANTE: Todos los campos tienen valores por defecto para que Firestore no falle
 data class Jugador(
     val uid: String = "",
     val nickname: String = "",
     val puntuacion: Int = 0,
-    // Nuevo: para saber si ha respondido a la pregunta actual
-    val haRespondido: Boolean = false
+    val haRespondido: Boolean = false // Por defecto NO ha respondido
 )
 
-// Representa la sala de juego
 data class Partida(
     val pin: String = "",
     val estado: EstadoPartida = EstadoPartida.ESPERANDO,
-
-    // --- CAMPOS PARA SINCRONIZACIÓN ---
-    val indicePreguntaActual: Int = 0, // ¿Qué pregunta toca?
-    val timestampInicioPregunta: Long = 0, // ¿Cuándo empezó el tiempo? (Milisegundos)
-    val tiempoLimite: Long = 20000, // Tiempo para esta pregunta (20s)
-    val dificultad: String = "FACIL" // Guardamos la dificultad para saber qué preguntas cargar al reconectar
+    val indicePreguntaActual: Int = 0,
+    val timestampInicioPregunta: Long = 0,
+    val tiempoLimite: Long = 20000,
+    val dificultad: String = "FACIL"
 )
 
 enum class EstadoPartida {
-    ESPERANDO,  // Lobby
-    JUGANDO,    // Mostrando pregunta (Timer corriendo)
-    RESULTADOS, // Mostrando respuesta correcta (Pausa entre preguntas)
-    FINALIZADO  // Fin del juego
+    ESPERANDO, JUGANDO, RESULTADOS, FINALIZADO
 }

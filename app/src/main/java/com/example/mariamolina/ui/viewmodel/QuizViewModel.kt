@@ -126,16 +126,28 @@ class QuizViewModel(
     }
 
     private fun enviarRespuestaNube(pin: String, puntos: Int) {
-        val uid = Firebase.auth.currentUser?.uid ?: return
+        val uid = Firebase.auth.currentUser?.uid
+        if (uid == null) {
+            _uiState.value = _uiState.value.copy(errorMessage = "Error: No identificado. Reinicia la app.")
+            return
+        }
 
         val updateData = mapOf(
             "puntuacion" to puntos,
-            "haRespondido" to true // Avisamos al profe de que ya contestamos
+            "haRespondido" to true
         )
 
+        // Actualizamos Firestore
         db.collection("partidas").document(pin)
             .collection("jugadores").document(uid)
             .update(updateData)
+            .addOnSuccessListener {
+                println("DEBUG: Respuesta enviada correctamente para $uid en sala $pin")
+            }
+            .addOnFailureListener { e ->
+                println("DEBUG: Error enviando respuesta: ${e.message}")
+                _uiState.value = _uiState.value.copy(errorMessage = "Fallo al enviar: ${e.message}")
+            }
     }
 
     // --- MANTENIMIENTO ---

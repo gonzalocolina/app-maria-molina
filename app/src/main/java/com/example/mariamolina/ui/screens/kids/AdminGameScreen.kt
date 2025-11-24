@@ -115,12 +115,13 @@ fun AdminGameScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // --- BOTÓN DE CONTROL ---
+            // --- BOTONES DE CONTROL ---
+
             if (partida.estado == EstadoPartida.RESULTADOS) {
+                // Fase de Resultados: Botón para ir a la siguiente pregunta
                 Text("Mostrando solución a los alumnos...", color = Color.Gray)
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Botón para que el profesor avance manualmente
                 Button(
                     onClick = { viewModel.avanzarSiguientePregunta() },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
@@ -129,14 +130,13 @@ fun AdminGameScreen(
                     Text("SIGUIENTE PREGUNTA ->", fontSize = 18.sp)
                 }
             } else {
-                // Mensaje de espera mientras juegan
-                OutlinedButton(
-                    onClick = { viewModel.avanzarSiguientePregunta() }, // Forzar fin de tiempo
-                    // Podrías habilitarlo si quieres permitir cortar el tiempo
-                    enabled = false,
-                    modifier = Modifier.fillMaxWidth()
+                // Fase de Juego: Botón para FORZAR el fin de la pregunta
+                Button(
+                    onClick = { viewModel.forzarFinPregunta() },
+                    modifier = Modifier.fillMaxWidth().height(56.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
                 ) {
-                    Text("Esperando respuestas...")
+                    Text("TERMINAR TIEMPO / VER RESULTADOS")
                 }
             }
         }
