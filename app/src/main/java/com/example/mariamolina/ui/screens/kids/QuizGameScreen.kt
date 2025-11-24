@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -29,7 +30,7 @@ import kotlin.math.ceil
 fun QuizGameScreen(
     dificultad: Dificultad,
     pinPartida: String? = null,
-    onQuizFinished: () -> Unit,
+    onQuizFinished: () -> Unit, // <-- Este es el nombre de la variable que recibes
     onNavigateToRanking: () -> Unit,
     viewModel: QuizViewModel = viewModel()
 ) {
@@ -47,9 +48,7 @@ fun QuizGameScreen(
         }
     }
 
-    // --- ESTADO LOCAL ---
     val tiempoTotalPorPregunta = 20000L
-    // Estos estados AHORA se reinician SOLO cuando cambia el índice de la pregunta
     var tiempoRestante by remember(indicePreguntaActual) { mutableStateOf(tiempoTotalPorPregunta) }
     var respuestaSeleccionada by remember(indicePreguntaActual) { mutableStateOf<OpcionRespuesta?>(null) }
     var estadoRespuesta by remember(indicePreguntaActual) { mutableStateOf<EstadoRespuesta?>(null) }
@@ -57,7 +56,6 @@ fun QuizGameScreen(
     val haRespondidoLocalmente = respuestaSeleccionada != null
     val mostrarResultados = if (pinPartida != null) estadoPartida == EstadoPartida.RESULTADOS else haRespondidoLocalmente
 
-    // --- TIMER ---
     LaunchedEffect(indicePreguntaActual, haRespondidoLocalmente, preguntas.size, estadoPartida) {
         val estamosJugando = if (pinPartida != null) estadoPartida == EstadoPartida.JUGANDO else true
 
@@ -67,14 +65,14 @@ fun QuizGameScreen(
                 delay(100L)
                 tiempoRestante -= 100L
             }
+            if (estadoRespuesta == null && tiempoRestante <= 0 && !haRespondidoLocalmente) {
+                estadoRespuesta = EstadoRespuesta.INCORRECTA
+            }
         }
     }
 
-    // --- LÓGICA DE RESPUESTA ---
-    // Este efecto gestiona el envío de puntos y el avance (si es solitario)
     LaunchedEffect(key1 = estadoRespuesta) {
         if (estadoRespuesta != null) {
-            // Calculamos y enviamos puntos INMEDIATAMENTE
             val puntosGanados = calcularPuntos(
                 respuesta = respuestaSeleccionada,
                 tiempoRestante = tiempoRestante,
@@ -82,20 +80,14 @@ fun QuizGameScreen(
             )
             viewModel.procesarRespuesta(puntosGanados, pinPartida)
 
-            // Si es SOLITARIO, limpiamos para avanzar tras un delay
             if (pinPartida == null) {
                 delay(1500)
                 respuestaSeleccionada = null
                 estadoRespuesta = null
             }
-            // ¡IMPORTANTE! Si es MULTIJUGADOR, NO limpiamos nada aquí.
-            // Nos quedamos con 'respuestaSeleccionada' != null para mostrar la pantalla de espera.
-            // El reseteo ocurrirá automáticamente gracias al 'remember(indicePreguntaActual)'
-            // cuando el profesor cambie la pregunta.
         }
     }
 
-    // --- PANTALLAS ---
     if (uiState.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
@@ -105,47 +97,43 @@ fun QuizGameScreen(
         return
     }
 
+    // --- PANTALLA FIN DE JUEGO ---
     if ((preguntas.isNotEmpty() && indicePreguntaActual >= preguntas.size) || estadoPartida == EstadoPartida.FINALIZADO) {
         LaunchedEffect(Unit) { if (pinPartida != null) viewModel.guardarPuntuacion(pinPartida) }
         DisposableEffect(Unit) { onDispose { viewModel.resetQuiz() } }
-        QuizResultScreen(puntuacion = puntuacion, totalPreguntas = preguntas.size, onVolverAlMenu = onQuizFinished, onNavigateToRanking = onNavigateToRanking)
+
+        // ¡CORRECCIÓN AQUÍ!
+        QuizResultScreen(
+            puntuacion = puntuacion,
+            totalPreguntas = preguntas.size,
+            onVolverAlMenu = onQuizFinished, // Pasamos 'onQuizFinished' al parámetro 'onVolverAlMenu'
+            onNavigateToRanking = onNavigateToRanking
+        )
         return
     }
 
+    // --- PANTALLA DE JUEGO ---
     if (preguntas.isNotEmpty()) {
         val indiceSeguro = indicePreguntaActual.coerceIn(0, preguntas.lastIndex)
         val preguntaActual = preguntas[indiceSeguro]
         val opcionesAleatorias by remember(preguntaActual) { mutableStateOf(preguntaActual.opciones.shuffled()) }
 
-        // --- PANTALLA DE ESPERA ---
-        // Si ya respondiste y el juego sigue en JUGANDO -> Espera
         if (pinPartida != null && haRespondidoLocalmente && !mostrarResultados) {
             Box(
                 modifier = Modifier.fillMaxSize().padding(16.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Icon(
-                        imageVector = androidx.compose.material.icons.Icons.Default.CheckCircleOutline,
-                        contentDescription = null,
-                        modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
+                    Icon(Icons.Default.CheckCircleOutline, null, modifier = Modifier.size(80.dp), tint = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.height(24.dp))
-                    Text(
-                        "¡Respuesta enviada!",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    Text("¡Respuesta enviada!", style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Esperando a los demás...", style = MaterialTheme.typography.bodyLarge)
+                    Text("Esperando a los demás...", style = MaterialTheme.typography.titleMedium)
                     Spacer(modifier = Modifier.height(32.dp))
-                    LinearProgressIndicator(modifier = Modifier.width(150.dp))
+                    CircularProgressIndicator()
                 }
             }
         } else {
-            // --- PANTALLA DE JUEGO / RESULTADOS ---
             Column(
                 modifier = Modifier.fillMaxSize().padding(16.dp).verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,

@@ -134,21 +134,21 @@ class AdminGameViewModel : ViewModel() {
         )
     }
 
-    // --- LÓGICA DE JUEGO (CONTROL MANUAL) ---
+    // --- LÓGICA DE JUEGO ---
 
     fun empezarJuego() {
         val pin = _uiState.value.pinGenerado ?: return
         lanzarPregunta(pin, 0)
     }
 
-    // Función para que el profesor pase manualmente a la siguiente pregunta
+    // Función para avanzar MANUALMENTE a la siguiente pregunta
     fun avanzarSiguientePregunta() {
         val pin = _uiState.value.pinGenerado ?: return
         val indiceActual = _uiState.value.partida?.indicePreguntaActual ?: 0
         lanzarPregunta(pin, indiceActual + 1)
     }
 
-    // ¡AQUÍ ESTÁ! Función para forzar el fin del tiempo manualmente
+    // Función para FORZAR el fin del tiempo manualmente
     fun forzarFinPregunta() {
         val pin = _uiState.value.pinGenerado ?: return
         // Solo tiene sentido si estamos jugando

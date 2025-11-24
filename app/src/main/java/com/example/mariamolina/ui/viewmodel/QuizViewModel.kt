@@ -2,10 +2,7 @@ package com.example.mariamolina.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.mariamolina.data.model.Dificultad
-import com.example.mariamolina.data.model.EstadoPartida
-import com.example.mariamolina.data.model.Partida
-import com.example.mariamolina.data.model.QuizQuestion
+import com.example.mariamolina.data.model.*
 import com.example.mariamolina.data.repository.DataState
 import com.example.mariamolina.data.repository.QuizRepository
 import com.google.firebase.auth.ktx.auth
@@ -23,7 +20,6 @@ data class QuizUiState(
     val errorMessage: String? = null,
     val puntuacion: Int = 0,
     val indicePreguntaActual: Int = 0,
-    // Campos nuevos para Multiplayer
     val estadoPartida: EstadoPartida = EstadoPartida.JUGANDO,
     val esMultiplayer: Boolean = false
 )
@@ -38,52 +34,39 @@ class QuizViewModel(
     private val db = FirebaseFirestore.getInstance()
     private var partidaListener: ListenerRegistration? = null
 
-    // --- MODO SOLITARIO: Carga manual ---
+    // Carga Solitaria
     fun loadQuestions(dificultad: Dificultad) {
-        _uiState.value = _uiState.value.copy(
-            isLoading = true,
-            errorMessage = null,
-            questions = emptyList(),
-            esMultiplayer = false // Modo solitario
-        )
-
+        _uiState.value = _uiState.value.copy(isLoading = true, esMultiplayer = false)
         viewModelScope.launch {
             when (val result = repository.getQuestionsByDifficulty(dificultad)) {
                 is DataState.Success -> {
-                    // En solitario sí mezclamos las preguntas
-                    val shuffledQuestions = result.data.shuffled()
                     _uiState.value = _uiState.value.copy(
                         isLoading = false,
-                        questions = shuffledQuestions,
+                        questions = result.data.shuffled(), // Mezclamos solo en solitario
                         puntuacion = 0,
                         indicePreguntaActual = 0
                     )
                 }
-                is DataState.Error -> {
-                    _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
-                }
-                else -> { }
+                is DataState.Error -> _uiState.value = _uiState.value.copy(isLoading = false, errorMessage = result.message)
+                else -> {}
             }
         }
     }
 
-    // --- MODO MULTIPLAYER: Escuchar al Profesor ---
+    // Conexión Multiplayer
     fun conectarAPartida(pin: String, dificultad: Dificultad) {
-        // 1. Cargamos las preguntas (sin mezclar, para que todos tengan el mismo orden)
         viewModelScope.launch {
             when (val result = repository.getQuestionsByDifficulty(dificultad)) {
                 is DataState.Success -> {
+                    // NO mezclamos en multiplayer para mantener el orden sincronizado con el profe
                     _uiState.value = _uiState.value.copy(
-                        questions = result.data, // Orden original de Firebase
+                        questions = result.data,
                         esMultiplayer = true,
                         puntuacion = 0
                     )
-                    // 2. Una vez tenemos las preguntas, escuchamos el estado
                     iniciarListener(pin)
                 }
-                is DataState.Error -> {
-                    _uiState.value = _uiState.value.copy(errorMessage = result.message)
-                }
+                is DataState.Error -> _uiState.value = _uiState.value.copy(errorMessage = result.message)
                 else -> {}
             }
         }
@@ -95,7 +78,7 @@ class QuizViewModel(
             .addSnapshotListener { snapshot, _ ->
                 val partida = snapshot?.toObject(Partida::class.java)
                 if (partida != null) {
-                    // Actualizamos la pregunta actual según lo que diga Firebase
+                    // Actualizamos el estado local con lo que dice la nube
                     _uiState.value = _uiState.value.copy(
                         indicePreguntaActual = partida.indicePreguntaActual,
                         estadoPartida = partida.estado
@@ -104,22 +87,18 @@ class QuizViewModel(
             }
     }
 
-    // --- ACCIONES DE JUEGO ---
-
-    // Llamado cuando el usuario responde
+    // --- PROCESAR RESPUESTA ---
     fun procesarRespuesta(puntosGanados: Int, pinPartida: String?) {
-        // 1. Actualizamos puntuación local
         val nuevaPuntuacion = _uiState.value.puntuacion + puntosGanados
 
-        // 2. Si es Solitario, avanzamos nosotros la pregunta
         if (pinPartida == null) {
+            // Solitario: Avanzamos localmente
             _uiState.value = _uiState.value.copy(
                 puntuacion = nuevaPuntuacion,
                 indicePreguntaActual = _uiState.value.indicePreguntaActual + 1
             )
         } else {
-            // 3. Si es Multiplayer, SOLO actualizamos la puntuación local y enviamos a la nube.
-            // NO avanzamos el índice (el listener lo hará cuando el profe cambie).
+            // Multiplayer: Actualizamos puntos y ENVIAMOS a la nube
             _uiState.value = _uiState.value.copy(puntuacion = nuevaPuntuacion)
             enviarRespuestaNube(pinPartida, nuevaPuntuacion)
         }
@@ -128,40 +107,28 @@ class QuizViewModel(
     private fun enviarRespuestaNube(pin: String, puntos: Int) {
         val uid = Firebase.auth.currentUser?.uid
         if (uid == null) {
-            _uiState.value = _uiState.value.copy(errorMessage = "Error: No identificado. Reinicia la app.")
+            println("ERROR: Usuario no identificado al enviar respuesta")
             return
         }
 
         val updateData = mapOf(
             "puntuacion" to puntos,
-            "haRespondido" to true
+            "haRespondido" to true // ¡ESTO ES LO QUE VE EL PROFESOR!
         )
 
-        // Actualizamos Firestore
         db.collection("partidas").document(pin)
             .collection("jugadores").document(uid)
             .update(updateData)
-            .addOnSuccessListener {
-                println("DEBUG: Respuesta enviada correctamente para $uid en sala $pin")
-            }
             .addOnFailureListener { e ->
-                println("DEBUG: Error enviando respuesta: ${e.message}")
-                _uiState.value = _uiState.value.copy(errorMessage = "Fallo al enviar: ${e.message}")
+                println("ERROR FATAL enviando respuesta a Firebase: ${e.message}")
             }
     }
 
-    // --- MANTENIMIENTO ---
     fun resetQuiz() {
-        _uiState.value = QuizUiState() // Reinicia todo
+        _uiState.value = QuizUiState()
         partidaListener?.remove()
     }
 
-    // Mantenemos este nombre por compatibilidad
-    fun scoreAndAdvance(puntosGanados: Int) {
-        procesarRespuesta(puntosGanados, null)
-    }
-
-    // Guardar puntuación final (para el ranking en modo solitario o fin de juego)
     fun guardarPuntuacion(pinPartida: String) {
         enviarRespuestaNube(pinPartida, _uiState.value.puntuacion)
     }
