@@ -3,6 +3,7 @@ package com.example.mariamolina.ui.screens.map
 
 import android.content.pm.PackageManager
 import android.Manifest
+import android.content.res.Configuration
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -335,10 +337,14 @@ fun DestinoPanel(
     onShowRoute: () -> Unit,
     onClose: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val imageHeight = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 100.dp else 150.dp
+
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .widthIn(max = 600.dp)
             .padding(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -350,7 +356,7 @@ fun DestinoPanel(
                 contentDescription = stringResource(destino.tituloResId),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(imageHeight)
                     .padding(bottom = 8.dp),
                 contentScale = ContentScale.Crop
             )
@@ -398,8 +404,9 @@ fun SubPuntoPanel(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .widthIn(max = 600.dp)
             .padding(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
         elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(16.dp)
     ) {

@@ -23,6 +23,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -76,33 +77,49 @@ fun AppNavigation() {
 
     val isProfile = currentDestination?.route == Pantalla.Profile.ruta
 
-    // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
-    // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
-    val topAppBarScrollBehavior: TopAppBarScrollBehavior? = if (!isTablet) {
-        TopAppBarDefaults.enterAlwaysScrollBehavior()
-    } else {
-        null
-    }
+    // Detectamos si la ruta actual es la del mapa (esto lo necesitamos antes del bloque `key`)
+    val esRutaMapaGlobal = currentDestination?.route?.startsWith("map") == true
 
-    val scaffoldModifier = if (topAppBarScrollBehavior != null) {
-        Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
-    } else {
-        Modifier
-    }
+    // Notamos que el estado del TopAppBar debe resetearse cuando cambiamos de pantalla. Para
+    // garantizar una recreación limpia, creamos el estado y el scrollBehavior dentro del
+    // bloque `key(currentDestination?.route) { ... }` que forzará una recomposición completa de
+    // ese árbol al navegar a una ruta distinta.
+    key(currentDestination?.route) {
+        // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
+        // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
+        // Evitamos usar scrollBehavior cuando la pantalla destino es el mapa en portrait, para
+        // garantizar que la AppBar aparezca al navegar desde una pantalla donde estaba escondida.
+        val shouldUseScrollBehavior = !isTablet && !(esRutaMapaGlobal && !isLandscape)
 
-    Scaffold(
-        modifier = scaffoldModifier,
-        topBar = {
-            // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
-            val esRutaDetallePoi =
-                currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
+        val topAppBarScrollBehavior: TopAppBarScrollBehavior? = if (shouldUseScrollBehavior) {
+            // Crear directamente el scrollBehavior en el contexto composable; al estar dentro
+            // de `key(currentDestination?.route)` se recreará al cambiar la ruta, lo que
+            // efectivamente resetea su estado.
+            TopAppBarDefaults.enterAlwaysScrollBehavior()
+        } else {
+            null
+        }
 
-            // Comprobamos si estamos en la pantalla de slides
-            val esRutaSlides = currentDestination?.route == "${Pantalla.Kids.ruta}/slides"
+        val scaffoldModifier = if (topAppBarScrollBehavior != null) {
+            Modifier.nestedScroll(topAppBarScrollBehavior.nestedScrollConnection)
+        } else {
+            Modifier
+        }
 
-            // Solo mostramos la barra si NO estamos en el detalle, NO en perfil, y NO en slides en modo horizontal
-            if (!esRutaDetallePoi && !isProfile && !(esRutaSlides && isLandscape)) {
-                //Ocultamos también en el Admin Lobby
+        Scaffold(
+            modifier = scaffoldModifier,
+            topBar = {
+                // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
+                val esRutaDetallePoi =
+                    currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
+
+                // Comprobamos si estamos en la pantalla de slides
+                val esRutaSlides = currentDestination?.route == "${Pantalla.Kids.ruta}/slides"
+
+                // Detectamos si estamos en la pantalla del mapa (cualquier variante con query params)
+                val esRutaMapa = esRutaMapaGlobal
+
+                // Ocultamos también en Admin Lobby, Join, Student Lobby y Juego
                 val esRutaAdmin = currentDestination?.route == "admin_lobby"
                 val esRutaJoin = currentDestination?.route == "join_game"
                 val esRutaStudentLobby =
@@ -110,274 +127,289 @@ fun AppNavigation() {
                 val esRutaJuego =
                     currentDestination?.route?.startsWith("${Pantalla.Kids.ruta}/game") == true
 
-                //Solo mostramos la barra si NO estamos en ninguna de esas pantallas
-                if (!esRutaAdmin && !esRutaJoin && !esRutaStudentLobby && !esRutaJuego) {
+                // Solo mostramos la barra si se cumplen estas condiciones. Para la pantalla del mapa
+                // la regla es especial: siempre visible en vertical (portrait) y nunca en horizontal (landscape).
+                val shouldShowTopBar = when {
+                    esRutaDetallePoi -> false
+                    isProfile -> false
+                    esRutaSlides && isLandscape -> false
+                    esRutaMapa -> !isLandscape // Mostrar en portrait, ocultar en landscape
+                    esRutaAdmin || esRutaJoin || esRutaStudentLobby || esRutaJuego -> false
+                    else -> true
+                }
+
+                if (shouldShowTopBar) {
+                    // Si estamos en la pantalla del mapa (en portrait) no le pasamos el scrollBehavior
+                    // para forzar que la TopAppBar se muestre aunque vinieras de una pantalla donde
+                    // estaba escondida por scroll.
+                    val effectiveScrollBehavior = if (esRutaMapa) null else topAppBarScrollBehavior
+
                     AppTopBar(
                         titulo = stringResource(currentScreen.tituloTopBarResId),
                         subtitulo = currentScreen.subtituloResId?.let { stringResource(it) },
                         onProfileClick = { navControllerPrincipal.navigate(Pantalla.Profile.ruta) },
-                        scrollBehavior = topAppBarScrollBehavior
+                        scrollBehavior = effectiveScrollBehavior
                     )
                 }
-            }
-        },
+            },
 
-        bottomBar = {
-            if (!isProfile) {
-                // Calculamos la altura del NavigationBar según el dispositivo y orientación
-                val navBarHeight = when {
-                    isTablet && isLandscape -> 90.dp  // Tablets en horizontal: más grande
-                    isLandscape -> 45.dp              // Teléfonos en horizontal: pequeño
-                    else -> 75.dp                     // Vertical (cualquier dispositivo): estándar
-                }
+            bottomBar = {
+                if (!isProfile) {
+                    // Calculamos la altura del NavigationBar según el dispositivo y orientación
+                    val navBarHeight = when {
+                        isTablet && isLandscape -> 90.dp  // Tablets en horizontal: más grande
+                        isLandscape -> 45.dp              // Teléfonos en horizontal: pequeño
+                        else -> 75.dp                     // Vertical (cualquier dispositivo): estándar
+                    }
 
-                // Tamaño de iconos y texto adaptativo
-                val iconSize = if (isTablet && isLandscape) 32.dp else 24.dp
-                val textStyle = if (isTablet && isLandscape) {
-                    MaterialTheme.typography.labelMedium
-                } else {
-                    MaterialTheme.typography.labelSmall
-                }
+                    // Tamaño de iconos y texto adaptativo
+                    val iconSize = if (isTablet && isLandscape) 32.dp else 24.dp
+                    val textStyle = if (isTablet && isLandscape) {
+                        MaterialTheme.typography.labelMedium
+                    } else {
+                        MaterialTheme.typography.labelSmall
+                    }
 
-                Column {
-                    HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
-                    NavigationBar(
-                        modifier = Modifier.height(navBarHeight)
-                    ) {
-                        itemsNavegacion.forEach { pantalla ->
-                            val isSelected =
-                                currentDestination?.route?.startsWith(pantalla.ruta) == true
+                    Column {
+                        HorizontalDivider(color = Color.LightGray, thickness = 1.dp)
+                        NavigationBar(
+                            modifier = Modifier.height(navBarHeight)
+                        ) {
+                            itemsNavegacion.forEach { pantalla ->
+                                val isSelected =
+                                    currentDestination?.route?.startsWith(pantalla.ruta) == true
 
-                            NavigationBarItem(
-                                selected = isSelected,
-                                onClick = {
-                                    navControllerPrincipal.navigate(pantalla.ruta) {
-                                        popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
-                                            saveState = true
+                                NavigationBarItem(
+                                    selected = isSelected,
+                                    onClick = {
+                                        navControllerPrincipal.navigate(pantalla.ruta) {
+                                            popUpTo(navControllerPrincipal.graph.findStartDestination().id) {
+                                                saveState = true
+                                            }
+                                            launchSingleTop = true
                                         }
-                                        launchSingleTop = true
-                                    }
-                                },
-                                icon = {
-                                    Column(
-                                        horizontalAlignment = Alignment.CenterHorizontally,
-                                        verticalArrangement = Arrangement.spacedBy(4.dp)
-                                    ) {
-                                        Icon(
-                                            pantalla.icono,
-                                            contentDescription = stringResource(pantalla.tituloBottomBarResId),
-                                            tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                            modifier = Modifier.height(iconSize)
-                                        )
-                                        Text(
-                                            stringResource(pantalla.tituloBottomBarResId),
-                                            style = textStyle,
-                                            color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-                                            textAlign = TextAlign.Center
-                                        )
-                                    }
-                                },
-                                colors = NavigationBarItemDefaults.colors(
-                                    indicatorColor = Color.Transparent
+                                    },
+                                    icon = {
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                                        ) {
+                                            Icon(
+                                                pantalla.icono,
+                                                contentDescription = stringResource(pantalla.tituloBottomBarResId),
+                                                tint = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                                modifier = Modifier.height(iconSize)
+                                            )
+                                            Text(
+                                                stringResource(pantalla.tituloBottomBarResId),
+                                                style = textStyle,
+                                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }
+                                    },
+                                    colors = NavigationBarItemDefaults.colors(
+                                        indicatorColor = Color.Transparent
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
                 }
             }
-        }
-    ) { innerPadding ->
-        // Creamos una sola instancia compartida del ViewModel aquí (scoped al Composable AppNavigation)
-        val sharedPrefs = LocalContext.current.getSharedPreferences("visited_points", android.content.Context.MODE_PRIVATE)
-        val sharedViewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
-            override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                @Suppress("UNCHECKED_CAST")
-                return PointsOfInterestViewModel(sharedPrefs) as T
-            }
-        })
+        ) { innerPadding ->
+            // Creamos una sola instancia compartida del ViewModel aquí (scoped al Composable AppNavigation)
+            val sharedPrefs = LocalContext.current.getSharedPreferences("visited_points", android.content.Context.MODE_PRIVATE)
+            val sharedViewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
+                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return PointsOfInterestViewModel(sharedPrefs) as T
+                }
+            })
 
-        NavHost(
-            navController = navControllerPrincipal,
-            startDestination = Pantalla.Home.ruta,
-            modifier = Modifier.padding(innerPadding)
-        ) {
-            composable(Pantalla.Home.ruta) {
-                HomeScreen(onNavigateToImage = { navControllerPrincipal.navigate("image") })
-            }
-            // nueva ruta para la pantalla de imagen
-            composable("image") {
-                ImageScreen(onBackClick = { navControllerPrincipal.popBackStack() })
-            }
+            NavHost(
+                navController = navControllerPrincipal,
+                startDestination = Pantalla.Home.ruta,
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                composable(Pantalla.Home.ruta) {
+                    HomeScreen(onNavigateToImage = { navControllerPrincipal.navigate("image") })
+                }
+                // nueva ruta para la pantalla de imagen
+                composable("image") {
+                    ImageScreen(onBackClick = { navControllerPrincipal.popBackStack() })
+                }
 
-            // Rutas de Puntos de Interés (ahora en el NavHost principal para evitar NavHost anidado)
-            composable(Pantalla.PointsOfInterest.ruta) {
-                PointsOfInterestScreen(navController = navControllerPrincipal, viewModel = sharedViewModel)
-            }
+                // Rutas de Puntos de Interés (ahora en el NavHost principal para evitar NavHost anidado)
+                composable(Pantalla.PointsOfInterest.ruta) {
+                    PointsOfInterestScreen(navController = navControllerPrincipal, viewModel = sharedViewModel)
+                }
 
-            composable("${Pantalla.PointsOfInterest.ruta}/detail/{puntoId}") { backStackEntry ->
-                val puntoId = backStackEntry.arguments?.getString("puntoId")
-                val punto = puntosDeInteres.find { it.id == puntoId }
-                if (punto != null) {
-                    val visitadosState = sharedViewModel.visitados.collectAsState()
-                    val visitados = visitadosState.value
-                    val isVisited = punto.id in visitados
-                    PointDetailScreen(
-                        punto = punto,
-                        onBackClick = { navControllerPrincipal.popBackStack() },
-                        onOpenMapClick = {
-                            navControllerPrincipal.navigate("map?destinoId=${punto.id}") {
-                                launchSingleTop = true
+                composable("${Pantalla.PointsOfInterest.ruta}/detail/{puntoId}") { backStackEntry ->
+                    val puntoId = backStackEntry.arguments?.getString("puntoId")
+                    val punto = puntosDeInteres.find { it.id == puntoId }
+                    if (punto != null) {
+                        val visitadosState = sharedViewModel.visitados.collectAsState()
+                        val visitados = visitadosState.value
+                        val isVisited = punto.id in visitados
+                        PointDetailScreen(
+                            punto = punto,
+                            onBackClick = { navControllerPrincipal.popBackStack() },
+                            onOpenMapClick = {
+                                navControllerPrincipal.navigate("map?destinoId=${punto.id}") {
+                                    launchSingleTop = true
                             }
                         },
-                        onOpenSubPointMapClick = { subpunto ->
-                            navControllerPrincipal.navigate("map?subPuntoId=${subpunto.id}") {
-                                launchSingleTop = true
+                            onOpenSubPointMapClick = { subpunto ->
+                                navControllerPrincipal.navigate("map?subPuntoId=${subpunto.id}") {
+                                    launchSingleTop = true
                             }
                         },
-                        onMarkAsVisited = { sharedViewModel.toggleVisited(punto.id) },
-                        isVisited = isVisited
+                            onMarkAsVisited = { sharedViewModel.toggleVisited(punto.id) },
+                            isVisited = isVisited
+                        )
+                    }
+                }
+
+                // --- SECCION INFANTIL ---
+
+                // A. Pantalla de Entrada (Elegir Diapositivas o Quiz)
+                composable(Pantalla.Kids.ruta) {
+                    // Pantalla de entrada para la sección Kids: elegir entre Diapositivas o Cuestionarios
+                    KidsEntryScreen(
+                        onNavigateToSlides = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/slides") },
+                        onNavigateToQuizzes = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") }
                     )
                 }
-            }
 
-            // --- SECCION INFANTIL ---
+                // B. Menú del Quiz (Elegir Dificultad / Admin / Unirse)
+                composable("${Pantalla.Kids.ruta}/quiz") {
+                    KidsQuizMenuScreen(
+                        onBack = {
+                            navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
+                                popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
+                            }
+                        },
+                        onStartQuiz = { dificultad ->
+                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/${dificultad.name}")
+                        },
+                        onNavigateToRanking = {
+                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking")
+                        },
+                        // Conectamos la navegación al admin
+                        onNavigateToAdmin = {
+                            navControllerPrincipal.navigate("admin_lobby")
+                        },
+                        // Navegamos a la pantalla de unirse
+                        onJoinGame = {
+                            navControllerPrincipal.navigate("join_game")
+                        }
+                    )
+                }
 
-            // A. Pantalla de Entrada (Elegir Diapositivas o Quiz)
-            composable(Pantalla.Kids.ruta) {
-                // Pantalla de entrada para la sección Kids: elegir entre Diapositivas o Cuestionarios
-                KidsEntryScreen(
-                    onNavigateToSlides = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/slides") },
-                    onNavigateToQuizzes = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") }
-                )
-            }
+                composable("map?destinoId={destinoId}&subPuntoId={subPuntoId}") { backStackEntry ->
+                    val destinoId = backStackEntry.arguments?.getString("destinoId")
+                    val subPuntoId = backStackEntry.arguments?.getString("subPuntoId")
 
-            // B. Menú del Quiz (Elegir Dificultad / Admin / Unirse)
-            composable("${Pantalla.Kids.ruta}/quiz") {
-                KidsQuizMenuScreen(
-                    onBack = {
+                    val destino = puntosDeInteres.find { it.id == destinoId }
+
+                    // Buscar el subpunto específico que se quiere mostrar
+                    val subPunto = if (!subPuntoId.isNullOrEmpty()) {
+                        puntosDeInteres
+                            .flatMap { it.subpuntos }
+                            .find { it.id == subPuntoId }
+                    } else {
+                        null
+                    }
+
+                    MapScreen(
+                        destinoInicial = destino,
+                        subPuntoInicial = subPunto, // Solo se mostrará si no es null
+                        onNavigateToDetail = { punto ->
+                            navControllerPrincipal.navigate(
+                                "${Pantalla.PointsOfInterest.ruta}/detail/${punto.id}"
+                            )
+                        }
+                    )
+                }
+
+                // C. Diapositivas
+                composable("${Pantalla.Kids.ruta}/slides") {
+                    KidsSlidesScreen(onBackToEntry = {
                         navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
                             popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
                         }
-                    },
-                    onStartQuiz = { dificultad ->
-                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/${dificultad.name}")
-                    },
-                    onNavigateToRanking = {
-                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking")
-                    },
-                    // Conectamos la navegación al admin
-                    onNavigateToAdmin = {
-                        navControllerPrincipal.navigate("admin_lobby")
-                    },
-                    // Navegamos a la pantalla de unirse
-                    onJoinGame = {
-                        navControllerPrincipal.navigate("join_game")
-                    }
-                )
-            }
-
-            composable("map?destinoId={destinoId}&subPuntoId={subPuntoId}") { backStackEntry ->
-                val destinoId = backStackEntry.arguments?.getString("destinoId")
-                val subPuntoId = backStackEntry.arguments?.getString("subPuntoId")
-
-                val destino = puntosDeInteres.find { it.id == destinoId }
-
-                // Buscar el subpunto específico que se quiere mostrar
-                val subPunto = if (!subPuntoId.isNullOrEmpty()) {
-                    puntosDeInteres
-                        .flatMap { it.subpuntos }
-                        .find { it.id == subPuntoId }
-                } else {
-                    null
+                    })
                 }
 
-                MapScreen(
-                    destinoInicial = destino,
-                    subPuntoInicial = subPunto, // Solo se mostrará si no es null
-                    onNavigateToDetail = { punto ->
-                        navControllerPrincipal.navigate(
-                            "${Pantalla.PointsOfInterest.ruta}/detail/${punto.id}"
-                        )
-                    }
-                )
-            }
+                // D. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
+                composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
+                    val dificultadString = backStackEntry.arguments?.getString("dificultad")
+                    val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
 
-            // C. Diapositivas
-            composable("${Pantalla.Kids.ruta}/slides") {
-                KidsSlidesScreen(onBackToEntry = {
-                    navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
-                        popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
-                    }
-                })
-            }
-
-            // D. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
-            composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
-                val dificultadString = backStackEntry.arguments?.getString("dificultad")
-                val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
-
-                QuizGameScreen(
-                    dificultad = dificultad,
-                    onQuizFinished = {
-                        // Vuelve al sub-menú de cuestionarios (/quiz)
-                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
-                            popUpTo("${Pantalla.Kids.ruta}/quiz") { inclusive = true }
+                    QuizGameScreen(
+                        dificultad = dificultad,
+                        onQuizFinished = {
+                            // Vuelve al sub-menú de cuestionarios (/quiz)
+                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
+                                popUpTo("${Pantalla.Kids.ruta}/quiz") { inclusive = true }
+                            }
+                        },
+                        onNavigateToRanking = {
+                            // Navega al ranking desde la pantalla de resultados
+                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
+                                // Opcional: cierra la pantalla de quiz
+                                popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                            }
                         }
-                    },
-                    onNavigateToRanking = {
-                        // Navega al ranking desde la pantalla de resultados
-                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
-                            // Opcional: cierra la pantalla de quiz
-                            popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                    )
+                }
+                // E. Pantalla de Ranking
+                composable("${Pantalla.Kids.ruta}/ranking") {
+                    RankingScreen(
+                        onBackClick = { navControllerPrincipal.popBackStack() }
+                    )
+                }
+
+                // F. Admin Lobby (Profesor - Crear Partida)
+                composable("admin_lobby") {
+                    AdminLobbyScreen(
+                        onBack = { navControllerPrincipal.popBackStack() }
+                    )
+                }
+
+                // G. Unirse a Partida (Alumno - Introducir PIN)
+                composable("join_game") {
+                    JoinGameScreen(
+                        onBack = { navControllerPrincipal.popBackStack() },
+                        onJoinSuccess = { pin ->
+                            // Navegamos a la SALA DE ESPERA
+                            navControllerPrincipal.navigate("student_lobby/$pin") {
+                                // Borramos la pantalla de "poner PIN" del historial para no volver a ella
+                                popUpTo("join_game") { inclusive = true }
+                            }
                         }
-                    }
-                )
-            }
-            // E. Pantalla de Ranking
-            composable("${Pantalla.Kids.ruta}/ranking") {
-                RankingScreen(
-                    onBackClick = { navControllerPrincipal.popBackStack() }
-                )
-            }
+                    )
+                }
 
-            // F. Admin Lobby (Profesor - Crear Partida)
-            composable("admin_lobby") {
-                AdminLobbyScreen(
-                    onBack = { navControllerPrincipal.popBackStack() }
-                )
-            }
+                // H. Sala de Espera (Alumno - Esperando al profesor)
+                composable("student_lobby/{pin}") { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
 
-            // G. Unirse a Partida (Alumno - Introducir PIN)
-            composable("join_game") {
-                JoinGameScreen(
-                    onBack = { navControllerPrincipal.popBackStack() },
-                    onJoinSuccess = { pin ->
-                        // Navegamos a la SALA DE ESPERA
-                        navControllerPrincipal.navigate("student_lobby/$pin") {
-                            // Borramos la pantalla de "poner PIN" del historial para no volver a ella
-                            popUpTo("join_game") { inclusive = true }
+                    StudentLobbyScreen(
+                        pin = pin,
+                        onBack = { navControllerPrincipal.popBackStack() },
+                        onGameStarted = { dificultad ->
+                            // ¡El juego empieza! Navegamos a la pantalla de juego
+                            // Usamos replace (popUpTo) para que no pueda volver a la sala de espera
+                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/$dificultad") {
+                                popUpTo("student_lobby/{pin}") { inclusive = true }
+                            }
                         }
-                    }
-                )
+                    )
+                }
+                composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
             }
-
-            // H. Sala de Espera (Alumno - Esperando al profesor)
-            composable("student_lobby/{pin}") { backStackEntry ->
-                val pin = backStackEntry.arguments?.getString("pin") ?: ""
-
-                StudentLobbyScreen(
-                    pin = pin,
-                    onBack = { navControllerPrincipal.popBackStack() },
-                    onGameStarted = { dificultad ->
-                        // ¡El juego empieza! Navegamos a la pantalla de juego
-                        // Usamos replace (popUpTo) para que no pueda volver a la sala de espera
-                        navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/$dificultad") {
-                            popUpTo("student_lobby/{pin}") { inclusive = true }
-                        }
-                    }
-                )
-            }
-            composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
         }
     }
 }
