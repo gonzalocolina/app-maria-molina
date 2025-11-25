@@ -1,6 +1,11 @@
 package com.example.mariamolina.ui.screens.map
 
 
+import android.content.pm.PackageManager
+import android.Manifest
+import android.content.res.Configuration
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,11 +16,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.data.model.PuntoInteres
@@ -24,6 +31,8 @@ import com.example.mariamolina.data.model.puntosDeInteres
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.Polyline
 
 @Composable
@@ -37,6 +46,33 @@ fun MapScreen(
     var showPanel by remember { mutableStateOf(destinoInicial != null || subPuntoInicial != null) } // MODIFICADO
     var drawRoute by remember { mutableStateOf(false) }
     var centerOnRoute by remember { mutableStateOf(false) }
+    var userLocation by remember { mutableStateOf<GeoPoint?>(null) }
+    var centerMapOnUser by remember { mutableStateOf(false) }
+    var centerMapOnInitial by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    // --- 1) CONTROL DE PERMISOS DE UBICACIÓN ---
+    var hasLocationPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        hasLocationPermission = granted
+    }
+
+    LaunchedEffect(Unit) {
+        if (!hasLocationPermission) {
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -45,6 +81,10 @@ fun MapScreen(
             selectedSubPunto = selectedSubPunto, // NUEVO: pasar subpunto seleccionado
             drawRoute = drawRoute,
             centerOnRoute = centerOnRoute,
+            centerMapOnUser = centerMapOnUser,
+            centerMapOnInitial = centerMapOnInitial,
+            onFinishCenterUser = { centerMapOnUser = false },
+            onFinishCenterInitial = { centerMapOnInitial = false },
             onFinishCenter = { centerOnRoute = false },
             onMarkerClick = { destino ->
                 selectedDestino = destino
@@ -60,8 +100,30 @@ fun MapScreen(
                 centerOnRoute = false
                 showPanel = true
             },
+            onUserLocation = { userLocation = it },
             modifier = Modifier.fillMaxSize()
         )
+
+        if (userLocation != null) {
+            FloatingActionButton(
+                onClick = { centerMapOnUser = true },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.TopEnd)
+            ) {
+                Text("Mi ubicación")
+            }
+        }
+
+        // ---------- BOTÓN FLOTANTE: CENTRAR EN POSICIÓN INICIAL ----------
+        FloatingActionButton(
+            onClick = { centerMapOnInitial = true },
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.TopStart)
+        ) {
+            Text("Inicio")
+        }
 
         // ------- PANEL INFERIOR CUANDO SE PULSA UN DESTINO -------
         AnimatedVisibility(
@@ -116,7 +178,12 @@ fun MapViewComposable(
     onMarkerClick: (PuntoInteres) -> Unit,
     onSubPuntoMarkerClick: (SubPuntoInteres) -> Unit, // NUEVO: callback para subpuntos
     centerOnRoute: Boolean,
-    onFinishCenter: () -> Unit
+    centerMapOnUser: Boolean,
+    centerMapOnInitial: Boolean,
+    onFinishCenterUser: () -> Unit,
+    onFinishCenterInitial: () -> Unit,
+    onFinishCenter: () -> Unit,
+    onUserLocation: (GeoPoint) -> Unit
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
@@ -124,6 +191,18 @@ fun MapViewComposable(
     val defaultMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!
     val selectedMarkerDrawable = defaultMarkerDrawable.constantState?.newDrawable()?.mutate()!!
     val subPuntoMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!.constantState?.newDrawable()?.mutate()!!
+
+    var userLocation by remember { mutableStateOf<GeoPoint?>(null) }
+    val locationOverlay = remember {
+        MyLocationNewOverlay(GpsMyLocationProvider(context), mapView).apply {
+            enableMyLocation()
+            runOnFirstFix {
+                userLocation = myLocation
+            }
+        }
+    }
+
+    var currentPolyline by remember { mutableStateOf<Polyline?>(null) }
 
     selectedMarkerDrawable.setColorFilter(
         android.graphics.PorterDuffColorFilter(android.graphics.Color.RED, android.graphics.PorterDuff.Mode.SRC_IN)
@@ -140,12 +219,26 @@ fun MapViewComposable(
                 setMultiTouchControls(true)
                 controller.setZoom(16.0)
                 controller.setCenter(GeoPoint(41.65213, -4.72856))
+
+                // --- UBICACIÓN DEL USUARIO ---
+                locationOverlay.enableMyLocation()
+
+                locationOverlay.runOnFirstFix {
+                    val loc = locationOverlay.myLocation
+                    if (loc != null) {
+                        onUserLocation(loc)
+                    }
+                }
+
+                //mapView.overlays.add(locationOverlay)
+                overlays.add(locationOverlay)
             }
         },
         modifier = modifier,
         update = { map ->
 
-            map.overlays.clear()
+            val userLoc = (map.overlays.find { it is MyLocationNewOverlay } as? MyLocationNewOverlay)?.myLocation
+            if (userLoc != null) onUserLocation(userLoc)
 
             // ----------- 1) MARCADORES DE TODOS LOS DESTINOS PRINCIPALES -----------
             puntosDeInteres.forEach { destino ->
@@ -186,24 +279,28 @@ fun MapViewComposable(
                 else -> null
             }
 
+            currentPolyline?.let { map.overlays.remove(it) }
+            currentPolyline = null
+
             if (drawRoute && targetPoint != null) {
-                val currentCenter = map.mapCenter as? GeoPoint ?: targetPoint
+                val origin = userLocation ?: map.mapCenter as? GeoPoint ?: targetPoint
 
                 val polyline = Polyline().apply {
-                    addPoint(currentCenter)
+                    addPoint(origin)
                     addPoint(targetPoint)
                 }
 
                 map.overlays.add(polyline)
+                currentPolyline = polyline // ✅ guardar la ruta actual
             }
 
             // ---------- CENTRAR LA RUTA ----------
             if (centerOnRoute && targetPoint != null) {
-                val currentCenter = map.mapCenter as? GeoPoint ?: targetPoint
+                val origin = userLocation ?: map.mapCenter as? GeoPoint ?: targetPoint
 
                 // Calculamos el centro medio entre origen y destino
-                val middleLat = (currentCenter.latitude + targetPoint.latitude) / 2
-                val middleLon = (currentCenter.longitude + targetPoint.longitude) / 2
+                val middleLat = (origin.latitude + targetPoint.latitude) / 2
+                val middleLon = (origin.longitude + targetPoint.longitude) / 2
                 val centerPoint = GeoPoint(middleLat, middleLon)
 
                 // Ajustamos zoom para que se vea bien la línea
@@ -211,6 +308,21 @@ fun MapViewComposable(
                 map.controller.animateTo(centerPoint)
 
                 onFinishCenter()   // 👈 IMPORTANTE: reseteamos el estado para no repetirlo
+            }
+
+            // Centrar en usuario
+            if (centerMapOnUser && userLocation != null) {
+                map.controller.setZoom(16.0)
+                map.controller.animateTo(userLocation)
+                onFinishCenterUser()
+            }
+
+            // Centrar en posición inicial
+            if (centerMapOnInitial) {
+                val initialPoint = GeoPoint(41.65213, -4.72856)
+                map.controller.setZoom(16.0)
+                map.controller.animateTo(initialPoint)
+                onFinishCenterInitial()
             }
 
             map.invalidate()
@@ -225,55 +337,69 @@ fun DestinoPanel(
     onShowRoute: () -> Unit,
     onClose: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        elevation = CardDefaults.cardElevation(8.dp),
-        shape = RoundedCornerShape(16.dp)
+    val configuration = LocalConfiguration.current
+    val imageHeight = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 100.dp else 150.dp
+
+    // Ajuste responsivo del ancho del Card: más estrecho en horizontal para que no ocupe
+    // tanto espacio en pantallas apaisadas.
+    val maxWidth = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 420.dp else 600.dp
+
+    // Alineamos el Card según orientación: a la izquierda en landscape, centrado en portrait
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) Alignment.CenterStart else Alignment.Center
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Card(
+            modifier = Modifier
+                .widthIn(max = maxWidth)
+                .padding(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
-            // 🔥 IMAGEN DEL DESTINO
-            AsyncImage(
-                model = destino.urlImagen,
-                contentDescription = stringResource(destino.tituloResId),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp)
-                    .padding(bottom = 8.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            // 🔥 TITULO + BOTÓN DE CERRAR
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(destino.tituloResId),
-                    style = MaterialTheme.typography.titleMedium
+                // 🔥 IMAGEN DEL DESTINO
+                AsyncImage(
+                    model = destino.urlImagen,
+                    contentDescription = stringResource(destino.tituloResId),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(imageHeight)
+                        .padding(bottom = 8.dp),
+                    contentScale = ContentScale.Crop
                 )
 
-                IconButton(onClick = onClose) {
-                    Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                // 🔥 TITULO + BOTÓN DE CERRAR
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(destino.tituloResId),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    IconButton(onClick = onClose) {
+                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                    }
                 }
-            }
 
-            Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-            // 🔥 BOTONES
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(onClick = onShowRoute) {
-                    Text("Cómo llegar")
-                }
+                // 🔥 BOTONES
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = onShowRoute) {
+                        Text("Cómo llegar")
+                    }
 
-                OutlinedButton(onClick = onNavigate) {
-                    Text("Más información")
+                    OutlinedButton(onClick = onNavigate) {
+                        Text("Más información")
+                    }
                 }
             }
         }
@@ -286,40 +412,48 @@ fun SubPuntoPanel(
     onShowRoute: () -> Unit,
     onClose: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        elevation = CardDefaults.cardElevation(8.dp),
-        shape = RoundedCornerShape(16.dp)
+    val configuration = LocalConfiguration.current
+    val maxWidth = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 420.dp else 600.dp
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) Alignment.CenterStart else Alignment.Center
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Card(
+            modifier = Modifier
+                .widthIn(max = maxWidth)
+                .padding(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
-            // 🔥 TITULO + BOTÓN DE CERRAR (solo título, sin imagen)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(subPunto.nombreResId),
-                    style = MaterialTheme.typography.titleMedium
-                )
+                // 🔥 TITULO + BOTÓN DE CERRAR (solo título, sin imagen)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(subPunto.nombreResId),
+                        style = MaterialTheme.typography.titleMedium
+                    )
 
-                IconButton(onClick = onClose) {
-                    Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                    IconButton(onClick = onClose) {
+                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                    }
                 }
-            }
 
-            Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-            // 🔥 SOLO BOTÓN "CÓMO LLEGAR"
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(onClick = onShowRoute) {
-                    Text("Cómo llegar")
+                // 🔥 SOLO BOTÓN "CÓMO LLEGAR"
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(onClick = onShowRoute) {
+                        Text("Cómo llegar")
+                    }
                 }
             }
         }
