@@ -131,6 +131,7 @@ fun AdminGameScreen(
                 }
             } else {
                 // Fase de Juego: Botón para FORZAR el fin de la pregunta
+                // ¡AHORA ESTÁ HABILITADO!
                 Button(
                     onClick = { viewModel.forzarFinPregunta() },
                     modifier = Modifier.fillMaxWidth().height(56.dp),
