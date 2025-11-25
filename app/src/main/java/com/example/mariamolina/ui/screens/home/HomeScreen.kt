@@ -120,7 +120,6 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                         Text(
                             text = stringResource(R.string.home_screen_intro_paragraph),
                             style = MaterialTheme.typography.bodyLarge.copy(
-                                fontSize = 18.sp,
                                 lineHeight = 28.sp
                             ),
                             color = MaterialTheme.colorScheme.onBackground
@@ -160,7 +159,6 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                             Text(
                                 stringResource(R.string.btn_ver_arbol),
                                 style = MaterialTheme.typography.labelLarge.copy(
-                                    fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold
                                 ),
                                 modifier = Modifier.padding(vertical = 4.dp)
@@ -240,7 +238,6 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                         Text(
                             text = stringResource(R.string.home_screen_intro_paragraph),
                             style = MaterialTheme.typography.bodyLarge.copy(
-                                fontSize = 17.sp,
                                 lineHeight = 26.sp
                             ),
                             color = MaterialTheme.colorScheme.onBackground
@@ -280,7 +277,6 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                             Text(
                                 stringResource(R.string.btn_ver_arbol),
                                 style = MaterialTheme.typography.labelLarge.copy(
-                                    fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold
                                 ),
                                 modifier = Modifier.padding(vertical = 4.dp)
@@ -326,7 +322,6 @@ fun ContentSection(
             Text(
                 text = title,
                 style = MaterialTheme.typography.headlineSmall.copy(
-                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.sp
                 ),
@@ -337,7 +332,6 @@ fun ContentSection(
                 Text(
                     text = paragraph,
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        fontSize = 16.sp,
                         lineHeight = 24.sp
                     ),
                     color = MaterialTheme.colorScheme.onBackground
@@ -351,7 +345,8 @@ fun ContentSection(
 @Composable
 fun ElegantTitle(text: String, large: Boolean = false, modifier: Modifier = Modifier) {
     // Se usa uppercase para emular el aspecto 'display' y se aplica tracking amplio.
-    val fontSize = if (large) 36.sp else 30.sp
+    val baseSize = MaterialTheme.typography.headlineLarge.fontSize
+    val fontSize = if (large) baseSize * 1.1f else baseSize
     Text(
         text = text.uppercase(),
         modifier = modifier,

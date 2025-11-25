@@ -285,4 +285,10 @@
     <string name="kids_prev">Anterior</string>
     <string name="kids_next">Siguiente</string>
 
+    <!-- Progress section for Points of Interest -->
+    <string name="points_progress_title">Tu Progreso</string>
+    <string name="points_visited">Visitados</string>
+    <string name="points_remaining">Restantes</string>
+    <string name="points_progress_percent">%d%% completado</string>
+
 </resources>

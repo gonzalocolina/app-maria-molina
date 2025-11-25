@@ -127,6 +127,49 @@
     <string name="p12_horarios">Montag geschlossen; Dienstag–Samstag: 10:00–14:00 (Zutritt bis 13:00) und 16:00–18:30 (Zutritt bis 17:30); Freier Eintritt: Mittwoch und Donnerstag 16:00–18:30 (letzter Einlass 17:30); Sonntage und Feiertage: 10:30–15:00 (Zutritt bis 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
+    <!-- Deutsche Übersetzungen für die Kinder-Slides -->
+    <string name="slide_1_title">María de Molina</string>
+    <string name="slide_1_desc">Hallo! Ich bin María de Molina und werde dir meine Geschichte erzählen.</string>
+
+    <string name="slide_2_title">Meine Eltern</string>
+    <string name="slide_2_desc">Meine Eltern waren der Infant Alfonso de Molina und Doña Mayor de Meneses.</string>
+
+    <string name="slide_3_title">Schloss Montealegre</string>
+    <string name="slide_3_desc">Gewohntes Wohnsitz von María de Molina.</string>
+
+    <string name="slide_5_title">Prinz Sancho</string>
+    <string name="slide_5_desc">Als ich 15 war, verliebte sich ein Prinz namens Sancho in mich.</string>
+
+    <string name="slide_6_title">Unsere Hochzeit</string>
+    <string name="slide_6_desc">1282 heirateten wir in Toledo.</string>
+
+    <string name="slide_7_title">Palast von Valladolid</string>
+    <string name="slide_7_desc">Später zogen wir nach Valladolid in den Palast von Sancho.</string>
+
+    <string name="slide_8_title">Könige von Kastilien und León</string>
+    <string name="slide_8_desc">Als Sanchos Vater starb, wurde Sancho zum König von Kastilien und León gewählt und ich wurde Königin.</string>
+
+    <string name="slide_9_title">Die Schlachten</string>
+    <string name="slide_9_desc">Während der Herrschaft half ich Sancho in vielen Schlachten zu kämpfen.</string>
+
+    <string name="slide_10_title">König Fernando</string>
+    <string name="slide_10_desc">Jahre später erkrankte Sancho und starb. Ich sorgte dafür, dass mein Sohn Fernando zum König ernannt wurde.</string>
+
+    <string name="slide_11_title">Regentin von Fernando</string>
+    <string name="slide_11_desc">Fernando war noch klein und ich half ihm zu regieren, bis er volljährig war.</string>
+
+    <string name="slide_12_title">König Alfonso</string>
+    <string name="slide_12_desc">Fernando war ein guter König, starb jedoch später; ich half für meinen Enkel Alfonso zu regieren, als er noch zu jung war.</string>
+
+    <string name="slide_13_title">Meine letzte Ruhestätte</string>
+    <string name="slide_13_desc">Vor meinem Tod bat ich darum, im Kloster Santa María La Real de Huelgas beigesetzt zu werden.</string>
+
+    <string name="slide_14_title">Das Geheimnis meines Grabes</string>
+    <string name="slide_14_desc">An meinem Grab kann man erkennen, ob es regnen wird: Stunden vorher erscheinen Flecken darauf. Aber sei vorsichtig… wenn du sie berührst, piekst es!</string>
+
+    <string name="slide_15_title">Versteckte Figuren</string>
+    <string name="slide_15_desc">Auf meinem Grab sind außerdem Figuren einer Eidechse, eines Mönchs, der sich die Ohren zuhält, und eines Monsters versteckt. Versuche sie zu finden!</string>
+
     <!-- Navigation -->
     <string name="nav_home_title">Historisches Valladolid</string>
     <string name="nav_home_subtitle">Entdecke die Geschichte von María de Molina</string>
@@ -176,5 +219,15 @@
     <string name="kids_slides_descripcion">Hier kannst du die für Kinder angepassten Geschichtsfolien ansehen.</string>
     <string name="kids_no_slides">Keine Folien verfügbar</string>
     <string name="cd_back">Zurück</string>
+
+    <!-- Navigation -->
+    <string name="kids_prev">Zurück</string>
+    <string name="kids_next">Weiter</string>
+
+    <!-- Progress section for Points of Interest -->
+    <string name="points_progress_title">Dein Fortschritt</string>
+    <string name="points_visited">Besucht</string>
+    <string name="points_remaining">Verbleibend</string>
+    <string name="points_progress_percent">%d%% abgeschlossen</string>
 
 </resources>

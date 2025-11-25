@@ -93,14 +93,14 @@ object SlidesProvider {
             id = "slide14",
             titleRes = R.string.slide_14_title,
             descriptionRes = R.string.slide_14_desc,
-            imageUrl = "https://ik.imagekit.io/fn2wdosiw/tumba.jpg",
+            imageUrl = "https://ik.imagekit.io/fn2wdosiw/tumba.jpg?updatedAt=1764025089820",
             hasSpeechBubble = false
         ),
         Slide(
             id = "slide15",
             titleRes = R.string.slide_15_title,
             descriptionRes = R.string.slide_15_desc,
-            imageUrl = "https://ik.imagekit.io/fn2wdosiw/tumba.jpg",
+            imageUrl = "https://ik.imagekit.io/fn2wdosiw/tumba.jpg?updatedAt=1764025089820-",
             hasSpeechBubble = false
         )
     )
