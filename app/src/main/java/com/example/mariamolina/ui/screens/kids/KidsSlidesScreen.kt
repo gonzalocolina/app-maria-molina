@@ -34,7 +34,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.platform.LocalWindowInfo
 
 // Resuelve el nombre de recurso drawable a un id usando el Context en runtime.
 // Si no existe, retorna un drawable del sistema como fallback.
@@ -82,7 +82,15 @@ fun KidsSlidesScreen(
             if (isLandscape) {
                 // Layout horizontal: imagen a la izquierda, texto e indicadores a la derecha
                 // Calculamos la mitad del ancho de pantalla para que el panel de texto llegue hasta el centro
-                val halfWidth = (configuration.screenWidthDp.dp) / 2
+                // Usamos LocalWindowInfo.current.containerSize (en px) si está disponible y lo convertimos a dp.
+                val halfWidth = run {
+                    val windowInfo = LocalWindowInfo.current
+                    // LocalWindowInfo.current es no-nulo en esta versión; usamos su containerSize (en px)
+                    // y lo convertimos a dp. Dividimos por 2 para obtener la mitad de la pantalla.
+                    val pxWidth = windowInfo.containerSize.width
+                    val widthDp = with(LocalDensity.current) { pxWidth.toDp() }
+                    widthDp / 2
+                }
                 // Espacio reservado para el botón derecho para evitar solapamiento con el texto
                 val buttonSpace = 80.dp
 
@@ -105,7 +113,7 @@ fun KidsSlidesScreen(
                                         while (true) {
                                             val event = awaitPointerEvent()
                                             val change = event.changes.firstOrNull() ?: break
-                                            val dx = change.positionChange().x
+                                            val dx = change.position.x - change.previousPosition.x
                                             if (dx != 0f) {
                                                 totalDragX += dx
                                                 if (!movedThisGesture) {
@@ -291,7 +299,7 @@ fun KidsSlidesScreen(
                                     while (true) {
                                         val event = awaitPointerEvent()
                                         val change = event.changes.firstOrNull() ?: break
-                                        val dx = change.positionChange().x
+                                        val dx = change.position.x - change.previousPosition.x
                                         if (dx != 0f) {
                                             totalDragX += dx
                                             if (!movedThisGesture) {
