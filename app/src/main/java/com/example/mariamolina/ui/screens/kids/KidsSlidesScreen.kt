@@ -138,7 +138,7 @@ fun KidsSlidesScreen(
                                     .error(resolveDrawableId(ctx, imageUrl))
                                     .placeholder(resolveDrawableId(ctx, imageUrl))
                                     .build(),
-                                contentDescription = slide.title,
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
@@ -146,7 +146,7 @@ fun KidsSlidesScreen(
                             val imageResId = remember(imageUrl) { resolveDrawableId(ctx, imageUrl) }
                             Image(
                                 painter = painterResource(id = imageResId),
-                                contentDescription = slide.title,
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
@@ -180,7 +180,7 @@ fun KidsSlidesScreen(
                     ) {
                         // Contenido principal: título y descripción / bocadillo
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            Text(text = slide.title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                            Text(text = stringResource(id = slide.titleRes), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.height(8.dp))
 
                             if (slide.hasSpeechBubble) {
@@ -191,7 +191,7 @@ fun KidsSlidesScreen(
                                     border = BorderStroke(2.dp, Color(0xFF6200EE))
                                 ) {
                                     Text(
-                                        text = slide.description,
+                                        text = stringResource(id = slide.descriptionRes),
                                         color = Color.Black,
                                         style = MaterialTheme.typography.bodyLarge,
                                         modifier = Modifier
@@ -207,7 +207,7 @@ fun KidsSlidesScreen(
                                     colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyLarge)
+                                        Text(text = stringResource(id = slide.descriptionRes), color = Color.White, style = MaterialTheme.typography.bodyLarge)
                                     }
                                 }
                             }
@@ -252,7 +252,7 @@ fun KidsSlidesScreen(
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
                             .size(56.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = "Anterior", tint = Color.White, modifier = Modifier.size(32.dp))
+                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.kids_prev), tint = Color.White, modifier = Modifier.size(32.dp))
                     }
                 }
 
@@ -265,7 +265,7 @@ fun KidsSlidesScreen(
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
                             .size(56.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = "Siguiente", tint = Color.White, modifier = Modifier.size(32.dp))
+                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = stringResource(id = R.string.kids_next), tint = Color.White, modifier = Modifier.size(32.dp))
                     }
                 }
             } else {
@@ -324,7 +324,7 @@ fun KidsSlidesScreen(
                                     .error(resolveDrawableId(ctx, imageUrl))
                                     .placeholder(resolveDrawableId(ctx, imageUrl))
                                     .build(),
-                                contentDescription = slide.title,
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
@@ -332,7 +332,7 @@ fun KidsSlidesScreen(
                             val imageResId = remember(imageUrl) { resolveDrawableId(ctx, imageUrl) }
                             Image(
                                 painter = painterResource(id = imageResId),
-                                contentDescription = slide.title,
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
@@ -363,7 +363,7 @@ fun KidsSlidesScreen(
                     ) {
                         // Contenido principal: título y descripción / bocadillo
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            Text(text = slide.title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                            Text(text = stringResource(id = slide.titleRes), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.height(8.dp))
 
                             if (slide.hasSpeechBubble) {
@@ -374,7 +374,7 @@ fun KidsSlidesScreen(
                                     border = BorderStroke(2.dp, Color(0xFF6200EE))
                                 ) {
                                     Text(
-                                        text = slide.description,
+                                        text = stringResource(id = slide.descriptionRes),
                                         color = Color.Black,
                                         style = MaterialTheme.typography.bodyLarge,
                                         modifier = Modifier
@@ -390,7 +390,7 @@ fun KidsSlidesScreen(
                                     colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyLarge)
+                                        Text(text = stringResource(id = slide.descriptionRes), color = Color.White, style = MaterialTheme.typography.bodyLarge)
                                     }
                                 }
                             }
@@ -435,7 +435,7 @@ fun KidsSlidesScreen(
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
                             .size(56.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = "Anterior", tint = Color.White, modifier = Modifier.size(32.dp))
+                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.kids_prev), tint = Color.White, modifier = Modifier.size(32.dp))
                     }
                 }
 
@@ -448,7 +448,7 @@ fun KidsSlidesScreen(
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
                             .size(56.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = "Siguiente", tint = Color.White, modifier = Modifier.size(32.dp))
+                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = stringResource(id = R.string.kids_next), tint = Color.White, modifier = Modifier.size(32.dp))
                     }
                 }
             }
