@@ -352,8 +352,9 @@ fun ElegantTitle(modifier: Modifier = Modifier, text: String, large: Boolean = f
         modifier = modifier,
         style = MaterialTheme.typography.headlineLarge.copy(
             fontSize = fontSize,
-            fontWeight = FontWeight.Light, // aspecto más fino similar a las muestras
-            letterSpacing = 6.sp
+          //  fontWeight = FontWeight.Light, // aspecto más fino similar a las muestras
+            letterSpacing = 5.sp,
+            fontWeight = FontWeight.Bold
         ),
         color = MaterialTheme.colorScheme.primary
     )
