@@ -45,6 +45,8 @@ fun MapScreen(
     var drawRoute by remember { mutableStateOf(false) }
     var centerOnRoute by remember { mutableStateOf(false) }
     var userLocation by remember { mutableStateOf<GeoPoint?>(null) }
+    var centerMapOnUser by remember { mutableStateOf(false) }
+    var centerMapOnInitial by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -77,6 +79,10 @@ fun MapScreen(
             selectedSubPunto = selectedSubPunto, // NUEVO: pasar subpunto seleccionado
             drawRoute = drawRoute,
             centerOnRoute = centerOnRoute,
+            centerMapOnUser = centerMapOnUser,
+            centerMapOnInitial = centerMapOnInitial,
+            onFinishCenterUser = { centerMapOnUser = false },
+            onFinishCenterInitial = { centerMapOnInitial = false },
             onFinishCenter = { centerOnRoute = false },
             onMarkerClick = { destino ->
                 selectedDestino = destino
@@ -95,6 +101,27 @@ fun MapScreen(
             onUserLocation = { userLocation = it },
             modifier = Modifier.fillMaxSize()
         )
+
+        if (userLocation != null) {
+            FloatingActionButton(
+                onClick = { centerMapOnUser = true },
+                modifier = Modifier
+                    .padding(16.dp)
+                    .align(Alignment.TopEnd)
+            ) {
+                Text("Mi ubicación")
+            }
+        }
+
+        // ---------- BOTÓN FLOTANTE: CENTRAR EN POSICIÓN INICIAL ----------
+        FloatingActionButton(
+            onClick = { centerMapOnInitial = true },
+            modifier = Modifier
+                .padding(16.dp)
+                .align(Alignment.TopStart)
+        ) {
+            Text("Inicio")
+        }
 
         // ------- PANEL INFERIOR CUANDO SE PULSA UN DESTINO -------
         AnimatedVisibility(
@@ -149,6 +176,10 @@ fun MapViewComposable(
     onMarkerClick: (PuntoInteres) -> Unit,
     onSubPuntoMarkerClick: (SubPuntoInteres) -> Unit, // NUEVO: callback para subpuntos
     centerOnRoute: Boolean,
+    centerMapOnUser: Boolean,
+    centerMapOnInitial: Boolean,
+    onFinishCenterUser: () -> Unit,
+    onFinishCenterInitial: () -> Unit,
     onFinishCenter: () -> Unit,
     onUserLocation: (GeoPoint) -> Unit
 ) {
@@ -275,6 +306,21 @@ fun MapViewComposable(
                 map.controller.animateTo(centerPoint)
 
                 onFinishCenter()   // 👈 IMPORTANTE: reseteamos el estado para no repetirlo
+            }
+
+            // Centrar en usuario
+            if (centerMapOnUser && userLocation != null) {
+                map.controller.setZoom(16.0)
+                map.controller.animateTo(userLocation)
+                onFinishCenterUser()
+            }
+
+            // Centrar en posición inicial
+            if (centerMapOnInitial) {
+                val initialPoint = GeoPoint(41.65213, -4.72856)
+                map.controller.setZoom(16.0)
+                map.controller.animateTo(initialPoint)
+                onFinishCenterInitial()
             }
 
             map.invalidate()
