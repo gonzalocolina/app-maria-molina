@@ -25,6 +25,9 @@ import androidx.compose.ui.res.stringResource
 import com.example.mariamolina.R
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 
 @Composable
 fun PointsListScreen(
@@ -62,14 +65,26 @@ fun PuntoInteresCard(
     punto: PuntoInteres,
     onClick: () -> Unit
 ) {
+    val isDark = isSystemInDarkTheme()
+
+    // Creamos un modifier que añade un borde claro solo en modo oscuro para simular una sombra "clara".
+    val cardModifier = Modifier
+        .fillMaxWidth()
+        .then(
+            if (isDark) Modifier.border(
+                BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)),
+                shape = RoundedCornerShape(16.dp)
+            ) else Modifier
+        )
+        .clickable(onClick = onClick)
+
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick),
+        modifier = cardModifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+            // mantenemos el color actual (podrías usar surface si quieres destacar más)
+            containerColor = MaterialTheme.colorScheme.background
         )
     ) {
         Column {

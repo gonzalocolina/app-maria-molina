@@ -165,70 +165,7 @@ fun ProfileScreen(
             HorizontalDivider()
             Spacer(modifier = Modifier.height(16.dp))
 
-            // --- SECCIÓN 2: DATOS DE USUARIO ---
-
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = null,
-                modifier = Modifier.size(100.dp),
-                tint = AppPrimaryBrown
-            )
-
-            // ¡CAMBIO! Mostramos el Nickname real si existe, o el título genérico
-            Text(
-                text = uiState.nickname.ifBlank { stringResource(id = R.string.profile_user_section_title) },
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
-
-            if (uiState.isLoading) {
-                CircularProgressIndicator()
-            } else {
-                OutlinedTextField(
-                    value = uiState.nickname,
-                    onValueChange = { viewModel.updateNickname(it) },
-                    label = { Text(stringResource(id = R.string.profile_nickname_label)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    leadingIcon = { Icon(Icons.Default.Edit, contentDescription = null) }
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Button(
-                    onClick = { viewModel.saveProfile() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = AppPrimaryBrown)
-                ) {
-                    Text(stringResource(id = R.string.profile_save_button))
-                }
-
-                if (uiState.isSaved) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(Icons.Default.Check, contentDescription = null, tint = Color(0xFF4CAF50))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(stringResource(id = R.string.profile_saved_success), color = Color(0xFF4CAF50))
-                    }
-                }
-
-                if (uiState.error != null) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.profile_error_message, uiState.error!!),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
-            }
-
-            // Separador
-            Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider()
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // --- SECCIÓN 2.5: TAMAÑO DE LETRA ---
+            // --- SECCIÓN 2: TAMAÑO DE LETRA ---
             Text(
                 text = "Tamaño de letra",
                 style = MaterialTheme.typography.titleMedium,
@@ -282,7 +219,6 @@ fun ProfileScreen(
             Text(
                 text = stringResource(R.string.about_description),
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(32.dp))

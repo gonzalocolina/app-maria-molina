@@ -26,9 +26,11 @@ import com.example.mariamolina.ui.navigation.Pantalla
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
+import com.example.mariamolina.R
 
 @Composable
 fun PointsOfInterestScreen(
@@ -54,7 +56,7 @@ fun PointsOfInterestScreen(
                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                 // Usamos color surface para evitar tonos amarillos llamativos
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surface
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             ) {
                 Column(
@@ -64,7 +66,7 @@ fun PointsOfInterestScreen(
                 ) {
                     // Título de la sección
                     Text(
-                        text = "Tu Progreso",
+                        text = stringResource(id = R.string.points_progress_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -86,7 +88,7 @@ fun PointsOfInterestScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.CheckCircle,
-                                    contentDescription = "Visitados",
+                                    contentDescription = stringResource(id = R.string.points_visited),
                                     tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.padding(end = 4.dp)
                                 )
@@ -98,7 +100,7 @@ fun PointsOfInterestScreen(
                                 )
                             }
                             Text(
-                                text = "Visitados",
+                                text = stringResource(id = R.string.points_visited),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                             )
@@ -113,8 +115,8 @@ fun PointsOfInterestScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.PinDrop,
-                                    contentDescription = "Restantes",
-                                    tint = MaterialTheme.colorScheme.secondary,
+                                    contentDescription = stringResource(id = R.string.points_remaining),
+                                    tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.padding(end = 4.dp)
                                 )
                                 Text(
@@ -125,7 +127,7 @@ fun PointsOfInterestScreen(
                                 )
                             }
                             Text(
-                                text = "Restantes",
+                                text = stringResource(id = R.string.points_remaining),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
                             )
@@ -136,8 +138,9 @@ fun PointsOfInterestScreen(
 
                     // Barra de progreso con diseño mejorado
                     Column {
+                        val progress = if (total > 0) visitadosCount.toFloat() / total else 0f
                         LinearProgressIndicator(
-                            progress = { if (total > 0) visitadosCount.toFloat() / total else 0f },
+                            progress = { progress },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(12.dp)
@@ -150,8 +153,9 @@ fun PointsOfInterestScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         // Porcentaje
+                        val percent = (progress * 100).toInt()
                         Text(
-                            text = "${((if (total > 0) visitadosCount.toFloat() / total else 0f) * 100).toInt()}% completado",
+                            text = stringResource(id = R.string.points_progress_percent, percent),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface,

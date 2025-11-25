@@ -3,13 +3,12 @@ package com.example.mariamolina.data.model
 /**
  * Modelo de datos para una diapositiva (slide) del módulo Kids/Slides.
  *
- * Usamos Strings para título/descripcion para facilitar pruebas rápidas.
+ * Ahora usamos resource IDs para título/descripcion para poder extraer textos a strings.xml
  */
 data class Slide(
     val id: String,
-    val title: String,
-    val description: String,
+    val titleRes: Int,
+    val descriptionRes: Int,
     val imageUrl: String,
     val hasSpeechBubble: Boolean = false
 )
-

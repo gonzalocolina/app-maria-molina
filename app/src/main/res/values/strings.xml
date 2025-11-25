@@ -34,13 +34,14 @@
     <string name="language_label">Idioma</string>
     <string name="language_changed_toast">Idioma cambiado a %s</string>
     <string name="about_title">Acerca de</string>
-    <string name="about_description">MariaMolina es una guía educativa e interactiva dedicada a divulgar la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid. La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés, rutas en mapa y contenidos adaptados para público infantil. Su objetivo es facilitar el acceso a la historia local de forma didáctica y visual; los datos se han recopilado a partir de fuentes históricas y culturales. La aplicación se ha creado para el Colegio Santa María La Real de Huelgas</string>
+    <string name="about_description">Pasos de María es una guía educativa e interactiva dedicada a divulgar
+        la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid.
+        La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés,
+        rutas en mapa y contenidos adaptados para público infantil. Su objetivo es facilitar el acceso a la historia
+        local de forma didáctica y visual; los datos se han recopilado a partir de fuentes históricas y culturales.
+        La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.
+        Aplicación creada por Miguel Bueno González, Gonzalo José Colina Báscones y Daniel Fernández García</string>
 
-    <!-- Language options -->
-    <string name="spanish">Español</string>
-    <string name="english">Inglés</string>
-    <string name="german">Alemán</string>
-    <string name="french">Francés</string>
 
     <!-- Datos de usuario -->
     <string name="profile_user_section_title">Tu Nickname</string>
@@ -209,7 +210,7 @@
     <!-- Formato para mostrar rating (un decimal) -->
     <string name="fmt_rating_per_5">%1$.1f/5</string>
 
-    //Seccion infantil
+    <!-- Seccion infantil -->
     <!-- ... (El resto de tus strings) ... -->
 
     <!-- ================== -->
@@ -237,5 +238,58 @@
     <string name="kids_slides_descripcion">Aquí puedes ver las diapositivas de la historia adaptadas para niños.</string>
     <string name="kids_no_slides">No hay diapositivas disponibles</string>
     <string name="cd_back">Volver</string>
+
+    <!-- Nuevas strings para las slides infantiles -->
+    <string name="slide_1_title">María de Molina</string>
+    <string name="slide_1_desc">¡Hola! Soy María de Molina y te voy a contar mi historia.</string>
+
+    <string name="slide_2_title">Mis Padres</string>
+    <string name="slide_2_desc">Mis padres fueron el infante Alfonso de Molina y mi madre Doña Mayor de Meneses.</string>
+
+    <string name="slide_3_title">Castillo de Montealegre</string>
+    <string name="slide_3_desc">Residencia habitual de María de Molina</string>
+
+    <string name="slide_5_title">El Príncipe Sancho</string>
+    <string name="slide_5_desc">Cuando tenía 15 años, un príncipe llamado Sancho se enamoró de mí.</string>
+
+    <string name="slide_6_title">Nuestra Boda</string>
+    <string name="slide_6_desc">En 1282 nos casamos en Toledo.</string>
+
+    <string name="slide_7_title">Palacio de Valladolid</string>
+    <string name="slide_7_desc">Después nos fuimos a vivir a Valladolid al palacio de Sancho.</string>
+
+    <string name="slide_8_title">Reyes de Castilla y León</string>
+    <string name="slide_8_desc">Cuando murió el padre de Sancho, que era rey, eligieron a Sancho como Rey de Castilla y León. En ese momento yo me convertí en Reina de Castilla y León.</string>
+
+    <string name="slide_9_title">Las Batallas</string>
+    <string name="slide_9_desc">Durante el reinado, ayudé a Sancho a pelear en muchas batallas.</string>
+
+    <string name="slide_10_title">El Rey Fernando</string>
+    <string name="slide_10_desc">Años más tarde, Sancho se puso enfermo y murió. Entonces conseguí que nombraran rey a mi hijo Fernando.</string>
+
+    <string name="slide_11_title">Regente de Fernando</string>
+    <string name="slide_11_desc">Fernando todavía era pequeño y le ayudé a reinar hasta ser mayor de edad.</string>
+
+    <string name="slide_12_title">El Rey Alfonso</string>
+    <string name="slide_12_desc">Fernando fue muy buen rey, pero también se puso enfermo y murió. Como su hijo Alfonso (mi nieto) era muy pequeño, le ayudé a reinar.</string>
+
+    <string name="slide_13_title">Mi Descanso Final</string>
+    <string name="slide_13_desc">Antes de morir pedí que me enterraran en el monasterio de Santa María La Real de Huelgas.</string>
+
+    <string name="slide_14_title">El Secreto de mi Tumba</string>
+    <string name="slide_14_desc">Con mi tumba se puede saber si va a llover, ya que unas horas antes aparecen unas manchas encima. Pero ten cuidado… ¡si las tocas pica!</string>
+
+    <string name="slide_15_title">Figuras Escondidas</string>
+    <string name="slide_15_desc">Además, en mi tumba están escondidas las figuras de una lagartija, un monje tapándose los oídos y un monstruo. ¡Intenta encontrarlas!</string>
+
+    <!-- Navegación en KidsSlidesScreen -->
+    <string name="kids_prev">Anterior</string>
+    <string name="kids_next">Siguiente</string>
+
+    <!-- Progress section for Points of Interest -->
+    <string name="points_progress_title">Tu Progreso</string>
+    <string name="points_visited">Visitados</string>
+    <string name="points_remaining">Restantes</string>
+    <string name="points_progress_percent">%d%% completado</string>
 
 </resources>
