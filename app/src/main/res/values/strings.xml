@@ -34,7 +34,13 @@
     <string name="language_label">Idioma</string>
     <string name="language_changed_toast">Idioma cambiado a %s</string>
     <string name="about_title">Acerca de</string>
-    <string name="about_description">MariaMolina es una guía educativa e interactiva dedicada a divulgar la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid. La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés, rutas en mapa y contenidos adaptados para público infantil. Su objetivo es facilitar el acceso a la historia local de forma didáctica y visual; los datos se han recopilado a partir de fuentes históricas y culturales. La aplicación se ha creado para el Colegio Santa María La Real de Huelgas</string>
+    <string name="about_description">Pasos de María es una guía educativa e interactiva dedicada a divulgar
+        la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid.
+        La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés,
+        rutas en mapa y contenidos adaptados para público infantil. Su objetivo es facilitar el acceso a la historia
+        local de forma didáctica y visual; los datos se han recopilado a partir de fuentes históricas y culturales.
+        La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.
+        Aplicación creada por Miguel Bueno González, Gonzalo José Colina Báscones y Daniel Fernández García</string>
 
     <!-- Language options -->
     <string name="spanish">Español</string>
