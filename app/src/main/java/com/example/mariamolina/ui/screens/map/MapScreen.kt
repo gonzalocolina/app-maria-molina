@@ -44,6 +44,7 @@ fun MapScreen(
     var showPanel by remember { mutableStateOf(destinoInicial != null || subPuntoInicial != null) } // MODIFICADO
     var drawRoute by remember { mutableStateOf(false) }
     var centerOnRoute by remember { mutableStateOf(false) }
+    var userLocation by remember { mutableStateOf<GeoPoint?>(null) }
 
     val context = LocalContext.current
 
@@ -91,6 +92,7 @@ fun MapScreen(
                 centerOnRoute = false
                 showPanel = true
             },
+            onUserLocation = { userLocation = it },
             modifier = Modifier.fillMaxSize()
         )
 
@@ -147,7 +149,8 @@ fun MapViewComposable(
     onMarkerClick: (PuntoInteres) -> Unit,
     onSubPuntoMarkerClick: (SubPuntoInteres) -> Unit, // NUEVO: callback para subpuntos
     centerOnRoute: Boolean,
-    onFinishCenter: () -> Unit
+    onFinishCenter: () -> Unit,
+    onUserLocation: (GeoPoint) -> Unit
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
@@ -155,6 +158,18 @@ fun MapViewComposable(
     val defaultMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!
     val selectedMarkerDrawable = defaultMarkerDrawable.constantState?.newDrawable()?.mutate()!!
     val subPuntoMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!.constantState?.newDrawable()?.mutate()!!
+
+    var userLocation by remember { mutableStateOf<GeoPoint?>(null) }
+    val locationOverlay = remember {
+        MyLocationNewOverlay(GpsMyLocationProvider(context), mapView).apply {
+            enableMyLocation()
+            runOnFirstFix {
+                userLocation = myLocation
+            }
+        }
+    }
+
+    var currentPolyline by remember { mutableStateOf<Polyline?>(null) }
 
     selectedMarkerDrawable.setColorFilter(
         android.graphics.PorterDuffColorFilter(android.graphics.Color.RED, android.graphics.PorterDuff.Mode.SRC_IN)
@@ -173,18 +188,24 @@ fun MapViewComposable(
                 controller.setCenter(GeoPoint(41.65213, -4.72856))
 
                 // --- UBICACIÓN DEL USUARIO ---
-                val locationOverlay = MyLocationNewOverlay(
-                    GpsMyLocationProvider(context),
-                    this
-                )
                 locationOverlay.enableMyLocation()
+
+                locationOverlay.runOnFirstFix {
+                    val loc = locationOverlay.myLocation
+                    if (loc != null) {
+                        onUserLocation(loc)
+                    }
+                }
+
+                //mapView.overlays.add(locationOverlay)
                 overlays.add(locationOverlay)
             }
         },
         modifier = modifier,
         update = { map ->
 
-            map.overlays.removeAll { it !is MyLocationNewOverlay }
+            val userLoc = (map.overlays.find { it is MyLocationNewOverlay } as? MyLocationNewOverlay)?.myLocation
+            if (userLoc != null) onUserLocation(userLoc)
 
             // ----------- 1) MARCADORES DE TODOS LOS DESTINOS PRINCIPALES -----------
             puntosDeInteres.forEach { destino ->
@@ -225,24 +246,28 @@ fun MapViewComposable(
                 else -> null
             }
 
+            currentPolyline?.let { map.overlays.remove(it) }
+            currentPolyline = null
+
             if (drawRoute && targetPoint != null) {
-                val currentCenter = map.mapCenter as? GeoPoint ?: targetPoint
+                val origin = userLocation ?: map.mapCenter as? GeoPoint ?: targetPoint
 
                 val polyline = Polyline().apply {
-                    addPoint(currentCenter)
+                    addPoint(origin)
                     addPoint(targetPoint)
                 }
 
                 map.overlays.add(polyline)
+                currentPolyline = polyline // ✅ guardar la ruta actual
             }
 
             // ---------- CENTRAR LA RUTA ----------
             if (centerOnRoute && targetPoint != null) {
-                val currentCenter = map.mapCenter as? GeoPoint ?: targetPoint
+                val origin = userLocation ?: map.mapCenter as? GeoPoint ?: targetPoint
 
                 // Calculamos el centro medio entre origen y destino
-                val middleLat = (currentCenter.latitude + targetPoint.latitude) / 2
-                val middleLon = (currentCenter.longitude + targetPoint.longitude) / 2
+                val middleLat = (origin.latitude + targetPoint.latitude) / 2
+                val middleLon = (origin.longitude + targetPoint.longitude) / 2
                 val centerPoint = GeoPoint(middleLat, middleLon)
 
                 // Ajustamos zoom para que se vea bien la línea
