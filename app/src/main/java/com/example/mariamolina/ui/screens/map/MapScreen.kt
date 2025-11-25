@@ -1,6 +1,10 @@
 package com.example.mariamolina.ui.screens.map
 
 
+import android.content.pm.PackageManager
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.data.model.PuntoInteres
@@ -24,6 +29,8 @@ import com.example.mariamolina.data.model.puntosDeInteres
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
+import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.Polyline
 
 @Composable
@@ -37,6 +44,30 @@ fun MapScreen(
     var showPanel by remember { mutableStateOf(destinoInicial != null || subPuntoInicial != null) } // MODIFICADO
     var drawRoute by remember { mutableStateOf(false) }
     var centerOnRoute by remember { mutableStateOf(false) }
+
+    val context = LocalContext.current
+
+    // --- 1) CONTROL DE PERMISOS DE UBICACIÓN ---
+    var hasLocationPermission by remember {
+        mutableStateOf(
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        )
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        hasLocationPermission = granted
+    }
+
+    LaunchedEffect(Unit) {
+        if (!hasLocationPermission) {
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize()) {
 
@@ -140,12 +171,20 @@ fun MapViewComposable(
                 setMultiTouchControls(true)
                 controller.setZoom(16.0)
                 controller.setCenter(GeoPoint(41.65213, -4.72856))
+
+                // --- UBICACIÓN DEL USUARIO ---
+                val locationOverlay = MyLocationNewOverlay(
+                    GpsMyLocationProvider(context),
+                    this
+                )
+                locationOverlay.enableMyLocation()
+                overlays.add(locationOverlay)
             }
         },
         modifier = modifier,
         update = { map ->
 
-            map.overlays.clear()
+            map.overlays.removeAll { it !is MyLocationNewOverlay }
 
             // ----------- 1) MARCADORES DE TODOS LOS DESTINOS PRINCIPALES -----------
             puntosDeInteres.forEach { destino ->

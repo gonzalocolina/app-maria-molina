@@ -28,6 +28,8 @@
             </intent-filter>
         </activity>
 
+        <meta-data android:name="osmdroid.basePath" android:value="osmdroid"/>
+        <meta-data android:name="osmdroid.cachePath" android:value="osmdroid/cache"/>
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
     </application>
 
