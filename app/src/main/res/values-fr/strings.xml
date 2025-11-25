@@ -126,53 +126,57 @@
     <string name="p12_horarios">Lundi fermé ; Mardi–Samedi : 10:00–14:00 (accès jusqu\'à 13:00) et 16:00–18:30 (accès jusqu\'à 17:30) ; Entrée gratuite : mercredi et jeudi 16:00–18:30 (dernier accès 17:30) ; Dimanches et jours fériés : 10:30–15:00 (accès jusqu\'à 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
+    <!-- Traductions françaises pour les diapositives enfants -->
+    <string name="slide_1_title">María de Molina</string>
+    <string name="slide_1_desc">Bonjour ! Je suis María de Molina et je vais te raconter mon histoire.</string>
+
+    <string name="slide_2_title">Mes parents</string>
+    <string name="slide_2_desc">Mes parents étaient l\'infant Alfonso de Molina et Doña Mayor de Meneses.</string>
+
+    <string name="slide_3_title">Château de Montealegre</string>
+    <string name="slide_3_desc">Résidence habituelle de María de Molina.</string>
+
+    <string name="slide_5_title">Le prince Sancho</string>
+    <string name="slide_5_desc">Quand j\'avais 15 ans, un prince nommé Sancho est tombé amoureux de moi.</string>
+
+    <string name="slide_6_title">Notre mariage</string>
+    <string name="slide_6_desc">En 1282 nous nous sommes mariés à Tolède.</string>
+
+    <string name="slide_7_title">Palais de Valladolid</string>
+    <string name="slide_7_desc">Nous sommes ensuite allés vivre à Valladolid, au palais de Sancho.</string>
+
+    <string name="slide_8_title">Rois de Castille et León</string>
+    <string name="slide_8_desc">Quand le père de Sancho est mort, Sancho a été choisi comme roi de Castille et León, et je suis devenue reine.</string>
+
+    <string name="slide_9_title">Les batailles</string>
+    <string name="slide_9_desc">Pendant le règne, j\'ai aidé Sancho à combattre dans de nombreuses batailles.</string>
+
+    <string name="slide_10_title">Le roi Fernando</string>
+    <string name="slide_10_desc">Des années plus tard, Sancho tomba malade et mourut. J\'ai fait en sorte que mon fils Fernando soit proclamé roi.</string>
+
+    <string name="slide_11_title">Régente de Fernando</string>
+    <string name="slide_11_desc">Fernando était encore jeune et je l\'ai aidé à gouverner jusqu\'à sa majorité.</string>
+
+    <string name="slide_12_title">Le roi Alfonso</string>
+    <string name="slide_12_desc">Fernando fut un bon roi mais mourut plus tard ; j\'ai aidé à régner pour mon petit‑fils Alfonso quand il était trop jeune.</string>
+
+    <string name="slide_13_title">Mon repos final</string>
+    <string name="slide_13_desc">Avant de mourir, j\'ai demandé à être enterrée au monastère de Santa María La Real de Huelgas.</string>
+
+    <string name="slide_14_title">Le secret de ma tombe</string>
+    <string name="slide_14_desc">On peut savoir s\'il va pleuvoir grâce à ma tombe car des taches y apparaissent quelques heures auparavant. Mais fais attention… si tu les touches cela pique !</string>
+
+    <string name="slide_15_title">Figures cachées</string>
+    <string name="slide_15_desc">De plus, des figures d\'un lézard, d\'un moine se bouchant les oreilles et d\'un monstre sont cachées sur ma tombe. Essaie de les trouver !</string>
+
     <!-- Navigation -->
-    <string name="nav_home_title">Valladolid historique</string>
-    <string name="nav_home_subtitle">Découvrez l\'histoire de María de Molina</string>
-    <string name="nav_points_title">Points d\'intérêt</string>
-    <string name="nav_points_subtitle">Valladolid historique</string>
-    <string name="nav_map_title">Carte</string>
-    <string name="nav_map_subtitle">Trouvez votre itinéraire</string>
-    <string name="nav_kids_title">Enfants</string>
-    <string name="nav_kids_subtitle">Activités pour enfants</string>
-    <string name="nav_profile_title">Profil</string>
-    <string name="nav_home_bottom">Accueil</string>
-    <string name="nav_points_bottom">Points d\'intérêt</string>
-    <string name="nav_map_bottom">Carte</string>
-    <string name="nav_kids_bottom">Enfants</string>
+    <string name="kids_prev">Précédent</string>
+    <string name="kids_next">Suivant</string>
 
-    <!-- Extras (boutons, descriptions et formats) -->
-    <string name="btn_volver">Retour</string>
-    <string name="btn_ver_arbol">Voir l\'arbre généalogique</string>
-    <string name="cd_imagen_ejemplo">Image d\'exemple</string>
-    <string name="cd_imagen_inicial">Image initiale de María de Molina</string>
-    <string name="cd_volver">Retour</string>
-    <string name="cd_horarios">Horaires</string>
-    <string name="cd_ubicacion">Emplacement</string>
-    <string name="cd_rating">Évaluation</string>
-    <string name="cd_perfil">Profil</string>
-    <string name="fmt_rating_per_5">%1$.1f/5</string>
-
-    <!-- Section enfants / Quiz -->
-    <string name="kids_menu_titulo">Quiz pour enfants</string>
-    <string name="kids_menu_descripcion">Montre ce que tu as appris sur l\'histoire que nous avons racontée. Choisis une difficulté !</string>
-    <string name="kids_dificultad_facil">Facile</string>
-    <string name="kids_dificultad_media">Moyen</string>
-    <string name="kids_dificultad_dificil">Difficile</string>
-    <string name="kids_iniciar_quiz">Commencer à jouer !</string>
-    <string name="kids_quiz_siguiente">Suivant</string>
-    <string name="kids_quiz_puntuacion">Score : %d</string>
-    <string name="kids_quiz_finalizado">Quiz terminé !</string>
-    <string name="kids_quiz_resultado">Ton score final est : %d / %d</string>
-    <string name="kids_quiz_volver_menu">Retour au menu</string>
-    <string name="kids_quiz_ranking">Voir le classement</string>
-
-    <!-- Nouvelles chaînes pour la section enfants ajoutées par la navigation -->
-    <string name="kids_ver_diapositivas">Voir les diapositives</string>
-    <string name="kids_opcion_cuestionarios">Questionnaires</string>
-    <string name="kids_slides_titulo">Diapositives pour enfants</string>
-    <string name="kids_slides_descripcion">Ici vous pouvez voir les diapositives de l\'histoire adaptées pour les enfants.</string>
-    <string name="kids_no_slides">Aucune diapositive disponible</string>
-    <string name="cd_back">Retour</string>
+    <!-- Progress section for Points of Interest -->
+    <string name="points_progress_title">Votre progression</string>
+    <string name="points_visited">Visités</string>
+    <string name="points_remaining">Restants</string>
+    <string name="points_progress_percent">%d%% complété</string>
 
 </resources>

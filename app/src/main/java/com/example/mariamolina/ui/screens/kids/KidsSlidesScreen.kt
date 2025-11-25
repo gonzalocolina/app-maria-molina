@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
@@ -31,10 +30,11 @@ import androidx.compose.ui.layout.ContentScale
 import com.example.mariamolina.data.model.Slide
 import com.example.mariamolina.data.model.SlidesProvider
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 
 // Resuelve el nombre de recurso drawable a un id usando el Context en runtime.
 // Si no existe, retorna un drawable del sistema como fallback.
@@ -52,6 +52,9 @@ fun KidsSlidesScreen(
 ) {
     // Estado del índice currente
     var currentIndex by remember { mutableIntStateOf(0) }
+
+    // Umbral de arrastre (en px) — usado para decidir un único avance por gesto
+    val dragThresholdPx = with(LocalDensity.current) { 40.dp.toPx() }
 
     // Detectar orientación
     val configuration = LocalConfiguration.current
@@ -79,7 +82,15 @@ fun KidsSlidesScreen(
             if (isLandscape) {
                 // Layout horizontal: imagen a la izquierda, texto e indicadores a la derecha
                 // Calculamos la mitad del ancho de pantalla para que el panel de texto llegue hasta el centro
-                val halfWidth = (configuration.screenWidthDp.dp) / 2
+                // Usamos LocalWindowInfo.current.containerSize (en px) si está disponible y lo convertimos a dp.
+                val halfWidth = run {
+                    val windowInfo = LocalWindowInfo.current
+                    // LocalWindowInfo.current es no-nulo en esta versión; usamos su containerSize (en px)
+                    // y lo convertimos a dp. Dividimos por 2 para obtener la mitad de la pantalla.
+                    val pxWidth = windowInfo.containerSize.width
+                    val widthDp = with(LocalDensity.current) { pxWidth.toDp() }
+                    widthDp / 2
+                }
                 // Espacio reservado para el botón derecho para evitar solapamiento con el texto
                 val buttonSpace = 80.dp
 
@@ -92,13 +103,34 @@ fun KidsSlidesScreen(
                             .weight(1f)
                             .fillMaxHeight()
                             .pointerInput(Unit) {
-                                detectHorizontalDragGestures { change, dragAmount ->
-                                    if (dragAmount > 20) {
-                                        currentIndex = (currentIndex - 1).coerceAtLeast(0)
-                                        change.consume()
-                                    } else if (dragAmount < -20) {
-                                        currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex)
-                                        change.consume()
+                                // Implementación por-gesto: acumulamos deltaX y aplicamos exactamente
+                                // un avance/retroceso por gesto cuando se supera el umbral.
+                                while (true) {
+                                    awaitPointerEventScope {
+                                        // Esperamos eventos; no usamos awaitFirstDown() por compatibilidad
+                                        var totalDragX = 0f
+                                        var movedThisGesture = false
+                                        while (true) {
+                                            val event = awaitPointerEvent()
+                                            val change = event.changes.firstOrNull() ?: break
+                                            val dx = change.position.x - change.previousPosition.x
+                                            if (dx != 0f) {
+                                                totalDragX += dx
+                                                if (!movedThisGesture) {
+                                                    if (totalDragX > dragThresholdPx) {
+                                                        currentIndex = (currentIndex - 1).coerceAtLeast(0)
+                                                        movedThisGesture = true
+                                                        event.changes.forEach { it.consume() }
+                                                    } else if (totalDragX < -dragThresholdPx) {
+                                                        currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex)
+                                                        movedThisGesture = true
+                                                        event.changes.forEach { it.consume() }
+                                                    }
+                                                }
+                                            }
+                                            // Fin de gesto cuando ya no hay punteros presionados
+                                            if (!event.changes.any { it.pressed }) break
+                                        }
                                     }
                                 }
                             }
@@ -114,7 +146,7 @@ fun KidsSlidesScreen(
                                     .error(resolveDrawableId(ctx, imageUrl))
                                     .placeholder(resolveDrawableId(ctx, imageUrl))
                                     .build(),
-                                contentDescription = slide.title,
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
@@ -122,7 +154,7 @@ fun KidsSlidesScreen(
                             val imageResId = remember(imageUrl) { resolveDrawableId(ctx, imageUrl) }
                             Image(
                                 painter = painterResource(id = imageResId),
-                                contentDescription = slide.title,
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
@@ -156,7 +188,7 @@ fun KidsSlidesScreen(
                     ) {
                         // Contenido principal: título y descripción / bocadillo
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            Text(text = slide.title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                            Text(text = stringResource(id = slide.titleRes), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.height(8.dp))
 
                             if (slide.hasSpeechBubble) {
@@ -167,7 +199,7 @@ fun KidsSlidesScreen(
                                     border = BorderStroke(2.dp, Color(0xFF6200EE))
                                 ) {
                                     Text(
-                                        text = slide.description,
+                                        text = stringResource(id = slide.descriptionRes),
                                         color = Color.Black,
                                         style = MaterialTheme.typography.bodyLarge,
                                         modifier = Modifier
@@ -183,7 +215,7 @@ fun KidsSlidesScreen(
                                     colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyLarge)
+                                        Text(text = stringResource(id = slide.descriptionRes), color = Color.White, style = MaterialTheme.typography.bodyLarge)
                                     }
                                 }
                             }
@@ -228,7 +260,7 @@ fun KidsSlidesScreen(
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
                             .size(56.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = "Anterior", tint = Color.White, modifier = Modifier.size(32.dp))
+                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.kids_prev), tint = Color.White, modifier = Modifier.size(32.dp))
                     }
                 }
 
@@ -241,7 +273,7 @@ fun KidsSlidesScreen(
                             .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
                             .size(56.dp)
                     ) {
-                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = "Siguiente", tint = Color.White, modifier = Modifier.size(32.dp))
+                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = stringResource(id = R.string.kids_next), tint = Color.White, modifier = Modifier.size(32.dp))
                     }
                 }
             } else {
@@ -257,155 +289,175 @@ fun KidsSlidesScreen(
                         .fillMaxWidth()
                         .weight(1f)
                         .pointerInput(Unit) {
-                            detectHorizontalDragGestures { change, dragAmount ->
-                                // dragAmount positivo = arrastre a la derecha (quieres ir al slide anterior)
-                                if (dragAmount > 20) {
-                                    // mover atrás
-                                    currentIndex = (currentIndex - 1).coerceAtLeast(0)
-                                    change.consume()
-                                } else if (dragAmount < -20) {
-                                    // mover adelante
-                                    currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex)
-                                    change.consume()
+                            // Implementación por-gesto (misma lógica que en landscape): acumulamos deltaX
+                            // y aplicamos exactamente un avance/retroceso por gesto cuando se supera el umbral.
+                            while (true) {
+                                awaitPointerEventScope {
+                                    // Esperamos eventos; no usamos awaitFirstDown() por compatibilidad
+                                    var totalDragX = 0f
+                                    var movedThisGesture = false
+                                    while (true) {
+                                        val event = awaitPointerEvent()
+                                        val change = event.changes.firstOrNull() ?: break
+                                        val dx = change.position.x - change.previousPosition.x
+                                        if (dx != 0f) {
+                                            totalDragX += dx
+                                            if (!movedThisGesture) {
+                                                if (totalDragX > dragThresholdPx) {
+                                                    currentIndex = (currentIndex - 1).coerceAtLeast(0)
+                                                    movedThisGesture = true
+                                                    event.changes.forEach { it.consume() }
+                                                } else if (totalDragX < -dragThresholdPx) {
+                                                    currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex)
+                                                    movedThisGesture = true
+                                                    event.changes.forEach { it.consume() }
+                                                }
+                                            }
+                                        }
+                                        // Fin de gesto cuando ya no hay punteros presionados
+                                        if (!event.changes.any { it.pressed }) break
+                                    }
                                 }
                             }
                         }
                     ) {
                         // Cargar imagen: si `imageUrl` es una URL -> usar Coil AsyncImage; si no -> cargar drawable mapeado
-                        val ctx2 = LocalContext.current
-                        val imageUrl2 = slide.imageUrl
-                        if (imageUrl2.startsWith("http") || imageUrl2.contains("://")) {
+                        val ctx = LocalContext.current
+                        val imageUrl = slide.imageUrl
+                        if (imageUrl.startsWith("http") || imageUrl.contains("://")) {
                             AsyncImage(
-                                model = ImageRequest.Builder(ctx2)
-                                    .data(imageUrl2)
+                                model = ImageRequest.Builder(ctx)
+                                    .data(imageUrl)
                                     .crossfade(true)
-                                    .error(resolveDrawableId(ctx2, imageUrl2))
-                                    .placeholder(resolveDrawableId(ctx2, imageUrl2))
+                                    .error(resolveDrawableId(ctx, imageUrl))
+                                    .placeholder(resolveDrawableId(ctx, imageUrl))
                                     .build(),
-                                contentDescription = slide.title,
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
                         } else {
-                            val imageResId2 = remember(imageUrl2) { resolveDrawableId(ctx2, imageUrl2) }
+                            val imageResId = remember(imageUrl) { resolveDrawableId(ctx, imageUrl) }
                             Image(
-                                painter = painterResource(id = imageResId2),
-                                contentDescription = slide.title,
+                                painter = painterResource(id = imageResId),
+                                contentDescription = stringResource(id = slide.titleRes),
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Fit
                             )
                         }
 
-                        // Botón atrás flotante en esquina superior izquierda
+                        // Botón atrás flotante en esquina superior izquierda (sobre la imagen)
                         IconButton(
                             onClick = onBackToEntry,
                             modifier = Modifier
-                                .padding(16.dp)
+                                .padding(8.dp)
                                 .align(Alignment.TopStart)
                                 .background(Color.Black.copy(alpha = 0.3f), CircleShape)
+                                .size(40.dp)
                         ) {
                             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(id = R.string.cd_back), tint = Color.White)
-                        }
-
-                        // Botón anterior (centro-izquierda)
-                        if (currentIndex > 0) {
-                            IconButton(
-                                onClick = { currentIndex = (currentIndex - 1).coerceAtLeast(0) },
-                                modifier = Modifier
-                                    .align(Alignment.CenterStart)
-                                    .padding(start = 8.dp)
-                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
-                                    .size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.ChevronLeft,
-                                    contentDescription = "Anterior",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-                        }
-
-                        // Botón siguiente (centro-derecha)
-                        if (currentIndex < slides.lastIndex) {
-                            IconButton(
-                                onClick = { currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex) },
-                                modifier = Modifier
-                                    .align(Alignment.CenterEnd)
-                                    .padding(end = 8.dp)
-                                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
-                                    .size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.ChevronRight,
-                                    contentDescription = "Siguiente",
-                                    tint = Color.White,
-                                    modifier = Modifier.size(32.dp)
-                                )
-                            }
-                        }
-
-                        // Mostrar texto según el tipo de diapositiva
-                        if (slide.hasSpeechBubble) {
-                            // Bocadillo de diálogo (speech bubble) en la parte inferior
-                            Card(
-                                modifier = Modifier
-                                    .align(Alignment.BottomCenter)
-                                    .fillMaxWidth(0.85f)
-                                    .padding(bottom = 24.dp),
-                                shape = RoundedCornerShape(20.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White),
-                                border = BorderStroke(3.dp, Color(0xFF6200EE))
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Text(
-                                        text = slide.description,
-                                        color = Color.Black,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        fontWeight = FontWeight.Medium,
-                                        textAlign = TextAlign.Center,
-                                        modifier = Modifier.fillMaxWidth()
-                                    )
-                                }
-                            }
-                        } else {
-                            // Texto simple sin bocadillo
-                            Card(
-                                modifier = Modifier
-                                    .align(Alignment.BottomStart)
-                                    .fillMaxWidth(),
-                                shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
-                            ) {
-                                Column(modifier = Modifier.padding(16.dp)) {
-                                    Text(text = slide.title, color = Color.White, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyLarge)
-                                }
-                            }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Indicadores de páginas (puntos)
-                    Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                        slides.forEachIndexed { index, _ ->
-                            val selected = index == currentIndex
-                            Box(
-                                modifier = Modifier
-                                    .padding(4.dp)
-                                    .size(if (selected) 10.dp else 8.dp)
-                                    .background(
-                                        color = if (selected) MaterialTheme.colorScheme.primary else Color.Gray,
-                                        shape = CircleShape
+                    // Panel de texto e indicadores
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.03f))
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Contenido principal: título y descripción / bocadillo
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(text = stringResource(id = slide.titleRes), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (slide.hasSpeechBubble) {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(12.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                                    border = BorderStroke(2.dp, Color(0xFF6200EE))
+                                ) {
+                                    Text(
+                                        text = stringResource(id = slide.descriptionRes),
+                                        color = Color.Black,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(12.dp),
+                                        textAlign = TextAlign.Start
                                     )
-                            )
+                                }
+                            } else {
+                                Card(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(8.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
+                                ) {
+                                    Column(modifier = Modifier.padding(12.dp)) {
+                                        Text(text = stringResource(id = slide.descriptionRes), color = Color.White, style = MaterialTheme.typography.bodyLarge)
+                                    }
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(12.dp))
+
+                            // NOTE: controles Prev/Next removidos de aquí (mostraremos sólo los extremos)
+                        }
+
+                        // Indicadores y número de slide en la parte inferior
+                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                                slides.forEachIndexed { index, _ ->
+                                    val selected = index == currentIndex
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(4.dp)
+                                            .size(if (selected) 12.dp else 8.dp)
+                                            .background(
+                                                color = if (selected) MaterialTheme.colorScheme.primary else Color.Gray,
+                                                shape = CircleShape
+                                            )
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Text(text = "${currentIndex + 1} / ${slides.size}", style = MaterialTheme.typography.bodySmall)
                         }
                     }
+                }
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                // Ahora dibujamos los botones Prev/Next a nivel del Box contenedor (heredado por la composición) para
+                // que estén alineados al centro vertical de la pantalla y a los extremos horizontales.
+                if (currentIndex > 0) {
+                    IconButton(
+                        onClick = { currentIndex = (currentIndex - 1).coerceAtLeast(0) },
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(start = 12.dp)
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
+                            .size(56.dp)
+                    ) {
+                        Icon(imageVector = Icons.Filled.ChevronLeft, contentDescription = stringResource(id = R.string.kids_prev), tint = Color.White, modifier = Modifier.size(32.dp))
+                    }
+                }
 
+                if (currentIndex < slides.lastIndex) {
+                    IconButton(
+                        onClick = { currentIndex = (currentIndex + 1).coerceAtMost(slides.lastIndex) },
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .padding(end = 12.dp)
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.8f), CircleShape)
+                            .size(56.dp)
+                    ) {
+                        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = stringResource(id = R.string.kids_next), tint = Color.White, modifier = Modifier.size(32.dp))
+                    }
                 }
             }
         }

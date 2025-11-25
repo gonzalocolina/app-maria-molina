@@ -114,7 +114,7 @@
 
     <!-- Data: Punto 6 (Plaza del Mercado) -->
     <string name="p6_titulo">Plaza del Mercado</string>
-    <string name="p6_desc">The current Plaza Mayor of Valladolid was originally known as the \"Plaza del Mercado\" because in the Middle Ages the town\'s central market was held there. According to documents, a market was already located there in 1260. In the Middle Ages the square was an open space outside the walls or at the town boundary where the main market was established: meat, fish, vegetables and other products were sold. Over time trade was organised into guild streets around the square — for example, the Lencería street or the Torneros street — reflecting the artisanal and commercial activity surrounding the market. In September 1561 a great fire destroyed much of the square\'s surroundings, which led to urban reorganization.</string>
+    <string name="p6_desc">The current Plaza Mayor of Valladolid was originally known as the "Plaza del Mercado" because in the Middle Ages the town\'s central market was held there. According to documents, a market was already located there in 1260. In the Middle Ages the square was an open space outside the walls or at the town boundary where the main market was established: meat, fish, vegetables and other products were sold. Over time trade was organised into guild streets around the square — for example, the Lencería street or the Torneros street — reflecting the artisanal and commercial activity surrounding the market. In September 1561 a great fire destroyed much of the square\'s surroundings, which led to urban reorganization.</string>
     <string name="p6_horarios">Not available</string>
     <string name="p6_ubicacion">Not available</string>
     <string name="p6_rating">Not available</string>
@@ -133,7 +133,7 @@
 
     <!-- Data: Punto 9 (Palacio de la Magdalena) -->
     <string name="p9_titulo">Palacio de la Magdalena</string>
-    <string name="p9_desc">The palace was a royal residence, including King Sancho IV of Castile and his wife María de Molina, on a site adapted as a royal residence in the 13th century. After Sancho IV\'s death in 1295, his widow María de Molina acted as regent and faced political conflict that led to reinforcement of the palace\'s security, turning it into a fortified enclosure. Over time the buildings were abandoned or repurposed. Most of the palace finally disappeared, and today only some remains survive, including the Mudejar gate called \"Puerta de la Magdalena\" or \"Puerta del Palacio de María de Molina\". The fortified gate shows Mudejar features: an exterior horseshoe arch, a bent entrance (i.e., turned to make direct entry difficult) and two chambers inside that probably served as guard booths.</string>
+    <string name="p9_desc">The palace was a royal residence, including King Sancho IV of Castile and his wife María de Molina, on a site adapted as a royal residence in the 13th century. After Sancho IV\'s death in 1295, his widow María de Molina acted as regent and faced political conflict that led to reinforcement of the palace\'s security, turning it into a fortified enclosure. Over time the buildings were abandoned or repurposed. Most of the palace finally disappeared, and today only some remains survive, including the Mudejar gate called "Puerta de la Magdalena" or "Puerta del Palacio de María de Molina". The fortified gate shows Mudejar features: an exterior horseshoe arch, a bent entrance (i.e., turned to make direct entry difficult) and two chambers inside that probably served as guard booths.</string>
     <string name="p9_horarios">Permanently closed</string>
     <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>
 
@@ -151,7 +151,7 @@
 
     <!-- Data: Punto 12 (Monasterio de las Huelgas Reales) -->
     <string name="p12_titulo">Monasterio de las Huelgas Reales</string>
-    <string name="p12_desc">The monastery is located outside the medieval city walls, on the site of the former palace of the founding queen, near the La Magdalena suburb. Its establishment is linked to Queen María de Molina, who around 1282 ceded her own palace to found a Cistercian monastery under the invocation of \"Santa María la Real de las Huelgas\". Shortly before her death, María de Molina requested in her will to be buried in this monastery. In 1328 the monastery was partially destroyed by a fire resulting from the repression of the city by royal troops. The church has a Latin-cross plan inscribed in a rectangle, with a single nave divided into bays and lateral chapels between buttresses. Notable interior works include the tomb of María de Molina in the centre of the transept, carved in alabaster with an effigy of the queen recumbent and decorative reliefs bearing the shields of the House of Burgundy represented by two castles and two lions (the lions borne crowned from the time of Sancho IV). Also notable is the tomb she inherited from her father Alfonso de Molina, a lion without a crown framed by several castles. The main altarpiece was designed by Francisco de Praves, with sculptures by Gregorio Fernández (≈1613) and paintings by Tomás de Prado.</string>
+    <string name="p12_desc">The monastery is located outside the medieval city walls, on the site of the former palace of the founding queen, near the La Magdalena suburb. Its establishment is linked to Queen María de Molina, who around 1282 ceded her own palace to found a Cistercian monastery under the invocation of "Santa María la Real de las Huelgas". Shortly before her death, María de Molina requested in her will to be buried in this monastery. In 1328 the monastery was partially destroyed by a fire resulting from the repression of the city by royal troops. The church has a Latin-cross plan inscribed in a rectangle, with a single nave divided into bays and lateral chapels between buttresses. Notable interior works include the tomb of María de Molina in the centre of the transept, carved in alabaster with an effigy of the queen recumbent and decorative reliefs bearing the shields of the House of Burgundy represented by two castles and two lions (the lions borne crowned from the time of Sancho IV). Also notable is the tomb she inherited from her father Alfonso de Molina, a lion without a crown framed by several castles. The main altarpiece was designed by Francisco de Praves, with sculptures by Gregorio Fernández (≈1613) and paintings by Tomás de Prado.</string>
     <string name="p12_horarios">Closed on Mondays; Tue–Sat: 10:00–14:00 (last access 13:00) and 16:00–18:30 (last access 17:30); Free access: Wed &amp; Thu 16:00–18:30 (last access 17:30); Sundays and holidays: 10:30–15:00 (last access 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
@@ -176,5 +176,58 @@
     <string name="kids_slides_descripcion">Here you can view the story slides adapted for children.</string>
     <string name="kids_no_slides">No slides available</string>
     <string name="cd_back">Back</string>
+
+    <!-- English translations for the kids slides -->
+    <string name="slide_1_title">María de Molina</string>
+    <string name="slide_1_desc">Hello! I\'m María de Molina and I\'m going to tell you my story.</string>
+
+    <string name="slide_2_title">My Parents</string>
+    <string name="slide_2_desc">My parents were Infante Alfonso de Molina and Doña Mayor de Meneses.</string>
+
+    <string name="slide_3_title">Montealegre Castle</string>
+    <string name="slide_3_desc">Usual residence of María de Molina.</string>
+
+    <string name="slide_5_title">Prince Sancho</string>
+    <string name="slide_5_desc">When I was 15, a prince named Sancho fell in love with me.</string>
+
+    <string name="slide_6_title">Our Wedding</string>
+    <string name="slide_6_desc">In 1282 we married in Toledo.</string>
+
+    <string name="slide_7_title">Valladolid Palace</string>
+    <string name="slide_7_desc">Later we moved to Valladolid to live in Sancho\'s palace.</string>
+
+    <string name="slide_8_title">Kings of Castile and León</string>
+    <string name="slide_8_desc">When Sancho\'s father died, Sancho was chosen as King of Castile and León, and I became Queen.</string>
+
+    <string name="slide_9_title">The Battles</string>
+    <string name="slide_9_desc">During the reign, I helped Sancho fight in many battles.</string>
+
+    <string name="slide_10_title">King Fernando</string>
+    <string name="slide_10_desc">Years later Sancho fell ill and died. I managed to have my son Fernando named king.</string>
+
+    <string name="slide_11_title">Regent of Fernando</string>
+    <string name="slide_11_desc">Fernando was still young and I helped him rule until he came of age.</string>
+
+    <string name="slide_12_title">King Alfonso</string>
+    <string name="slide_12_desc">Fernando was a good king but later died; I helped rule on behalf of my grandson Alfonso when he was too young.</string>
+
+    <string name="slide_13_title">My Final Rest</string>
+    <string name="slide_13_desc">Before dying I asked to be buried in the monastery of Santa María La Real de Huelgas.</string>
+
+    <string name="slide_14_title">The Secret of my Tomb</string>
+    <string name="slide_14_desc">You can tell if it will rain from my tomb because spots appear on it hours before. But be careful… if you touch them it stings!</string>
+
+    <string name="slide_15_title">Hidden Figures</string>
+    <string name="slide_15_desc">Also, figures of a lizard, a monk covering his ears and a monster are hidden on my tomb. Try to find them!</string>
+
+    <!-- Navigation labels -->
+    <string name="kids_prev">Previous</string>
+    <string name="kids_next">Next</string>
+
+    <!-- Progress section for Points of Interest -->
+    <string name="points_progress_title">Your progress</string>
+    <string name="points_visited">Visited</string>
+    <string name="points_remaining">Remaining</string>
+    <string name="points_progress_percent">%d%% completed</string>
 
 </resources>

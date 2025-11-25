@@ -12,32 +12,29 @@ import androidx.compose.ui.platform.LocalContext
 
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
+    primary = AppPrimaryBrown,
     secondary = PurpleGrey80,
     tertiary = Pink80,
-    primaryContainer = AppIndicatorBackgroundDark,
-    onSurfaceVariant = AppUnselectedGrayDark
-)
+    primaryContainer = AppTextPrimaryColor,
+    onSurfaceVariant = AppUnselectedGray,
+    background = LightBlack,
+    // Color del icono/texto NO seleccionado
+    onPrimary = AppTextPrimaryColor,
+    onSecondary = AppTextSecondaryColor,
+    surface = LightLightBlack
+
+    )
 
 private val LightColorScheme = lightColorScheme(
     primary = AppPrimaryBrown,
-    //secondary = PurpleGrey40,
-    //tertiary = Pink40,
-    // Color del fondo del indicador (la píldora)
+
     primaryContainer = AppTextPrimaryColor,
     // Color del icono/texto NO seleccionado
     onSurfaceVariant = AppUnselectedGray,
     onPrimary = AppTextPrimaryColor,
     onSecondary = AppTextSecondaryColor,
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+    background = White,
+    surface =  LightGrey
 )
 
 @Composable
