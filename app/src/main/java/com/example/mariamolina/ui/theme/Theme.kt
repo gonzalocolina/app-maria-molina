@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.example.mariamolina.ui.theme.LightGrey
 
 
 private val DarkColorScheme = darkColorScheme(
@@ -17,11 +18,12 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = Pink80,
     primaryContainer = AppTextPrimaryColor,
     onSurfaceVariant = AppUnselectedGray,
-    background = LightBlack,
+    background = DarkGrey,
     // Color del icono/texto NO seleccionado
     onPrimary = AppTextPrimaryColor,
     onSecondary = AppTextSecondaryColor,
-    surface = LightLightBlack
+    surface = LightLightBlack,
+    outline = LightLightBlack
 
     )
 
@@ -34,7 +36,8 @@ private val LightColorScheme = lightColorScheme(
     onPrimary = AppTextPrimaryColor,
     onSecondary = AppTextSecondaryColor,
     background = White,
-    surface =  LightGrey
+    surface =  LightGrey,
+    outline = LightGrey
 )
 
 @Composable
