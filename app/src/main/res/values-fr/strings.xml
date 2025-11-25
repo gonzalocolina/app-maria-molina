@@ -8,12 +8,6 @@
     <string name="about_title">À propos</string>
     <string name="about_description">Cette application est un exemple sur María Molina.</string>
 
-    <!-- Language options -->
-    <string name="spanish">Espagnol</string>
-    <string name="english">Anglais</string>
-    <string name="german">Allemand</string>
-    <string name="french">Français</string>
-
     <!-- Chaînes générales (traduction du espagnol) -->
     <string name="app_name">MariaMolina</string>
     <string name="home_screen_title">María de Molina</string>

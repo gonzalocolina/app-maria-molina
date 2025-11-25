@@ -42,11 +42,6 @@
         La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.
         Aplicación creada por Miguel Bueno González, Gonzalo José Colina Báscones y Daniel Fernández García</string>
 
-    <!-- Language options -->
-    <string name="spanish">Español</string>
-    <string name="english">Inglés</string>
-    <string name="german">Alemán</string>
-    <string name="french">Francés</string>
 
     <!-- Datos de usuario -->
     <string name="profile_user_section_title">Tu Nickname</string>

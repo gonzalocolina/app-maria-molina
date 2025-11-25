@@ -35,12 +35,6 @@
     <string name="about_title">About</string>
     <string name="about_description">This application is an example about María Molina.</string>
 
-    <!-- Language options -->
-    <string name="spanish">Spanish</string>
-    <string name="english">English</string>
-    <string name="german">German</string>
-    <string name="french">French</string>
-
     <!-- Navigation -->
     <string name="nav_home_title">Historic Valladolid</string>
     <string name="nav_home_subtitle">Discover the history of María de Molina</string>
