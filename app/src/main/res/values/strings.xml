@@ -218,7 +218,9 @@
     <!-- ================== -->
 
     <!-- Texto de la UI -->
+    <string name="kids_entry_titulo">Sección Infantil</string>
     <string name="kids_menu_titulo">Cuestionario Infantil</string>
+    <string name="kids_entry_descripcion">Conoce la historia de María de Molina de una forma más amena y demuestra lo que has aprendido sobre la historia que te hemos contado.</string>
     <string name="kids_menu_descripcion">Demuestra lo que has aprendido sobre la historia que te hemos contado. ¡Elige una dificultad!</string>
     <string name="kids_dificultad_facil">Fácil</string>
     <string name="kids_dificultad_media">Media</string>
