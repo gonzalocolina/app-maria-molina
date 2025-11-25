@@ -343,7 +343,7 @@ fun ContentSection(
 
 // Nuevo composable para un título "elegante" inspirado en las tipografías enviadas.
 @Composable
-fun ElegantTitle(text: String, large: Boolean = false, modifier: Modifier = Modifier) {
+fun ElegantTitle(modifier: Modifier = Modifier, text: String, large: Boolean = false ) {
     // Se usa uppercase para emular el aspecto 'display' y se aplica tracking amplio.
     val baseSize = MaterialTheme.typography.headlineLarge.fontSize
     val fontSize = if (large) baseSize * 1.1f else baseSize
