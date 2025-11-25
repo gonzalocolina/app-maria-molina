@@ -1,6 +1,5 @@
 package com.example.mariamolina.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +45,7 @@ fun MariaMolinaTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = false,
+    fontSizeScale: Float = 1.0f,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -60,7 +60,7 @@ fun MariaMolinaTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = Typography.scaled(fontSizeScale),
         content = content
     )
 }

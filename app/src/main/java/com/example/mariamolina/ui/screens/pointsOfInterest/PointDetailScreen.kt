@@ -39,7 +39,9 @@ fun PointDetailScreen(
     punto: PuntoInteres,
     onBackClick: () -> Unit,
     onOpenMapClick: () -> Unit,
-    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit,
+    onMarkAsVisited: () -> Unit,
+    isVisited: Boolean
 ) {
     Scaffold(
         bottomBar = {
@@ -54,7 +56,7 @@ fun PointDetailScreen(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { /* TODO: Lógica de Firebase para marcar visitado */ }
+                    .clickable { onMarkAsVisited() }
             ) {
                 Row(
                     modifier = Modifier
@@ -71,7 +73,7 @@ fun PointDetailScreen(
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text(
-                        stringResource(id = R.string.detalle_marcar_visitado),
+                        stringResource(id = if (isVisited) R.string.detalle_visitado else R.string.detalle_marcar_visitado),
                         color = MaterialTheme.colorScheme.primaryContainer
                     )
                 }

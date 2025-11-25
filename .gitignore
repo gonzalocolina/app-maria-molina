@@ -1,15 +1,86 @@
-*.iml
-.gradle
+# Android / Gradle .gitignore
+# Generated for Android Studio + Gradle projects
+
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local configuration
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+
+# Signing keys
+*.jks
+*.keystore
+
+# Android Studio
+/.idea/
+.idea/*
+*.iml
+
+# IntelliJ
+*.iws
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+
+# Kotlin/Java
+*.class
+*.jar
+*.war
+*.ear
+
+# Generated files
+captures/
+outputs/
+.externalNativeBuild/
+.cxx/
+
+# Native / JNI
+*.so
+obj/
+
+# Android packages
+*.apk
+*.ap_
+*.aab
+
+# Google services config (may contain API keys). Review whether you want to track this file.
+# If you intentionally commit google-services.json, remove the following line.
+/app/google-services.json
+
+# Misc
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+*.log
+*.tmp
+*.swp
+
+# Firebase / Crashlytics
+crashlytics/
+
+# Unit test outputs
+test-results/
+
+# Gradle wrapper
+gradle-wrapper.jar
+
+# Coverage
+coverage/
+
+# JetBrains Rider
+.idea/
+*.suo
+*.user
+
+# OS files
+Thumbs.db
+desktop.ini
+
+
+# Local Gradle cache
+.gradle
+
+# Ignore Android Studio deployment target selector (can contain local settings)
+**/deploymentTargetSelector.xml
+
+# End of file

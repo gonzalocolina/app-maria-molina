@@ -156,7 +156,7 @@ fun KidsSlidesScreen(
                     ) {
                         // Contenido principal: título y descripción / bocadillo
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            Text(text = slide.title, style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+                            Text(text = slide.title, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                             Spacer(modifier = Modifier.height(8.dp))
 
                             if (slide.hasSpeechBubble) {
@@ -169,7 +169,7 @@ fun KidsSlidesScreen(
                                     Text(
                                         text = slide.description,
                                         color = Color.Black,
-                                        style = MaterialTheme.typography.bodyMedium,
+                                        style = MaterialTheme.typography.bodyLarge,
                                         modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(12.dp),
@@ -183,7 +183,7 @@ fun KidsSlidesScreen(
                                     colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
                                 ) {
                                     Column(modifier = Modifier.padding(12.dp)) {
-                                        Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyMedium)
+                                        Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyLarge)
                                     }
                                 }
                             }
@@ -363,7 +363,6 @@ fun KidsSlidesScreen(
                                         color = Color.Black,
                                         style = MaterialTheme.typography.bodyLarge,
                                         fontWeight = FontWeight.Medium,
-                                        fontSize = 16.sp,
                                         textAlign = TextAlign.Center,
                                         modifier = Modifier.fillMaxWidth()
                                     )
@@ -379,9 +378,9 @@ fun KidsSlidesScreen(
                                 colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.7f))
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
-                                    Text(text = slide.title, color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                                    Text(text = slide.title, color = Color.White, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
                                     Spacer(modifier = Modifier.height(8.dp))
-                                    Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyMedium, fontSize = 16.sp)
+                                    Text(text = slide.description, color = Color.White, style = MaterialTheme.typography.bodyLarge)
                                 }
                             }
                         }
