@@ -340,56 +340,66 @@ fun DestinoPanel(
     val configuration = LocalConfiguration.current
     val imageHeight = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 100.dp else 150.dp
 
-    Card(
-        modifier = Modifier
-            .widthIn(max = 600.dp)
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-        elevation = CardDefaults.cardElevation(8.dp),
-        shape = RoundedCornerShape(16.dp)
+    // Ajuste responsivo del ancho del Card: más estrecho en horizontal para que no ocupe
+    // tanto espacio en pantallas apaisadas.
+    val maxWidth = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 420.dp else 600.dp
+
+    // Alineamos el Card según orientación: a la izquierda en landscape, centrado en portrait
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) Alignment.CenterStart else Alignment.Center
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Card(
+            modifier = Modifier
+                .widthIn(max = maxWidth)
+                .padding(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
-            // 🔥 IMAGEN DEL DESTINO
-            AsyncImage(
-                model = destino.urlImagen,
-                contentDescription = stringResource(destino.tituloResId),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(imageHeight)
-                    .padding(bottom = 8.dp),
-                contentScale = ContentScale.Crop
-            )
-
-            // 🔥 TITULO + BOTÓN DE CERRAR
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(destino.tituloResId),
-                    style = MaterialTheme.typography.titleMedium
+                // 🔥 IMAGEN DEL DESTINO
+                AsyncImage(
+                    model = destino.urlImagen,
+                    contentDescription = stringResource(destino.tituloResId),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(imageHeight)
+                        .padding(bottom = 8.dp),
+                    contentScale = ContentScale.Crop
                 )
 
-                IconButton(onClick = onClose) {
-                    Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                // 🔥 TITULO + BOTÓN DE CERRAR
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(destino.tituloResId),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    IconButton(onClick = onClose) {
+                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                    }
                 }
-            }
 
-            Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-            // 🔥 BOTONES
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(onClick = onShowRoute) {
-                    Text("Cómo llegar")
-                }
+                // 🔥 BOTONES
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = onShowRoute) {
+                        Text("Cómo llegar")
+                    }
 
-                OutlinedButton(onClick = onNavigate) {
-                    Text("Más información")
+                    OutlinedButton(onClick = onNavigate) {
+                        Text("Más información")
+                    }
                 }
             }
         }
@@ -402,41 +412,48 @@ fun SubPuntoPanel(
     onShowRoute: () -> Unit,
     onClose: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .widthIn(max = 600.dp)
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-        elevation = CardDefaults.cardElevation(8.dp),
-        shape = RoundedCornerShape(16.dp)
+    val configuration = LocalConfiguration.current
+    val maxWidth = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 420.dp else 600.dp
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) Alignment.CenterStart else Alignment.Center
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Card(
+            modifier = Modifier
+                .widthIn(max = maxWidth)
+                .padding(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
+            elevation = CardDefaults.cardElevation(8.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
-            // 🔥 TITULO + BOTÓN DE CERRAR (solo título, sin imagen)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(subPunto.nombreResId),
-                    style = MaterialTheme.typography.titleMedium
-                )
+                // 🔥 TITULO + BOTÓN DE CERRAR (solo título, sin imagen)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(subPunto.nombreResId),
+                        style = MaterialTheme.typography.titleMedium
+                    )
 
-                IconButton(onClick = onClose) {
-                    Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                    IconButton(onClick = onClose) {
+                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                    }
                 }
-            }
 
-            Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(12.dp))
 
-            // 🔥 SOLO BOTÓN "CÓMO LLEGAR"
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(onClick = onShowRoute) {
-                    Text("Cómo llegar")
+                // 🔥 SOLO BOTÓN "CÓMO LLEGAR"
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Button(onClick = onShowRoute) {
+                        Text("Cómo llegar")
+                    }
                 }
             }
         }
