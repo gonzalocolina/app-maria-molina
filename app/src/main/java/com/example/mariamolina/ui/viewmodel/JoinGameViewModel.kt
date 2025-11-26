@@ -3,13 +3,14 @@ package com.example.mariamolina.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mariamolina.data.model.Jugador
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
 // Estados de la pantalla de unirse
 sealed class JoinGameState {
@@ -19,10 +20,11 @@ sealed class JoinGameState {
     data class Error(val message: String) : JoinGameState()
 }
 
-class JoinGameViewModel : ViewModel() {
-
-    private val auth = Firebase.auth
-    private val db = FirebaseFirestore.getInstance()
+@HiltViewModel
+class JoinGameViewModel @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<JoinGameState>(JoinGameState.Idle)
     val uiState = _uiState.asStateFlow()

@@ -4,6 +4,8 @@ import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.QuizQuestion
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+import javax.inject.Singleton
 
 // Definimos los posibles estados de carga
 sealed class DataState<out T> {
@@ -13,7 +15,8 @@ sealed class DataState<out T> {
     object Idle : DataState<Nothing>()
 }
 
-class QuizRepository(
+@Singleton
+class QuizRepository @Inject constructor(
     private val firestore: FirebaseFirestore
 ) {
     // Función principal para obtener las preguntas de una dificultad específica

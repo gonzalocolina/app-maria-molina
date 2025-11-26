@@ -27,12 +27,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.ui.viewmodel.ProfileViewModel
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     onBackClick: () -> Unit,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     // --- ESTADO DEL USUARIO (Firebase) ---
     val uiState by viewModel.uiState.collectAsState()

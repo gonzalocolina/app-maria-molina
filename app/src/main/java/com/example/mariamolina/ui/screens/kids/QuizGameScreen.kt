@@ -16,11 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel // Importante para obtener el ViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.OpcionRespuesta
-import com.example.mariamolina.ui.viewmodel.QuizViewModel // Importante
+import com.example.mariamolina.ui.viewmodel.QuizViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
 import android.content.res.Configuration
@@ -30,8 +30,7 @@ fun QuizGameScreen(
     dificultad: Dificultad,
     onQuizFinished: () -> Unit,
     onNavigateToRanking: () -> Unit,
-    // Obtenemos el ViewModel. Si usas Hilt sería hiltViewModel(), si no, viewModel() está bien.
-    viewModel: QuizViewModel = viewModel()
+    viewModel: QuizViewModel = hiltViewModel()
 ) {
     // 1. Observamos el estado del ViewModel
     val uiState by viewModel.uiState.collectAsState()

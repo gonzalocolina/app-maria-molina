@@ -3,7 +3,7 @@ package com.example.mariamolina.ui.screens.kids
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Slideshow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -93,7 +93,10 @@ fun KidsEntryScreen(
                     colors = buttonColors
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(imageVector = Icons.Default.Help, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Help,
+                            contentDescription = null
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(id = R.string.kids_opcion_cuestionarios))
                     }
@@ -127,12 +130,17 @@ fun KidsEntryScreen(
                     colors = buttonColors
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(imageVector = Icons.Default.Help, contentDescription = null)
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.Help,
+                            contentDescription = null
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(id = R.string.kids_opcion_cuestionarios))
                     }
                 }
             }
         }
+
+        Spacer(modifier = Modifier.weight(1f))
     }
 }

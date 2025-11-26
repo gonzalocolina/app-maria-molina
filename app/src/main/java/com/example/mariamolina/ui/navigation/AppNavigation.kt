@@ -58,8 +58,13 @@ import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
+import com.example.mariamolina.ui.screens.kids.TeacherLobbyScreen
+import com.example.mariamolina.ui.screens.kids.TeacherGameScreen
+import com.example.mariamolina.ui.screens.kids.StudentGameScreen
+import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
 import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 
@@ -223,13 +228,7 @@ fun AppNavigation() {
             }
         ) { innerPadding ->
             // Creamos una sola instancia compartida del ViewModel aquí (scoped al Composable AppNavigation)
-            val sharedPrefs = LocalContext.current.getSharedPreferences("visited_points", android.content.Context.MODE_PRIVATE)
-            val sharedViewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
-                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                    @Suppress("UNCHECKED_CAST")
-                    return PointsOfInterestViewModel(sharedPrefs) as T
-                }
-            })
+            val sharedViewModel: PointsOfInterestViewModel = hiltViewModel()
 
             NavHost(
                 navController = navControllerPrincipal,
@@ -375,10 +374,28 @@ fun AppNavigation() {
                     )
                 }
 
-                // F. Admin Lobby (Profesor - Crear Partida)
+                // F. Admin Lobby (Profesor - Crear Partida) -> Ahora usa TeacherLobbyScreen
                 composable("admin_lobby") {
-                    AdminLobbyScreen(
-                        onBack = { navControllerPrincipal.popBackStack() }
+                    TeacherLobbyScreen(
+                        onBack = { navControllerPrincipal.popBackStack() },
+                        onGameStarted = { pin ->
+                            navControllerPrincipal.navigate("teacher_game/$pin") {
+                                popUpTo("admin_lobby") { inclusive = true }
+                            }
+                        }
+                    )
+                }
+
+                // F2. Pantalla del juego del profesor
+                composable("teacher_game/{pin}") { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
+                    TeacherGameScreen(
+                        pin = pin,
+                        onGameFinished = {
+                            navControllerPrincipal.navigate("multiplayer_ranking/$pin") {
+                                popUpTo("teacher_game/{pin}") { inclusive = true }
+                            }
+                        }
                     )
                 }
 
@@ -403,15 +420,41 @@ fun AppNavigation() {
                     StudentLobbyScreen(
                         pin = pin,
                         onBack = { navControllerPrincipal.popBackStack() },
-                        onGameStarted = { dificultad ->
-                            // ¡El juego empieza! Navegamos a la pantalla de juego
-                            // Usamos replace (popUpTo) para que no pueda volver a la sala de espera
-                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/$dificultad") {
+                        onGameStarted = { _ ->
+                            // ¡El juego empieza! Navegamos a la pantalla de juego multijugador
+                            navControllerPrincipal.navigate("student_game/$pin") {
                                 popUpTo("student_lobby/{pin}") { inclusive = true }
                             }
                         }
                     )
                 }
+
+                // H2. Pantalla del juego del alumno (multijugador)
+                composable("student_game/{pin}") { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
+                    StudentGameScreen(
+                        pin = pin,
+                        onGameFinished = { finishedPin ->
+                            navControllerPrincipal.navigate("multiplayer_ranking/$finishedPin") {
+                                popUpTo("student_game/{pin}") { inclusive = true }
+                            }
+                        }
+                    )
+                }
+
+                // I. Ranking Multijugador Final
+                composable("multiplayer_ranking/{pin}") { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
+                    MultiplayerRankingScreen(
+                        pin = pin,
+                        onBackToMenu = {
+                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
+                                popUpTo(Pantalla.Kids.ruta) { inclusive = false }
+                            }
+                        }
+                    )
+                }
+
                 composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
             }
         }
