@@ -113,12 +113,19 @@ class StudentGameViewModel @Inject constructor(
         _uiState.update { it.copy(pin = pin, isLoading = true) }
         
         viewModelScope.launch {
-            // Cargar preguntas de la partida
-            preguntas = repository.getQuestionsForGame(pin)
+            // IMPORTANTE: Cargar preguntas PRIMERO y esperar
+            // Esto evita race condition donde el observer recibe
+            // SHOWING_QUESTION antes de tener las preguntas cargadas
+            try {
+                preguntas = repository.getQuestionsForGame(pin)
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = "Error cargando preguntas: ${e.message}") }
+            }
+            
+            // DESPUÉS de tener las preguntas, iniciar los observers
+            observeGame(pin)
+            observeRanking(pin)
         }
-        
-        observeGame(pin)
-        observeRanking(pin)
     }
 
     /**

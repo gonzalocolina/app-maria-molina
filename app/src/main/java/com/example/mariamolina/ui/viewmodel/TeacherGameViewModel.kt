@@ -52,6 +52,47 @@ class TeacherGameViewModel @Inject constructor(
     }
 
     /**
+     * Inicia la observación de una partida existente (llamado desde TeacherGameScreen).
+     * Se usa cuando el profesor navega al juego después de crearlo.
+     */
+    fun startObservingGame(pin: String) {
+        // Si ya estamos observando esta partida, no hacer nada
+        if (_uiState.value.pin == pin && _uiState.value.partida != null) {
+            return
+        }
+        
+        _uiState.update { it.copy(pin = pin, isLoading = true) }
+        
+        viewModelScope.launch {
+            try {
+                // Cargar preguntas primero
+                val preguntas = repository.getQuestionsForGame(pin)
+                
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false,
+                        preguntas = preguntas
+                    ) 
+                }
+                
+                // Iniciar todos los observers
+                observeGame(pin)
+                observePlayers(pin)
+                observeAnsweredCount(pin)
+                observeRanking(pin)
+                
+            } catch (e: Exception) {
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        error = "Error al cargar partida: ${e.message}"
+                    ) 
+                }
+            }
+        }
+    }
+
+    /**
      * Crea una nueva partida.
      */
     fun crearPartida() {
@@ -139,17 +180,8 @@ class TeacherGameViewModel @Inject constructor(
         answeredObserverJob = viewModelScope.launch {
             repository.observeAnsweredCount(pin).collect { count ->
                 _uiState.update { state ->
-                    val newState = state.copy(jugadoresQueRespondieron = count)
-                    
-                    // Si todos respondieron, cambiar fase automáticamente
-                    if (count >= state.totalJugadores && state.totalJugadores > 0 &&
-                        state.partida?.fase == GamePhase.SHOWING_QUESTION) {
-                        viewModelScope.launch {
-                            state.pin?.let { repository.setWaitingForNext(it) }
-                        }
-                    }
-                    
-                    newState
+                    // Solo actualizar el contador, el profesor decide cuándo avanzar
+                    state.copy(jugadoresQueRespondieron = count)
                 }
             }
         }

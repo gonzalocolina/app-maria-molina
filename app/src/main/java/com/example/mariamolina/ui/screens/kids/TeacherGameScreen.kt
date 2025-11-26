@@ -34,6 +34,11 @@ fun TeacherGameScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Iniciar observación de la partida al entrar
+    LaunchedEffect(pin) {
+        viewModel.startObservingGame(pin)
+    }
+
     // Navegar cuando el juego termine
     LaunchedEffect(uiState.gameFinished) {
         if (uiState.gameFinished) {
@@ -194,7 +199,55 @@ fun TeacherGameScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // --- BOTÓN SIGUIENTE PREGUNTA (siempre visible) ---
+            val allAnswered = uiState.jugadoresQueRespondieron >= uiState.totalJugadores && 
+                              uiState.totalJugadores > 0
+            val isLastQuestion = partida.preguntaActualIndex >= partida.totalPreguntas - 1
+
+            Button(
+                onClick = { 
+                    if (isLastQuestion) {
+                        viewModel.finalizarPartida()
+                    } else {
+                        viewModel.siguientePregunta()
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
+                // Solo habilitado cuando todos han respondido
+                enabled = allAnswered,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (allAnswered) MaterialTheme.colorScheme.primary 
+                                     else MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = if (allAnswered) MaterialTheme.colorScheme.onPrimary 
+                                   else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            ) {
+                Icon(
+                    if (isLastQuestion) Icons.Default.EmojiEvents else Icons.AutoMirrored.Filled.NavigateNext,
+                    contentDescription = null
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    if (isLastQuestion) "VER RANKING FINAL" else "SIGUIENTE PREGUNTA",
+                    fontSize = 16.sp
+                )
+            }
+
+            // Mostrar estado de respuestas
+            Text(
+                if (allAnswered) "✓ Todos han respondido - Puedes avanzar" 
+                else "Esperando: ${uiState.totalJugadores - uiState.jugadoresQueRespondieron} de ${uiState.totalJugadores} alumnos",
+                style = MaterialTheme.typography.bodySmall,
+                color = if (allAnswered) Color(0xFF4CAF50) else MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             // --- RANKING PARCIAL ---
             if (uiState.ranking.isNotEmpty()) {
@@ -249,45 +302,6 @@ fun TeacherGameScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            // --- BOTÓN SIGUIENTE PREGUNTA ---
-            val allAnswered = uiState.jugadoresQueRespondieron >= uiState.totalJugadores && 
-                              uiState.totalJugadores > 0
-            val isLastQuestion = partida.preguntaActualIndex >= partida.totalPreguntas - 1
-
-            Button(
-                onClick = { 
-                    if (isLastQuestion) {
-                        viewModel.finalizarPartida()
-                    } else {
-                        viewModel.siguientePregunta()
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                enabled = allAnswered || partida.fase == GamePhase.WAITING_FOR_NEXT
-            ) {
-                Icon(
-                    if (isLastQuestion) Icons.Default.EmojiEvents else Icons.AutoMirrored.Filled.NavigateNext,
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    if (isLastQuestion) "VER RANKING FINAL" else "SIGUIENTE PREGUNTA",
-                    fontSize = 16.sp
-                )
-            }
-
-            if (!allAnswered && partida.fase != GamePhase.WAITING_FOR_NEXT) {
-                Text(
-                    "Espera a que todos respondan o haz clic cuando estés listo",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
         }
     }
 }
