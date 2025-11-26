@@ -1,6 +1,5 @@
 package com.example.mariamolina.ui.screens.poi
 
-import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -80,12 +78,16 @@ fun PointDetailScreen(
             }
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize()) {
+        // Aplicamos innerPadding al Box para que el contenido tenga en cuenta el bottomBar y otros inset
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = innerPadding.calculateBottomPadding())
+                    // ...existing code...
             ) {
                 // ... Imagen ...
                 AsyncImage(
@@ -271,7 +273,7 @@ private fun SubPuntosSection(
                     onOpenSubPointMapClick = onOpenSubPointMapClick
                 )
                 if (index < subpuntos.lastIndex) {
-                    Divider(modifier = Modifier.padding(vertical = 12.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
                 }
             }
         }
