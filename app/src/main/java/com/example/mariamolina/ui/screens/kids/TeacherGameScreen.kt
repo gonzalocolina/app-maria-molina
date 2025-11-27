@@ -1,8 +1,8 @@
 package com.example.mariamolina.ui.screens.kids
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.NavigateNext
 import androidx.compose.material.icons.filled.CheckCircle
@@ -71,7 +71,8 @@ fun TeacherGameScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             val partida = uiState.partida
@@ -257,12 +258,10 @@ fun TeacherGameScreen(
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp)
+                Column(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    itemsIndexed(uiState.ranking.take(5)) { index, jugador ->
+                    uiState.ranking.take(5).forEachIndexed { index, jugador ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
