@@ -27,12 +27,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.ui.viewmodel.ProfileViewModel
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     onBackClick: () -> Unit,
-    viewModel: ProfileViewModel = viewModel()
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
     // --- ESTADO DEL USUARIO (Firebase) ---
     val uiState by viewModel.uiState.collectAsState()
@@ -58,9 +59,9 @@ fun ProfileScreen(
     var showDialog by remember { mutableStateOf(false) }
 
     // --- ESTADO DEL TAMAÑO DE LETRA ---
-    val normal = "Normal"
-    val grande = "Grande"
-    val muyGrande = "Muy grande"
+    val normal = stringResource(R.string.font_size_normal)
+    val grande = stringResource(R.string.font_size_large)
+    val muyGrande = stringResource(R.string.font_size_very_large)
     val fontSizes = listOf(normal, grande, muyGrande)
 
     val currentFontSize = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("font_size", "normal") ?: "normal"
@@ -167,7 +168,7 @@ fun ProfileScreen(
 
             // --- SECCIÓN 2: TAMAÑO DE LETRA ---
             Text(
-                text = "Tamaño de letra",
+                text = stringResource(R.string.font_size_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -192,7 +193,7 @@ fun ProfileScreen(
                                 prefs.edit { putString("font_size", sizeCode) }
                                 Toast.makeText(
                                     context,
-                                    "Tamaño de letra cambiado a $size",
+                                    context.getString(R.string.font_size_changed_toast, size),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 (context as? androidx.activity.ComponentActivity)?.recreate()

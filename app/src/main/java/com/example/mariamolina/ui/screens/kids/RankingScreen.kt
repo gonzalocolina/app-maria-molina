@@ -26,7 +26,7 @@ fun RankingScreen(
                     IconButton(onClick = onBackClick) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = stringResource(id = R.string.btn_volver)
                         )
                     }
                 }
@@ -39,7 +39,7 @@ fun RankingScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            Text("Pantalla de Ranking (¡Próximamente!)", style = MaterialTheme.typography.titleLarge)
+            Text(stringResource(id = R.string.pantalla_de_ranking_proximamente), style = MaterialTheme.typography.titleLarge)
         }
     }
 }

@@ -6,11 +6,12 @@ import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.QuizQuestion
 import com.example.mariamolina.data.repository.DataState
 import com.example.mariamolina.data.repository.QuizRepository
-import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // Estado de la UI del Quiz:
 data class QuizUiState(
@@ -22,9 +23,9 @@ data class QuizUiState(
     val dificultadSeleccionada: Dificultad = Dificultad.FACIL
 )
 
-class QuizViewModel(
-    // Inyectamos el repositorio. Para Compose, lo haremos simple por ahora.
-    private val repository: QuizRepository = QuizRepository(FirebaseFirestore.getInstance())
+@HiltViewModel
+class QuizViewModel @Inject constructor(
+    private val repository: QuizRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(QuizUiState())

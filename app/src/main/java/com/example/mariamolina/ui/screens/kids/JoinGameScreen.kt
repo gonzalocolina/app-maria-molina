@@ -7,18 +7,18 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mariamolina.ui.viewmodel.JoinGameViewModel
-import com.example.mariamolina.ui.viewmodel.JoinGameState
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mariamolina.R
+import com.example.mariamolina.ui.viewmodel.StudentGameViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JoinGameScreen(
     onBack: () -> Unit,
     onJoinSuccess: (String) -> Unit, // Pasamos el PIN para saber a qué sala ir
-    viewModel: JoinGameViewModel = viewModel()
+    viewModel: StudentGameViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -26,8 +26,8 @@ fun JoinGameScreen(
     var pin by remember { mutableStateOf("") }
 
     // Reaccionar al estado de éxito
-    LaunchedEffect(uiState) {
-        if (uiState is JoinGameState.Success) {
+    LaunchedEffect(uiState.joinSuccess) {
+        if (uiState.joinSuccess) {
             onJoinSuccess(pin) // Navegamos a la sala de espera
         }
     }
@@ -35,12 +35,12 @@ fun JoinGameScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("") },
+                title = { Text(stringResource(id = R.string.unirse_a_partida)) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) { // Conectamos el botón
+                    IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = stringResource(id = R.string.btn_volver)
                         )
                     }
                 }
@@ -50,12 +50,13 @@ fun JoinGameScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
                 .padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Unirse a Partida",
+                text = stringResource(id = R.string.join_game_enter_data),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -64,7 +65,7 @@ fun JoinGameScreen(
             OutlinedTextField(
                 value = nickname,
                 onValueChange = { nickname = it },
-                label = { Text("Tu Nickname (Nombre)") },
+                label = { Text(stringResource(id = R.string.tu_nombre)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -74,14 +75,14 @@ fun JoinGameScreen(
             OutlinedTextField(
                 value = pin,
                 onValueChange = { pin = it },
-                label = { Text("PIN de la Partida") },
+                label = { Text(stringResource(id = R.string.pin_de_la_partida)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            if (uiState is JoinGameState.Loading) {
+            if (uiState.isLoading) {
                 CircularProgressIndicator()
             } else {
                 Button(
@@ -91,14 +92,14 @@ fun JoinGameScreen(
                         .height(50.dp),
                     enabled = nickname.isNotBlank() && pin.isNotBlank()
                 ) {
-                    Text("¡ENTRAR!")
+                    Text(stringResource(id = R.string.entrar_button))
                 }
             }
 
-            if (uiState is JoinGameState.Error) {
+            if (uiState.error != null) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
-                    text = (uiState as JoinGameState.Error).message,
+                    text = uiState.error!!,
                     color = MaterialTheme.colorScheme.error
                 )
             }

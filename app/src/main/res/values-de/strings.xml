@@ -224,4 +224,14 @@
     <string name="points_remaining">Verbleibend</string>
     <string name="points_progress_percent">%d%% abgeschlossen</string>
 
+    <!-- Additional kids strings -->
+    <string name="join_game_enter_data">Gib deine Daten ein</string>
+    <string name="quiz_error">Fehler: %1$s</string>
+    <string name="quiz_score_achieved">Du hast %d Punkte erreicht!</string>
+    <string name="student_points_gained">+%d Punkte</string>
+    <string name="student_answer_sent">✓ Antwort gesendet</string>
+    <string name="student_waiting_all">Warten auf alle Antworten...</string>
+    <string name="student_waiting_teacher">Warten auf den Lehrer...</string>
+    <string name="slide_counter">%d / %d</string>
+
 </resources>
