@@ -15,11 +15,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mariamolina.R
 import com.example.mariamolina.data.model.GamePhase
 import com.example.mariamolina.ui.viewmodel.StudentGameViewModel
 import kotlinx.coroutines.delay
@@ -75,7 +77,7 @@ fun StudentGameScreen(
         when (uiState.gamePhase) {
             GamePhase.LOBBY -> {
                 // Esperando a que el profesor inicie
-                WaitingScreen(message = "Esperando a que el profesor inicie el juego...")
+                WaitingScreen(message = stringResource(id = R.string.esperando_profesor_inicie))
             }
             
             GamePhase.SHOWING_QUESTION -> {
@@ -137,7 +139,7 @@ fun StudentGameScreen(
                 text = { Text(uiState.error!!) },
                 confirmButton = {
                     TextButton(onClick = { viewModel.clearError() }) {
-                        Text("OK")
+                        Text(stringResource(id = R.string.ok))
                     }
                 }
             )
@@ -212,12 +214,12 @@ private fun QuestionScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                "Puntos: $miPuntuacionTotal",
+                stringResource(id = R.string.puntos_label) + " $miPuntuacionTotal",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                "Pregunta ${preguntaIndex + 1}/$totalPreguntas",
+                stringResource(id = R.string.pregunta_label) + " ${preguntaIndex + 1}/$totalPreguntas",
                 style = MaterialTheme.typography.labelLarge
             )
         }
@@ -355,7 +357,7 @@ private fun QuestionScreen(
                     if (mostrarFeedback) {
                         // Mostrar resultado cuando todos han respondido o tiempo agotado
                         Text(
-                            text = if (respuestaCorrecta == true) "¡Correcto! 🎉" else "Incorrecto 😔",
+                            text = if (respuestaCorrecta == true) stringResource(id = R.string.correcto_emoji) else stringResource(id = R.string.incorrecto_emoji),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = if (respuestaCorrecta == true) Color(0xFF4CAF50) else Color(0xFFF44336)
@@ -363,7 +365,7 @@ private fun QuestionScreen(
                         
                         if (puntosObtenidos > 0) {
                             Text(
-                                text = "+$puntosObtenidos puntos",
+                                text = stringResource(id = R.string.student_points_gained, puntosObtenidos),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = MaterialTheme.colorScheme.primary
                             )
@@ -371,7 +373,7 @@ private fun QuestionScreen(
                     } else {
                         // Esperando a que todos respondan
                         Text(
-                            text = "✓ Respuesta enviada",
+                            text = stringResource(id = R.string.student_answer_sent),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
@@ -380,7 +382,7 @@ private fun QuestionScreen(
                         Spacer(modifier = Modifier.height(4.dp))
                         
                         Text(
-                            text = "Esperando a que todos respondan...",
+                            text = stringResource(id = R.string.student_waiting_all),
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -389,7 +391,7 @@ private fun QuestionScreen(
                     Spacer(modifier = Modifier.height(8.dp))
                     
                     Text(
-                        text = "Esperando al profesor...",
+                        text = stringResource(id = R.string.student_waiting_teacher),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -427,14 +429,14 @@ private fun WaitingForNextScreen(
             Spacer(modifier = Modifier.height(16.dp))
             
             Text(
-                text = if (respuestaCorrecta) "¡Respuesta correcta!" else "Respuesta incorrecta",
+                text = if (respuestaCorrecta) stringResource(id = R.string.respuesta_correcta) else stringResource(id = R.string.respuesta_incorrecta),
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
             
             if (puntosObtenidos > 0) {
                 Text(
-                    text = "+$puntosObtenidos puntos",
+                    text = stringResource(id = R.string.student_points_gained, puntosObtenidos),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -455,7 +457,7 @@ private fun WaitingForNextScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    "Tu puntuación",
+                    stringResource(id = R.string.tu_puntuacion),
                     style = MaterialTheme.typography.labelLarge
                 )
                 Text(
@@ -468,7 +470,7 @@ private fun WaitingForNextScreen(
                 if (miPosicion > 0) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "Posición: $miPosicion de $totalJugadores",
+                        stringResource(id = R.string.posicion_label) + " $miPosicion de $totalJugadores",
                         style = MaterialTheme.typography.titleMedium
                     )
                 }
@@ -478,7 +480,7 @@ private fun WaitingForNextScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            "Esperando siguiente pregunta...",
+            stringResource(id = R.string.esperando_siguiente_pregunta),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

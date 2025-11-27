@@ -7,8 +7,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mariamolina.R
 import com.example.mariamolina.ui.viewmodel.StudentGameViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,12 +35,12 @@ fun JoinGameScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Unirse a Partida") },
+                title = { Text(stringResource(id = R.string.unirse_a_partida)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = stringResource(id = R.string.btn_volver)
                         )
                     }
                 }
@@ -54,7 +56,7 @@ fun JoinGameScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Introduce tus datos",
+                text = stringResource(id = R.string.join_game_enter_data),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -63,7 +65,7 @@ fun JoinGameScreen(
             OutlinedTextField(
                 value = nickname,
                 onValueChange = { nickname = it },
-                label = { Text("Tu Nombre") },
+                label = { Text(stringResource(id = R.string.tu_nombre)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -73,7 +75,7 @@ fun JoinGameScreen(
             OutlinedTextField(
                 value = pin,
                 onValueChange = { pin = it },
-                label = { Text("PIN de la Partida") },
+                label = { Text(stringResource(id = R.string.pin_de_la_partida)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true
             )
@@ -90,7 +92,7 @@ fun JoinGameScreen(
                         .height(50.dp),
                     enabled = nickname.isNotBlank() && pin.isNotBlank()
                 ) {
-                    Text("¡ENTRAR!")
+                    Text(stringResource(id = R.string.entrar_button))
                 }
             }
 

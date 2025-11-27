@@ -298,11 +298,77 @@
     <string name="kids_prev">Anterior</string>
     <string name="kids_next">Siguiente</string>
 
+    <!-- Additional kids strings -->
+    <string name="join_game_enter_data">Introduce tus datos</string>
+    <string name="quiz_error">Error: %1$s</string>
+    <string name="quiz_score_achieved">¡Has conseguido %d puntos!</string>
+    <string name="student_points_gained">+%d puntos</string>
+    <string name="student_answer_sent">✓ Respuesta enviada</string>
+    <string name="student_waiting_all">Esperando a que todos respondan...</string>
+    <string name="student_waiting_teacher">Esperando al profesor...</string>
+    <string name="slide_counter">%d / %d</string>
+
+    <!-- Nuevos strings extraídos de la sección kids -->
+    <string name="pantalla_de_ranking_proximamente">Pantalla de Ranking (¡Próximamente!)</string>
+    <string name="unirse_a_partida">Unirse a Partida</string>
+    <string name="tu_nombre">Tu Nombre</string>
+    <string name="pin_de_la_partida">PIN de la Partida</string>
+    <string name="entrar_button">¡ENTRAR!</string>
+    <string name="elige_dificultad">Elige dificultad:</string>
+    <string name="unirse_a_partida_con_pin">Unirse a Partida con PIN</string>
+    <string name="acceso_profesor">Acceso Profesor</string>
+    <string name="zona_de_profesores">Zona de Profesores</string>
+    <string name="introduce_contrasena_panel">Introduce la contraseña para acceder al panel de control:</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="contrasena_incorrecta">Contraseña incorrecta</string>
+    <string name="entrar">Entrar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="panel_del_profesor">Panel del Profesor</string>
+    <string name="generando_sala">Generando sala...</string>
+    <string name="codigo_de_la_partida_pin">CÓDIGO DE LA PARTIDA (PIN)</string>
+    <string name="jugadores_conectados">Jugadores conectados: %d</string>
+    <string name="empezar_el_juego">¡EMPEZAR EL JUEGO!</string>
+    <string name="sala_de_espera">Sala de Espera</string>
+    <string name="conectando_con_la_sala">Conectando con la sala...</string>
+    <string name="salir">Salir</string>
+    <string name="estas_dentro">¡Estás dentro!</string>
+    <string name="esperando_profesor_inicie">Esperando a que el profesor inicie el juego...</string>
+    <string name="pin_de_la_sala">PIN de la sala</string>
+    <string name="puntos_label">Puntos:</string>
+    <string name="pregunta_label">Pregunta</string>
+    <string name="correcto_emoji">¡Correcto! 🎉</string>
+    <string name="incorrecto_emoji">Incorrecto 😔</string>
+    <string name="respuesta_correcta">¡Respuesta correcta!</string>
+    <string name="respuesta_incorrecta">Respuesta incorrecta</string>
+    <string name="tu_puntuacion">Tu puntuación</string>
+    <string name="posicion_label">Posición:</string>
+    <string name="esperando_siguiente_pregunta">Esperando siguiente pregunta...</string>
+    <string name="partida_label">Partida:</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="de">de</string>
+    <string name="ver_ranking_final">VER RANKING FINAL</string>
+    <string name="siguiente_pregunta">SIGUIENTE PREGUNTA</string>
+    <string name="todos_han_respondido">✓ Todos han respondido - Puedes avanzar</string>
+    <string name="esperando_label">Esperando:</string>
+    <string name="alumnos">alumnos</string>
+    <string name="ranking_actual">Ranking actual</string>
+    <string name="pts">pts</string>
+    <string name="ranking_final">Ranking Final</string>
+    <string name="partida_finalizada">🎉 ¡Partida Finalizada! 🎉</string>
+    <string name="tu_resultado">Tu resultado</string>
+    <string name="numeral">#</string>
+    <string name="puntos_lower">puntos</string>
+    <string name="clasificacion_completa">Clasificación completa</string>
+    <string name="volver_al_menu">Volver al Menú</string>
+    <string name="tu_emoji">¡Tú!</string>
+    <string name="ok">OK</string>
+    <string name="correcta">Correcta</string>
+
     <!-- Progress section for Points of Interest -->
-    <string name="points_progress_title">Tu Progreso</string>
+    <string name="points_progress_title">Tu progreso</string>
     <string name="points_visited">Visitados</string>
     <string name="points_remaining">Restantes</string>
     <string name="points_progress_percent">%d%% completado</string>
 
-</resources>
 
+</resources>

@@ -390,7 +390,7 @@ fun QuizResultScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "¡Has conseguido $puntuacion puntos!",
+            text = stringResource(id = R.string.quiz_score_achieved, puntuacion),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center
         )

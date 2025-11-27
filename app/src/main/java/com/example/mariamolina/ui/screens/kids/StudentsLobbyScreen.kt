@@ -7,10 +7,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mariamolina.R
 import com.example.mariamolina.data.model.GamePhase
 import com.example.mariamolina.ui.viewmodel.StudentGameViewModel
 
@@ -39,12 +41,12 @@ fun StudentLobbyScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Sala de Espera") },
+                title = { Text(stringResource(id = R.string.sala_de_espera)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = stringResource(id = R.string.btn_volver)
                         )
                     }
                 }
@@ -63,7 +65,7 @@ fun StudentLobbyScreen(
                 uiState.isLoading -> {
                     CircularProgressIndicator()
                     Spacer(modifier = Modifier.height(16.dp))
-                    Text("Conectando con la sala...")
+                    Text(stringResource(id = R.string.conectando_con_la_sala))
                 }
                 uiState.error != null -> {
                     Text(
@@ -72,18 +74,18 @@ fun StudentLobbyScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(onClick = onBack) {
-                        Text("Salir")
+                        Text(stringResource(id = R.string.salir))
                     }
                 }
                 else -> {
                     Text(
-                        "¡Estás dentro!",
+                        stringResource(id = R.string.estas_dentro),
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        "Esperando a que el profesor inicie el juego...",
+                        stringResource(id = R.string.esperando_profesor_inicie),
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(32.dp))
@@ -100,7 +102,7 @@ fun StudentLobbyScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                "PIN de la sala",
+                                stringResource(id = R.string.pin_de_la_sala),
                                 style = MaterialTheme.typography.labelLarge
                             )
                             Text(

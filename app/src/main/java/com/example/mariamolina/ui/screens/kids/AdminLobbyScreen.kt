@@ -11,10 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mariamolina.R
 import com.example.mariamolina.ui.viewmodel.AdminGameViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,12 +38,12 @@ fun AdminLobbyScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Panel del Profesor") },
+                title = { Text(stringResource(id = R.string.panel_del_profesor)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) { // Usamos el parámetro onBack
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = stringResource(id = R.string.btn_volver)
                         )
                     }
                 }
@@ -61,7 +63,7 @@ fun AdminLobbyScreen(
 
             if (uiState.isLoading) {
                 CircularProgressIndicator()
-                Text("Generando sala...", modifier = Modifier.padding(top = 16.dp))
+                Text(stringResource(id = R.string.generando_sala), modifier = Modifier.padding(top = 16.dp))
             } else if (uiState.pinGenerado != null) {
 
                 // --- EL PIN EN GRANDE ---
@@ -73,7 +75,7 @@ fun AdminLobbyScreen(
                         modifier = Modifier.padding(24.dp).fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text("CÓDIGO DE LA PARTIDA (PIN)", style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(id = R.string.codigo_de_la_partida_pin), style = MaterialTheme.typography.labelLarge)
                         Text(
                             text = uiState.pinGenerado!!,
                             fontSize = 64.sp,
@@ -87,7 +89,7 @@ fun AdminLobbyScreen(
 
                 // --- LISTA DE JUGADORES ---
                 Text(
-                    "Jugadores conectados: ${uiState.jugadoresUnidos.size}",
+                    stringResource(id = R.string.jugadores_conectados, uiState.jugadoresUnidos.size),
                     style = MaterialTheme.typography.titleLarge
                 )
 
@@ -110,7 +112,7 @@ fun AdminLobbyScreen(
                     modifier = Modifier.fillMaxWidth().height(56.dp),
                     enabled = uiState.jugadoresUnidos.isNotEmpty()
                 ) {
-                    Text("¡EMPEZAR EL JUEGO!", fontSize = 18.sp)
+                    Text(stringResource(id = R.string.empezar_el_juego), fontSize = 18.sp)
                 }
             }
 
