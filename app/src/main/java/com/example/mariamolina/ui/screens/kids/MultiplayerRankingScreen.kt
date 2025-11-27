@@ -65,122 +65,121 @@ fun MultiplayerRankingScreen(
             )
         }
     ) { innerPadding ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Título con confetti
             if (showConfetti) {
-                Text(
-                    "🎉 ¡Partida Finalizada! 🎉",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
-                )
+                item {
+                    Text(
+                        "🎉 ¡Partida Finalizada! 🎉",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
 
             // Mi resultado
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        "Tu resultado",
-                        style = MaterialTheme.typography.labelLarge
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer
                     )
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        if (uiState.miPosicion in 1..3) {
-                            Icon(
-                                Icons.Default.EmojiEvents,
-                                contentDescription = null,
-                                modifier = Modifier.size(48.dp),
-                                tint = when(uiState.miPosicion) {
-                                    1 -> Color(0xFFFFD700)  // Oro
-                                    2 -> Color(0xFFC0C0C0)  // Plata
-                                    else -> Color(0xFFCD7F32)  // Bronce
-                                }
+                        Text(
+                            "Tu resultado",
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                        
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (uiState.miPosicion in 1..3) {
+                                Icon(
+                                    Icons.Default.EmojiEvents,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(48.dp),
+                                    tint = when(uiState.miPosicion) {
+                                        1 -> Color(0xFFFFD700)  // Oro
+                                        2 -> Color(0xFFC0C0C0)  // Plata
+                                        else -> Color(0xFFCD7F32)  // Bronce
+                                    }
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                            }
+                            
+                            Text(
+                                "#${uiState.miPosicion}",
+                                style = MaterialTheme.typography.displayMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
                             )
-                            Spacer(modifier = Modifier.width(8.dp))
                         }
                         
+                        Spacer(modifier = Modifier.height(8.dp))
+                        
                         Text(
-                            "#${uiState.miPosicion}",
-                            style = MaterialTheme.typography.displayMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
+                            "${uiState.miPuntuacionTotal} puntos",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
                         )
                     }
-                    
-                    Spacer(modifier = Modifier.height(8.dp))
-                    
-                    Text(
-                        "${uiState.miPuntuacionTotal} puntos",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            // Título de clasificación
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    "Clasificación completa",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             // Lista completa de ranking
-            Text(
-                "Clasificación completa",
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.Start)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                itemsIndexed(uiState.ranking) { index, jugador ->
-                    RankingItem(
-                        posicion = index + 1,
-                        jugador = jugador,
-                        isCurrentUser = jugador.puntuacion == uiState.miPuntuacionTotal && 
-                                       uiState.miPosicion == index + 1
-                    )
-                }
+            itemsIndexed(uiState.ranking) { index, jugador ->
+                RankingItem(
+                    posicion = index + 1,
+                    jugador = jugador,
+                    isCurrentUser = jugador.puntuacion == uiState.miPuntuacionTotal && 
+                                   uiState.miPosicion == index + 1
+                )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             // Botón volver al menú
-            Button(
-                onClick = {
-                    viewModel.reset()
-                    onBackToMenu()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp)
-            ) {
-                Icon(Icons.Default.Home, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Volver al Menú", fontSize = 16.sp)
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = {
+                        viewModel.reset()
+                        onBackToMenu()
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
+                ) {
+                    Icon(Icons.Default.Home, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Volver al Menú", fontSize = 16.sp)
+                }
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
