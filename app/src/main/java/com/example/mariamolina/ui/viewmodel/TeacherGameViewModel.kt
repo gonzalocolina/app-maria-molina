@@ -18,6 +18,7 @@ data class TeacherGameUiState(
     val error: String? = null,
     val pin: String? = null,
     val dificultadSeleccionada: Dificultad = Dificultad.FACIL,
+    val tiempoPorPreguntaSeleccionado: Int = 20,  // Tiempo en segundos (por defecto 20)
     val jugadores: List<Jugador> = emptyList(),
     val partida: Partida? = null,
     val preguntaActual: QuizQuestion? = null,
@@ -75,6 +76,30 @@ class TeacherGameViewModel @Inject constructor(
                             isLoading = false,
                             error = "Error al cambiar dificultad: ${e.message}"
                         ) 
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Establece el tiempo por pregunta.
+     * Si ya existe una partida, actualiza el tiempo en Firebase.
+     */
+    fun setTiempoPorPregunta(segundos: Int) {
+        val currentPin = _uiState.value.pin
+        
+        // Actualizar estado local inmediatamente
+        _uiState.update { it.copy(tiempoPorPreguntaSeleccionado = segundos) }
+        
+        // Si ya hay una partida creada, actualizar el tiempo en Firebase
+        if (currentPin != null) {
+            viewModelScope.launch {
+                try {
+                    repository.updateGameTime(currentPin, segundos)
+                } catch (e: Exception) {
+                    _uiState.update { 
+                        it.copy(error = "Error al cambiar tiempo: ${e.message}") 
                     }
                 }
             }
