@@ -22,7 +22,7 @@ class QuizRepository(
             val dificultadString = dificultad.name.uppercase()
 
             // 1. Consulta a Firestore
-            val snapshot = firestore.collection("quizzes")
+            val snapshot = firestore.collection("quizzesV2")
                 .whereEqualTo("dificultad", dificultadString) // Filtra por dificultad
                 .get()
                 .await() // Espera a que la tarea de Firebase termine
