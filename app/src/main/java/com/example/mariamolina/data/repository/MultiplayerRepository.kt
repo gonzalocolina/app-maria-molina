@@ -30,6 +30,7 @@ class MultiplayerRepository @Inject constructor(
         private const val COLLECTION_RESPUESTAS = "respuestas"
         private const val COLLECTION_HISTORIAL = "historial_partidas"
         private const val COLLECTION_QUIZZES = "quizzes"
+        private const val COLLECTION_QUIZZES_2 = "quizzes2"
     }
 
     // ==================== AUTENTICACIÓN ====================
@@ -103,15 +104,25 @@ class MultiplayerRepository @Inject constructor(
     
     /**
      * Obtiene IDs de preguntas aleatorias de una dificultad.
+     * Combina preguntas de ambas colecciones (quizzes y quizzes2).
      */
     private suspend fun getRandomQuestionIds(dificultad: Dificultad, count: Int): List<String> {
-        val snapshot = firestore.collection(COLLECTION_QUIZZES)
+        // Obtener preguntas de la colección original
+        val snapshot1 = firestore.collection(COLLECTION_QUIZZES)
             .whereEqualTo("dificultad", dificultad.name)
             .get()
             .await()
         
-        return snapshot.documents
-            .map { it.id }
+        // Obtener preguntas de la colección de preguntas nuevas
+        val snapshot2 = firestore.collection(COLLECTION_QUIZZES_2)
+            .whereEqualTo("dificultad", dificultad.name)
+            .get()
+            .await()
+        
+        // Combinar IDs de ambas colecciones, mezclar y tomar la cantidad requerida
+        val allIds = (snapshot1.documents.map { it.id } + snapshot2.documents.map { it.id })
+        
+        return allIds
             .shuffled()
             .take(count)
     }
@@ -425,14 +436,26 @@ class MultiplayerRepository @Inject constructor(
     
     /**
      * Obtiene una pregunta por su ID.
+     * Busca primero en quizzes y si no existe, busca en quizzes2.
      */
     suspend fun getQuestionById(questionId: String): QuizQuestion? {
-        val doc = firestore.collection(COLLECTION_QUIZZES)
+        // Buscar en la colección original
+        val doc1 = firestore.collection(COLLECTION_QUIZZES)
             .document(questionId)
             .get()
             .await()
         
-        return doc.toObject(QuizQuestion::class.java)?.copy(id = doc.id)
+        if (doc1.exists()) {
+            return doc1.toObject(QuizQuestion::class.java)?.copy(id = doc1.id)
+        }
+        
+        // Si no existe en quizzes, buscar en quizzes2
+        val doc2 = firestore.collection(COLLECTION_QUIZZES_2)
+            .document(questionId)
+            .get()
+            .await()
+        
+        return doc2.toObject(QuizQuestion::class.java)?.copy(id = doc2.id)
     }
     
     /**

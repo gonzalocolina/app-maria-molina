@@ -78,5 +78,7 @@ dependencies {
     implementation("org.osmdroid:osmdroid-android:6.1.18")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
-
+    
+    // ML Kit Translation para traducción automática
+    implementation("com.google.mlkit:translate:17.0.3")
 }

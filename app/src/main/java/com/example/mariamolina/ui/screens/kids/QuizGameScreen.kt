@@ -1,5 +1,7 @@
 package com.example.mariamolina.ui.screens.kids
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -23,7 +26,6 @@ import com.example.mariamolina.data.model.OpcionRespuesta
 import com.example.mariamolina.ui.viewmodel.QuizViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
-import android.content.res.Configuration
 
 @Composable
 fun QuizGameScreen(
@@ -37,6 +39,11 @@ fun QuizGameScreen(
     val preguntas = uiState.questions
     val puntuacion = uiState.puntuacion
     val indicePreguntaActual = uiState.indicePreguntaActual
+    
+    // Obtener idioma seleccionado
+    val context = LocalContext.current
+    val languageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        .getString("language", "es") ?: "es"
 
     // 2. Carga inicial de preguntas desde Firebase
     LaunchedEffect(key1 = dificultad) {
@@ -199,7 +206,7 @@ fun QuizGameScreen(
 
                     // Pregunta
                     Text(
-                        text = preguntaActual.pregunta,
+                        text = preguntaActual.getPregunta(languageCode),
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Center
                     )
@@ -215,7 +222,7 @@ fun QuizGameScreen(
                 ) {
                     opcionesAleatorias.forEach { opcion ->
                         OpcionCard(
-                            texto = opcion.texto,
+                            texto = opcion.getTexto(languageCode),
                             seleccionada = respuestaSeleccionada == opcion,
                             estadoRespuesta = if (respuestaSeleccionada == opcion) estadoRespuesta else null,
                             esLaCorrecta = opcion.esCorrecta,
@@ -279,7 +286,7 @@ fun QuizGameScreen(
 
                     // Pregunta (Desde Firebase es String)
                     Text(
-                        text = preguntaActual.pregunta,
+                        text = preguntaActual.getPregunta(languageCode),
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center
                     )
@@ -289,7 +296,7 @@ fun QuizGameScreen(
                 Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                     opcionesAleatorias.forEach { opcion ->
                         OpcionCard(
-                            texto = opcion.texto,
+                            texto = opcion.getTexto(languageCode),
                             seleccionada = respuestaSeleccionada == opcion,
                             estadoRespuesta = if (respuestaSeleccionada == opcion) estadoRespuesta else null,
                             esLaCorrecta = opcion.esCorrecta,

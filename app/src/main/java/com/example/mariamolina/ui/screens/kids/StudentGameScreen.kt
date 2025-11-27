@@ -1,5 +1,6 @@
 package com.example.mariamolina.ui.screens.kids
 
+import android.content.Context
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -23,9 +25,18 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.GamePhase
+import com.example.mariamolina.data.model.IdiomasSoportados
 import com.example.mariamolina.ui.viewmodel.StudentGameViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
+
+/**
+ * Obtiene el código de idioma seleccionado por el usuario.
+ */
+private fun getSelectedLanguage(context: Context): String {
+    return context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        .getString("language", IdiomasSoportados.ESPANOL) ?: IdiomasSoportados.ESPANOL
+}
 
 /**
  * Pantalla del juego para el alumno.
@@ -70,6 +81,10 @@ fun StudentGameScreen(
         }
     }
 
+    // Obtener idioma seleccionado
+    val context = LocalContext.current
+    val idioma = remember { getSelectedLanguage(context) }
+
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -94,7 +109,8 @@ fun StudentGameScreen(
                     preguntaIndex = uiState.partida?.preguntaActualIndex ?: 0,
                     totalPreguntas = uiState.partida?.totalPreguntas ?: 0,
                     onOptionSelected = { index -> viewModel.submitAnswer(index) },
-                    mostrarFeedback = uiState.allAnswered || uiState.tiempoAgotado
+                    mostrarFeedback = uiState.allAnswered || uiState.tiempoAgotado,
+                    idioma = idioma
                 )
             }
             
@@ -190,7 +206,8 @@ private fun QuestionScreen(
     preguntaIndex: Int,
     totalPreguntas: Int,
     onOptionSelected: (Int) -> Unit,
-    mostrarFeedback: Boolean  // Solo mostrar si acertó cuando todos respondan o tiempo agotado
+    mostrarFeedback: Boolean,  // Solo mostrar si acertó cuando todos respondan o tiempo agotado
+    idioma: String = IdiomasSoportados.ESPANOL  // Idioma para mostrar las preguntas
 ) {
     if (pregunta == null) {
         CircularProgressIndicator()
@@ -254,7 +271,7 @@ private fun QuestionScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Pregunta
+        // Pregunta (usando el idioma seleccionado)
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -262,7 +279,7 @@ private fun QuestionScreen(
             )
         ) {
             Text(
-                text = pregunta.pregunta,
+                text = pregunta.getPregunta(idioma),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(20.dp)
@@ -306,7 +323,7 @@ private fun QuestionScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = opcion.texto,
+                        text = opcion.getTexto(idioma),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.weight(1f)
                     )

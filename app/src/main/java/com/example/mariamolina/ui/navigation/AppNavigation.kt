@@ -59,6 +59,8 @@ import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
 import com.example.mariamolina.ui.screens.kids.TeacherLobbyScreen
+import com.example.mariamolina.ui.screens.kids.TeacherMenuScreen
+import com.example.mariamolina.ui.screens.kids.AddQuestionScreen
 import com.example.mariamolina.ui.screens.kids.TeacherGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentGameScreen
 import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
@@ -93,11 +95,20 @@ fun AppNavigation() {
     // bloque `key(currentDestination?.route) { ... }` que forzará una recomposición completa de
     // ese árbol al navegar a una ruta distinta.
     key(currentDestination?.route) {
+        // Detectar pantallas que tienen su propio Scaffold y NO deben usar nestedScroll del padre
+        val esRutaDetallePoi =
+            currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
+        val esRutaAddQuestion = currentDestination?.route == "add_question"
+        val esRutaTeacherLobby = currentDestination?.route == "teacher_lobby"
+        val esRutaAdminLobby = currentDestination?.route == "admin_lobby"
+        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby
+        
         // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
         // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
         // Evitamos usar scrollBehavior cuando la pantalla destino es el mapa en portrait, para
         // garantizar que la AppBar aparezca al navegar desde una pantalla donde estaba escondida.
-        val shouldUseScrollBehavior = !isTablet && !(esRutaMapaGlobal && !isLandscape)
+        // También evitamos en pantallas con su propio Scaffold para no interferir con su scroll interno.
+        val shouldUseScrollBehavior = !isTablet && !(esRutaMapaGlobal && !isLandscape) && !esRutaConScaffoldPropio
 
         val topAppBarScrollBehavior: TopAppBarScrollBehavior? = if (shouldUseScrollBehavior) {
             // Crear directamente el scrollBehavior en el contexto composable; al estar dentro
@@ -117,18 +128,13 @@ fun AppNavigation() {
         Scaffold(
             modifier = scaffoldModifier,
             topBar = {
-                // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
-                val esRutaDetallePoi =
-                    currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
-
                 // Comprobamos si estamos en la pantalla de slides
                 val esRutaSlides = currentDestination?.route == "${Pantalla.Kids.ruta}/slides"
 
                 // Detectamos si estamos en la pantalla del mapa (cualquier variante con query params)
                 val esRutaMapa = esRutaMapaGlobal
 
-                // Ocultamos también en Admin Lobby, Join, Student Lobby y Juego
-                val esRutaAdmin = currentDestination?.route == "admin_lobby"
+                // Ocultamos también en Join, Student Lobby y Juego
                 val esRutaJoin = currentDestination?.route == "join_game"
                 val esRutaStudentLobby =
                     currentDestination?.route?.startsWith("student_lobby") == true
@@ -142,7 +148,7 @@ fun AppNavigation() {
                     isProfile -> false
                     esRutaSlides && isLandscape -> false
                     esRutaMapa -> !isLandscape // Mostrar en portrait, ocultar en landscape
-                    esRutaAdmin || esRutaJoin || esRutaStudentLobby || esRutaJuego -> false
+                    esRutaConScaffoldPropio || esRutaJoin || esRutaStudentLobby || esRutaJuego -> false
                     else -> true
                 }
 
@@ -374,15 +380,35 @@ fun AppNavigation() {
                     )
                 }
 
-                // F. Admin Lobby (Profesor - Crear Partida) -> Ahora usa TeacherLobbyScreen
+                // F. Menú del Profesor (después de introducir contraseña)
                 composable("admin_lobby") {
+                    TeacherMenuScreen(
+                        onBack = { navControllerPrincipal.popBackStack() },
+                        onCreateRoom = {
+                            navControllerPrincipal.navigate("teacher_lobby")
+                        },
+                        onAddQuestions = {
+                            navControllerPrincipal.navigate("add_question")
+                        }
+                    )
+                }
+                
+                // F1. Crear Sala (Profesor)
+                composable("teacher_lobby") {
                     TeacherLobbyScreen(
                         onBack = { navControllerPrincipal.popBackStack() },
                         onGameStarted = { pin ->
                             navControllerPrincipal.navigate("teacher_game/$pin") {
-                                popUpTo("admin_lobby") { inclusive = true }
+                                popUpTo("teacher_lobby") { inclusive = true }
                             }
                         }
+                    )
+                }
+                
+                // F2. Añadir Preguntas (Profesor)
+                composable("add_question") {
+                    AddQuestionScreen(
+                        onBack = { navControllerPrincipal.popBackStack() }
                     )
                 }
 

@@ -1,5 +1,6 @@
 package com.example.mariamolina.ui.screens.kids
 
+import android.content.Context
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,9 @@ fun TeacherGameScreen(
     viewModel: TeacherGameViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    val languageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        .getString("language", "es") ?: "es"
 
     // Iniciar observación de la partida al entrar
     LaunchedEffect(pin) {
@@ -112,7 +117,7 @@ fun TeacherGameScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = pregunta.pregunta,
+                            text = pregunta.getPregunta(languageCode),
                             style = MaterialTheme.typography.headlineSmall,
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Bold
@@ -146,7 +151,7 @@ fun TeacherGameScreen(
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.width(30.dp)
                             )
-                            Text(text = opcion.texto)
+                            Text(text = opcion.getTexto(languageCode))
                             if (opcion.esCorrecta) {
                                 Spacer(modifier = Modifier.weight(1f))
                                 Icon(
