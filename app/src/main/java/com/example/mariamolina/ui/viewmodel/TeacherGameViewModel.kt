@@ -46,9 +46,39 @@ class TeacherGameViewModel @Inject constructor(
 
     /**
      * Selecciona la dificultad para la partida.
+     * Si ya existe una partida, actualiza las preguntas en Firebase.
      */
     fun setDificultad(dificultad: Dificultad) {
+        val currentPin = _uiState.value.pin
+        
+        // Actualizar estado local inmediatamente
         _uiState.update { it.copy(dificultadSeleccionada = dificultad) }
+        
+        // Si ya hay una partida creada, actualizar las preguntas en Firebase
+        if (currentPin != null) {
+            viewModelScope.launch {
+                try {
+                    _uiState.update { it.copy(isLoading = true) }
+                    
+                    // Actualizar dificultad y obtener nuevas preguntas
+                    val nuevasPreguntas = repository.updateGameDifficulty(currentPin, dificultad)
+                    
+                    _uiState.update { 
+                        it.copy(
+                            isLoading = false,
+                            preguntas = nuevasPreguntas
+                        ) 
+                    }
+                } catch (e: Exception) {
+                    _uiState.update { 
+                        it.copy(
+                            isLoading = false,
+                            error = "Error al cambiar dificultad: ${e.message}"
+                        ) 
+                    }
+                }
+            }
+        }
     }
 
     /**

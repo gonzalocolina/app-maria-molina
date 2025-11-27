@@ -115,6 +115,32 @@ class MultiplayerRepository @Inject constructor(
             .shuffled()
             .take(count)
     }
+    
+    /**
+     * Actualiza la dificultad y las preguntas de una partida existente.
+     * Solo se puede hacer mientras la partida está en estado ESPERANDO.
+     */
+    suspend fun updateGameDifficulty(pin: String, dificultad: Dificultad, totalPreguntas: Int = 10): List<QuizQuestion> {
+        // Obtener nuevas preguntas para la dificultad seleccionada
+        val preguntasIds = getRandomQuestionIds(dificultad, totalPreguntas)
+        
+        // Actualizar la partida en Firestore
+        firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .update(
+                mapOf(
+                    "dificultad" to dificultad.name,
+                    "preguntasIds" to preguntasIds,
+                    "totalPreguntas" to preguntasIds.size
+                )
+            )
+            .await()
+        
+        // Retornar las preguntas completas
+        return preguntasIds.mapNotNull { id ->
+            getQuestionById(id)
+        }
+    }
 
     // ==================== UNIRSE A PARTIDA (ALUMNO) ====================
     
