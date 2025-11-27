@@ -39,7 +39,11 @@ data class StudentGameUiState(
     val miPosicion: Int = 0,
     val gamePhase: GamePhase = GamePhase.LOBBY,
     val gameFinished: Boolean = false,
-    val joinSuccess: Boolean = false
+    val joinSuccess: Boolean = false,
+    val totalJugadores: Int = 0,
+    val jugadoresQueRespondieron: Int = 0,
+    val allAnswered: Boolean = false,
+    val tiempoAgotado: Boolean = false
 )
 
 /**
@@ -61,6 +65,8 @@ class StudentGameViewModel @Inject constructor(
     // Jobs para observadores
     private var gameObserverJob: Job? = null
     private var rankingObserverJob: Job? = null
+    private var answeredObserverJob: Job? = null
+    private var playersObserverJob: Job? = null
     
     // Cache de preguntas
     private var preguntas: List<QuizQuestion> = emptyList()
@@ -125,6 +131,44 @@ class StudentGameViewModel @Inject constructor(
             // DESPUÉS de tener las preguntas, iniciar los observers
             observeGame(pin)
             observeRanking(pin)
+            observeAnsweredCount(pin)
+            observePlayersCount(pin)
+        }
+    }
+
+    /**
+     * Observa cuántos jugadores han respondido.
+     */
+    private fun observeAnsweredCount(pin: String) {
+        answeredObserverJob?.cancel()
+        answeredObserverJob = viewModelScope.launch {
+            repository.observeAnsweredCount(pin).collect { count ->
+                _uiState.update { state ->
+                    val allAnswered = count >= state.totalJugadores && state.totalJugadores > 0
+                    state.copy(
+                        jugadoresQueRespondieron = count,
+                        allAnswered = allAnswered
+                    )
+                }
+            }
+        }
+    }
+
+    /**
+     * Observa el número de jugadores.
+     */
+    private fun observePlayersCount(pin: String) {
+        playersObserverJob?.cancel()
+        playersObserverJob = viewModelScope.launch {
+            repository.observePlayers(pin).collect { jugadores ->
+                _uiState.update { state ->
+                    val allAnswered = state.jugadoresQueRespondieron >= jugadores.size && jugadores.isNotEmpty()
+                    state.copy(
+                        totalJugadores = jugadores.size,
+                        allAnswered = allAnswered
+                    )
+                }
+            }
         }
     }
 
@@ -260,12 +304,13 @@ class StudentGameViewModel @Inject constructor(
         
         val state = _uiState.value
         
-        // Marcar como respondido (incorrectamente, 0 puntos)
+        // Marcar como respondido (incorrectamente, 0 puntos) y tiempo agotado
         _uiState.update { 
             it.copy(
                 respuestaEnviada = true,
                 respuestaCorrecta = false,
-                puntosObtenidos = 0
+                puntosObtenidos = 0,
+                tiempoAgotado = true
             ) 
         }
         
@@ -299,6 +344,8 @@ class StudentGameViewModel @Inject constructor(
     fun reset() {
         gameObserverJob?.cancel()
         rankingObserverJob?.cancel()
+        answeredObserverJob?.cancel()
+        playersObserverJob?.cancel()
         preguntas = emptyList()
         _uiState.value = StudentGameUiState()
     }
@@ -307,5 +354,7 @@ class StudentGameViewModel @Inject constructor(
         super.onCleared()
         gameObserverJob?.cancel()
         rankingObserverJob?.cancel()
+        answeredObserverJob?.cancel()
+        playersObserverJob?.cancel()
     }
 }

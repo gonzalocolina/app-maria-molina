@@ -91,7 +91,8 @@ fun StudentGameScreen(
                     miPuntuacionTotal = uiState.miPuntuacionTotal,
                     preguntaIndex = uiState.partida?.preguntaActualIndex ?: 0,
                     totalPreguntas = uiState.partida?.totalPreguntas ?: 0,
-                    onOptionSelected = { index -> viewModel.submitAnswer(index) }
+                    onOptionSelected = { index -> viewModel.submitAnswer(index) },
+                    mostrarFeedback = uiState.allAnswered || uiState.tiempoAgotado
                 )
             }
             
@@ -186,7 +187,8 @@ private fun QuestionScreen(
     miPuntuacionTotal: Int,
     preguntaIndex: Int,
     totalPreguntas: Int,
-    onOptionSelected: (Int) -> Unit
+    onOptionSelected: (Int) -> Unit,
+    mostrarFeedback: Boolean  // Solo mostrar si acertó cuando todos respondan o tiempo agotado
 ) {
     if (pregunta == null) {
         CircularProgressIndicator()
@@ -269,19 +271,20 @@ private fun QuestionScreen(
 
         // Opciones
         opciones.forEachIndexed { index, opcion ->
-            val isSelected = respuestaEnviada && respuestaCorrecta != null
+            // Solo mostrar colores de feedback cuando mostrarFeedback es true
+            val showFeedbackColors = respuestaEnviada && mostrarFeedback
             
             val backgroundColor = when {
-                !respuestaEnviada -> MaterialTheme.colorScheme.surface
+                !showFeedbackColors -> MaterialTheme.colorScheme.surface
                 opcion.esCorrecta -> Color(0xFF4CAF50).copy(alpha = 0.2f)
-                isSelected && !opcion.esCorrecta -> Color(0xFFF44336).copy(alpha = 0.2f)
+                !opcion.esCorrecta -> Color(0xFFF44336).copy(alpha = 0.2f)
                 else -> MaterialTheme.colorScheme.surface
             }
             
             val borderColor = when {
-                !respuestaEnviada -> MaterialTheme.colorScheme.outline
+                !showFeedbackColors -> MaterialTheme.colorScheme.outline
                 opcion.esCorrecta -> Color(0xFF4CAF50)
-                isSelected && !opcion.esCorrecta -> Color(0xFFF44336)
+                !opcion.esCorrecta -> Color(0xFFF44336)
                 else -> MaterialTheme.colorScheme.outline
             }
 
@@ -306,14 +309,15 @@ private fun QuestionScreen(
                         modifier = Modifier.weight(1f)
                     )
                     
-                    if (respuestaEnviada) {
+                    // Solo mostrar iconos cuando mostrarFeedback es true
+                    if (showFeedbackColors) {
                         if (opcion.esCorrecta) {
                             Icon(
                                 Icons.Default.CheckCircle,
                                 contentDescription = "Correcta",
                                 tint = Color(0xFF4CAF50)
                             )
-                        } else if (isSelected && !opcion.esCorrecta) {
+                        } else {
                             Icon(
                                 Icons.Default.Close,
                                 contentDescription = "Incorrecta",
@@ -332,10 +336,14 @@ private fun QuestionScreen(
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 colors = CardDefaults.cardColors(
-                    containerColor = if (respuestaCorrecta == true) 
-                        Color(0xFF4CAF50).copy(alpha = 0.1f) 
-                    else 
-                        Color(0xFFF44336).copy(alpha = 0.1f)
+                    containerColor = if (mostrarFeedback) {
+                        if (respuestaCorrecta == true) 
+                            Color(0xFF4CAF50).copy(alpha = 0.1f) 
+                        else 
+                            Color(0xFFF44336).copy(alpha = 0.1f)
+                    } else {
+                        MaterialTheme.colorScheme.secondaryContainer
+                    }
                 )
             ) {
                 Column(
@@ -344,18 +352,37 @@ private fun QuestionScreen(
                         .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text(
-                        text = if (respuestaCorrecta == true) "¡Correcto! 🎉" else "Incorrecto 😔",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = if (respuestaCorrecta == true) Color(0xFF4CAF50) else Color(0xFFF44336)
-                    )
-                    
-                    if (puntosObtenidos > 0) {
+                    if (mostrarFeedback) {
+                        // Mostrar resultado cuando todos han respondido o tiempo agotado
                         Text(
-                            text = "+$puntosObtenidos puntos",
-                            style = MaterialTheme.typography.titleMedium,
+                            text = if (respuestaCorrecta == true) "¡Correcto! 🎉" else "Incorrecto 😔",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = if (respuestaCorrecta == true) Color(0xFF4CAF50) else Color(0xFFF44336)
+                        )
+                        
+                        if (puntosObtenidos > 0) {
+                            Text(
+                                text = "+$puntosObtenidos puntos",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    } else {
+                        // Esperando a que todos respondan
+                        Text(
+                            text = "✓ Respuesta enviada",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
+                        )
+                        
+                        Spacer(modifier = Modifier.height(4.dp))
+                        
+                        Text(
+                            text = "Esperando a que todos respondan...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     
