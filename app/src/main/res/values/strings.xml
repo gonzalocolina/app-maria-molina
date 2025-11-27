@@ -43,6 +43,16 @@
         Aplicación creada por Miguel Bueno González, Gonzalo José Colina Báscones y Daniel Fernández García</string>
 
 
+    <!-- Font size options -->
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_large">Grande</string>
+    <string name="font_size_very_large">Muy grande</string>
+
+    <!-- Font size section -->
+    <string name="font_size_title">Tamaño de letra</string>
+    <string name="font_size_changed_toast">Tamaño de letra cambiado a %s</string>
+
+
     <!-- Datos de usuario -->
     <string name="profile_user_section_title">Tu Nickname</string>
     <string name="profile_nickname_label">Nickname</string>
@@ -295,3 +305,4 @@
     <string name="points_progress_percent">%d%% completado</string>
 
 </resources>
+
