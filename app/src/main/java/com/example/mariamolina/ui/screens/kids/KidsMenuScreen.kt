@@ -48,7 +48,7 @@ fun KidsMenuScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         // Selector de dificultad
-        Text("Elige dificultad:", style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(id = R.string.elige_dificultad), style = MaterialTheme.typography.titleMedium)
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,

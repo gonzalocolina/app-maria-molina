@@ -1,5 +1,7 @@
 package com.example.mariamolina.ui.screens.kids
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,15 +13,17 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel // Importante para obtener el ViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.OpcionRespuesta
-import com.example.mariamolina.ui.viewmodel.QuizViewModel // Importante
+import com.example.mariamolina.ui.viewmodel.QuizViewModel
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
 
@@ -28,14 +32,18 @@ fun QuizGameScreen(
     dificultad: Dificultad,
     onQuizFinished: () -> Unit,
     onNavigateToRanking: () -> Unit,
-    // Obtenemos el ViewModel. Si usas Hilt sería hiltViewModel(), si no, viewModel() está bien.
-    viewModel: QuizViewModel = viewModel()
+    viewModel: QuizViewModel = hiltViewModel()
 ) {
     // 1. Observamos el estado del ViewModel
     val uiState by viewModel.uiState.collectAsState()
     val preguntas = uiState.questions
     val puntuacion = uiState.puntuacion
     val indicePreguntaActual = uiState.indicePreguntaActual
+    
+    // Obtener idioma seleccionado
+    val context = LocalContext.current
+    val languageCode = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
+        .getString("language", "es") ?: "es"
 
     // 2. Carga inicial de preguntas desde Firebase
     LaunchedEffect(key1 = dificultad) {
@@ -141,80 +149,170 @@ fun QuizGameScreen(
             mutableStateOf(preguntaActual.opciones.shuffled())
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()), // Scroll para pantallas pequeñas
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            // --- ENCABEZADO (Puntos, Barra, Reloj, Pregunta) ---
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = stringResource(id = R.string.kids_quiz_puntuacion, puntuacion),
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                LinearProgressIndicator(
-                    progress = { (indicePreguntaActual + 1) / preguntas.size.toFloat() },
-                    modifier = Modifier.fillMaxWidth()
-                )
+        // Detectar orientación
+        val configuration = LocalConfiguration.current
+        val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-                Spacer(modifier = Modifier.height(24.dp))
-
-                // Widget Reloj
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.size(80.dp)
+        if (isLandscape) {
+            // Diseño horizontal: Pregunta a la izquierda, opciones a la derecha
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                // --- COLUMNA IZQUIERDA: Encabezado y Pregunta ---
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    val segundos = ceil(tiempoRestante / 1000.0).toInt()
-                    val progreso = tiempoRestante.toFloat() / tiempoTotalPorPregunta.toFloat()
-
-                    CircularProgressIndicator(
-                        progress = { progreso },
-                        modifier = Modifier.fillMaxSize(),
-                        strokeWidth = 8.dp,
-                        color = if (segundos <= 5) Color.Red else MaterialTheme.colorScheme.primary
-                    )
                     Text(
-                        text = "$segundos",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = FontWeight.Bold
+                        text = stringResource(id = R.string.kids_quiz_puntuacion, puntuacion),
+                        style = MaterialTheme.typography.titleMedium
                     )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LinearProgressIndicator(
+                        progress = { (indicePreguntaActual + 1) / preguntas.size.toFloat() },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Widget Reloj (más pequeño en horizontal)
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(60.dp)
+                    ) {
+                        val segundos = ceil(tiempoRestante / 1000.0).toInt()
+                        val progreso = tiempoRestante.toFloat() / tiempoTotalPorPregunta.toFloat()
+
+                        CircularProgressIndicator(
+                            progress = { progreso },
+                            modifier = Modifier.fillMaxSize(),
+                            strokeWidth = 6.dp,
+                            color = if (segundos <= 5) Color.Red else MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "$segundos",
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Pregunta
+                    Text(
+                        text = preguntaActual.getPregunta(languageCode),
+                        style = MaterialTheme.typography.titleLarge,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                // --- COLUMNA DERECHA: Opciones de respuesta ---
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically)
+                ) {
+                    opcionesAleatorias.forEach { opcion ->
+                        OpcionCard(
+                            texto = opcion.getTexto(languageCode),
+                            seleccionada = respuestaSeleccionada == opcion,
+                            estadoRespuesta = if (respuestaSeleccionada == opcion) estadoRespuesta else null,
+                            esLaCorrecta = opcion.esCorrecta,
+                            isCompact = true,
+                            onClick = {
+                                if (estadoRespuesta == null) {
+                                    respuestaSeleccionada = opcion
+                                    estadoRespuesta = if (opcion.esCorrecta) EstadoRespuesta.CORRECTA else EstadoRespuesta.INCORRECTA
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        } else {
+            // Diseño vertical: Todo en una columna
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                // --- ENCABEZADO (Puntos, Barra, Reloj, Pregunta) ---
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        text = stringResource(id = R.string.kids_quiz_puntuacion, puntuacion),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    LinearProgressIndicator(
+                        progress = { (indicePreguntaActual + 1) / preguntas.size.toFloat() },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    // Widget Reloj
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.size(80.dp)
+                    ) {
+                        val segundos = ceil(tiempoRestante / 1000.0).toInt()
+                        val progreso = tiempoRestante.toFloat() / tiempoTotalPorPregunta.toFloat()
+
+                        CircularProgressIndicator(
+                            progress = { progreso },
+                            modifier = Modifier.fillMaxSize(),
+                            strokeWidth = 8.dp,
+                            color = if (segundos <= 5) Color.Red else MaterialTheme.colorScheme.primary
+                        )
+                        Text(
+                            text = "$segundos",
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Pregunta (Desde Firebase es String)
+                    Text(
+                        text = preguntaActual.getPregunta(languageCode),
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                // --- OPCIONES DE RESPUESTA ---
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    opcionesAleatorias.forEach { opcion ->
+                        OpcionCard(
+                            texto = opcion.getTexto(languageCode),
+                            seleccionada = respuestaSeleccionada == opcion,
+                            estadoRespuesta = if (respuestaSeleccionada == opcion) estadoRespuesta else null,
+                            esLaCorrecta = opcion.esCorrecta,
+                            isCompact = false,
+                            onClick = {
+                                if (estadoRespuesta == null) {
+                                    respuestaSeleccionada = opcion
+                                    estadoRespuesta = if (opcion.esCorrecta) EstadoRespuesta.CORRECTA else EstadoRespuesta.INCORRECTA
+                                }
+                            }
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                // Pregunta (Desde Firebase es String)
-                Text(
-                    text = preguntaActual.pregunta,
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
-                )
             }
-
-            // --- OPCIONES DE RESPUESTA ---
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                opcionesAleatorias.forEach { opcion ->
-                    OpcionCard(
-                        texto = opcion.texto, // Desde Firebase es String
-                        seleccionada = respuestaSeleccionada == opcion,
-                        estadoRespuesta = if (respuestaSeleccionada == opcion) estadoRespuesta else null,
-                        esLaCorrecta = opcion.esCorrecta,
-                        onClick = {
-                            // Solo permitimos responder si no hay estado (no respondido ni tiempo agotado)
-                            if (estadoRespuesta == null) {
-                                respuestaSeleccionada = opcion
-                                estadoRespuesta = if (opcion.esCorrecta) EstadoRespuesta.CORRECTA else EstadoRespuesta.INCORRECTA
-                                // El LaunchedEffect se encarga de calcular puntos y avanzar
-                            }
-                        }
-                    )
-                }
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }
@@ -244,6 +342,7 @@ fun OpcionCard(
     seleccionada: Boolean,
     estadoRespuesta: EstadoRespuesta?,
     esLaCorrecta: Boolean,
+    isCompact: Boolean = false,
     onClick: () -> Unit
 ) {
     val colorBorde = when {
@@ -269,8 +368,8 @@ fun OpcionCard(
     ) {
         Text(
             text = texto,
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.bodyLarge,
+            modifier = Modifier.padding(if (isCompact) 12.dp else 16.dp),
+            style = if (isCompact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
             fontWeight = if (seleccionada) FontWeight.Bold else FontWeight.Normal
         )
     }
@@ -298,7 +397,7 @@ fun QuizResultScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "¡Has conseguido $puntuacion puntos!",
+            text = stringResource(id = R.string.quiz_score_achieved, puntuacion),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center
         )

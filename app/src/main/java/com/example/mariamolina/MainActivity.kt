@@ -19,7 +19,9 @@ import java.util.Locale
 import coil.imageLoader
 import coil.request.ImageRequest
 import com.example.mariamolina.data.model.SlidesProvider
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun attachBaseContext(newBase: Context) {
         val language = newBase.getSharedPreferences("app_prefs", MODE_PRIVATE).getString("language", "es") ?: "es"

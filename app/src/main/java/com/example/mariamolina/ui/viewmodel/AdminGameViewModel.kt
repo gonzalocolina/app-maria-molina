@@ -7,11 +7,13 @@ import com.example.mariamolina.data.model.Jugador
 import com.example.mariamolina.data.model.Partida
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlin.random.Random
+import javax.inject.Inject
 
 data class AdminUiState(
     val isLoading: Boolean = false,
@@ -20,9 +22,11 @@ data class AdminUiState(
     val error: String? = null
 )
 
-class AdminGameViewModel : ViewModel() {
+@HiltViewModel
+class AdminGameViewModel @Inject constructor(
+    private val db: FirebaseFirestore
+) : ViewModel() {
 
-    private val db = FirebaseFirestore.getInstance()
     private val _uiState = MutableStateFlow(AdminUiState())
     val uiState = _uiState.asStateFlow()
 

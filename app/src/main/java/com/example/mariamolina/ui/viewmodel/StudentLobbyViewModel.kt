@@ -6,9 +6,11 @@ import com.example.mariamolina.data.model.EstadoPartida
 import com.example.mariamolina.data.model.Partida
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 // Estados posibles de la pantalla
 sealed class StudentLobbyState {
@@ -18,8 +20,10 @@ sealed class StudentLobbyState {
     data class Error(val message: String) : StudentLobbyState()
 }
 
-class StudentLobbyViewModel : ViewModel() {
-    private val db = FirebaseFirestore.getInstance()
+@HiltViewModel
+class StudentLobbyViewModel @Inject constructor(
+    private val db: FirebaseFirestore
+) : ViewModel() {
     private val _uiState = MutableStateFlow<StudentLobbyState>(StudentLobbyState.Loading)
     val uiState = _uiState.asStateFlow()
 

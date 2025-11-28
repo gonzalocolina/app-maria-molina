@@ -5,8 +5,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Login
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Login
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -40,7 +40,7 @@ fun KidsQuizMenuScreen(
                 title = { Text("") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(id = R.string.btn_volver))
                     }
                 }
             )
@@ -74,7 +74,7 @@ fun KidsQuizMenuScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Text("Elige dificultad:", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(id = R.string.elige_dificultad), style = MaterialTheme.typography.titleMedium)
 
                 Row(
                     Modifier.fillMaxWidth(),
@@ -117,9 +117,9 @@ fun KidsQuizMenuScreen(
                         .fillMaxWidth()
                         .height(50.dp)
                 ) {
-                    Icon(Icons.Default.Login, contentDescription = null)
+                    Icon(Icons.AutoMirrored.Filled.Login, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
-                    Text("Unirse a Partida con PIN")
+                    Text(stringResource(id = R.string.unirse_a_partida_con_pin))
                 }
 
                 OutlinedButton(
@@ -140,7 +140,7 @@ fun KidsQuizMenuScreen(
                 ) {
                     Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(Modifier.width(8.dp))
-                    Text("Acceso Profesor", color = MaterialTheme.colorScheme.secondary)
+                    Text(stringResource(id = R.string.acceso_profesor), color = MaterialTheme.colorScheme.secondary)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -151,10 +151,10 @@ fun KidsQuizMenuScreen(
         if (showAdminDialog) {
             AlertDialog(
                 onDismissRequest = { showAdminDialog = false },
-                title = { Text("Zona de Profesores") },
+                title = { Text(stringResource(id = R.string.zona_de_profesores)) },
                 text = {
                     Column {
-                        Text("Introduce la contraseña para acceder al panel de control:")
+                        Text(stringResource(id = R.string.introduce_contrasena_panel))
                         Spacer(modifier = Modifier.height(8.dp))
                         OutlinedTextField(
                             value = passwordInput,
@@ -162,12 +162,12 @@ fun KidsQuizMenuScreen(
                                 passwordInput = it
                                 passwordError = false
                             },
-                            label = { Text("Contraseña") },
+                            label = { Text(stringResource(id = R.string.contrasena)) },
                             singleLine = true,
                             visualTransformation = PasswordVisualTransformation(),
                             isError = passwordError,
                             supportingText = {
-                                if (passwordError) Text("Contraseña incorrecta")
+                                if (passwordError) Text(stringResource(id = R.string.contrasena_incorrecta))
                             }
                         )
                     }
@@ -184,12 +184,12 @@ fun KidsQuizMenuScreen(
                             }
                         }
                     ) {
-                        Text("Entrar")
+                        Text(stringResource(id = R.string.entrar))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showAdminDialog = false }) {
-                        Text("Cancelar")
+                        Text(stringResource(id = R.string.cancelar))
                     }
                 }
             )

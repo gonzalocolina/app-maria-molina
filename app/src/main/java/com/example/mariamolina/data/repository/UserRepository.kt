@@ -1,15 +1,15 @@
 package com.example.mariamolina.data.repository
 
 import com.example.mariamolina.data.model.Usuario
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
 
-class UserRepository {
-    private val auth = Firebase.auth
-    private val db = FirebaseFirestore.getInstance()
-
+class UserRepository @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
+) {
     // Obtiene el usuario actual (crea uno anónimo si no existe)
     suspend fun getOrCreateUser(): Usuario {
         var firebaseUser = auth.currentUser

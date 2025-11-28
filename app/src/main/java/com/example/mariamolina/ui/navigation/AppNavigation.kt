@@ -58,8 +58,15 @@ import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
+import com.example.mariamolina.ui.screens.kids.TeacherLobbyScreen
+import com.example.mariamolina.ui.screens.kids.TeacherMenuScreen
+import com.example.mariamolina.ui.screens.kids.AddQuestionScreen
+import com.example.mariamolina.ui.screens.kids.TeacherGameScreen
+import com.example.mariamolina.ui.screens.kids.StudentGameScreen
+import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
 import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 
@@ -88,11 +95,20 @@ fun AppNavigation() {
     // bloque `key(currentDestination?.route) { ... }` que forzará una recomposición completa de
     // ese árbol al navegar a una ruta distinta.
     key(currentDestination?.route) {
+        // Detectar pantallas que tienen su propio Scaffold y NO deben usar nestedScroll del padre
+        val esRutaDetallePoi =
+            currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
+        val esRutaAddQuestion = currentDestination?.route == "add_question"
+        val esRutaTeacherLobby = currentDestination?.route == "teacher_lobby"
+        val esRutaAdminLobby = currentDestination?.route == "admin_lobby"
+        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby
+        
         // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
         // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
         // Evitamos usar scrollBehavior cuando la pantalla destino es el mapa en portrait, para
         // garantizar que la AppBar aparezca al navegar desde una pantalla donde estaba escondida.
-        val shouldUseScrollBehavior = !isTablet && !(esRutaMapaGlobal && !isLandscape)
+        // También evitamos en pantallas con su propio Scaffold para no interferir con su scroll interno.
+        val shouldUseScrollBehavior = !isTablet && !(esRutaMapaGlobal && !isLandscape) && !esRutaConScaffoldPropio
 
         val topAppBarScrollBehavior: TopAppBarScrollBehavior? = if (shouldUseScrollBehavior) {
             // Crear directamente el scrollBehavior en el contexto composable; al estar dentro
@@ -112,18 +128,13 @@ fun AppNavigation() {
         Scaffold(
             modifier = scaffoldModifier,
             topBar = {
-                // Comprobamos si la ruta actual ES la ruta de detalle de puntos de interés
-                val esRutaDetallePoi =
-                    currentDestination?.route?.startsWith("${Pantalla.PointsOfInterest.ruta}/detail") == true
-
                 // Comprobamos si estamos en la pantalla de slides
                 val esRutaSlides = currentDestination?.route == "${Pantalla.Kids.ruta}/slides"
 
                 // Detectamos si estamos en la pantalla del mapa (cualquier variante con query params)
                 val esRutaMapa = esRutaMapaGlobal
 
-                // Ocultamos también en Admin Lobby, Join, Student Lobby y Juego
-                val esRutaAdmin = currentDestination?.route == "admin_lobby"
+                // Ocultamos también en Join, Student Lobby y Juego
                 val esRutaJoin = currentDestination?.route == "join_game"
                 val esRutaStudentLobby =
                     currentDestination?.route?.startsWith("student_lobby") == true
@@ -137,7 +148,7 @@ fun AppNavigation() {
                     isProfile -> false
                     esRutaSlides && isLandscape -> false
                     esRutaMapa -> !isLandscape // Mostrar en portrait, ocultar en landscape
-                    esRutaAdmin || esRutaJoin || esRutaStudentLobby || esRutaJuego -> false
+                    esRutaConScaffoldPropio || esRutaJoin || esRutaStudentLobby || esRutaJuego -> false
                     else -> true
                 }
 
@@ -223,13 +234,7 @@ fun AppNavigation() {
             }
         ) { innerPadding ->
             // Creamos una sola instancia compartida del ViewModel aquí (scoped al Composable AppNavigation)
-            val sharedPrefs = LocalContext.current.getSharedPreferences("visited_points", android.content.Context.MODE_PRIVATE)
-            val sharedViewModel: PointsOfInterestViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
-                override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
-                    @Suppress("UNCHECKED_CAST")
-                    return PointsOfInterestViewModel(sharedPrefs) as T
-                }
-            })
+            val sharedViewModel: PointsOfInterestViewModel = hiltViewModel()
 
             NavHost(
                 navController = navControllerPrincipal,
@@ -375,10 +380,48 @@ fun AppNavigation() {
                     )
                 }
 
-                // F. Admin Lobby (Profesor - Crear Partida)
+                // F. Menú del Profesor (después de introducir contraseña)
                 composable("admin_lobby") {
-                    AdminLobbyScreen(
+                    TeacherMenuScreen(
+                        onBack = { navControllerPrincipal.popBackStack() },
+                        onCreateRoom = {
+                            navControllerPrincipal.navigate("teacher_lobby")
+                        },
+                        onAddQuestions = {
+                            navControllerPrincipal.navigate("add_question")
+                        }
+                    )
+                }
+                
+                // F1. Crear Sala (Profesor)
+                composable("teacher_lobby") {
+                    TeacherLobbyScreen(
+                        onBack = { navControllerPrincipal.popBackStack() },
+                        onGameStarted = { pin ->
+                            navControllerPrincipal.navigate("teacher_game/$pin") {
+                                popUpTo("teacher_lobby") { inclusive = true }
+                            }
+                        }
+                    )
+                }
+                
+                // F2. Añadir Preguntas (Profesor)
+                composable("add_question") {
+                    AddQuestionScreen(
                         onBack = { navControllerPrincipal.popBackStack() }
+                    )
+                }
+
+                // F2. Pantalla del juego del profesor
+                composable("teacher_game/{pin}") { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
+                    TeacherGameScreen(
+                        pin = pin,
+                        onGameFinished = {
+                            navControllerPrincipal.navigate("multiplayer_ranking/$pin") {
+                                popUpTo("teacher_game/{pin}") { inclusive = true }
+                            }
+                        }
                     )
                 }
 
@@ -403,15 +446,41 @@ fun AppNavigation() {
                     StudentLobbyScreen(
                         pin = pin,
                         onBack = { navControllerPrincipal.popBackStack() },
-                        onGameStarted = { dificultad ->
-                            // ¡El juego empieza! Navegamos a la pantalla de juego
-                            // Usamos replace (popUpTo) para que no pueda volver a la sala de espera
-                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/$dificultad") {
+                        onGameStarted = { _ ->
+                            // ¡El juego empieza! Navegamos a la pantalla de juego multijugador
+                            navControllerPrincipal.navigate("student_game/$pin") {
                                 popUpTo("student_lobby/{pin}") { inclusive = true }
                             }
                         }
                     )
                 }
+
+                // H2. Pantalla del juego del alumno (multijugador)
+                composable("student_game/{pin}") { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
+                    StudentGameScreen(
+                        pin = pin,
+                        onGameFinished = { finishedPin ->
+                            navControllerPrincipal.navigate("multiplayer_ranking/$finishedPin") {
+                                popUpTo("student_game/{pin}") { inclusive = true }
+                            }
+                        }
+                    )
+                }
+
+                // I. Ranking Multijugador Final
+                composable("multiplayer_ranking/{pin}") { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
+                    MultiplayerRankingScreen(
+                        pin = pin,
+                        onBackToMenu = {
+                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
+                                popUpTo(Pantalla.Kids.ruta) { inclusive = false }
+                            }
+                        }
+                    )
+                }
+
                 composable(Pantalla.Profile.ruta) { ProfileScreen(onBackClick = { navControllerPrincipal.popBackStack() }) }
             }
         }

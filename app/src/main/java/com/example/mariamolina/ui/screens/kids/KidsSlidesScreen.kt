@@ -244,7 +244,7 @@ fun KidsSlidesScreen(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(text = "${currentIndex + 1} / ${slides.size}", style = MaterialTheme.typography.bodySmall)
+                            Text(text = stringResource(id = R.string.slide_counter, currentIndex + 1, slides.size), style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }
@@ -427,7 +427,7 @@ fun KidsSlidesScreen(
 
                             Spacer(modifier = Modifier.height(8.dp))
 
-                            Text(text = "${currentIndex + 1} / ${slides.size}", style = MaterialTheme.typography.bodySmall)
+                            Text(text = stringResource(id = R.string.slide_counter, currentIndex + 1, slides.size), style = MaterialTheme.typography.bodySmall)
                         }
                     }
                 }
