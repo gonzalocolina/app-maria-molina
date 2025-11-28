@@ -48,11 +48,12 @@ data class Partida(
     val totalPreguntas: Int = 10,
     val dificultad: String = Dificultad.FACIL.name,
     val preguntasIds: List<String> = emptyList(),  // IDs de las preguntas seleccionadas
+    val tiempoPorPregunta: Int = 20,  // Tiempo en segundos para responder cada pregunta
     val createdAt: Timestamp? = null,
     val hostUid: String = ""  // UID del profesor que creó la partida
 ) {
     // Constructor sin argumentos requerido por Firestore
-    constructor() : this("", EstadoPartida.ESPERANDO, GamePhase.LOBBY, 0, 10, Dificultad.FACIL.name, emptyList(), null, "")
+    constructor() : this("", EstadoPartida.ESPERANDO, GamePhase.LOBBY, 0, 10, Dificultad.FACIL.name, emptyList(), 20, null, "")
 }
 
 /**
