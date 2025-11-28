@@ -152,6 +152,17 @@ class MultiplayerRepository @Inject constructor(
             getQuestionById(id)
         }
     }
+    
+    /**
+     * Actualiza el tiempo por pregunta de una partida existente.
+     * Solo se puede hacer mientras la partida está en estado ESPERANDO.
+     */
+    suspend fun updateGameTime(pin: String, tiempoPorPregunta: Int) {
+        firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .update("tiempoPorPregunta", tiempoPorPregunta)
+            .await()
+    }
 
     // ==================== UNIRSE A PARTIDA (ALUMNO) ====================
     

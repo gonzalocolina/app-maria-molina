@@ -62,14 +62,17 @@ fun StudentGameScreen(
         }
     }
 
+    // Tiempo por pregunta configurado por el profesor (en ms)
+    // Se obtiene de la partida, o 20 segundos por defecto si no está definido
+    val tiempoPorPreguntaMs = (uiState.partida?.tiempoPorPregunta ?: 20) * 1000L
+    
     // Temporizador local (lado del cliente)
-    val totalTimeMs = 20000L
-    var tiempoRestante by remember { mutableStateOf(totalTimeMs) }
+    var tiempoRestante by remember { mutableStateOf(tiempoPorPreguntaMs) }
 
-    // Resetear temporizador cuando cambia la pregunta
-    LaunchedEffect(uiState.partida?.preguntaActualIndex, uiState.gamePhase) {
+    // Resetear temporizador cuando cambia la pregunta o el tiempo configurado
+    LaunchedEffect(uiState.partida?.preguntaActualIndex, uiState.gamePhase, tiempoPorPreguntaMs) {
         if (uiState.gamePhase == GamePhase.SHOWING_QUESTION && !uiState.respuestaEnviada) {
-            tiempoRestante = totalTimeMs
+            tiempoRestante = tiempoPorPreguntaMs
             while (tiempoRestante > 0 && !uiState.respuestaEnviada) {
                 delay(100L)
                 tiempoRestante -= 100L
@@ -101,7 +104,7 @@ fun StudentGameScreen(
                     pregunta = uiState.preguntaActual,
                     opciones = uiState.opcionesAleatorias,
                     tiempoRestante = tiempoRestante,
-                    tiempoTotal = totalTimeMs,
+                    tiempoTotal = tiempoPorPreguntaMs,
                     respuestaEnviada = uiState.respuestaEnviada,
                     respuestaCorrecta = uiState.respuestaCorrecta,
                     puntosObtenidos = uiState.puntosObtenidos,

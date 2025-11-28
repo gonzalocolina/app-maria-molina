@@ -3,10 +3,13 @@ package com.example.mariamolina.ui.screens.kids
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,6 +23,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.GamePhase
 import com.example.mariamolina.ui.viewmodel.TeacherGameViewModel
+
+// Opciones de tiempo disponibles (en segundos)
+private val OPCIONES_TIEMPO = listOf(10, 15, 20, 30, 45, 60)
 
 /**
  * Pantalla del lobby del profesor donde crea la partida y espera jugadores.
@@ -93,6 +99,43 @@ fun TeacherLobbyScreen(
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = MaterialTheme.colorScheme.primary,
                                 selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                            )
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // --- SELECTOR DE TIEMPO POR PREGUNTA ---
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Timer,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        "Tiempo por pregunta:",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                }
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp)
+                ) {
+                    OPCIONES_TIEMPO.forEach { segundos ->
+                        FilterChip(
+                            selected = uiState.tiempoPorPreguntaSeleccionado == segundos,
+                            onClick = { viewModel.setTiempoPorPregunta(segundos) },
+                            label = { Text("${segundos}s") },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.secondary,
+                                selectedLabelColor = MaterialTheme.colorScheme.onSecondary
                             )
                         )
                     }
