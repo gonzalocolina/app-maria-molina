@@ -56,7 +56,6 @@ import com.example.mariamolina.ui.screens.kids.AdminLobbyScreen
 import com.example.mariamolina.ui.screens.kids.QuizGameScreen
 import com.example.mariamolina.ui.screens.kids.KidsEntryScreen
 import com.example.mariamolina.ui.screens.kids.KidsSlidesScreen
-import com.example.mariamolina.ui.screens.kids.KidsQuizMenuScreen
 import com.example.mariamolina.ui.screens.kids.RankingScreen
 import com.example.mariamolina.ui.screens.kids.JoinGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentLobbyScreen
@@ -285,43 +284,23 @@ fun AppNavigation() {
 
                 // --- SECCION INFANTIL ---
 
-                // A. Pantalla de Entrada (Elegir Diapositivas o Quiz)
+                // A. Pantalla de Entrada Unificada (Diapositivas + Quiz + Admin)
                 composable(Pantalla.Kids.ruta) {
-                    // Pantalla de entrada para la sección Kids: elegir entre Diapositivas o Cuestionarios
                     KidsEntryScreen(
                         onNavigateToSlides = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/slides") },
-                        onNavigateToQuizzes = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") },
-                        onReconnectToGame = { route ->
-                            // Reconectar a una partida activa
-                            navControllerPrincipal.navigate(route) {
-                                // Limpiar el backstack para evitar volver a Kids entry
-                                popUpTo(Pantalla.Kids.ruta) { inclusive = true }
-                            }
-                        }
-                    )
-                }
-
-                // B. Menú del Quiz (Elegir Dificultad / Admin / Unirse)
-                composable("${Pantalla.Kids.ruta}/quiz") {
-                    KidsQuizMenuScreen(
-                        onBack = {
-                            navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
-                                popUpTo(navControllerPrincipal.graph.findStartDestination().id) { }
-                            }
-                        },
                         onStartQuiz = { dificultad ->
                             navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/game/${dificultad.name}")
                         },
-                        onNavigateToRanking = {
-                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking")
-                        },
-                        // Conectamos la navegación al admin
                         onNavigateToAdmin = {
                             navControllerPrincipal.navigate("admin_lobby")
                         },
-                        // Navegamos a la pantalla de unirse
                         onJoinGame = {
                             navControllerPrincipal.navigate("join_game")
+                        },
+                        onReconnectToGame = { route ->
+                            navControllerPrincipal.navigate(route) {
+                                popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                            }
                         }
                     )
                 }
@@ -361,7 +340,7 @@ fun AppNavigation() {
                     })
                 }
 
-                // D. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
+                // B. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
                 composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
                     val dificultadString = backStackEntry.arguments?.getString("dificultad")
                     val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
@@ -369,15 +348,14 @@ fun AppNavigation() {
                     QuizGameScreen(
                         dificultad = dificultad,
                         onQuizFinished = {
-                            // Vuelve al sub-menú de cuestionarios (/quiz)
-                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
-                                popUpTo("${Pantalla.Kids.ruta}/quiz") { inclusive = true }
+                            // Vuelve a la pantalla principal de Kids
+                            navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
+                                popUpTo(Pantalla.Kids.ruta) { inclusive = true }
                             }
                         },
                         onNavigateToRanking = {
                             // Navega al ranking desde la pantalla de resultados
                             navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
-                                // Opcional: cierra la pantalla de quiz
                                 popUpTo(Pantalla.Kids.ruta) { inclusive = true }
                             }
                         }
@@ -495,7 +473,7 @@ fun AppNavigation() {
                     MultiplayerRankingScreen(
                         pin = pin,
                         onBackToMenu = {
-                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") {
+                            navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
                                 popUpTo(Pantalla.Kids.ruta) { inclusive = false }
                             }
                         }
