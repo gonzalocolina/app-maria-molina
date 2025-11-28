@@ -7,10 +7,14 @@ import androidx.compose.material.icons.automirrored.filled.Help
 import androidx.compose.material.icons.filled.Slideshow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -21,12 +25,37 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.mariamolina.ui.viewmodel.KidsSessionViewModel
 
 @Composable
 fun KidsEntryScreen(
     onNavigateToSlides: () -> Unit,
-    onNavigateToQuizzes: () -> Unit
+    onNavigateToQuizzes: () -> Unit,
+    onReconnectToGame: ((String) -> Unit)? = null,  // Callback para reconectar a partida
+    viewModel: KidsSessionViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    // Reconectar automáticamente si hay sesión activa
+    LaunchedEffect(uiState.shouldNavigateTo) {
+        uiState.shouldNavigateTo?.let { route ->
+            onReconnectToGame?.invoke(route)
+            viewModel.onNavigated()
+        }
+    }
+
+    // Mientras verifica la sesión, mostrar loading
+    if (uiState.isChecking) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

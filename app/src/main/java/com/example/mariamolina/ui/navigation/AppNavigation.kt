@@ -36,10 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
@@ -101,7 +103,8 @@ fun AppNavigation() {
         val esRutaAddQuestion = currentDestination?.route == "add_question"
         val esRutaTeacherLobby = currentDestination?.route == "teacher_lobby"
         val esRutaAdminLobby = currentDestination?.route == "admin_lobby"
-        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby
+        val esRutaProfile = currentDestination?.route == "profile"
+        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby || esRutaProfile
         
         // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
         // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
@@ -287,7 +290,14 @@ fun AppNavigation() {
                     // Pantalla de entrada para la sección Kids: elegir entre Diapositivas o Cuestionarios
                     KidsEntryScreen(
                         onNavigateToSlides = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/slides") },
-                        onNavigateToQuizzes = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") }
+                        onNavigateToQuizzes = { navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/quiz") },
+                        onReconnectToGame = { route ->
+                            // Reconectar a una partida activa
+                            navControllerPrincipal.navigate(route) {
+                                // Limpiar el backstack para evitar volver a Kids entry
+                                popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                            }
+                        }
                     )
                 }
 
@@ -393,15 +403,26 @@ fun AppNavigation() {
                     )
                 }
                 
-                // F1. Crear Sala (Profesor)
-                composable("teacher_lobby") {
+                // F1. Crear Sala (Profesor) - acepta PIN opcional para reconectar
+                composable(
+                    route = "teacher_lobby?pin={pin}",
+                    arguments = listOf(
+                        navArgument("pin") {
+                            type = NavType.StringType
+                            nullable = true
+                            defaultValue = null
+                        }
+                    )
+                ) { backStackEntry ->
+                    val existingPin = backStackEntry.arguments?.getString("pin")
                     TeacherLobbyScreen(
                         onBack = { navControllerPrincipal.popBackStack() },
                         onGameStarted = { pin ->
                             navControllerPrincipal.navigate("teacher_game/$pin") {
-                                popUpTo("teacher_lobby") { inclusive = true }
+                                popUpTo("teacher_lobby?pin={pin}") { inclusive = true }
                             }
-                        }
+                        },
+                        existingPin = existingPin
                     )
                 }
                 

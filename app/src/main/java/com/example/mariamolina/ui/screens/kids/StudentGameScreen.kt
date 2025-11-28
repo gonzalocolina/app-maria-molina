@@ -66,18 +66,41 @@ fun StudentGameScreen(
     // Se obtiene de la partida, o 20 segundos por defecto si no está definido
     val tiempoPorPreguntaMs = (uiState.partida?.tiempoPorPregunta ?: 20) * 1000L
     
-    // Temporizador local (lado del cliente)
+    // Calcular tiempo restante basándose en el timestamp del servidor
+    // Esto evita que al salir y entrar se resetee el tiempo
+    val preguntaStartedAt = uiState.partida?.preguntaStartedAt
+    
+    // Temporizador sincronizado con el servidor
     var tiempoRestante by remember { mutableStateOf(tiempoPorPreguntaMs) }
 
-    // Resetear temporizador cuando cambia la pregunta o el tiempo configurado
-    LaunchedEffect(uiState.partida?.preguntaActualIndex, uiState.gamePhase, tiempoPorPreguntaMs) {
-        if (uiState.gamePhase == GamePhase.SHOWING_QUESTION && !uiState.respuestaEnviada) {
+    // Calcular y actualizar el tiempo restante basándose en el timestamp del servidor
+    LaunchedEffect(uiState.partida?.preguntaActualIndex, uiState.gamePhase, preguntaStartedAt) {
+        if (uiState.gamePhase == GamePhase.SHOWING_QUESTION && !uiState.respuestaEnviada && preguntaStartedAt != null) {
+            // Calcular tiempo transcurrido desde que inició la pregunta
+            val tiempoInicioMs = preguntaStartedAt.toDate().time
+            
+            while (!uiState.respuestaEnviada) {
+                val tiempoActualMs = System.currentTimeMillis()
+                val tiempoTranscurrido = tiempoActualMs - tiempoInicioMs
+                val tiempoRestanteCalculado = (tiempoPorPreguntaMs - tiempoTranscurrido).coerceAtLeast(0L)
+                
+                tiempoRestante = tiempoRestanteCalculado
+                
+                // Si el tiempo se acabó y no respondió
+                if (tiempoRestanteCalculado <= 0) {
+                    viewModel.onTimeUp()
+                    break
+                }
+                
+                delay(100L)
+            }
+        } else if (uiState.gamePhase == GamePhase.SHOWING_QUESTION && preguntaStartedAt == null) {
+            // Fallback: si no hay timestamp (compatibilidad con partidas antiguas)
             tiempoRestante = tiempoPorPreguntaMs
             while (tiempoRestante > 0 && !uiState.respuestaEnviada) {
                 delay(100L)
                 tiempoRestante -= 100L
             }
-            // Si el tiempo se acabó y no respondió
             if (tiempoRestante <= 0 && !uiState.respuestaEnviada) {
                 viewModel.onTimeUp()
             }
