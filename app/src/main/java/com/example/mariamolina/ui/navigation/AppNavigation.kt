@@ -65,6 +65,7 @@ import com.example.mariamolina.ui.screens.kids.AddQuestionScreen
 import com.example.mariamolina.ui.screens.kids.TeacherGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentGameScreen
 import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
+import com.example.mariamolina.ui.screens.kids.RankRewardScreen
 import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -340,7 +341,7 @@ fun AppNavigation() {
                     })
                 }
 
-                // B. Juego (Quiz) - Modo Solitario o Multijugador (una vez iniciado)
+                // B. Juego (Quiz) - Modo Solitario
                 composable("${Pantalla.Kids.ruta}/game/{dificultad}") { backStackEntry ->
                     val dificultadString = backStackEntry.arguments?.getString("dificultad")
                     val dificultad = Dificultad.valueOf(dificultadString ?: Dificultad.FACIL.name)
@@ -350,12 +351,6 @@ fun AppNavigation() {
                         onQuizFinished = {
                             // Vuelve a la pantalla principal de Kids
                             navControllerPrincipal.navigate(Pantalla.Kids.ruta) {
-                                popUpTo(Pantalla.Kids.ruta) { inclusive = true }
-                            }
-                        },
-                        onNavigateToRanking = {
-                            // Navega al ranking desde la pantalla de resultados
-                            navControllerPrincipal.navigate("${Pantalla.Kids.ruta}/ranking") {
                                 popUpTo(Pantalla.Kids.ruta) { inclusive = true }
                             }
                         }
@@ -459,9 +454,41 @@ fun AppNavigation() {
                     val pin = backStackEntry.arguments?.getString("pin") ?: ""
                     StudentGameScreen(
                         pin = pin,
-                        onGameFinished = { finishedPin ->
-                            navControllerPrincipal.navigate("multiplayer_ranking/$finishedPin") {
+                        onGameFinished = { finishedPin, posicion, totalJugadores, puntuacion ->
+                            // Navegar a la pantalla de rango antes del ranking
+                            navControllerPrincipal.navigate(
+                                "rank_reward/$finishedPin/$posicion/$totalJugadores/$puntuacion"
+                            ) {
                                 popUpTo("student_game/{pin}") { inclusive = true }
+                            }
+                        }
+                    )
+                }
+
+                // H3. Pantalla de Rango (antes del ranking multijugador)
+                composable(
+                    route = "rank_reward/{pin}/{posicion}/{total}/{puntuacion}",
+                    arguments = listOf(
+                        navArgument("pin") { type = NavType.StringType },
+                        navArgument("posicion") { type = NavType.IntType },
+                        navArgument("total") { type = NavType.IntType },
+                        navArgument("puntuacion") { type = NavType.IntType }
+                    )
+                ) { backStackEntry ->
+                    val pin = backStackEntry.arguments?.getString("pin") ?: ""
+                    val posicion = backStackEntry.arguments?.getInt("posicion") ?: 1
+                    val total = backStackEntry.arguments?.getInt("total") ?: 1
+                    val puntuacion = backStackEntry.arguments?.getInt("puntuacion") ?: 0
+                    
+                    RankRewardScreen(
+                        posicion = posicion,
+                        total = total,
+                        puntuacion = puntuacion,
+                        esModoSolitario = false,
+                        onContinue = {
+                            // Continuar al ranking final
+                            navControllerPrincipal.navigate("multiplayer_ranking/$pin") {
+                                popUpTo("rank_reward/{pin}/{posicion}/{total}/{puntuacion}") { inclusive = true }
                             }
                         }
                     )

@@ -45,7 +45,7 @@ private fun getSelectedLanguage(context: Context): String {
 @Composable
 fun StudentGameScreen(
     pin: String,
-    onGameFinished: (String) -> Unit,  // Navega al ranking final con el PIN
+    onGameFinished: (pin: String, posicion: Int, totalJugadores: Int, puntuacion: Int) -> Unit,  // Navega al rango con datos
     viewModel: StudentGameViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -58,7 +58,12 @@ fun StudentGameScreen(
     // Navegar al ranking cuando el juego termine
     LaunchedEffect(uiState.gameFinished) {
         if (uiState.gameFinished) {
-            onGameFinished(pin)
+            onGameFinished(
+                pin,
+                uiState.miPosicion,
+                uiState.ranking.size.coerceAtLeast(1),
+                uiState.miPuntuacionTotal
+            )
         }
     }
 
