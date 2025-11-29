@@ -81,7 +81,7 @@ fun RankRewardScreen(
     onContinue: () -> Unit
 ) {
     // Calcular percentil
-    // En multijugador: percentil = (posición / total) * 100 → más bajo = mejor
+    // En multijugador: percentil = ((posición - 1) / (total - 1)) * 100 → posición 1 = 0 (mejor), última = 100 (peor)
     // En solitario: percentil = ((total - aciertos) / total) * 100 → más aciertos = mejor (percentil más bajo)
     val percentil = if (esModoSolitario) {
         // En modo solitario: aciertos = posicion, total = preguntas totales
@@ -89,8 +89,8 @@ fun RankRewardScreen(
         // Si no aciertas ninguna → percentil 100 (peor)
         ((total - posicion).toFloat() / total.coerceAtLeast(1)) * 100f
     } else {
-        // En modo multijugador: posición 1 de 10 → percentil 10 (mejor)
-        (posicion.toFloat() / total.coerceAtLeast(1)) * 100f
+        // En modo multijugador: ajustado para mejor distribución con pocos jugadores
+        ((posicion - 1).toFloat() / (total - 1).coerceAtLeast(1)) * 100f
     }
     
     val rango = obtenerRangoPorPercentil(percentil)
