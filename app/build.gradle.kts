@@ -76,6 +76,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended-android:1.6.8")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("org.osmdroid:osmdroid-android:6.1.18")
+    implementation("com.github.mkergall:osmbonuspack:6.9.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     
