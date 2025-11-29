@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -56,6 +57,7 @@ fun MapScreen(
     var centerMapOnUser by remember { mutableStateOf(false) }
     var centerMapOnInitial by remember { mutableStateOf(false) }
     var isCalculatingRoute by remember { mutableStateOf(false) }
+    var showPanelImage by remember { mutableStateOf(true) }
 
     val context = LocalContext.current
 
@@ -78,6 +80,13 @@ fun MapScreen(
     LaunchedEffect(Unit) {
         if (!hasLocationPermission) {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
+
+    // Este es el LaunchedEffect que reinicia la imagen al cambiar de panel
+    LaunchedEffect(selectedDestino, selectedSubPunto) {
+        if (selectedDestino != null || selectedSubPunto != null) {
+            showPanelImage = true
         }
     }
 
@@ -111,6 +120,11 @@ fun MapScreen(
             isCalculatingRoute = isCalculatingRoute,
             onRouteCalculationStart = { isCalculatingRoute = true },
             onRouteCalculationEnd = { isCalculatingRoute = false },
+            onMapTap = {
+                if (showPanel) {
+                    showPanelImage = false
+                }
+            },
             modifier = Modifier.fillMaxSize()
         )
 
@@ -179,7 +193,9 @@ fun MapScreen(
                             drawRoute = false
                             showPanel = false
                         },
-                        isCalculatingRoute = isCalculatingRoute
+                        isCalculatingRoute = isCalculatingRoute,
+                        showImage = showPanelImage,
+                        onPanelTapped = { showPanelImage = true }
                     )
                 }
             } else if (selectedSubPunto != null) {
@@ -222,6 +238,7 @@ fun MapViewComposable(
     isCalculatingRoute: Boolean,
     onRouteCalculationStart: () -> Unit,
     onRouteCalculationEnd: () -> Unit,
+    onMapTap: () -> Unit,
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
@@ -284,7 +301,7 @@ fun MapViewComposable(
                         // Centrar en la ruta si es necesario
                         if (centerOnRoute) {
                             val boundingBox = routePolyline.bounds
-                            mapView.zoomToBoundingBox(boundingBox, false, 50)
+                            mapView.zoomToBoundingBox(boundingBox, true, 150)
                             onFinishCenter()
                         }
                     } else {
@@ -347,6 +364,13 @@ fun MapViewComposable(
                 }
             }
 
+            map.setOnTouchListener { _, event ->
+                if (event.action == android.view.MotionEvent.ACTION_DOWN) {
+                    onMapTap()
+                }
+                false
+            }
+
             // Marcadores de destinos principales
             puntosDeInteres.forEach { destino ->
                 val marker = Marker(map).apply {
@@ -388,6 +412,8 @@ fun MapViewComposable(
                 map.controller.animateTo(initialPoint)
                 onFinishCenterInitial()
             }
+
+
 
             map.invalidate()
         }
@@ -464,7 +490,9 @@ fun DestinoPanel(
     onNavigate: () -> Unit,
     onShowRoute: () -> Unit,
     onClose: () -> Unit,
-    isCalculatingRoute: Boolean = false
+    isCalculatingRoute: Boolean = false,
+    showImage: Boolean = true,
+    onPanelTapped: () -> Unit
 ) {
     val configuration = LocalConfiguration.current
     val imageHeight = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 100.dp else 150.dp
@@ -477,22 +505,25 @@ fun DestinoPanel(
         Card(
             modifier = Modifier
                 .widthIn(max = maxWidth)
-                .padding(16.dp),
+                .padding(16.dp)
+                .clickable { onPanelTapped() },
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
             elevation = CardDefaults.cardElevation(8.dp),
             shape = RoundedCornerShape(16.dp)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
 
-                AsyncImage(
-                    model = destino.urlImagen,
-                    contentDescription = stringResource(destino.tituloResId),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(imageHeight)
-                        .padding(bottom = 8.dp),
-                    contentScale = ContentScale.Crop
-                )
+                if (showImage) {
+                    AsyncImage(
+                        model = destino.urlImagen,
+                        contentDescription = stringResource(destino.tituloResId),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(imageHeight)
+                            .padding(bottom = 8.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
