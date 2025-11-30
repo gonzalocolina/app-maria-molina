@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -104,10 +103,9 @@ fun PointDetailScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
-                    // ¡CAMBIO! Ya no pasamos duracionResId
+                    // ¡CAMBIO! Ya no pasamos duracionResId ni rating
                     TituloSection(
-                        tituloResId = punto.tituloResId,
-                        rating = punto.rating // Pasamos el rating nullable
+                        tituloResId = punto.tituloResId
                     )
 
                     // Esta sigue igual, descripcionLargaResId no es nullable
@@ -156,29 +154,13 @@ fun PointDetailScreen(
 
 @Composable
 private fun TituloSection(
-    @StringRes tituloResId: Int,
-    rating: Double? // ¡CAMBIO! Acepta nullable
+    @StringRes tituloResId: Int
 ) {
-    Column {
-        Text(
-            text = stringResource(id = tituloResId),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            // ¡CAMBIO! La duración se ha ido
-
-            // ¡CAMBIO! Mostramos el rating solo si no es nulo
-            if (rating != null) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.cd_rating), modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text(stringResource(R.string.fmt_rating_per_5, rating), style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        }
-    }
+    Text(
+        text = stringResource(id = tituloResId),
+        style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold
+    )
 }
 
 // ... (DescripcionSection no cambia) ...
@@ -286,25 +268,12 @@ private fun SubPuntoItem(
     onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        // Título y Rating
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = subpunto.nombreResId),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            if (subpunto.rating != null) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.cd_rating), modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
-                    Spacer(Modifier.width(4.dp))
-                    Text(stringResource(R.string.fmt_rating_per_5, subpunto.rating), style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        }
+        // Título
+        Text(
+            text = stringResource(id = subpunto.nombreResId),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
 
         // Horarios
         if (subpunto.horariosResId != null) {

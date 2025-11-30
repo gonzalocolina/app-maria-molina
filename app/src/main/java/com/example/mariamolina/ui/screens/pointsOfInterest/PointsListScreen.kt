@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mariamolina.data.model.PuntoInteres
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import com.example.mariamolina.R
 import androidx.compose.ui.layout.ContentScale
@@ -32,6 +31,7 @@ import androidx.compose.foundation.BorderStroke
 @Composable
 fun PointsListScreen(
     puntos: List<PuntoInteres>,
+    visitados: Set<String>,
     onPuntoClick: (String) -> Unit,
     header: (@Composable () -> Unit)? = null // header opcional para que el indicador de progreso scrollee con la lista
 ) {
@@ -54,6 +54,7 @@ fun PointsListScreen(
         items(puntos) { punto ->
             PuntoInteresCard(
                 punto = punto,
+                visitado = punto.id in visitados,
                 onClick = { onPuntoClick(punto.id) }
             )
         }
@@ -63,6 +64,7 @@ fun PointsListScreen(
 @Composable
 fun PuntoInteresCard(
     punto: PuntoInteres,
+    visitado: Boolean,
     onClick: () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
@@ -109,47 +111,31 @@ fun PuntoInteresCard(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Fila para Duración y Rating
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (punto.rating != null) {
-                        InfoChip(
-                            icono = Icons.Default.StarBorder,
-                            texto = stringResource(R.string.fmt_rating_per_5, punto.rating)
+                // Indicador de visitado
+                if (visitado) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = stringResource(R.string.visitado),
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Text(
+                            text = stringResource(R.string.visitado),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 14.sp,
+                            fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
                         )
                     }
                 }
-
             }
         }
-    }
-}
-
-// Pequeño Composable para las "píldoras" de info (duración y rating)
-@Composable
-fun InfoChip(icono: ImageVector, texto: String) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-    ) {
-        Icon(
-            imageVector = icono,
-            contentDescription = null,
-            modifier = Modifier.size(18.dp),
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = texto,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 14.sp,
-            fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
-        )
     }
 }

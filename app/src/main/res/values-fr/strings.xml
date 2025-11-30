@@ -31,7 +31,6 @@
     <string name="detalle_ubicacion">Emplacement :</string>
     <string name="detalle_ver_en_mapa">Voir sur la carte</string>
     <string name="detalle_marcar_visitado">Marquer comme visité</string>
-    <string name="detalle_rating">Évaluation :</string>
 
     <string name="detalle_subpuntos_titulo">Lieux associés</string>
 
@@ -69,7 +68,6 @@
     <string name="p4_desc">L\'église primitive se trouvait au centre de l\'actuelle Plaza de San Miguel. Elle fut d\'abord dédiée à San Pelayo, puis à San Miguel au milieu du XIIe siècle. Une charte du 18 janvier 1151 la mentionne déjà comme l\'église de San Miguel, et elle est considérée comme la paroisse la plus ancienne de Valladolid. En 1478, elle fut détruite par un incendie et reconstruite par la volonté des Rois Catholiques à la fin du XVe siècle.</string>
     <string name="p4_horarios">Non disponible</string>
     <string name="p4_ubicacion">Non disponible</string>
-    <string name="p4_rating">Non disponible</string>
 
     <!-- Point 5 -->
     <string name="p5_titulo">Ermita de Santa María Magdalena</string>
@@ -82,7 +80,6 @@
     <string name="p6_desc">La actuelle Plaza Mayor de Valladolid était autrefois connue comme la "Plaza del Mercado", car au Moyen Âge s\'y tenait le marché central de la ville. Des documents attestent qu\'en 1260 un marché s\'y déroulait déjà. Avec le temps, le commerce s\'organisa en rues de métiers autour de la place et, en septembre 1561, un grand incendie détruisit une grande partie de son environnement.</string>
     <string name="p6_horarios">Non disponible</string>
     <string name="p6_ubicacion">Non disponible</string>
-    <string name="p6_rating">Non disponible</string>
 
     <!-- Point 7 -->
     <string name="p7_titulo">Puente Mayor</string>
@@ -172,6 +169,7 @@
     <string name="points_visited">Visités</string>
     <string name="points_remaining">Restants</string>
     <string name="points_progress_percent">%d%% complété</string>
+    <string name="visitado">Visité</string>
 
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Saisissez vos données</string>
