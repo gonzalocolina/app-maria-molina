@@ -287,7 +287,8 @@ class MultiplayerRepository @Inject constructor(
                 mapOf(
                     "estado" to EstadoPartida.JUGANDO.name,
                     "fase" to GamePhase.SHOWING_QUESTION.name,
-                    "preguntaActualIndex" to 0
+                    "preguntaActualIndex" to 0,
+                    "preguntaStartedAt" to com.google.firebase.Timestamp.now()  // Timestamp de inicio
                 )
             )
             .await()
@@ -318,7 +319,8 @@ class MultiplayerRepository @Inject constructor(
                 .update(
                     mapOf(
                         "preguntaActualIndex" to nextIndex,
-                        "fase" to GamePhase.SHOWING_QUESTION.name
+                        "fase" to GamePhase.SHOWING_QUESTION.name,
+                        "preguntaStartedAt" to com.google.firebase.Timestamp.now()  // Timestamp de inicio
                     )
                 )
                 .await()

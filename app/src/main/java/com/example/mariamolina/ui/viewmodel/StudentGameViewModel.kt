@@ -3,6 +3,8 @@ package com.example.mariamolina.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mariamolina.data.local.ActiveGameSession
+import com.example.mariamolina.data.local.GameRole
 import com.example.mariamolina.data.model.GamePhase
 import com.example.mariamolina.data.model.Jugador
 import com.example.mariamolina.data.model.OpcionRespuesta
@@ -53,6 +55,7 @@ data class StudentGameUiState(
 @HiltViewModel
 class StudentGameViewModel @Inject constructor(
     private val repository: MultiplayerRepository,
+    private val activeGameSession: ActiveGameSession,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -91,6 +94,13 @@ class StudentGameViewModel @Inject constructor(
             
             result.fold(
                 onSuccess = {
+                    // Guardar sesión activa para reconexión
+                    activeGameSession.saveSession(
+                        pin = pin, 
+                        role = GameRole.STUDENT, 
+                        nickname = nickname
+                    )
+                    
                     _uiState.update { 
                         it.copy(
                             isLoading = false, 
@@ -347,6 +357,8 @@ class StudentGameViewModel @Inject constructor(
         answeredObserverJob?.cancel()
         playersObserverJob?.cancel()
         preguntas = emptyList()
+        // Limpiar sesión activa
+        activeGameSession.clearSession()
         _uiState.value = StudentGameUiState()
     }
 

@@ -23,7 +23,6 @@
     <string name="detalle_ver_en_mapa">Ver en mapa</string>
     <string name="detalle_marcar_visitado">Marcar como visitado</string>
     <string name="detalle_visitado">Visitado</string>
-    <string name="detalle_rating">Valoración:</string>
 
     <string name="detalle_subpuntos_titulo">Lugares del punto</string>
 
@@ -100,7 +99,6 @@
     </string>
     <string name="p4_horarios">No disponible</string>
     <string name="p4_ubicacion">No disponible</string>
-    <string name="p4_rating">No disponible</string>
 
     <!-- Data: Punto 5 (Ermita de Santa María Magdalena) -->
     <string name="p5_titulo">Antigua Ermita de Santa María Magdalena</string>
@@ -121,7 +119,6 @@
     </string>
     <string name="p6_horarios">No disponible</string>
     <string name="p6_ubicacion">No disponible</string>
-    <string name="p6_rating">No disponible</string>
 
     <!-- Data: Punto 7 (Puente Mayor) -->
     <string name="p7_titulo">Puente Mayor</string>
@@ -215,10 +212,7 @@
     <string name="cd_volver">Volver</string>
     <string name="cd_horarios">Horarios</string>
     <string name="cd_ubicacion">Ubicación</string>
-    <string name="cd_rating">Valoración</string>
     <string name="cd_perfil">Perfil</string>
-    <!-- Formato para mostrar rating (un decimal) -->
-    <string name="fmt_rating_per_5">%1$.1f/5</string>
 
     <!-- Seccion infantil -->
     <!-- ... (El resto de tus strings) ... -->
@@ -369,6 +363,7 @@
     <string name="points_visited">Visitados</string>
     <string name="points_remaining">Restantes</string>
     <string name="points_progress_percent">%d%% completado</string>
+    <string name="visitado">Visitado</string>
 
 
 </resources>

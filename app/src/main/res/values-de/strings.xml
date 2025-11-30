@@ -31,7 +31,6 @@
     <string name="detalle_ubicacion">Ort:</string>
     <string name="detalle_ver_en_mapa">Im Karten ansehen</string>
     <string name="detalle_marcar_visitado">Als besucht markieren</string>
-    <string name="detalle_rating">Bewertung:</string>
 
     <string name="detalle_subpuntos_titulo">Orte dieses Punktes</string>
 
@@ -70,7 +69,6 @@
     <string name="p4_desc">Die ursprüngliche Kirche befand sich im Zentrum der heutigen Plaza de San Miguel. Zunächst war sie dem Heiligen Pelayo geweiht und wechselte Mitte des 12. Jahrhunderts zur Widmung an den Heiligen Michael. In einer Urkunde vom 18. Januar 1151 wird sie bereits als Kirche San Miguel genannt und gilt als die älteste Pfarrei von Valladolid. 1478 wurde die ursprüngliche Kirche bei einem Brand zerstört und später am selben Ort auf Geheiß der Katholischen Könige Ende des 15. Jahrhunderts wiedererrichtet. Bei dem Brand gingen alle städtischen Dokumente verloren, die dort aufbewahrt wurden.</string>
     <string name="p4_horarios">Nicht verfügbar</string>
     <string name="p4_ubicacion">Nicht verfügbar</string>
-    <string name="p4_rating">Nicht verfügbar</string>
 
     <!-- Data: Punto 5 -->
     <string name="p5_titulo">Alte Eremita Santa María Magdalena</string>
@@ -83,7 +81,6 @@
     <string name="p6_desc">Der heutige Plaza Mayor von Valladolid war ursprünglich als "Plaza del Mercado" bekannt, da im Mittelalter der zentrale Markt der Stadt an diesem Ort stattfand. Dokumente belegen, dass seit 1260 an diesem Ort ein Handelsmarkt abgehalten wurde. Im Mittelalter war der Platz ein offener Raum vor den Stadtmauern oder am Stadtrand, wo der Hauptmarkt der Stadt entstand: Fleisch, Fisch, Gemüse und andere Erzeugnisse wurden dort verkauft. Mit der Zeit organisierte sich der Handel in Zunftstraßen rund um den Platz — z. B. die Straße der Leinenwaren oder die Straße der Drechsler — und spiegelte die handwerkliche und handelsmäßige Tätigkeit rund um den Markt wider. Im September 1561 zerstörte ein großer Brand einen großen Teil der Umgebung des Platzes, was eine städtebauliche Neuordnung zur Folge hatte.</string>
     <string name="p6_horarios">Nicht verfügbar</string>
     <string name="p6_ubicacion">Nicht verfügbar</string>
-    <string name="p6_rating">Nicht verfügbar</string>
 
     <!-- Data: Punto 7 -->
     <string name="p7_titulo">Puente Mayor</string>
@@ -187,10 +184,7 @@
     <string name="cd_volver">Zurück</string>
     <string name="cd_horarios">Öffnungszeiten</string>
     <string name="cd_ubicacion">Ort</string>
-    <string name="cd_rating">Bewertung</string>
     <string name="cd_perfil">Profil</string>
-    <!-- Formato para mostrar rating (un decimal) -->
-    <string name="fmt_rating_per_5">%1$.1f/5</string>
 
     <!-- Sección infantil / Quiz -->
     <string name="kids_menu_titulo">Kinderquiz</string>
@@ -223,6 +217,7 @@
     <string name="points_visited">Besucht</string>
     <string name="points_remaining">Verbleibend</string>
     <string name="points_progress_percent">%d%% abgeschlossen</string>
+    <string name="visitado">Besucht</string>
 
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Gib deine Daten ein</string>

@@ -15,6 +15,7 @@ import com.example.mariamolina.ui.navigation.AppNavigation
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import java.util.Locale
 import coil.imageLoader
 import coil.request.ImageRequest
@@ -33,9 +34,10 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        // Instalar el SplashScreen ANTES de super.onCreate()
+        installSplashScreen()
 
-        // Nota: se ha eliminado la llamada a installSplashScreen() para evitar dependencias faltantes.
+        super.onCreate(savedInstanceState)
         val ctx = applicationContext
         org.osmdroid.config.Configuration.getInstance().load(
             ctx,

@@ -2,6 +2,8 @@ package com.example.mariamolina.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mariamolina.data.local.ActiveGameSession
+import com.example.mariamolina.data.local.GameRole
 import com.example.mariamolina.data.model.*
 import com.example.mariamolina.data.repository.MultiplayerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,7 +28,9 @@ data class TeacherGameUiState(
     val jugadoresQueRespondieron: Int = 0,
     val totalJugadores: Int = 0,
     val ranking: List<Jugador> = emptyList(),
-    val gameFinished: Boolean = false
+    val gameFinished: Boolean = false,
+    val tiempoRestanteSegundos: Int = 0,  // Tiempo restante para la pregunta actual
+    val tiempoLimiteExpirado: Boolean = false  // True cuando el tiempo de pregunta ha expirado
 )
 
 /**
@@ -34,7 +38,8 @@ data class TeacherGameUiState(
  */
 @HiltViewModel
 class TeacherGameViewModel @Inject constructor(
-    private val repository: MultiplayerRepository
+    private val repository: MultiplayerRepository,
+    private val activeGameSession: ActiveGameSession
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(TeacherGameUiState())
@@ -148,6 +153,45 @@ class TeacherGameViewModel @Inject constructor(
     }
 
     /**
+     * Reconecta al lobby de una partida existente (sin crear nueva).
+     * Se usa cuando el profesor sale y vuelve a entrar.
+     */
+    fun reconnectToLobby(pin: String) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, error = null) }
+            
+            try {
+                // Cargar preguntas de la partida existente
+                val preguntas = repository.getQuestionsForGame(pin)
+                
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        pin = pin,
+                        preguntas = preguntas
+                    ) 
+                }
+                
+                // Iniciar observers
+                observeGame(pin)
+                observePlayers(pin)
+                
+            } catch (e: Exception) {
+                // Si falla (partida no existe), limpiar sesión y crear nueva
+                activeGameSession.clearSession()
+                _uiState.update { 
+                    it.copy(
+                        isLoading = false, 
+                        error = null
+                    ) 
+                }
+                // Crear nueva partida como fallback
+                crearPartida()
+            }
+        }
+    }
+
+    /**
      * Crea una nueva partida.
      */
     fun crearPartida() {
@@ -162,6 +206,9 @@ class TeacherGameViewModel @Inject constructor(
                 
                 // Cargar preguntas
                 val preguntas = repository.getQuestionsForGame(pin)
+                
+                // Guardar sesión activa para reconexión
+                activeGameSession.saveSession(pin = pin, role = GameRole.TEACHER)
                 
                 _uiState.update { 
                     it.copy(
@@ -284,7 +331,14 @@ class TeacherGameViewModel @Inject constructor(
         
         viewModelScope.launch {
             try {
-                _uiState.update { it.copy(jugadoresQueRespondieron = 0) }
+                // Resetear contadores y estado de tiempo
+                _uiState.update { 
+                    it.copy(
+                        jugadoresQueRespondieron = 0,
+                        tiempoLimiteExpirado = false,
+                        tiempoRestanteSegundos = 0
+                    ) 
+                }
                 repository.advanceToNextQuestion(pin)
             } catch (e: Exception) {
                 _uiState.update { 
@@ -292,6 +346,20 @@ class TeacherGameViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    /**
+     * Actualiza el tiempo restante mostrado al profesor.
+     */
+    fun updateTiempoRestante(segundos: Int) {
+        _uiState.update { it.copy(tiempoRestanteSegundos = segundos) }
+    }
+
+    /**
+     * Marca que el tiempo límite ha expirado.
+     */
+    fun marcarTiempoExpirado() {
+        _uiState.update { it.copy(tiempoLimiteExpirado = true) }
     }
 
     /**
@@ -303,6 +371,8 @@ class TeacherGameViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.finishGame(pin)
+                // Limpiar sesión activa
+                activeGameSession.clearSession()
             } catch (e: Exception) {
                 _uiState.update { 
                     it.copy(error = "Error al finalizar: ${e.message}") 

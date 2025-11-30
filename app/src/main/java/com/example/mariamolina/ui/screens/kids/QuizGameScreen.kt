@@ -24,6 +24,7 @@ import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.OpcionRespuesta
 import com.example.mariamolina.ui.viewmodel.QuizViewModel
+import com.example.mariamolina.ui.screens.kids.RankRewardScreen
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
 
@@ -31,7 +32,6 @@ import kotlin.math.ceil
 fun QuizGameScreen(
     dificultad: Dificultad,
     onQuizFinished: () -> Unit,
-    onNavigateToRanking: () -> Unit,
     viewModel: QuizViewModel = hiltViewModel()
 ) {
     // 1. Observamos el estado del ViewModel
@@ -91,7 +91,8 @@ fun QuizGameScreen(
             )
 
             // Llamamos al ViewModel para actualizar puntuación y pasar de pregunta
-            viewModel.scoreAndAdvance(puntosGanados)
+            val esAcierto = estadoRespuesta == EstadoRespuesta.CORRECTA
+            viewModel.scoreAndAdvance(puntosGanados, esAcierto)
 
             // Reseteamos estado local para la siguiente
             respuestaSeleccionada = null
@@ -131,11 +132,13 @@ fun QuizGameScreen(
             onDispose { viewModel.resetQuiz() }
         }
 
-        QuizResultScreen(
+        // Mostrar pantalla de rango basada en aciertos
+        RankRewardScreen(
+            posicion = uiState.aciertos,  // En modo solitario, aciertos = "posición"
+            total = preguntas.size,       // Total de preguntas
             puntuacion = puntuacion,
-            totalPreguntas = preguntas.size,
-            onVolverAlMenu = onQuizFinished,
-            onNavigateToRanking = onNavigateToRanking
+            esModoSolitario = true,
+            onContinue = onQuizFinished   // Volver al menú
         )
         return
     }

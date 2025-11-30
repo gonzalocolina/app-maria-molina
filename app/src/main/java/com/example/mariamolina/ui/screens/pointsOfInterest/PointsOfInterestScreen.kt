@@ -169,6 +169,7 @@ fun PointsOfInterestScreen(
         // Pasamos el header a la lista para que scrollee y solo sea visible al estar arriba
         PointsListScreen(
             puntos = puntosDeInteres,
+            visitados = visitados,
             onPuntoClick = { puntoId ->
                 navController.navigate("${Pantalla.PointsOfInterest.ruta}/detail/$puntoId")
             },
