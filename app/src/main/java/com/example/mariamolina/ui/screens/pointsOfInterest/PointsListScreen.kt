@@ -123,13 +123,13 @@ fun PuntoInteresCard(
                             imageVector = Icons.Default.CheckCircle,
                             contentDescription = stringResource(R.string.visitado),
                             modifier = Modifier.size(18.dp),
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = androidx.compose.ui.graphics.Color(0xFF4CAF50) // Verde
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
                             text = stringResource(R.string.visitado),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = androidx.compose.ui.graphics.Color(0xFF4CAF50), // Verde
                             fontSize = 14.sp,
                             fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
                         )

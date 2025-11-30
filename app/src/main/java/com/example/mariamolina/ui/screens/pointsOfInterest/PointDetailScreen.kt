@@ -66,7 +66,7 @@ fun PointDetailScreen(
                         imageVector = Icons.Default.CheckCircleOutline,
                         contentDescription = null,
                         modifier = Modifier.size(ButtonDefaults.IconSize),
-                        tint = MaterialTheme.colorScheme.primaryContainer
+                        tint = if (isVisited) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primaryContainer // Verde si visitado
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text(
