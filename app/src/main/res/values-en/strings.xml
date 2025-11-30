@@ -96,7 +96,7 @@
     <string name="p4_ubicacion">Not available</string>
 
     <!-- Data: Punto 5 (Ermita de Santa María Magdalena) -->
-    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_titulo">Old Hermitage of Saint Mary Magdalene</string>
     <string name="p5_desc">It was built on one of the gates of the old city wall, located on the outskirts in the area later called Prado de la Magdalena, which in those centuries was countryside and orchards. This small chapel retained its original appearance until 1538, when a funerary chapel ordered by Doctor Corral, auditor of the Royal Chancery and member of the Royal Council, was added — securing a prominent burial place. After the extension, the larger Renaissance/Gothic church was built.</string>
     <string name="p5_horarios">Mon 18:00–20:15; Tue 10:00–13:00, 16:00–20:15; Wed 10:00–13:00, 18:00–22:00; Thu 10:00–13:00, 18:00–20:30, 22:00–23:00; Fri 18:00–20:30; Sat 18:30–22:00; Sun 11:15–14:00, 19:00–20:15</string>
     <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
@@ -120,7 +120,7 @@
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
 
     <!-- Data: Punto 9 (Palacio de la Magdalena) -->
-    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_titulo">Mudejar Arch</string>
     <string name="p9_desc">The palace was a royal residence, including King Sancho IV of Castile and his wife María de Molina, on a site adapted as a royal residence in the 13th century. After Sancho IV\'s death in 1295, his widow María de Molina acted as regent and faced political conflict that led to reinforcement of the palace\'s security, turning it into a fortified enclosure. Over time the buildings were abandoned or repurposed. Most of the palace finally disappeared, and today only some remains survive, including the Mudejar gate called "Puerta de la Magdalena" or "Puerta del Palacio de María de Molina". The fortified gate shows Mudejar features: an exterior horseshoe arch, a bent entrance (i.e., turned to make direct entry difficult) and two chambers inside that probably served as guard booths.</string>
     <string name="p9_horarios">Permanently closed</string>
     <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>

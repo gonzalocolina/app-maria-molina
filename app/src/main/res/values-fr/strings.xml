@@ -70,7 +70,7 @@
     <string name="p4_ubicacion">Non disponible</string>
 
     <!-- Point 5 -->
-    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_titulo">Ancienne ermitage Sainte-Marie-Madeleine</string>
     <string name="p5_desc">Elle fut construite sur l\'un des portails de l\'ancienne muraille de la ville, à l\'extérieur, dans le lieu qui fut plus tard appelé Prado de la Magdalena, une zone alors constituée de champs et de potagers. Cette petite chapelle conserva son aspect d\'origine jusqu\'en 1538, lorsqu\'une chapelle funéraire fut ajoutée sur ordre du docteur Corral, haut magistrat, assurant ainsi un emplacement d\'inhumation choisi.</string>
     <string name="p5_horarios">Lundi 18:00–20:15 ; Mardi 10:00–13:00, 16:00–20:15 ; Mercredi 10:00–13:00, 18:00–22:00 ; Jeudi 10:00–13:00, 18:00–20:30, 22:00–23:00 ; Vendredi 18:00–20:30 ; Samedi 18:30–22:00 ; Dimanche 11:15–14:00, 19:00–20:15</string>
     <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
@@ -94,7 +94,7 @@
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
 
     <!-- Point 9 -->
-    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_titulo">Arc Mudéjar</string>
     <string name="p9_desc">Le palais servit de résidence à la famille royale, notamment au roi Sancho IV et à son épouse María de Molina, sur un terrain adapté comme résidence royale au XIIIe siècle. Après la mort de Sancho IV en 1295, sa veuve María de Molina exerça la régence et dut renforcer la sécurité du palais. Avec le temps, la plupart des bâtiments disparurent ; subsiste notamment la porte mudéjar dite "Puerta de la Magdalena".</string>
     <string name="p9_horarios">Fermé définitivement</string>
     <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>
