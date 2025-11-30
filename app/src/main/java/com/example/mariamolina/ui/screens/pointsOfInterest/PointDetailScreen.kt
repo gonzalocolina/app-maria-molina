@@ -71,7 +71,7 @@ fun PointDetailScreen(
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text(
                         stringResource(id = if (isVisited) R.string.detalle_visitado else R.string.detalle_marcar_visitado),
-                        color = MaterialTheme.colorScheme.primaryContainer
+                        color = if (isVisited) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primaryContainer // Verde si visitado
                     )
                 }
             }
