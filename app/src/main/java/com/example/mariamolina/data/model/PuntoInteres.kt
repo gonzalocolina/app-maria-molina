@@ -36,7 +36,7 @@ val puntosDeInteres = listOf(
     PuntoInteres(
         id = "p1",
         tituloResId = R.string.p1_titulo,
-        urlImagen = "https://ik.imagekit.io/fn2wdosiw/Alcazarejo.JPG",
+        urlImagen = "https://ik.imagekit.io/fn2wdosiw/AlcazarejoHD.jpg",
         descripcionLargaResId = R.string.p1_desc,
         horariosResId = R.string.p1_horarios,
         ubicacionResId = R.string.p1_ubicacion,

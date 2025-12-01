@@ -101,7 +101,7 @@
     <string name="p4_ubicacion">No disponible</string>
 
     <!-- Data: Punto 5 (Ermita de Santa María Magdalena) -->
-    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_titulo">Antigua Ermita de Santa María Magdalena</string>
     <string name="p5_desc">Se construyó sobre una de las puertas de la antigua muralla de la ciudad, situada en las afueras, en el lugar que posteriormente se llamó Prado de la Magdalena, una zona que en esos siglos era de campo y huertas.
         Esta pequeña capilla se mantuvo con su aspecto original hasta 1538, cuando se añadió una capilla sepulcral ordenada por el doctor Corral, oídor de la Real Chancillería y miembro del Consejo Real, asegurándose de esta forma un sitio con buenas vistas para ser enterrado y el protagonismo absoluto como única persona sepultada en el lugar.
         Posteriormente a la ampliación, se construyó la iglesia mayor renacentista/gótica.
@@ -140,7 +140,7 @@
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
 
     <!-- Data: Punto 9 (Palacio de la Magdalena) -->
-    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_titulo">Arco Mudéjar</string>
     <string name="p9_desc">El palacio fue residencia de la realeza, entre ellos del rey Sancho IV de Castilla junto con su esposa María de Molina, en un solar que se adaptó como residencia real en tiempos del siglo XIII.
         Tras la muerte de Sancho IV en 1295, su viuda María de Molina ejerció la regencia y entró en conflicto político que motivó reforzar la seguridad del palacio, convirtiéndolo en recinto fortificado.
         Con el tiempo, los edificios fueron abandonados o reutilizados. Finalmente, la mayor parte del palacio desapareció, y hoy sólo sobreviven algunos restos, entre los que destaca la puerta mudéjar denominada “Puerta de la Magdalena” o “Puerta del Palacio de María de Molina”.
