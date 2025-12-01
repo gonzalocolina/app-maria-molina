@@ -207,7 +207,15 @@
     <!-- Strings extraídos (botones, contentDescriptions y formatos) -->
     <string name="btn_volver">Volver</string>
     <string name="btn_ver_arbol">Ver árbol genealógico</string>
+    <string name="btn_ver_panorama">Ver Monasterio 360°</string>
     <string name="cd_imagen_ejemplo">Imagen de ejemplo</string>
+    
+    <!-- Pantalla Panorama 360 -->
+    <string name="panorama_screen_title">Monasterio 360°</string>
+    <string name="panorama_instructions">Arrastra para girar la vista • Pellizca para hacer zoom</string>
+    <string name="panorama_zoom_in">Acercar</string>
+    <string name="panorama_zoom_out">Alejar</string>
+    <string name="cd_panorama_monasterio">Vista panorámica del Monasterio de las Huelgas Reales</string>
     <string name="cd_imagen_inicial">Imagen inicial de María de Molina</string>
     <string name="cd_volver">Volver</string>
     <string name="cd_horarios">Horarios</string>

@@ -48,7 +48,10 @@ import com.example.mariamolina.ui.theme.MariaMolinaTheme
 // convención de nombres más común.
 
 @Composable
-fun HomeScreen(onNavigateToImage: () -> Unit) {
+fun HomeScreen(
+    onNavigateToImage: () -> Unit,
+    onNavigateToPanorama: () -> Unit = {}
+) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
@@ -158,6 +161,26 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                         ) {
                             Text(
                                 stringResource(R.string.btn_ver_arbol),
+                                style = MaterialTheme.typography.labelLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                modifier = Modifier.padding(vertical = 4.dp)
+                            )
+                        }
+
+                        Button(
+                            onClick = onNavigateToPanorama,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .shadow(4.dp, RoundedCornerShape(8.dp)),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                stringResource(R.string.btn_ver_panorama),
                                 style = MaterialTheme.typography.labelLarge.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -283,6 +306,26 @@ fun HomeScreen(onNavigateToImage: () -> Unit) {
                             )
                         }
 
+                        Button(
+                            onClick = onNavigateToPanorama,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .shadow(4.dp, RoundedCornerShape(8.dp)),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.secondary
+                            ),
+                            shape = RoundedCornerShape(8.dp)
+                        ) {
+                            Text(
+                                stringResource(R.string.btn_ver_panorama),
+                                style = MaterialTheme.typography.labelLarge.copy(
+                                    fontWeight = FontWeight.Bold
+                                ),
+                                modifier = Modifier.padding(vertical = 4.dp)
+                            )
+                        }
+
                         ContentSection(
                             title = stringResource(R.string.section_title_regencies),
                             paragraphs = listOf(stringResource(R.string.paragraph_regencies))
@@ -365,6 +408,9 @@ fun ElegantTitle(modifier: Modifier = Modifier, text: String, large: Boolean = f
 @Composable
 fun HomeScreenPreview() {
     MariaMolinaTheme {
-        HomeScreen(onNavigateToImage = {}) // función vacía para el preview
+        HomeScreen(
+            onNavigateToImage = {},
+            onNavigateToPanorama = {}
+        )
     }
 }
