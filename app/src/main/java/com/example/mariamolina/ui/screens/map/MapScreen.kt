@@ -184,7 +184,9 @@ fun MapScreen(
                         destino = destino,
                         onNavigate = { onNavigateToDetail(destino) },
                         onShowRoute = {
-                            drawRoute = true
+                            if(!drawRoute){
+                                drawRoute = true
+                            }
                             centerOnRoute = true
                         },
                         onClose = {
@@ -203,7 +205,9 @@ fun MapScreen(
                     SubPuntoPanel(
                         subPunto = subPunto,
                         onShowRoute = {
-                            drawRoute = true
+                            if(!drawRoute){
+                                drawRoute = true
+                            }
                             centerOnRoute = true
                         },
                         onClose = {
@@ -238,7 +242,7 @@ fun MapViewComposable(
     isCalculatingRoute: Boolean,
     onRouteCalculationStart: () -> Unit,
     onRouteCalculationEnd: () -> Unit,
-    onMapTap: () -> Unit,
+    onMapTap: () -> Unit
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
@@ -267,6 +271,15 @@ fun MapViewComposable(
     subPuntoMarkerDrawable.setColorFilter(
         android.graphics.PorterDuffColorFilter(android.graphics.Color.BLUE, android.graphics.PorterDuff.Mode.SRC_IN)
     )
+
+    LaunchedEffect(centerOnRoute, currentRoutePolyline) {
+        if (centerOnRoute && currentRoutePolyline != null) {
+            // Centrar en la ruta existente sin recalcular
+            val boundingBox = currentRoutePolyline!!.bounds
+            mapView.zoomToBoundingBox(boundingBox, true, 150)
+            onFinishCenter()
+        }
+    }
 
     // Efecto para manejar el cálculo y dibujo de rutas
     LaunchedEffect(drawRoute, selectedDestino, selectedSubPunto, userLocation) {
