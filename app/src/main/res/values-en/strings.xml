@@ -1,6 +1,6 @@
 <resources>
     <!-- Home Screen -->
-    <string name="app_name">MariaMolina</string>
+    <string name="app_name">Pasos de María</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) was one of the most important women in the history of Castile as she dedicated her life to maintaining peace and stability in the kingdom. She was queen, mother of a king, and grandmother of a king, but above all a prudent and respected ruler who knew how to gain the support of the people and nobility in difficult times.</string>
     <string name="section_title_childhood_family">Childhood and family</string>
@@ -35,7 +35,7 @@
     <string name="about_description">This application is an example about María Molina.</string>
 
     <!-- Navigation -->
-    <string name="nav_home_title">Historic Valladolid</string>
+    <string name="nav_home_title">Maria's steps</string>
     <string name="nav_home_subtitle">Discover the history of María de Molina</string>
     <string name="nav_points_title">Points of interest</string>
     <string name="nav_points_subtitle">Historic Valladolid</string>

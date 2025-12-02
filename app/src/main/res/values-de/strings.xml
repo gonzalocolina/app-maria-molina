@@ -9,7 +9,7 @@
     <string name="about_description">Diese Anwendung ist ein Beispiel über María Molina.</string>
 
     <!-- Allgemeine App-Strings (übersetzt aus español) -->
-    <string name="app_name">MariaMolina</string>
+    <string name="app_name">Pasos de María</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) war eine der bedeutendsten Frauen der kastilischen Geschichte, die ihr Leben der Bewahrung von Frieden und Stabilität des Königreichs widmete. Sie war Königin, Mutter eines Königs und Großmutter eines Königs, vor allem aber eine kluge und geachtete Herrscherin, die sich in schweren Zeiten die Unterstützung des Volkes und des Adels erwarb.</string>
     <string name="section_title_childhood_family">Kindheit und Familie</string>
@@ -162,7 +162,7 @@
     <string name="slide_15_desc">Auf meinem Grab sind außerdem Figuren einer Eidechse, eines Mönchs, der sich die Ohren zuhält, und eines Monsters versteckt. Versuche sie zu finden!</string>
 
     <!-- Navigation -->
-    <string name="nav_home_title">Historisches Valladolid</string>
+    <string name="nav_home_title">Découvrez l\'histoire de María de Molina</string>
     <string name="nav_home_subtitle">Entdecke die Geschichte von María de Molina</string>
     <string name="nav_points_title">Sehenswürdigkeiten</string>
     <string name="nav_points_subtitle">Historisches Valladolid</string>
