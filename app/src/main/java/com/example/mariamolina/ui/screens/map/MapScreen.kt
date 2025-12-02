@@ -28,11 +28,10 @@ import com.example.mariamolina.ui.theme.MariaMolinaTheme
 import com.example.mariamolina.data.model.PuntoInteres
 import com.example.mariamolina.data.model.SubPuntoInteres
 import com.example.mariamolina.data.model.puntosDeInteres
+import com.example.mariamolina.R
 import java.net.HttpURLConnection
 import java.net.URL
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import org.osmdroid.util.GeoPoint
@@ -146,7 +145,7 @@ fun MapScreen(
                     .padding(16.dp)
                     .align(Alignment.TopEnd)
             ) {
-                Text("Mi ubicación")
+                Text(stringResource(id = R.string.mi_ubicacion))
             }
         }
 
@@ -156,7 +155,7 @@ fun MapScreen(
                 .padding(16.dp)
                 .align(Alignment.TopStart)
         ) {
-            Text("Inicio")
+            Text(stringResource(id = R.string.inicio))
         }
 
         // Indicador de carga para la ruta
@@ -179,7 +178,7 @@ fun MapScreen(
                             strokeWidth = 2.dp
                         )
                         Spacer(modifier = Modifier.width(16.dp))
-                        Text("Calculando ruta...")
+                        Text(stringResource(id = R.string.calculando_ruta))
                     }
                 }
             }
@@ -589,7 +588,7 @@ fun DestinoPanel(
                     )
 
                     IconButton(onClick = onClose) {
-                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                        Icon(Icons.Default.Close, contentDescription = stringResource(id = R.string.cerrar))
                     }
                 }
 
@@ -610,14 +609,14 @@ fun DestinoPanel(
                                 strokeWidth = 2.dp
                             )
                             Spacer(Modifier.width(8.dp))
-                            Text("Calculando...")
+                            Text(stringResource(id = R.string.calculando))
                         } else {
-                            Text("Cómo llegar")
+                            Text(stringResource(id = R.string.como_llegar))
                         }
                     }
 
                     OutlinedButton(onClick = onNavigate) {
-                        Text("Más información")
+                        Text(stringResource(id = R.string.mas_informacion))
                     }
                 }
             }
@@ -659,7 +658,7 @@ fun SubPuntoPanel(
                     )
 
                     IconButton(onClick = onClose) {
-                        Icon(Icons.Default.Close, contentDescription = "Cerrar")
+                        Icon(Icons.Default.Close, contentDescription = stringResource(id = R.string.cerrar))
                     }
                 }
 
@@ -680,9 +679,9 @@ fun SubPuntoPanel(
                                 strokeWidth = 2.dp
                             )
                             Spacer(Modifier.width(8.dp))
-                            Text("Calculando...")
+                            Text(stringResource(id = R.string.calculando))
                         } else {
-                            Text("Cómo llegar")
+                            Text(stringResource(id = R.string.como_llegar))
                         }
                     }
                 }

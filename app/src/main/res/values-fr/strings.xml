@@ -176,6 +176,15 @@
     <string name="points_progress_percent">%d%% complété</string>
     <string name="visitado">Visité</string>
 
+    <!-- Mapa -->
+    <string name="mi_ubicacion">Ma position</string>
+    <string name="inicio">Accueil</string>
+    <string name="calculando_ruta">Calcul de l’itinéraire...</string>
+    <string name="cerrar">Fermer</string>
+    <string name="calculando">Calcul en cours...</string>
+    <string name="como_llegar">Itinéraire</string>
+    <string name="mas_informacion">Plus d’informations</string>
+
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Saisissez vos données</string>
     <string name="quiz_error">Erreur : %1$s</string>

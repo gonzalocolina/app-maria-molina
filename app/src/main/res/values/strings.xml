@@ -194,6 +194,16 @@
     <string name="p12_horarios">Lunes cerrado; Martes–sábado: 10:00–14:00 (Acceso hasta las 13:00) y 16:00–18:30 (Acceso hasta las 17:30); Acceso gratuito: miércoles y jueves de 16:00 a 18:30 (último acceso a las 17:30); Domingos y festivos: 10:30–15:00 (Acceso hasta las 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
+    <!-- Mapa -->
+    <string name="mi_ubicacion">Mi ubicación</string>
+    <string name="inicio">Inicio</string>
+    <string name="calculando_ruta">Calculando ruta...</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="calculando">Calculando...</string>
+    <string name="como_llegar">Cómo llegar</string>
+    <string name="mas_informacion">Más información</string>
+
+
     <!-- Navigation -->
     <string name="nav_home_title">Pasos de María</string>
     <string name="nav_home_subtitle">Descubre la historia de María de Molina</string>
