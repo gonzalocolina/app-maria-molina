@@ -252,7 +252,7 @@ fun KidsEntryScreen(
             confirmButton = {
                 Button(
                     onClick = {
-                        if (passwordInput == "1234") {
+                        if (passwordInput == "Profesor47005") {
                             showAdminDialog = false
                             onNavigateToAdmin()
                         } else {
@@ -299,7 +299,7 @@ fun KidsEntryScreen(
             confirmButton = {
                 Button(
                     onClick = {
-                        if (quizPasswordInput == "123456") {
+                        if (quizPasswordInput == "6909") {
                             showQuizPasswordDialog = false
                             onStartQuiz(dificultadSeleccionada)
                         } else {
