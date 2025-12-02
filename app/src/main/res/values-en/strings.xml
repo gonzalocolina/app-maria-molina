@@ -23,6 +23,7 @@
     <string name="detalle_ubicacion">Location:</string>
     <string name="detalle_ver_en_mapa">View on map</string>
     <string name="detalle_marcar_visitado">Mark as visited</string>
+    <string name="detalle_visitado">Visited</string>
     <string name="detalle_subpuntos_titulo">Places of the point</string>
 
     <!-- Profile Screen -->
@@ -62,6 +63,7 @@
 
     <!-- Missing English translations -->
     <!-- User profile section -->
+    <string name="font_size_changed_toast">Font size changed to %s</string>
     <string name="profile_user_section_title">Your nickname</string>
     <string name="profile_nickname_label">Nickname</string>
     <string name="profile_save_button">Save nickname</string>
@@ -71,6 +73,7 @@
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
     <string name="p1_desc">The Royal Alcázar of Valladolid (12th–13th centuries), located at the western end of the medieval town near the confluence of the northern branch of the Esgueva with the Pisuerga, was a fortified and palatial complex composed of two enclosures: the alcazarejo (or old alcázar), on the lower terrace by the Esgueva river, and the main alcázar, on the higher terrace near the parish of San Julián. After centuries of royal use and several reforms, it was donated to the Benedictines in 1390. Its remains are today integrated into the Monastery of San Benito el Real and the Patio Herreriano Museum, where traces of the old complex can still be seen. The alcazarejo had a roughly square plan — about 31 metres per side according to excavations — and featured eight solid towers: one in the middle of each curtain wall and one at each corner.</string>
+    <string name="p1_ubicacion">Pl. de la Rinconada, 3, 47001 Valladolid</string>
     <string name="p1_nombre_a">Museo Patio Herreriano</string>
     <string name="p1_nombre_b">Monasterio de San Benito</string>
     <string name="p1_horarios_a">11:00–14:00, 17:00–20:00 (Tue–Fri); Saturdays: 11:00–20:00; Sunday: 11:00–15:00</string>
@@ -79,20 +82,20 @@
     <string name="p1_ubicacion_b">C. San Benito, 3, 47003 Valladolid</string>
 
     <!-- Data: Punto 2 (Colegiata de Santa María la Mayor) -->
-    <string name="p2_titulo">Colegiata de Santa María la Mayor</string>
-    <string name="p2_desc">The Collegiate Church of Santa María la Mayor of Valladolid was first built in a Romanesque version in the late 11th century (around 1180) by order of Count Pedro Ansúrez. Later, in the 1220s, Don Juan Domínguez Medina, abbot of the collegiate church, ordered the demolition of the primitive Romanesque temple to build a new proto-Gothic one, preserving only the original tower. Over subsequent centuries it underwent other transformations. Today only one of the entrance gates remains.</string>
+    <string name="p2_titulo">Collegiate Church of Saint Mary the Great</string>
+    <string name="p2_desc">The Collegiate Church of Saint Mary the Great of Valladolid was first built in a Romanesque version in the late 11th century (around 1180) by order of Count Pedro Ansúrez. Later, in the 1220s, Don Juan Domínguez Medina, abbot of the collegiate church, ordered the demolition of the primitive Romanesque temple to build a new proto-Gothic one, preserving only the original tower. Over subsequent centuries it underwent other transformations. Today only one of the entrance gates remains.</string>
     <string name="p2_horarios">Open 24h</string>
     <string name="p2_ubicacion">C. Arribas, 1, 47002 Valladolid</string>
 
     <!-- Data: Punto 3 (Iglesia de Santa María de la Antigua) -->
-    <string name="p3_titulo">Iglesia de Santa María de la Antigua</string>
-    <string name="p3_desc">The Church of Santa María de la Antigua in Valladolid is a Romanesque church from the 12th century, completed in Gothic style. From the 12th century it retains the tower and a portico. The tower, with a height close to 50 m and topped with a spire, is the tallest Romanesque bell tower in Spain. The rest of the building is Gothic and neo-Gothic, possibly rebuilt in the 14th century under Alfonso XI of Castile, with notable influences from the Cathedral of Santa María in Burgos.</string>
+    <string name="p3_titulo">Church of Saint Mary the Ancient</string>
+    <string name="p3_desc">The Church of Saint Mary the Ancient in Valladolid is a Romanesque church from the 12th century, completed in Gothic style. From the 12th century it retains the tower and a portico. The tower, with a height close to 50 m and topped with a spire, is the tallest Romanesque bell tower in Spain. The rest of the building is Gothic and neo-Gothic, possibly rebuilt in the 14th century under Alfonso XI of Castile, with notable influences from the Cathedral of Santa María in Burgos.</string>
     <string name="p3_horarios">Mon–Fri: 9:00–10:00, 18:30–20:00</string>
     <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
 
     <!-- Data: Punto 4 (Iglesia de San Miguel) -->
-    <string name="p4_titulo">Iglesia de San Miguel</string>
-    <string name="p4_desc">The original church was located at the centre of the current Plaza de San Miguel. It was first dedicated to Saint Pelayo and changed to Saint Michael in the mid-12th century. A document dated 18 January 1151 already refers to it as the Church of San Miguel, and it is considered the oldest parish in Valladolid. In 1478 the original church burned down and was rebuilt in the same place by order of the Catholic Monarchs at the end of the 15th century. During the fire all the city documents kept there were lost.</string>
+    <string name="p4_titulo">Church of Saint Michael</string>
+    <string name="p4_desc">The original church was located at the centre of the current San Miguel Square. It was first dedicated to Saint Pelayo and changed to Saint Michael in the mid-12th century. A document dated 18 January 1151 already refers to it as the Church of Saint Michael, and it is considered the oldest parish in Valladolid. In 1478 the original church burned down and was rebuilt in the same place by order of the Catholic Monarchs at the end of the 15th century. During the fire all the city documents kept there were lost.</string>
     <string name="p4_horarios">Not available</string>
     <string name="p4_ubicacion">Not available</string>
 
@@ -103,19 +106,19 @@
     <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
 
     <!-- Data: Punto 6 (Plaza del Mercado) -->
-    <string name="p6_titulo">Plaza del Mercado</string>
-    <string name="p6_desc">The current Plaza Mayor of Valladolid was originally known as the "Plaza del Mercado" because in the Middle Ages the town\'s central market was held there. According to documents, a market was already located there in 1260. In the Middle Ages the square was an open space outside the walls or at the town boundary where the main market was established: meat, fish, vegetables and other products were sold. Over time trade was organised into guild streets around the square — for example, the Lencería street or the Torneros street — reflecting the artisanal and commercial activity surrounding the market. In September 1561 a great fire destroyed much of the square\'s surroundings, which led to urban reorganization.</string>
+    <string name="p6_titulo">Market Square</string>
+    <string name="p6_desc">The current Plaza Mayor of Valladolid was originally known as the Plaza del Mercado because in the Middle Ages the town\'s central market was held there. According to documents, a market was already located there in 1260. In the Middle Ages the square was an open space outside the walls or at the town boundary where the main market was established: meat, fish, vegetables and other products were sold. Over time trade was organised into guild streets around the square — for example, the Lingerie Street or the Torners Street — reflecting the artisanal and commercial activity surrounding the market. In September 1561 a great fire destroyed much of the square\'s surroundings, which led to urban reorganization.</string>
     <string name="p6_horarios">Not available</string>
     <string name="p6_ubicacion">Not available</string>
 
     <!-- Data: Punto 7 (Puente Mayor) -->
     <string name="p7_titulo">Puente Mayor</string>
-    <string name="p7_desc">Valladolid, located at the confluence of the Esgueva and the Pisuerga rivers, had since the Middle Ages its main river crossing over the Pisuerga — the so-called Puente Mayor — which connected the town with settlements on the other bank and favoured the emergence of the La Victoria neighbourhood. Local tradition attributes the construction of a stone bridge to Doña Eylo, wife of Pedro Ansúrez, in the late 11th century (around 1080), probably over an earlier wooden crossing; however, most visible parts of the current bridge date from later construction phases (13th–14th centuries), and the attribution to Eylo belongs more to legend than to archaeological certainty.</string>
+    <string name="p7_desc">Valladolid, located at the confluence of the Esgueva and the Pisuerga rivers, had since the Middle Ages its main river crossing over the Pisuerga — the so-called Major Bridge — which connected the town with settlements on the other bank and favoured the emergence of the La Victoria neighbourhood. Local tradition attributes the construction of a stone bridge to Doña Eylo, wife of Pedro Ansúrez, in the late 11th century (around 1080), probably over an earlier wooden crossing; however, most visible parts of the current bridge date from later construction phases (13th–14th centuries), and the attribution to Eylo belongs more to legend than to archaeological certainty.</string>
     <string name="p7_horarios">Not available</string>
     <string name="p7_ubicacion">C. del Puente Mayor, 47003 Valladolid</string>
 
     <!-- Data: Punto 8 (Monasterio de Santa María de Palazuelos) -->
-    <string name="p8_titulo">Monasterio de Santa María de Palazuelos</string>
+    <string name="p8_titulo">Monastery of Saint Mary of Palazuelos</string>
     <string name="p8_desc">The origin of the monastery is linked to the lineage of the lords of Meneses. In 1213 Alfonso Téllez de Meneses received the town of Palazuelos from Alfonso VIII as a reward for his participation in the Battle of Las Navas de Tolosa. Later, Alfonso Téllez and his wife ceded those lands to the Cistercian convent of San Andrés de Valvení so it could move there. In 1313 the councils of Castile met in this monastery to establish the regency of the young king Alfonso XI. María was born around 1264 in a place near the monastery of Santa María de Palazuelos, situated between the current Corcos del Valle and Cabezón de Pisuerga. It is a Cistercian monastic complex in a transitional style from Romanesque to Gothic: sober, austere, with little ornamentation, massive ashlar walls and large vaults. The church has a basilica plan, three naves of four spans and an east-oriented apse with three chapels: the central one with a polygonal apse and the lateral ones semicircular, a feature uncommon in Cistercian monasteries.</string>
     <string name="p8_horarios">Call +34 605 68 20 97</string>
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
@@ -127,25 +130,27 @@
     <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>
 
     <!-- Data: Punto 10 (Castillo de Tiedra) -->
-    <string name="p10_titulo">Castillo de Tiedra</string>
+    <string name="p10_titulo">Tiedra Castle</string>
     <string name="p10_desc">The castle is located in the town of Tiedra, province of Valladolid. It stands on a hill that dominates the plain of the Montes Torozos, giving it a strategic defensive position. The first documentary mention of the castle or the tower of Tiedra dates back to the 11th century during the reign of King Sancho II of Castile, when he ordered El Cid to mediate with Infanta Urraca of Zamora for the delivery of the city of Zamora in exchange, among other goods, for the castle of Tiedra. In the 12th and 13th centuries the castle passed through various noble hands: in 1203 King Alfonso IX of León granted the tower and town of Tiedra to his wife Berenguela of Castile after the annulment of their marriage. In 1285 King Sancho IV of Castile granted the town with its tower to Pedro Álvarez de Asturias. The daughter of Pedro married Alfonso Téllez de Meneses, of the powerful Téllez de Meneses lineage, so the castle became part of that lordship. The oldest preserved part corresponds to the defensive tower or keep, dated to the late 12th or early 13th century. This square-plan tower, built in ashlar, has several floors: a basement-dungeon, vaulted intermediate levels and a roof terrace offering wide views over the plain.</string>
-    <string name="p10_horarios">983 791 405 / 667 763 852</string>
+    <string name="p10_horarios">Call 983 791 405 or 667 763 852</string>
     <string name="p10_ubicacion">Calle del Castillo, 47870 Tiedra, Valladolid</string>
 
     <!-- Data: Punto 11 (Castillo de Montealegre) -->
-    <string name="p11_titulo">Castillo de Montealegre</string>
+    <string name="p11_titulo">Montealegre Castle</string>
     <string name="p11_desc">The castle is located in Montealegre de Campos, province of Valladolid. Defensive constructions have been documented on the site since 967, within the disputes between the kingdoms of Castile and León. The castle rises strategically at the highest point of the hill, dominating the Tierra de Campos plain. The current building was ordered in the 13th century by Alfonso Téllez de Meneses, member of a powerful noble lineage. Later it passed to the Alburquerque lineage (Dukes of Alburquerque) and was involved in various noble struggles, such as those between Pedro I of Castile and supporters of Enrique de Trastámara. During the Castilian Revolt of the Communidades (1520–1521) it also played a defensive and refuge role. The Montealegre castle, belonging to the Téllez de Meneses lineage — maternal family of María de Molina — was one of the places linked to her childhood, as it formed part of the seigneurial environment in which she grew and was educated before her marriage to Sancho IV of Castile. It is one of the best preserved medieval fortresses in the province of Valladolid, both in state and visibility, dominating the surrounding landscape and remaining impregnable during its history. Architecturally it has an almost square or trapezoidal plan, with robust walls up to 4–5 metres thick. Three of its corners have rectangular towers, while the fourth features the keep, with a pentagonal plan typical of 14th-century Castilian fortresses. The tower reaches about 20 metres high, from where the Montes Torozos plain can be seen.</string>
     <string name="p11_horarios">Temporarily closed</string>
     <string name="p11_ubicacion">C. Nicolás Rodríguez, 1, 47816 Montealegre de Campos, Valladolid</string>
 
     <!-- Data: Punto 12 (Monasterio de las Huelgas Reales) -->
-    <string name="p12_titulo">Monasterio de las Huelgas Reales</string>
-    <string name="p12_desc">The monastery is located outside the medieval city walls, on the site of the former palace of the founding queen, near the La Magdalena suburb. Its establishment is linked to Queen María de Molina, who around 1282 ceded her own palace to found a Cistercian monastery under the invocation of "Santa María la Real de las Huelgas". Shortly before her death, María de Molina requested in her will to be buried in this monastery. In 1328 the monastery was partially destroyed by a fire resulting from the repression of the city by royal troops. The church has a Latin-cross plan inscribed in a rectangle, with a single nave divided into bays and lateral chapels between buttresses. Notable interior works include the tomb of María de Molina in the centre of the transept, carved in alabaster with an effigy of the queen recumbent and decorative reliefs bearing the shields of the House of Burgundy represented by two castles and two lions (the lions borne crowned from the time of Sancho IV). Also notable is the tomb she inherited from her father Alfonso de Molina, a lion without a crown framed by several castles. The main altarpiece was designed by Francisco de Praves, with sculptures by Gregorio Fernández (≈1613) and paintings by Tomás de Prado.</string>
+    <string name="p12_titulo">Monastery of the Royal Huelgas</string>
+    <string name="p12_desc">The monastery is located outside the medieval city walls, on the site of the former palace of the founding queen, near the La Magdalena suburb. Its establishment is linked to Queen María of Molina, who around 1282 ceded her own palace to found a Cistercian monastery under the invocation of Santa María la Real de las Huelgas. Shortly before her death, María de Molina requested in her will to be buried in this monastery. In 1328 the monastery was partially destroyed by a fire resulting from the repression of the city by royal troops. The church has a Latin-cross plan inscribed in a rectangle, with a single nave divided into bays and lateral chapels between buttresses. Notable interior works include the tomb of María de Molina in the centre of the transept, carved in alabaster with an effigy of the queen recumbent and decorative reliefs bearing the shields of the House of Burgundy represented by two castles and two lions (the lions borne crowned from the time of Sancho IV). Also notable is the tomb she inherited from her father Alfonso de Molina, a lion without a crown framed by several castles. The main altarpiece was designed by Francisco de Praves, with sculptures by Gregorio Fernández (≈1613) and paintings by Tomás de Prado.</string>
     <string name="p12_horarios">Closed on Mondays; Tue–Sat: 10:00–14:00 (last access 13:00) and 16:00–18:30 (last access 17:30); Free access: Wed &amp; Thu 16:00–18:30 (last access 17:30); Sundays and holidays: 10:30–15:00 (last access 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
     <!-- Strings for kids section -->
+    <string name="kids_entry_titulo">Children\'s Section</string>
     <string name="kids_menu_titulo">Kids Quiz</string>
+    <string name="kids_entry_descripcion">Learn the story of Maria of Molina in a more enjoyable way and show what you have learned about the history we have told you.</string>
     <string name="kids_menu_descripcion">Show what you\'ve learned about the story we told you. Choose a difficulty!</string>
     <string name="kids_dificultad_facil">Easy</string>
     <string name="kids_dificultad_media">Medium</string>
@@ -214,6 +219,7 @@
     <string name="kids_next">Next</string>
 
     <!-- Progress section for Points of Interest -->
+    <string name="correcta">Correct</string>
     <string name="points_progress_title">Your progress</string>
     <string name="points_visited">Visited</string>
     <string name="points_remaining">Remaining</string>
@@ -229,5 +235,63 @@
     <string name="student_waiting_all">Waiting for everyone to respond...</string>
     <string name="student_waiting_teacher">Waiting for the teacher...</string>
     <string name="slide_counter">%d / %d</string>
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_large">Big</string>
+    <string name="font_size_very_large">Very big</string>
+    <string name="font_size_title">Font size</string>
+    <string name="p1_horarios">Not available</string>
+    <string name="pantalla_de_ranking_proximamente">Ranking Screen (Coming Soon!)</string>
+    <string name="unirse_a_partida">Join Game</string>
+    <string name="tu_nombre">Your name</string>
+    <string name="pin_de_la_partida">Game PIN</string>
+    <string name="entrar_button">ENTER!</string>
+    <string name="elige_dificultad">Choose difficulty:</string>
+    <string name="unirse_a_partida_con_pin">Join Game with PIN</string>
+    <string name="acceso_profesor">Teacher Access</string>
+    <string name="zona_de_profesores">Zona de Profesores</string>
+    <string name="introduce_contrasena_panel">Enter the password to access the control panel:</string>
+    <string name="contrasena">Password</string>
+    <string name="contrasena_incorrecta">Incorrect password</string>
+    <string name="entrar">Enter</string>
+    <string name="cancelar">Cancel</string>
+    <string name="panel_del_profesor">Teacher\'s Panel</string>
+    <string name="generando_sala">Generating room...</string>
+    <string name="codigo_de_la_partida_pin">ITEM CODE (PIN)</string>
+    <string name="jugadores_conectados">Players connected: %d</string>
+    <string name="empezar_el_juego">START THE GAME!</string>
+    <string name="sala_de_espera">Waiting Room</string>
+    <string name="conectando_con_la_sala">Connecting to the room...</string>
+    <string name="salir">Go out</string>
+    <string name="estas_dentro">You\'re in!</string>
+    <string name="esperando_profesor_inicie">Waiting for the teacher to start the game...</string>
+    <string name="pin_de_la_sala">Room PIN</string>
+    <string name="puntos_label">Points:</string>
+    <string name="pregunta_label">Question</string>
+    <string name="correcto_emoji">Correct! 🎉</string>
+    <string name="incorrecto_emoji">Incorrect 😔</string>
+    <string name="respuesta_correcta">Correct answer!</string>
+    <string name="respuesta_incorrecta">Incorrect answer</string>
+    <string name="tu_puntuacion">Your score</string>
+    <string name="posicion_label">Position:</string>
+    <string name="esperando_siguiente_pregunta">Waiting for the next question...</string>
+    <string name="partida_label">Game:</string>
+    <string name="finalizar">Finish</string>
+    <string name="de">of</string>
+    <string name="ver_ranking_final">SEE FINAL RANKING</string>
+    <string name="siguiente_pregunta">NEXT QUESTION</string>
+    <string name="todos_han_respondido">✓ Everyone has responded - You can proceed</string>
+    <string name="esperando_label">Waiting:</string>
+    <string name="alumnos">students</string>
+    <string name="ranking_actual">Current ranking</string>
+    <string name="pts">pts</string>
+    <string name="ranking_final">Final Ranking</string>
+    <string name="partida_finalizada">🎉 Game Over! 🎉</string>
+    <string name="tu_resultado">Your result</string>
+    <string name="numeral">#</string>
+    <string name="puntos_lower">points</string>
+    <string name="clasificacion_completa">Full ranking</string>
+    <string name="volver_al_menu">Return to Menu</string>
+    <string name="tu_emoji">You!</string>
+    <string name="ok">OK</string>
 
 </resources>
