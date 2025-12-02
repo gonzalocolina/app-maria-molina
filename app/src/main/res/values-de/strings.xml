@@ -227,6 +227,15 @@
     <string name="points_progress_percent">%d%% abgeschlossen</string>
     <string name="visitado">Besucht</string>
 
+    <!-- Mapa -->
+    <string name="mi_ubicacion">Mein Standort</string>
+    <string name="inicio">Startseite</string>
+    <string name="calculando_ruta">Route wird berechnet...</string>
+    <string name="cerrar">Schließen</string>
+    <string name="calculando">Wird berechnet...</string>
+    <string name="como_llegar">Wegbeschreibung</string>
+    <string name="mas_informacion">Weitere Informationen</string>
+
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Gib deine Daten ein</string>
     <string name="quiz_error">Fehler: %1$s</string>
