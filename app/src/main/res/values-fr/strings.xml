@@ -205,6 +205,7 @@
     <string name="nav_kids_bottom">Enfantin</string>
     <string name="btn_volver">Retour</string>
     <string name="btn_ver_arbol">Voir l\'arbre généalogique</string>
+    <string name="btn_ver_panorama">See 360º monastery</string>
     <string name="cd_imagen_ejemplo">Image d\'exemple</string>
     <string name="cd_imagen_inicial">Image initiale de María de Molina</string>
     <string name="cd_volver">Retour</string>
@@ -283,5 +284,6 @@
     <string name="volver_al_menu">Retour au menu</string>
     <string name="tu_emoji">Toi !</string>
     <string name="ok">OK</string>
+    <string name="panorama_screen_title">360º Monastery</string>
 
 </resources>
