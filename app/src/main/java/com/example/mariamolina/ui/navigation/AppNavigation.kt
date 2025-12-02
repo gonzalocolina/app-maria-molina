@@ -66,6 +66,7 @@ import com.example.mariamolina.ui.screens.kids.TeacherGameScreen
 import com.example.mariamolina.ui.screens.kids.StudentGameScreen
 import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
 import com.example.mariamolina.ui.screens.kids.RankRewardScreen
+import com.example.mariamolina.ui.screens.panorama.Panorama360Screen
 import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -104,7 +105,8 @@ fun AppNavigation() {
         val esRutaTeacherLobby = currentDestination?.route == "teacher_lobby"
         val esRutaAdminLobby = currentDestination?.route == "admin_lobby"
         val esRutaProfile = currentDestination?.route == "profile"
-        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby || esRutaProfile
+        val esRankRewardScreen = currentDestination?.route == "rank_reward/{pin}/{posicion}/{total}/{puntuacion}"
+        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby || esRutaProfile || esRankRewardScreen
         
         // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
         // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
@@ -245,11 +247,19 @@ fun AppNavigation() {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 composable(Pantalla.Home.ruta) {
-                    HomeScreen(onNavigateToImage = { navControllerPrincipal.navigate("image") })
+                    HomeScreen(
+                        onNavigateToImage = { navControllerPrincipal.navigate("image") },
+                        onNavigateToPanorama = { navControllerPrincipal.navigate("panorama360") }
+                    )
                 }
                 // nueva ruta para la pantalla de imagen
                 composable("image") {
                     ImageScreen(onBackClick = { navControllerPrincipal.popBackStack() })
+                }
+
+                // Ruta para la vista panorámica 360°
+                composable("panorama360") {
+                    Panorama360Screen(onBackClick = { navControllerPrincipal.popBackStack() })
                 }
 
                 // Rutas de Puntos de Interés (ahora en el NavHost principal para evitar NavHost anidado)
