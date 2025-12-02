@@ -24,7 +24,7 @@ class Panorama360GLSurfaceView(
     private var previousY = 0f
 
     // Sensibilidad de rotación
-    private val rotationSensitivity = 0.15f
+    private val rotationSensitivity = 0.10f
 
     // Límites de zoom
     private val minZoom = 0.5f
