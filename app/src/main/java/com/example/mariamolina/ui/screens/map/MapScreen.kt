@@ -58,6 +58,7 @@ fun MapScreen(
     var centerMapOnInitial by remember { mutableStateOf(false) }
     var isCalculatingRoute by remember { mutableStateOf(false) }
     var showPanelImage by remember { mutableStateOf(true) }
+    var centerMapOnDestino by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
 
@@ -90,6 +91,14 @@ fun MapScreen(
         }
     }
 
+    LaunchedEffect(destinoInicial, subPuntoInicial) {
+        if (destinoInicial != null || subPuntoInicial != null) {
+            // Espera un momento para asegurar que el mapa esté listo
+            kotlinx.coroutines.delay(100)
+            centerMapOnDestino = true
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
 
         MapViewComposable(
@@ -99,8 +108,10 @@ fun MapScreen(
             centerOnRoute = centerOnRoute,
             centerMapOnUser = centerMapOnUser,
             centerMapOnInitial = centerMapOnInitial,
+            centerMapOnDestino = centerMapOnDestino,
             onFinishCenterUser = { centerMapOnUser = false },
             onFinishCenterInitial = { centerMapOnInitial = false },
+            onFinishCenterDestino = { centerMapOnDestino = false },
             onFinishCenter = { centerOnRoute = false },
             onMarkerClick = { destino ->
                 selectedDestino = destino
@@ -235,6 +246,8 @@ fun MapViewComposable(
     centerOnRoute: Boolean,
     centerMapOnUser: Boolean,
     centerMapOnInitial: Boolean,
+    centerMapOnDestino: Boolean,
+    onFinishCenterDestino: () -> Unit,
     onFinishCenterUser: () -> Unit,
     onFinishCenterInitial: () -> Unit,
     onFinishCenter: () -> Unit,
@@ -278,6 +291,21 @@ fun MapViewComposable(
             val boundingBox = currentRoutePolyline!!.bounds
             mapView.zoomToBoundingBox(boundingBox, true, 150)
             onFinishCenter()
+        }
+    }
+
+    LaunchedEffect(centerMapOnDestino, selectedDestino, selectedSubPunto) {
+        if (centerMapOnDestino) {
+            val pointToCenter = when {
+                selectedDestino != null -> GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
+                selectedSubPunto != null -> GeoPoint(selectedSubPunto.latitud, selectedSubPunto.longitud)
+                else -> null
+            }
+
+            if (pointToCenter != null) {
+                mapView.controller.animateTo(pointToCenter)
+                onFinishCenterDestino()
+            }
         }
     }
 
@@ -426,7 +454,19 @@ fun MapViewComposable(
                 onFinishCenterInitial()
             }
 
+            // Centrar en el destino inicial cuando se navega desde "Ver en Mapa"
+            if (centerMapOnDestino) {
+                val pointToCenter = when {
+                    selectedDestino != null -> GeoPoint(selectedDestino.latitud, selectedDestino.longitud)
+                    selectedSubPunto != null -> GeoPoint(selectedSubPunto.latitud, selectedSubPunto.longitud)
+                    else -> null
+                }
 
+                if (pointToCenter != null) {
+                    map.controller.animateTo(pointToCenter)
+                    onFinishCenterDestino()
+                }
+            }
 
             map.invalidate()
         }
