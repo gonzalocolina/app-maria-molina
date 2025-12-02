@@ -21,7 +21,7 @@ import kotlin.math.sin
  */
 class SphericalRenderer(
     private val context: Context,
-    private val imageResId: Int
+    private val imageAssetName: String = "foto_monasterio360.jpg"
 ) : GLSurfaceView.Renderer {
 
     // Matrices de transformación
@@ -42,11 +42,15 @@ class SphericalRenderer(
     private var mvpMatrixHandle: Int = 0
     private var positionHandle: Int = 0
     private var texCoordHandle: Int = 0
+    private var textureUniformHandle: Int = 0
 
     // Parámetros de la cámara (controlados por gestos)
     var rotationX: Float = 0f  // Pitch (arriba/abajo)
     var rotationY: Float = 0f  // Yaw (izquierda/derecha)
     var zoom: Float = 1f       // Nivel de zoom (campo de visión)
+    
+    // Ratio de aspecto guardado
+    private var aspectRatio: Float = 1f
 
     // Constantes de la esfera
     private val SPHERE_RADIUS = 10f
@@ -79,51 +83,98 @@ class SphericalRenderer(
     """.trimIndent()
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        // Color de fondo negro
-        GLES20.glClearColor(0f, 0f, 0f, 1f)
+        android.util.Log.d("SphericalRenderer", "=== onSurfaceCreated ===")
+        
+        // Color de fondo rojo para debug (si vemos rojo, el GL funciona pero no se dibuja la esfera)
+        GLES20.glClearColor(0.2f, 0f, 0f, 1f)
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
-        GLES20.glEnable(GLES20.GL_CULL_FACE)
-        GLES20.glCullFace(GLES20.GL_FRONT) // Renderizar interior de la esfera
+        
+        // DESACTIVAR culling temporalmente para debug
+        GLES20.glDisable(GLES20.GL_CULL_FACE)
 
         // Crear geometría de la esfera
         createSphere()
+        android.util.Log.d("SphericalRenderer", "Esfera creada: $indexCount índices")
 
         // Compilar y enlazar shaders
         val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
         val fragmentShader = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
+        
+        android.util.Log.d("SphericalRenderer", "Vertex shader: $vertexShader, Fragment shader: $fragmentShader")
 
-        programHandle = GLES20.glCreateProgram().also {
-            GLES20.glAttachShader(it, vertexShader)
-            GLES20.glAttachShader(it, fragmentShader)
-            GLES20.glLinkProgram(it)
+        programHandle = GLES20.glCreateProgram()
+        android.util.Log.d("SphericalRenderer", "Program handle: $programHandle")
+        
+        if (programHandle != 0) {
+            GLES20.glAttachShader(programHandle, vertexShader)
+            GLES20.glAttachShader(programHandle, fragmentShader)
+            GLES20.glLinkProgram(programHandle)
+            
+            // Verificar estado del link
+            val linkStatus = IntArray(1)
+            GLES20.glGetProgramiv(programHandle, GLES20.GL_LINK_STATUS, linkStatus, 0)
+            if (linkStatus[0] == 0) {
+                val errorMsg = GLES20.glGetProgramInfoLog(programHandle)
+                android.util.Log.e("SphericalRenderer", "Error linking program: $errorMsg")
+                GLES20.glDeleteProgram(programHandle)
+                programHandle = 0
+            } else {
+                android.util.Log.d("SphericalRenderer", "Program linked successfully")
+            }
         }
 
         // Obtener handles de los atributos y uniformes
         mvpMatrixHandle = GLES20.glGetUniformLocation(programHandle, "uMVPMatrix")
         positionHandle = GLES20.glGetAttribLocation(programHandle, "aPosition")
         texCoordHandle = GLES20.glGetAttribLocation(programHandle, "aTexCoord")
+        textureUniformHandle = GLES20.glGetUniformLocation(programHandle, "uTexture")
+        
+        android.util.Log.d("SphericalRenderer", "Handles - MVP: $mvpMatrixHandle, Position: $positionHandle, TexCoord: $texCoordHandle, Texture: $textureUniformHandle")
 
         // Cargar textura
         loadTexture()
+        
+        android.util.Log.d("SphericalRenderer", "=== onSurfaceCreated completado ===")
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
+        android.util.Log.d("SphericalRenderer", "onSurfaceChanged: ${width}x${height}")
         GLES20.glViewport(0, 0, width, height)
 
-        val ratio = width.toFloat() / height.toFloat()
+        aspectRatio = width.toFloat() / height.toFloat()
 
         // Matriz de proyección perspectiva
-        Matrix.perspectiveM(projectionMatrix, 0, 60f / zoom, ratio, 0.1f, 100f)
+        Matrix.perspectiveM(projectionMatrix, 0, 60f / zoom, aspectRatio, 0.1f, 100f)
     }
 
+    private var frameCount = 0
+    
     override fun onDrawFrame(gl: GL10?) {
+        frameCount++
+        
+        // Log solo cada 60 frames para no saturar
+        val shouldLog = frameCount == 1 || frameCount % 300 == 0
+        
+        if (shouldLog) {
+            android.util.Log.d("SphericalRenderer", "=== onDrawFrame #$frameCount ===")
+        }
+        
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT or GLES20.GL_DEPTH_BUFFER_BIT)
 
+        if (programHandle == 0) {
+            if (shouldLog) android.util.Log.e("SphericalRenderer", "Program handle es 0!")
+            return
+        }
+
         GLES20.glUseProgram(programHandle)
+        
+        var error = GLES20.glGetError()
+        if (error != GLES20.GL_NO_ERROR && shouldLog) {
+            android.util.Log.e("SphericalRenderer", "Error después de glUseProgram: $error")
+        }
 
         // Actualizar matriz de proyección según el zoom
-        val ratio = 1f // Se recalcula en onSurfaceChanged pero usamos el valor guardado
-        Matrix.perspectiveM(projectionMatrix, 0, 60f / zoom, ratio, 0.1f, 100f)
+        Matrix.perspectiveM(projectionMatrix, 0, 60f / zoom, aspectRatio, 0.1f, 100f)
 
         // Matriz de vista: cámara en el centro de la esfera
         Matrix.setIdentityM(viewMatrix, 0)
@@ -143,12 +194,14 @@ class SphericalRenderer(
         GLES20.glUniformMatrix4fv(mvpMatrixHandle, 1, false, mvpMatrix, 0)
 
         // Configurar buffer de vértices
+        vertexBuffer.position(0)
         GLES20.glEnableVertexAttribArray(positionHandle)
         GLES20.glVertexAttribPointer(
             positionHandle, 3, GLES20.GL_FLOAT, false, 0, vertexBuffer
         )
 
         // Configurar buffer de coordenadas de textura
+        textureBuffer.position(0)
         GLES20.glEnableVertexAttribArray(texCoordHandle)
         GLES20.glVertexAttribPointer(
             texCoordHandle, 2, GLES20.GL_FLOAT, false, 0, textureBuffer
@@ -157,15 +210,30 @@ class SphericalRenderer(
         // Vincular textura
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0)
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle)
+        GLES20.glUniform1i(textureUniformHandle, 0)
+        
+        if (shouldLog) {
+            android.util.Log.d("SphericalRenderer", "textureHandle: $textureHandle, indexCount: $indexCount")
+        }
 
         // Dibujar la esfera
+        indexBuffer.position(0)
         GLES20.glDrawElements(
             GLES20.GL_TRIANGLES, indexCount, GLES20.GL_UNSIGNED_SHORT, indexBuffer
         )
+        
+        error = GLES20.glGetError()
+        if (error != GLES20.GL_NO_ERROR && shouldLog) {
+            android.util.Log.e("SphericalRenderer", "Error después de glDrawElements: $error")
+        }
 
         // Deshabilitar atributos
         GLES20.glDisableVertexAttribArray(positionHandle)
         GLES20.glDisableVertexAttribArray(texCoordHandle)
+        
+        if (shouldLog) {
+            android.util.Log.d("SphericalRenderer", "Frame dibujado correctamente")
+        }
     }
 
     /**
@@ -220,6 +288,13 @@ class SphericalRenderer(
         }
 
         indexCount = indices.size
+        
+        android.util.Log.d("SphericalRenderer", "Vértices: ${vertices.size / 3}, TexCoords: ${texCoords.size / 2}, Índices: $indexCount")
+        
+        // Log de algunos vértices para verificar
+        if (vertices.size >= 9) {
+            android.util.Log.d("SphericalRenderer", "Primeros 3 vértices: (${vertices[0]}, ${vertices[1]}, ${vertices[2]}), (${vertices[3]}, ${vertices[4]}, ${vertices[5]}), (${vertices[6]}, ${vertices[7]}, ${vertices[8]})")
+        }
 
         // Crear buffers nativos
         vertexBuffer = ByteBuffer.allocateDirect(vertices.size * 4)
@@ -245,15 +320,22 @@ class SphericalRenderer(
                 put(indices.toShortArray())
                 position(0)
             }
+        
+        android.util.Log.d("SphericalRenderer", "Buffers creados - vertex capacity: ${vertexBuffer.capacity()}, index capacity: ${indexBuffer.capacity()}")
     }
 
     /**
-     * Carga la imagen equirectangular como textura OpenGL.
+     * Carga la imagen equirectangular como textura OpenGL desde assets.
      */
     private fun loadTexture() {
         val textureIds = IntArray(1)
         GLES20.glGenTextures(1, textureIds, 0)
         textureHandle = textureIds[0]
+
+        if (textureHandle == 0) {
+            android.util.Log.e("SphericalRenderer", "Error generando textura")
+            return
+        }
 
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, textureHandle)
 
@@ -263,25 +345,96 @@ class SphericalRenderer(
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE)
         GLES20.glTexParameteri(GLES20.GL_TEXTURE_2D, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE)
 
-        // Cargar bitmap desde recursos
-        val options = BitmapFactory.Options().apply {
-            inScaled = false
+        // Obtener el tamaño máximo de textura soportado
+        val maxTextureSize = IntArray(1)
+        GLES20.glGetIntegerv(GLES20.GL_MAX_TEXTURE_SIZE, maxTextureSize, 0)
+        android.util.Log.d("SphericalRenderer", "Max texture size: ${maxTextureSize[0]}")
+
+        try {
+            // Abrir el archivo desde assets
+            val inputStream = context.assets.open(imageAssetName)
+            
+            // Primero, obtener las dimensiones de la imagen sin cargarla
+            val boundsOptions = BitmapFactory.Options().apply {
+                inJustDecodeBounds = true
+            }
+            
+            // Necesitamos reabrir el stream para leer las dimensiones
+            val boundsStream = context.assets.open(imageAssetName)
+            BitmapFactory.decodeStream(boundsStream, null, boundsOptions)
+            boundsStream.close()
+            
+            val imageWidth = boundsOptions.outWidth
+            val imageHeight = boundsOptions.outHeight
+            android.util.Log.d("SphericalRenderer", "Imagen original: ${imageWidth}x${imageHeight}")
+
+            // Calcular el factor de escala si la imagen es muy grande
+            var sampleSize = 1
+            val maxSize = minOf(maxTextureSize[0], 4096) // Limitar a 4096 para seguridad
+            
+            while (imageWidth / sampleSize > maxSize || imageHeight / sampleSize > maxSize) {
+                sampleSize *= 2
+            }
+            
+            // Si la imagen es muy grande para memoria, aumentar el sampleSize
+            if (imageWidth * imageHeight > 16000000) { // > 16 megapixels
+                sampleSize = maxOf(sampleSize, 2)
+            }
+            
+            android.util.Log.d("SphericalRenderer", "Sample size: $sampleSize")
+
+            // Cargar bitmap con el sample size calculado
+            val options = BitmapFactory.Options().apply {
+                inScaled = false
+                inSampleSize = sampleSize
+                inPreferredConfig = android.graphics.Bitmap.Config.RGB_565 // Usa menos memoria
+            }
+            
+            val bitmap = BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream.close()
+            
+            if (bitmap == null) {
+                android.util.Log.e("SphericalRenderer", "Error: No se pudo cargar el bitmap")
+                return
+            }
+            
+            android.util.Log.d("SphericalRenderer", "Bitmap cargado: ${bitmap.width}x${bitmap.height}")
+
+            // Subir bitmap a la GPU
+            GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0)
+            
+            // Verificar errores de OpenGL
+            val error = GLES20.glGetError()
+            if (error != GLES20.GL_NO_ERROR) {
+                android.util.Log.e("SphericalRenderer", "Error OpenGL al cargar textura: $error")
+            } else {
+                android.util.Log.d("SphericalRenderer", "Textura cargada exitosamente")
+            }
+
+            bitmap.recycle()
+        } catch (e: Exception) {
+            android.util.Log.e("SphericalRenderer", "Error cargando imagen: ${e.message}", e)
         }
-        val bitmap = BitmapFactory.decodeResource(context.resources, imageResId, options)
-
-        // Subir bitmap a la GPU
-        GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, bitmap, 0)
-
-        bitmap.recycle()
     }
 
     /**
      * Compila un shader GLSL.
      */
     private fun loadShader(type: Int, shaderCode: String): Int {
-        return GLES20.glCreateShader(type).also { shader ->
-            GLES20.glShaderSource(shader, shaderCode)
-            GLES20.glCompileShader(shader)
+        val shader = GLES20.glCreateShader(type)
+        GLES20.glShaderSource(shader, shaderCode)
+        GLES20.glCompileShader(shader)
+        
+        // Verificar errores de compilación
+        val compileStatus = IntArray(1)
+        GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compileStatus, 0)
+        if (compileStatus[0] == 0) {
+            val errorMsg = GLES20.glGetShaderInfoLog(shader)
+            android.util.Log.e("SphericalRenderer", "Error compilando shader: $errorMsg")
+            GLES20.glDeleteShader(shader)
+            return 0
         }
+        
+        return shader
     }
 }

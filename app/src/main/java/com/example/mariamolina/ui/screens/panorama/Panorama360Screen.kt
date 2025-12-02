@@ -27,11 +27,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import com.example.mariamolina.R
 
 /**
@@ -48,7 +51,7 @@ fun Panorama360Screen(
 
     // Crear renderer y vista OpenGL
     val renderer = remember {
-        SphericalRenderer(context, R.drawable.foto_monasterio360)
+        SphericalRenderer(context, "foto_monasterio360.jpg")
     }
 
     val glSurfaceView = remember {
@@ -56,8 +59,19 @@ fun Panorama360Screen(
     }
 
     // Manejar el ciclo de vida de GLSurfaceView
-    DisposableEffect(Unit) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_RESUME -> glSurfaceView.onResume()
+                Lifecycle.Event.ON_PAUSE -> glSurfaceView.onPause()
+                else -> {}
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        
         onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
             glSurfaceView.onPause()
         }
     }

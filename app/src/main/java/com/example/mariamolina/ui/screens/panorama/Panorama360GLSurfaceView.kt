@@ -37,6 +37,11 @@ class Panorama360GLSurfaceView(
     init {
         // Configurar OpenGL ES 2.0
         setEGLContextClientVersion(2)
+        
+        // Configurar para preservar el contexto EGL al pausar
+        preserveEGLContextOnPause = true
+        
+        // Configurar el renderer
         setRenderer(renderer)
         renderMode = RENDERMODE_CONTINUOUSLY
 
@@ -73,7 +78,8 @@ class Panorama360GLSurfaceView(
                     // Actualizar rotaciones
                     // Invertir deltaX para que el movimiento sea intuitivo (arrastrar derecha = girar izquierda)
                     renderer.rotationY -= deltaX * rotationSensitivity
-                    renderer.rotationX += deltaY * rotationSensitivity
+                    // Invertir deltaY para que arrastrar hacia arriba mueva la vista hacia arriba
+                    renderer.rotationX -= deltaY * rotationSensitivity
 
                     // Limitar rotación vertical
                     renderer.rotationX = max(minPitch, min(maxPitch, renderer.rotationX))
