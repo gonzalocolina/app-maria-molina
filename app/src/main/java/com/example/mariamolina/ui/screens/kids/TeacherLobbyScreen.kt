@@ -35,14 +35,21 @@ private val OPCIONES_TIEMPO = listOf(10, 15, 20, 30, 45, 60)
 fun TeacherLobbyScreen(
     onBack: () -> Unit,
     onGameStarted: (String) -> Unit,  // Navegar a TeacherGameScreen con PIN
+    existingPin: String? = null,  // PIN de partida existente para reconectar
     viewModel: TeacherGameViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Crear la partida automáticamente al entrar
+    // Reconectar a partida existente o crear nueva
     LaunchedEffect(Unit) {
         if (uiState.pin == null && !uiState.isLoading) {
-            viewModel.crearPartida()
+            if (existingPin != null) {
+                // Reconectar a partida existente
+                viewModel.reconnectToLobby(existingPin)
+            } else {
+                // Crear nueva partida
+                viewModel.crearPartida()
+            }
         }
     }
 

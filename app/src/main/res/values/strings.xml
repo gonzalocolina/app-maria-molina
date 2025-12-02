@@ -1,6 +1,6 @@
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+<resources>
     <!-- Vista inicio -->
-    <string name="app_name">MariaMolina</string>
+    <string name="app_name">PasosDeMaría</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) fue una de las mujeres más importantes de la historia de Castilla ya que dedicó su vida a mantener la paz y la estabilidad del reino. Fue reina, madre de rey y abuela de rey, pero sobre todo una gobernante prudente y respetada, que supo ganarse el apoyo del pueblo y la nobleza en tiempos difíciles.</string>
     <string name="section_title_childhood_family">Infancia y familia</string>
@@ -23,7 +23,6 @@
     <string name="detalle_ver_en_mapa">Ver en mapa</string>
     <string name="detalle_marcar_visitado">Marcar como visitado</string>
     <string name="detalle_visitado">Visitado</string>
-    <string name="detalle_rating">Valoración:</string>
 
     <string name="detalle_subpuntos_titulo">Lugares del punto</string>
 
@@ -37,9 +36,14 @@
     <string name="about_description">Pasos de María es una guía educativa e interactiva dedicada a divulgar
         la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid.
         La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés,
-        rutas en mapa y contenidos adaptados para público infantil. Su objetivo es facilitar el acceso a la historia
-        local de forma didáctica y visual; los datos se han recopilado a partir de fuentes históricas y culturales.
-        La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.
+        rutas en mapa, contenidos adaptados para público infantil y la opción de realizar cuestionarios de forma individual y multijugador.
+        La función de realizar los test de manera individual tiene una contraseña que será proporcionada por los
+        profesores, con el fin de que los alumnos no puedan aprenderse las preguntas antes de hacer el cuestionario
+        en multijugador pero que puedan luego por su cuenta afianzar los conocimientos. \n
+        Su objetivo es facilitar el acceso a la historia
+        local de forma didáctica y visual, y de una forma más moderna que pueda despertar aún más el interés
+        de los más jóvenes; los datos se han recopilado a partir de fuentes históricas y culturales.
+        La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.\n\n
         Aplicación creada por Miguel Bueno González, Gonzalo José Colina Báscones y Daniel Fernández García</string>
 
 
@@ -100,10 +104,9 @@
     </string>
     <string name="p4_horarios">No disponible</string>
     <string name="p4_ubicacion">No disponible</string>
-    <string name="p4_rating">No disponible</string>
 
     <!-- Data: Punto 5 (Ermita de Santa María Magdalena) -->
-    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_titulo">Antigua Ermita de Santa María Magdalena</string>
     <string name="p5_desc">Se construyó sobre una de las puertas de la antigua muralla de la ciudad, situada en las afueras, en el lugar que posteriormente se llamó Prado de la Magdalena, una zona que en esos siglos era de campo y huertas.
         Esta pequeña capilla se mantuvo con su aspecto original hasta 1538, cuando se añadió una capilla sepulcral ordenada por el doctor Corral, oídor de la Real Chancillería y miembro del Consejo Real, asegurándose de esta forma un sitio con buenas vistas para ser enterrado y el protagonismo absoluto como única persona sepultada en el lugar.
         Posteriormente a la ampliación, se construyó la iglesia mayor renacentista/gótica.
@@ -121,7 +124,6 @@
     </string>
     <string name="p6_horarios">No disponible</string>
     <string name="p6_ubicacion">No disponible</string>
-    <string name="p6_rating">No disponible</string>
 
     <!-- Data: Punto 7 (Puente Mayor) -->
     <string name="p7_titulo">Puente Mayor</string>
@@ -143,7 +145,7 @@
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
 
     <!-- Data: Punto 9 (Palacio de la Magdalena) -->
-    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_titulo">Arco Mudéjar</string>
     <string name="p9_desc">El palacio fue residencia de la realeza, entre ellos del rey Sancho IV de Castilla junto con su esposa María de Molina, en un solar que se adaptó como residencia real en tiempos del siglo XIII.
         Tras la muerte de Sancho IV en 1295, su viuda María de Molina ejerció la regencia y entró en conflicto político que motivó reforzar la seguridad del palacio, convirtiéndolo en recinto fortificado.
         Con el tiempo, los edificios fueron abandonados o reutilizados. Finalmente, la mayor parte del palacio desapareció, y hoy sólo sobreviven algunos restos, entre los que destaca la puerta mudéjar denominada “Puerta de la Magdalena” o “Puerta del Palacio de María de Molina”.
@@ -161,7 +163,7 @@
         Antes de esa fecha, la familia Meneses ya controlaba varias villas cercanas —como Meneses o Montealegre—, por lo que se considera que María de Molina, perteneciente a este linaje por parte materna, pasó su infancia en este entorno familiar, vinculado al castillo de Tiedra.
         La parte más antigua conservada corresponde a la torre defensiva o torre del homenaje, datada a finales del siglo XII o principios del XIII. Esta torre, de planta cuadrada y construida en sillería, cuenta con varias plantas: un sótano-calabozo, niveles intermedios abovedados y una azotea-mirador que ofrece una amplia panorámica sobre la llanura.
     </string>
-    <string name="p10_horarios">983 791 405 / 667 763 852</string>
+    <string name="p10_horarios">Llamar a 983 791 405 o 667 763 852</string>
     <string name="p10_ubicacion">Calle del Castillo, 47870 Tiedra, Valladolid</string>
 
     <!-- Data: Punto 11 (Castillo de Montealegre) -->
@@ -193,7 +195,7 @@
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
     <!-- Navigation -->
-    <string name="nav_home_title">Valladolid histórico</string>
+    <string name="nav_home_title">Pasos de María</string>
     <string name="nav_home_subtitle">Descubre la historia de María de Molina</string>
     <string name="nav_points_title">Puntos interés</string>
     <string name="nav_points_subtitle">Valladolid Histórico</string>
@@ -210,15 +212,21 @@
     <!-- Strings extraídos (botones, contentDescriptions y formatos) -->
     <string name="btn_volver">Volver</string>
     <string name="btn_ver_arbol">Ver árbol genealógico</string>
+    <string name="btn_ver_panorama">Ver Monasterio 360°</string>
     <string name="cd_imagen_ejemplo">Imagen de ejemplo</string>
+    
+    <!-- Pantalla Panorama 360 -->
+    <string name="panorama_screen_title">Monasterio 360°</string>
+    <string name="panorama_instructions">Arrastra para girar la vista • Pellizca para hacer zoom</string>
+    <string name="panorama_zoom_in">Acercar</string>
+    <string name="panorama_zoom_out">Alejar</string>
+    <string name="cd_panorama_monasterio">Vista panorámica del Monasterio de las Huelgas Reales</string>
     <string name="cd_imagen_inicial">Imagen inicial de María de Molina</string>
     <string name="cd_volver">Volver</string>
     <string name="cd_horarios">Horarios</string>
     <string name="cd_ubicacion">Ubicación</string>
-    <string name="cd_rating">Valoración</string>
     <string name="cd_perfil">Perfil</string>
-    <!-- Formato para mostrar rating (un decimal) -->
-    <string name="fmt_rating_per_5">%1$.1f/5</string>
+    <string name="cd_ajustes">Ajustes</string>
 
     <!-- Seccion infantil -->
     <!-- ... (El resto de tus strings) ... -->
@@ -323,6 +331,9 @@
     <string name="contrasena_incorrecta">Contraseña incorrecta</string>
     <string name="entrar">Entrar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="acceso_quiz">Acceso al Quiz</string>
+    <string name="introduce_contrasena_quiz">Introduce la contraseña para iniciar el quiz:</string>
+    <string name="caracteres_maximo">%d/%d caracteres</string>
     <string name="panel_del_profesor">Panel del Profesor</string>
     <string name="generando_sala">Generando sala...</string>
     <string name="codigo_de_la_partida_pin">CÓDIGO DE LA PARTIDA (PIN)</string>
@@ -369,6 +380,7 @@
     <string name="points_visited">Visitados</string>
     <string name="points_remaining">Restantes</string>
     <string name="points_progress_percent">%d%% completado</string>
+    <string name="visitado">Visitado</string>
 
 
 </resources>

@@ -19,6 +19,7 @@ data class QuizUiState(
     val questions: List<QuizQuestion> = emptyList(),
     val errorMessage: String? = null,
     val puntuacion: Int = 0,
+    val aciertos: Int = 0,  // Número de respuestas correctas
     val indicePreguntaActual: Int = 0,
     val dificultadSeleccionada: Dificultad = Dificultad.FACIL
 )
@@ -64,14 +65,16 @@ class QuizViewModel @Inject constructor(
     }
 
     // --- Lógica del Juego ---
-    fun scoreAndAdvance(puntosGanados: Int) {
+    fun scoreAndAdvance(puntosGanados: Int, esAcierto: Boolean = false) {
         // Lógica de puntuación. Solo sumamos y avanzamos.
         val nuevaPuntuacion = _uiState.value.puntuacion + puntosGanados
         val nuevoIndice = _uiState.value.indicePreguntaActual + 1
+        val nuevosAciertos = if (esAcierto) _uiState.value.aciertos + 1 else _uiState.value.aciertos
 
         _uiState.value = _uiState.value.copy(
             puntuacion = nuevaPuntuacion,
-            indicePreguntaActual = nuevoIndice
+            indicePreguntaActual = nuevoIndice,
+            aciertos = nuevosAciertos
         )
     }
 
@@ -80,6 +83,7 @@ class QuizViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(
             questions = emptyList(),
             puntuacion = 0,
+            aciertos = 0,
             indicePreguntaActual = 0
         )
     }

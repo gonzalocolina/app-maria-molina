@@ -31,11 +31,12 @@
     <string name="detalle_ubicacion">Emplacement :</string>
     <string name="detalle_ver_en_mapa">Voir sur la carte</string>
     <string name="detalle_marcar_visitado">Marquer comme visité</string>
-    <string name="detalle_rating">Évaluation :</string>
 
+    <string name="detalle_visitado">Visité</string>
     <string name="detalle_subpuntos_titulo">Lieux associés</string>
 
     <!-- Données utilisateur -->
+    <string name="font_size_changed_toast">Taille de police modifiée à %s</string>
     <string name="profile_user_section_title">Ton pseudonyme</string>
     <string name="profile_nickname_label">Pseudonyme</string>
     <string name="profile_save_button">Enregistrer le pseudonyme</string>
@@ -45,6 +46,7 @@
     <!-- Point 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
     <string name="p1_desc">Le Alcázar Real de Valladolid (XIIe–XIIIe siècles), situé à l\'extrémité ouest de la ville médiévale près de la confluence du bras nord de l\'Esgueva avec le Pisuerga, était un ensemble fortifié et palatial composé de deux enceintes : l\'alcazarejo (ou vieux alcázar), sur la terrasse basse au bord de l\'Esgueva, et l\'alcázar majeur sur la terrasse haute, près de la paroisse de San Julián. Après des siècles d\'utilisation royale et plusieurs réformes, il fut donné aux bénédictins en 1390. Aujourd\'hui, ses vestiges font partie du Monastère de San Benito el Real et du Museo Patio Herreriano.</string>
+    <string name="p1_ubicacion">Pl. de la Rinconada, 3, 47001 Valladolid</string>
     <string name="p1_nombre_a">Museo Patio Herreriano</string>
     <string name="p1_nombre_b">Monastère de San Benito</string>
     <string name="p1_horarios_a">11:00–14:00, 17:00–20:00 (mardi–vendredi) ; samedi : 11:00–20:00 et dimanche 11:00–15:00</string>
@@ -53,51 +55,49 @@
     <string name="p1_ubicacion_b">C. San Benito, 3, 47003 Valladolid</string>
 
     <!-- Point 2 -->
-    <string name="p2_titulo">Colegiata de Santa María la Mayor</string>
+    <string name="p2_titulo">Collégiale Santa María la Mayor</string>
     <string name="p2_desc">La Colegiata de Santa María la Mayor de Valladolid fut construite dans sa première version romane à la fin du XIe siècle vers 1180, par ordre du comte Pedro Ansurez. Plus tard, dans les années 1220, Juan Domínguez Medina, doyen de la collégiale, fit démolir l\'édifice roman primitif pour en élever un autre de style protogothique, ne conservant que la tour de l\'ensemble initial. L\'édifice subit d\'autres transformations aux siècles suivants.</string>
     <string name="p2_horarios">Ouvert 24h</string>
     <string name="p2_ubicacion">C. Arribas, 1, 47002 Valladolid</string>
 
     <!-- Point 3 -->
-    <string name="p3_titulo">Église Santa María de la Antigua</string>
-    <string name="p3_desc">L\'église Santa María de la Antigua de Valladolid est une église romane du XIIe siècle, mais achevée dans un style gothique. Du XIIe siècle subsistent la tour et un porche. La tour, haute d\'environ 50 m, est considérée comme le clocher roman le plus haut d\'Espagne. Le reste du bâtiment est gothique et néogothique, probablement reconstruit au XIVe siècle sous le règne d\'Alfonso XI.</string>
+    <string name="p3_titulo">Église Sainte-Marie de l\'Antique</string>
+    <string name="p3_desc">L\'église Santa María de  l\'Antique de Valladolid est une église romane du XIIe siècle, mais achevée dans un style gothique. Du XIIe siècle subsistent la tour et un porche. La tour, haute d\'environ 50 m, est considérée comme le clocher roman le plus haut d\'Espagne. Le reste du bâtiment est gothique et néogothique, probablement reconstruit au XIVe siècle sous le règne d\'Alfonso XI.</string>
     <string name="p3_horarios">Lundi–vendredi : 9:00–10:00, 18:30–20:00</string>
     <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
 
     <!-- Point 4 -->
-    <string name="p4_titulo">Iglesia de San Miguel</string>
-    <string name="p4_desc">L\'église primitive se trouvait au centre de l\'actuelle Plaza de San Miguel. Elle fut d\'abord dédiée à San Pelayo, puis à San Miguel au milieu du XIIe siècle. Une charte du 18 janvier 1151 la mentionne déjà comme l\'église de San Miguel, et elle est considérée comme la paroisse la plus ancienne de Valladolid. En 1478, elle fut détruite par un incendie et reconstruite par la volonté des Rois Catholiques à la fin du XVe siècle.</string>
+    <string name="p4_titulo">Église Saint-Michel</string>
+    <string name="p4_desc">L\'église primitive se trouvait au centre de l\'actuelle Place Saint-Michel. Elle fut d\'abord dédiée à San Pelayo, puis à San Miguel au milieu du XIIe siècle. Une charte du 18 janvier 1151 la mentionne déjà comme l\'église Saint-Michel, et elle est considérée comme la paroisse la plus ancienne de Valladolid. En 1478, elle fut détruite par un incendie et reconstruite par la volonté des Rois Catholiques à la fin du XVe siècle.</string>
     <string name="p4_horarios">Non disponible</string>
     <string name="p4_ubicacion">Non disponible</string>
-    <string name="p4_rating">Non disponible</string>
 
     <!-- Point 5 -->
-    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_titulo">Ancienne ermitage Sainte-Marie-Madeleine</string>
     <string name="p5_desc">Elle fut construite sur l\'un des portails de l\'ancienne muraille de la ville, à l\'extérieur, dans le lieu qui fut plus tard appelé Prado de la Magdalena, une zone alors constituée de champs et de potagers. Cette petite chapelle conserva son aspect d\'origine jusqu\'en 1538, lorsqu\'une chapelle funéraire fut ajoutée sur ordre du docteur Corral, haut magistrat, assurant ainsi un emplacement d\'inhumation choisi.</string>
     <string name="p5_horarios">Lundi 18:00–20:15 ; Mardi 10:00–13:00, 16:00–20:15 ; Mercredi 10:00–13:00, 18:00–22:00 ; Jeudi 10:00–13:00, 18:00–20:30, 22:00–23:00 ; Vendredi 18:00–20:30 ; Samedi 18:30–22:00 ; Dimanche 11:15–14:00, 19:00–20:15</string>
     <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
 
     <!-- Point 6 -->
-    <string name="p6_titulo">Plaza del Mercado</string>
-    <string name="p6_desc">La actuelle Plaza Mayor de Valladolid était autrefois connue comme la "Plaza del Mercado", car au Moyen Âge s\'y tenait le marché central de la ville. Des documents attestent qu\'en 1260 un marché s\'y déroulait déjà. Avec le temps, le commerce s\'organisa en rues de métiers autour de la place et, en septembre 1561, un grand incendie détruisit une grande partie de son environnement.</string>
+    <string name="p6_titulo">Place du Marché</string>
+    <string name="p6_desc">L\'actuelle Plaza Mayor de Valladolid était à l\'origine connue sous le nom de Plaza del Mercado, car au Moyen Âge, le marché central de la ville s\'y tenait. Selon des documents, en 1260, le marché commercial était déjà installé à cet endroit. Au Moyen Âge, la place était un espace ouvert à l\'extérieur de la muraille ou à la limite urbaine de la ville, où se tenait le marché principal de la ville : viande, poisson, légumes et autres produits y étaient vendus. Au fil du temps, le commerce s\'est organisé dans des rues spécialisées autour de la place — par exemple, la rue de la Lencería ou la rue des Tourneurs — reflétant l\'activité artisanale et commerciale qui gravitait autour du marché. En septembre 1561, un grand incendie détruisit une grande partie des environs de la place, ce qui donna lieu à une réorganisation urbaine de l\'espace.</string>
     <string name="p6_horarios">Non disponible</string>
     <string name="p6_ubicacion">Non disponible</string>
-    <string name="p6_rating">Non disponible</string>
 
     <!-- Point 7 -->
     <string name="p7_titulo">Puente Mayor</string>
-    <string name="p7_desc">Valladolid, située à la confluence de l\'Esgueva et du Pisuerga, disposait depuis le Moyen Âge d\'un passage fluvial principal sur le Pisuerga — la Puente Mayor — qui reliait la ville aux localités de l\'autre rive et favorisa la naissance du quartier de La Victoria. La tradition locale attribue la construction d\'un pont de pierre à Doña Eylo, épouse de Pedro Ansúrez, vers la fin du XIe siècle (vers 1080), probablement sur un passage en bois antérieur ; toutefois, les parties visibles du pont actuel datent surtout de phases de construction postérieures (XIIIe–XIVe siècles), et l\'attribution à Eylo relève davantage de la légende que de la certitude archéologique.</string>
+    <string name="p7_desc">Valladolid, située à la confluence de l\'Esgueva et du Pisuerga, disposait depuis le Moyen Âge d\'un passage fluvial principal sur le Pisuerga — la Pont Maire — qui reliait la ville aux localités de l\'autre rive et favorisa la naissance du quartier de La Victoria. La tradition locale attribue la construction d\'un pont de pierre à Doña Eylo, épouse de Pedro Ansúrez, vers la fin du XIe siècle (vers 1080), probablement sur un passage en bois antérieur ; toutefois, les parties visibles du pont actuel datent surtout de phases de construction postérieures (XIIIe–XIVe siècles), et l\'attribution à Eylo relève davantage de la légende que de la certitude archéologique.</string>
     <string name="p7_horarios">Non disponible</string>
     <string name="p7_ubicacion">C. del Puente Mayor, 47003 Valladolid</string>
 
     <!-- Point 8 -->
-    <string name="p8_titulo">Monasterio de Santa María de Palazuelos</string>
+    <string name="p8_titulo">Monastère de Santa María de Palazuelos</string>
     <string name="p8_desc">L\'origine du monastère est liée à la lignée des seigneurs de Meneses. En 1213, Alfonso Téllez de Meneses reçut la villa de Palazuelos d\'Alfonso VIII en récompense de sa participation à la bataille de Las Navas de Tolosa. Par la suite, Alfonso Téllez et son épouse cédèrent ces terres au couvent cistercien de San Andrés de Valvení. En 1313, les conseils de Castille se réunirent dans ce monastère pour établir la régence du jeune roi Alfonso XI. María naquit vers 1264 dans les environs de ce monastère.</string>
     <string name="p8_horarios">Appeler le 605 68 20 97</string>
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
 
     <!-- Point 9 -->
-    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_titulo">Arc Mudéjar</string>
     <string name="p9_desc">Le palais servit de résidence à la famille royale, notamment au roi Sancho IV et à son épouse María de Molina, sur un terrain adapté comme résidence royale au XIIIe siècle. Après la mort de Sancho IV en 1295, sa veuve María de Molina exerça la régence et dut renforcer la sécurité du palais. Avec le temps, la plupart des bâtiments disparurent ; subsiste notamment la porte mudéjar dite "Puerta de la Magdalena".</string>
     <string name="p9_horarios">Fermé définitivement</string>
     <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>
@@ -105,7 +105,7 @@
     <!-- Point 10 -->
     <string name="p10_titulo">Château de Tiedra</string>
     <string name="p10_desc">Le château se situe dans la commune de Tiedra, province de Valladolid, et domine la plaine des Montes Torozos depuis une colline, lui donnant une position stratégique et défensive. La première mention documentaire du château ou de sa tour remonte au XIe siècle, à l\'époque du roi Sancho II de Castille. Au XIIe et XIIIe siècles, le château passa entre différentes mains seigneuriales.</string>
-    <string name="p10_horarios">983 791 405 / 667 763 852</string>
+    <string name="p10_horarios">Appeler le 983 791 405 ou le 667 763 852</string>
     <string name="p10_ubicacion">Calle del Castillo, 47870 Tiedra, Valladolid</string>
 
     <!-- Point 11 -->
@@ -115,12 +115,13 @@
     <string name="p11_ubicacion">C. Nicolás Rodríguez, 1, 47816 Montealegre de Campos, Valladolid</string>
 
     <!-- Point 12 -->
-    <string name="p12_titulo">Monasterio de las Huelgas Reales</string>
+    <string name="p12_titulo">Monastère des Huelgas Royales</string>
     <string name="p12_desc">Le monastère est situé hors des murs de la ville médiévale, sur le site de l\'ancien palais fondé par la reine, proche du faubourg de la Magdalena. Sa fondation est liée à la reine María de Molina, qui vers 1282 céda son palais pour fonder un monastère cistercien dédié à "Santa María la Real de las Huelgas". Peu avant sa mort, María de Molina demanda à être inhumée dans ce monastère.</string>
     <string name="p12_horarios">Lundi fermé ; Mardi–Samedi : 10:00–14:00 (accès jusqu\'à 13:00) et 16:00–18:30 (accès jusqu\'à 17:30) ; Entrée gratuite : mercredi et jeudi 16:00–18:30 (dernier accès 17:30) ; Dimanches et jours fériés : 10:30–15:00 (accès jusqu\'à 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
     <!-- Traductions françaises pour les diapositives enfants -->
+    <string name="cd_back">Retour</string>
     <string name="slide_1_title">María de Molina</string>
     <string name="slide_1_desc">Bonjour ! Je suis María de Molina et je vais te raconter mon histoire.</string>
 
@@ -168,10 +169,12 @@
     <string name="kids_next">Suivant</string>
 
     <!-- Progress section for Points of Interest -->
+    <string name="correcta">Correcte</string>
     <string name="points_progress_title">Votre progression</string>
     <string name="points_visited">Visités</string>
     <string name="points_remaining">Restants</string>
     <string name="points_progress_percent">%d%% complété</string>
+    <string name="visitado">Visité</string>
 
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Saisissez vos données</string>
@@ -182,5 +185,112 @@
     <string name="student_waiting_all">En attente que tout le monde réponde...</string>
     <string name="student_waiting_teacher">En attente du professeur...</string>
     <string name="slide_counter">%d / %d</string>
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_large">Grand</string>
+    <string name="font_size_very_large">Trés grand</string>
+    <string name="font_size_title">Taille de la police</string>
+    <string name="p1_horarios">Non disponible</string>
+    <string name="nav_home_title">Valladolid historique</string>
+    <string name="nav_home_subtitle">Découvrez l\'histoire de María de Molina</string>
+    <string name="nav_points_title">Points d\'intérêt</string>
+    <string name="nav_points_subtitle">Valladolid historique</string>
+    <string name="nav_map_title">Carte</string>
+    <string name="nav_map_subtitle">Trouve ton chemin</string>
+    <string name="nav_kids_title">Enfantin</string>
+    <string name="nav_kids_subtitle">Plans avec des enfants</string>
+    <string name="nav_profile_title">Profil</string>
+    <string name="nav_home_bottom">Accueil</string>
+    <string name="nav_points_bottom">Points d\'intérêt</string>
+    <string name="nav_map_bottom">Carte</string>
+    <string name="nav_kids_bottom">Enfantin</string>
+    <string name="btn_volver">Retour</string>
+    <string name="btn_ver_arbol">Voir l\'arbre généalogique</string>
+    <string name="btn_ver_panorama">Voir le monastère à 360°</string>
+    <string name="cd_imagen_ejemplo">Image d\'exemple</string>
+    <string name="cd_panorama_monasterio">Vue panoramique du Monastère des Huelgas Reales</string>
+    <string name="cd_imagen_inicial">Image initiale de María de Molina</string>
+    <string name="cd_volver">Retour</string>
+    <string name="cd_horarios">Horaires</string>
+    <string name="cd_ubicacion">Emplacement</string>
+    <string name="cd_perfil">Profil</string>
+    <string name="cd_ajustes">Paramètres</string>
+    <string name="kids_entry_titulo">Section Enfants</string>
+    <string name="kids_menu_titulo">Questionnaire pour enfants</string>
+    <string name="kids_entry_descripcion">Découvrez l\'histoire de María de Molina de manière plus agréable et montrez ce que vous avez appris sur l\'histoire que nous vous avons racontée.</string>
+    <string name="kids_menu_descripcion">Montre ce que tu as appris sur l\'histoire que nous t\'avons racontée. Choisis un niveau de difficulté !</string>
+    <string name="kids_dificultad_facil">Facile</string>
+    <string name="kids_dificultad_media">Moyenne</string>
+    <string name="kids_dificultad_dificil">Difficile</string>
+    <string name="kids_iniciar_quiz">Commencer à jouer !</string>
+    <string name="kids_quiz_puntuacion">Score : %d</string>
+    <string name="kids_quiz_finalizado">Questionnaire terminé !</string>
+    <string name="kids_quiz_resultado">Ton score final est : %1$d / %2$d</string>
+    <string name="kids_quiz_volver_menu">Retour au menu</string>
+    <string name="kids_quiz_ranking">Voir le classement</string>
+    <string name="kids_ver_diapositivas">Voir les diapositives</string>
+    <string name="kids_opcion_cuestionarios">Questionnaires</string>
+    <string name="kids_slides_titulo">Diapositives pour enfants</string>
+    <string name="kids_slides_descripcion">Ici, vous pouvez voir les diapositives de l\'histoire adaptées pour les enfants.</string>
+    <string name="kids_no_slides">Il n\'y a pas de diapositives disponibles</string>
+    <string name="pantalla_de_ranking_proximamente">Écran de classement (Bientôt !)</string>
+    <string name="unirse_a_partida">Rejoindre la partie</string>
+    <string name="tu_nombre">Ton nom</string>
+    <string name="pin_de_la_partida">Code PIN du jeu</string>
+    <string name="entrar_button">ENTRER !</string>
+    <string name="elige_dificultad">Choisissez la difficulté :</string>
+    <string name="unirse_a_partida_con_pin">Rejoindre la partie avec un code PIN</string>
+    <string name="acceso_profesor">Teacher Access</string>
+    <string name="zona_de_profesores">Zone des Professeurs</string>
+    <string name="introduce_contrasena_panel">Saisissez le mot de passe pour accéder au panneau de contrôle :</string>
+    <string name="contrasena">Mot de passe</string>
+    <string name="contrasena_incorrecta">Mot de passe incorrect</string>
+    <string name="entrar">Entrer</string>
+    <string name="cancelar">Annuler</string>
+    <string name="caracteres_maximo">%d/%d caractères</string>
+    <string name="panel_del_profesor">Panneau du Professeur</string>
+    <string name="generando_sala">Création de la salle...</string>
+    <string name="codigo_de_la_partida_pin">CODE DE LA PARTIE (PIN)</string>
+    <string name="jugadores_conectados">Joueurs connectés : %d</string>
+    <string name="empezar_el_juego">COMMENCER LE JEU !</string>
+    <string name="sala_de_espera">Salle d\'attente</string>
+    <string name="conectando_con_la_sala">Connexion à la salle...</string>
+    <string name="salir">Sortir</string>
+    <string name="estas_dentro">Tu es dedans !</string>
+    <string name="esperando_profesor_inicie">En attendant que le professeur commence le jeu...</string>
+    <string name="pin_de_la_sala">Code PIN de la salle</string>
+    <string name="puntos_label">Points:</string>
+    <string name="pregunta_label">Question</string>
+    <string name="correcto_emoji">Correct! 🎉</string>
+    <string name="incorrecto_emoji">Incorrect 😔</string>
+    <string name="respuesta_correcta">Réponse correcte !</string>
+    <string name="respuesta_incorrecta">Réponse incorrecte</string>
+    <string name="tu_puntuacion">Ton score</string>
+    <string name="posicion_label">Position:</string>
+    <string name="esperando_siguiente_pregunta">En attendant la prochaine question...</string>
+    <string name="partida_label">Partie:</string>
+    <string name="finalizar">Terminer</string>
+    <string name="de">de</string>
+    <string name="ver_ranking_final">VOIR LE CLASSEMENT FINAL</string>
+    <string name="siguiente_pregunta">PROCHAINE QUESTION</string>
+    <string name="todos_han_respondido">✓ Tout le monde a répondu - Vous pouvez avancer</string>
+    <string name="esperando_label">En attente :</string>
+    <string name="alumnos">élèves</string>
+    <string name="ranking_actual">Classement actuel</string>
+    <string name="pts">pts</string>
+    <string name="ranking_final">Classement final</string>
+    <string name="partida_finalizada">🎉 Partie Terminée ! 🎉</string>
+    <string name="tu_resultado">Ton résultat</string>
+    <string name="numeral">#</string>
+    <string name="puntos_lower">points</string>
+    <string name="clasificacion_completa">Classement complet</string>
+    <string name="volver_al_menu">Retour au menu</string>
+    <string name="tu_emoji">Toi !</string>
+    <string name="ok">OK</string>
+    <string name="panorama_screen_title">Monastère 360°</string>
+    <string name="panorama_instructions">Faites glisser pour faire tourner la vue • Pincez pour zoomer</string>
+    <string name="panorama_zoom_in">Approcher</string>
+    <string name="panorama_zoom_out">Éloigner</string>
+    <string name="acceso_quiz">Accès au quiz</string>
+    <string name="introduce_contrasena_quiz">Entrez le mot de passe pour commencer le quiz :</string>
 
 </resources>
