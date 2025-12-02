@@ -1,6 +1,5 @@
 <resources>
     <!-- Home Screen -->
-    <string name="app_name">Pasos de María</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) was one of the most important women in the history of Castile as she dedicated her life to maintaining peace and stability in the kingdom. She was queen, mother of a king, and grandmother of a king, but above all a prudent and respected ruler who knew how to gain the support of the people and nobility in difficult times.</string>
     <string name="section_title_childhood_family">Childhood and family</string>
@@ -36,7 +35,7 @@
     <string name="about_description">This application is an example about María Molina.</string>
 
     <!-- Navigation -->
-    <string name="nav_home_title">Maria's steps</string>
+    <string name="nav_home_title">Maria\'s steps</string>
     <string name="nav_home_subtitle">Discover the history of María de Molina</string>
     <string name="nav_points_title">Points of interest</string>
     <string name="nav_points_subtitle">Historic Valladolid</string>
@@ -161,7 +160,7 @@
     <string name="kids_quiz_siguiente">Next</string>
     <string name="kids_quiz_puntuacion">Score: %d</string>
     <string name="kids_quiz_finalizado">Quiz finished!</string>
-    <string name="kids_quiz_resultado">Your final score is: %d / %d</string>
+    <string name="kids_quiz_resultado">Your final score is: %1$d / %2$d</string>
     <string name="kids_quiz_volver_menu">Back to menu</string>
     <string name="kids_quiz_ranking">View Ranking</string>
 
@@ -235,8 +234,7 @@
     <string name="student_points_gained">+%d points</string>
     <string name="student_answer_sent">✓ Answer sent</string>
     <string name="student_waiting_all">Waiting for everyone to respond...</string>
-    <string name="student_waiting_teacher">Waiting for the teacher...</string>
-    <string name="slide_counter">%d / %d</string>
+    <string name="slide_counter">%1$d / %2$d</string>
     <string name="font_size_normal">Normal</string>
     <string name="font_size_large">Big</string>
     <string name="font_size_very_large">Very big</string>

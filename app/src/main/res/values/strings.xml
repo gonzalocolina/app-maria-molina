@@ -1,6 +1,6 @@
 <resources>
     <!-- Vista inicio -->
-    <string name="app_name">Pasos de María</string>
+    <string name="app_name">PasosDeMaría</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) fue una de las mujeres más importantes de la historia de Castilla ya que dedicó su vida a mantener la paz y la estabilidad del reino. Fue reina, madre de rey y abuela de rey, pero sobre todo una gobernante prudente y respetada, que supo ganarse el apoyo del pueblo y la nobleza en tiempos difíciles.</string>
     <string name="section_title_childhood_family">Infancia y familia</string>
@@ -36,9 +36,14 @@
     <string name="about_description">Pasos de María es una guía educativa e interactiva dedicada a divulgar
         la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid.
         La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés,
-        rutas en mapa y contenidos adaptados para público infantil. Su objetivo es facilitar el acceso a la historia
-        local de forma didáctica y visual; los datos se han recopilado a partir de fuentes históricas y culturales.
-        La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.
+        rutas en mapa, contenidos adaptados para público infantil y la opción de realizar cuestionarios de forma individual y multijugador.
+        La función de realizar los test de manera individual tiene una contraseña que será proporcionada por los
+        profesores, con el fin de que los alumnos no puedan aprenderse las preguntas antes de hacer el cuestionario
+        en multijugador pero que puedan luego por su cuenta afianzar los conocimientos. \n
+        Su objetivo es facilitar el acceso a la historia
+        local de forma didáctica y visual, y de una forma más moderna que pueda despertar aún más el interés
+        de los más jóvenes; los datos se han recopilado a partir de fuentes históricas y culturales.
+        La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.\n\n
         Aplicación creada por Miguel Bueno González, Gonzalo José Colina Báscones y Daniel Fernández García</string>
 
 

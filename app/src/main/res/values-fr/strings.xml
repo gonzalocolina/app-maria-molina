@@ -206,7 +206,6 @@
     <string name="btn_volver">Retour</string>
     <string name="btn_ver_arbol">Voir l\'arbre généalogique</string>
     <string name="btn_ver_panorama">Voir le monastère à 360°</string>
-    <string name="btn_ver_panorama">Voir le monastère à 360°</string>
     <string name="cd_imagen_ejemplo">Image d\'exemple</string>
     <string name="cd_panorama_monasterio">Vue panoramique du Monastère des Huelgas Reales</string>
     <string name="cd_imagen_inicial">Image initiale de María de Molina</string>
@@ -222,11 +221,10 @@
     <string name="kids_dificultad_facil">Facile</string>
     <string name="kids_dificultad_media">Moyenne</string>
     <string name="kids_dificultad_dificil">Difficile</string>
-    <string name="kids_iniciar_quiz">Commencer à jouer !</string>
-    <string name="kids_quiz_siguiente">Suivant</string>
+    <string name="kids_iniciar_quiz">Commencer à jouer !</string>
     <string name="kids_quiz_puntuacion">Score : %d</string>
     <string name="kids_quiz_finalizado">Questionnaire terminé !</string>
-    <string name="kids_quiz_resultado">Ton score final est : %d / %d</string>
+    <string name="kids_quiz_resultado">Ton score final est : %1$d / %2$d</string>
     <string name="kids_quiz_volver_menu">Retour au menu</string>
     <string name="kids_quiz_ranking">Voir le classement</string>
     <string name="kids_ver_diapositivas">Voir les diapositives</string>
@@ -288,7 +286,6 @@
     <string name="volver_al_menu">Retour au menu</string>
     <string name="tu_emoji">Toi !</string>
     <string name="ok">OK</string>
-    <string name="panorama_screen_title">360º Monastery</string>
     <string name="panorama_screen_title">Monastère 360°</string>
     <string name="panorama_instructions">Faites glisser pour faire tourner la vue • Pincez pour zoomer</string>
     <string name="panorama_zoom_in">Approcher</string>

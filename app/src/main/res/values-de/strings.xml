@@ -202,9 +202,8 @@
     <string name="kids_dificultad_dificil">Schwer</string>
     <string name="kids_iniciar_quiz">Spiel starten!</string>
     <string name="kids_quiz_siguiente">Nächstes</string>
-    <string name="kids_quiz_puntuacion">Punktzahl: %d</string>
     <string name="kids_quiz_finalizado">Quiz beendet!</string>
-    <string name="kids_quiz_resultado">Deine Endpunktzahl ist: %d / %d</string>
+    <string name="kids_quiz_resultado">Deine Endpunktzahl ist: %1$d / %2$d</string>
     <string name="kids_quiz_volver_menu">Zurück zum Menü</string>
     <string name="kids_quiz_ranking">Ranking ansehen</string>
 
@@ -234,9 +233,8 @@
     <string name="quiz_score_achieved">Du hast %d Punkte erreicht!</string>
     <string name="student_points_gained">+%d Punkte</string>
     <string name="student_answer_sent">✓ Antwort gesendet</string>
-    <string name="student_waiting_all">Warten auf alle Antworten...</string>
     <string name="student_waiting_teacher">Warten auf den Lehrer...</string>
-    <string name="slide_counter">%d / %d</string>
+    <string name="slide_counter">%1$d / %2$d</string>
     <string name="font_size_normal">Normal</string>
     <string name="font_size_large">Riesen</string>
     <string name="font_size_very_large">Sehr groß</string>
