@@ -94,7 +94,8 @@ fun Panorama360Screen(
                     .statusBarsPadding()
             ) {
                 // Barra superior con botón de volver y título
-                Box(
+
+                if (!isLandscape) Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color.Black.copy(alpha = 0.5f))
@@ -133,23 +134,7 @@ fun Panorama360Screen(
                 // Espacio flexible para empujar los controles hacia abajo
                 Box(modifier = Modifier.weight(1f))
 
-                // Instrucciones de uso (solo en portrait para no ocupar espacio)
-                if (!isLandscape) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.Black.copy(alpha = 0.5f))
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.panorama_instructions),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White.copy(alpha = 0.9f),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.fillMaxWidth()
-                        )
-                    }
-                }
+
 
                 // Controles de zoom en la esquina inferior derecha
                 Column(

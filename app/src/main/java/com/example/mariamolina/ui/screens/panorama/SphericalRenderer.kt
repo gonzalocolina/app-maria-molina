@@ -45,9 +45,9 @@ class SphericalRenderer(
     private var textureUniformHandle: Int = 0
 
     // Parámetros de la cámara (controlados por gestos)
-    var rotationX: Float = 0f  // Pitch (arriba/abajo)
-    var rotationY: Float = 0f  // Yaw (izquierda/derecha)
-    var zoom: Float = 1f       // Nivel de zoom (campo de visión)
+    var rotationX: Float = 20f  // Pitch (arriba/abajo)
+    var rotationY: Float = 77f  // Yaw (izquierda/derecha) - Iniciar mirando hacia el lado opuesto
+    var zoom: Float = 0.7f       // Nivel de zoom (campo de visión)
     
     // Ratio de aspecto guardado
     private var aspectRatio: Float = 1f

@@ -105,7 +105,8 @@ fun AppNavigation() {
         val esRutaTeacherLobby = currentDestination?.route == "teacher_lobby"
         val esRutaAdminLobby = currentDestination?.route == "admin_lobby"
         val esRutaProfile = currentDestination?.route == "profile"
-        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby || esRutaProfile
+        val esRankRewardScreen = currentDestination?.route == "rank_reward/{pin}/{posicion}/{total}/{puntuacion}"
+        val esRutaConScaffoldPropio = esRutaDetallePoi || esRutaAddQuestion || esRutaTeacherLobby || esRutaAdminLobby || esRutaProfile || esRankRewardScreen
         
         // Scroll behaviour para esconder/mostrar la TopAppBar cuando se scrollea
         // En tablets no queremos ocultar la barra superior al scrollear -> no usar scrollBehavior
