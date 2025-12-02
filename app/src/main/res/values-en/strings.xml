@@ -1,5 +1,6 @@
 <resources>
     <!-- Home Screen -->
+    <string name="app_name">PasosDeMaría</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) was one of the most important women in the history of Castile as she dedicated her life to maintaining peace and stability in the kingdom. She was queen, mother of a king, and grandmother of a king, but above all a prudent and respected ruler who knew how to gain the support of the people and nobility in difficult times.</string>
     <string name="section_title_childhood_family">Childhood and family</string>
@@ -83,25 +84,25 @@
     <string name="p1_ubicacion_b">C. San Benito, 3, 47003 Valladolid</string>
 
     <!-- Data: Punto 2 (Colegiata de Santa María la Mayor) -->
-    <string name="p2_titulo">Collegiate Church of Saint Mary the Great</string>
-    <string name="p2_desc">The Collegiate Church of Saint Mary the Great of Valladolid was first built in a Romanesque version in the late 11th century (around 1180) by order of Count Pedro Ansúrez. Later, in the 1220s, Don Juan Domínguez Medina, abbot of the collegiate church, ordered the demolition of the primitive Romanesque temple to build a new proto-Gothic one, preserving only the original tower. Over subsequent centuries it underwent other transformations. Today only one of the entrance gates remains.</string>
+    <string name="p2_titulo">Collegiate Church of Santa María la Mayor</string>
+    <string name="p2_desc">The Collegiate Church of Santa María la Mayor of Valladolid was first built in a Romanesque version in the late 11th century (around 1180) by order of Count Pedro Ansúrez. Later, in the 1220s, Don Juan Domínguez Medina, abbot of the collegiate church, ordered the demolition of the primitive Romanesque temple to build a new proto-Gothic one, preserving only the original tower. Over subsequent centuries it underwent other transformations. Today only one of the entrance gates remains.</string>
     <string name="p2_horarios">Open 24h</string>
     <string name="p2_ubicacion">C. Arribas, 1, 47002 Valladolid</string>
 
     <!-- Data: Punto 3 (Iglesia de Santa María de la Antigua) -->
-    <string name="p3_titulo">Church of Saint Mary the Ancient</string>
-    <string name="p3_desc">The Church of Saint Mary the Ancient in Valladolid is a Romanesque church from the 12th century, completed in Gothic style. From the 12th century it retains the tower and a portico. The tower, with a height close to 50 m and topped with a spire, is the tallest Romanesque bell tower in Spain. The rest of the building is Gothic and neo-Gothic, possibly rebuilt in the 14th century under Alfonso XI of Castile, with notable influences from the Cathedral of Santa María in Burgos.</string>
+    <string name="p3_titulo">Church of Santa María de la Antigua</string>
+    <string name="p3_desc">The Church of Santa María de la Antigua in Valladolid is a Romanesque church from the 12th century, completed in Gothic style. From the 12th century it retains the tower and a portico. The tower, with a height close to 50 m and topped with a spire, is the tallest Romanesque bell tower in Spain. The rest of the building is Gothic and neo-Gothic, possibly rebuilt in the 14th century under Alfonso XI of Castile, with notable influences from the Cathedral of Santa María in Burgos.</string>
     <string name="p3_horarios">Mon–Fri: 9:00–10:00, 18:30–20:00</string>
     <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
 
     <!-- Data: Punto 4 (Iglesia de San Miguel) -->
-    <string name="p4_titulo">Church of Saint Michael</string>
-    <string name="p4_desc">The original church was located at the centre of the current San Miguel Square. It was first dedicated to Saint Pelayo and changed to Saint Michael in the mid-12th century. A document dated 18 January 1151 already refers to it as the Church of Saint Michael, and it is considered the oldest parish in Valladolid. In 1478 the original church burned down and was rebuilt in the same place by order of the Catholic Monarchs at the end of the 15th century. During the fire all the city documents kept there were lost.</string>
+    <string name="p4_titulo">Church of San Miguel</string>
+    <string name="p4_desc">The original church was located at the centre of the current San Miguel Square. It was first dedicated to Saint Pelayo and changed to San Miguel in the mid-12th century. A document dated 18 January 1151 already refers to it as the Church of Saint Michael, and it is considered the oldest parish in Valladolid. In 1478 the original church burned down and was rebuilt in the same place by order of the Catholic Monarchs at the end of the 15th century. During the fire all the city documents kept there were lost.</string>
     <string name="p4_horarios">Not available</string>
     <string name="p4_ubicacion">Not available</string>
 
     <!-- Data: Punto 5 (Ermita de Santa María Magdalena) -->
-    <string name="p5_titulo">Old Hermitage of Saint Mary Magdalene</string>
+    <string name="p5_titulo">Old Hermitage of Santa María Magdalena</string>
     <string name="p5_desc">It was built on one of the gates of the old city wall, located on the outskirts in the area later called Prado de la Magdalena, which in those centuries was countryside and orchards. This small chapel retained its original appearance until 1538, when a funerary chapel ordered by Doctor Corral, auditor of the Royal Chancery and member of the Royal Council, was added — securing a prominent burial place. After the extension, the larger Renaissance/Gothic church was built.</string>
     <string name="p5_horarios">Mon 18:00–20:15; Tue 10:00–13:00, 16:00–20:15; Wed 10:00–13:00, 18:00–22:00; Thu 10:00–13:00, 18:00–20:30, 22:00–23:00; Fri 18:00–20:30; Sat 18:30–22:00; Sun 11:15–14:00, 19:00–20:15</string>
     <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
@@ -119,7 +120,7 @@
     <string name="p7_ubicacion">C. del Puente Mayor, 47003 Valladolid</string>
 
     <!-- Data: Punto 8 (Monasterio de Santa María de Palazuelos) -->
-    <string name="p8_titulo">Monastery of Saint Mary of Palazuelos</string>
+    <string name="p8_titulo">Monastery of Santa Maria de Palazuelos</string>
     <string name="p8_desc">The origin of the monastery is linked to the lineage of the lords of Meneses. In 1213 Alfonso Téllez de Meneses received the town of Palazuelos from Alfonso VIII as a reward for his participation in the Battle of Las Navas de Tolosa. Later, Alfonso Téllez and his wife ceded those lands to the Cistercian convent of San Andrés de Valvení so it could move there. In 1313 the councils of Castile met in this monastery to establish the regency of the young king Alfonso XI. María was born around 1264 in a place near the monastery of Santa María de Palazuelos, situated between the current Corcos del Valle and Cabezón de Pisuerga. It is a Cistercian monastic complex in a transitional style from Romanesque to Gothic: sober, austere, with little ornamentation, massive ashlar walls and large vaults. The church has a basilica plan, three naves of four spans and an east-oriented apse with three chapels: the central one with a polygonal apse and the lateral ones semicircular, a feature uncommon in Cistercian monasteries.</string>
     <string name="p8_horarios">Call +34 605 68 20 97</string>
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
@@ -144,7 +145,7 @@
 
     <!-- Data: Punto 12 (Monasterio de las Huelgas Reales) -->
     <string name="p12_titulo">Monastery of the Royal Huelgas</string>
-    <string name="p12_desc">The monastery is located outside the medieval city walls, on the site of the former palace of the founding queen, near the La Magdalena suburb. Its establishment is linked to Queen María of Molina, who around 1282 ceded her own palace to found a Cistercian monastery under the invocation of Santa María la Real de las Huelgas. Shortly before her death, María de Molina requested in her will to be buried in this monastery. In 1328 the monastery was partially destroyed by a fire resulting from the repression of the city by royal troops. The church has a Latin-cross plan inscribed in a rectangle, with a single nave divided into bays and lateral chapels between buttresses. Notable interior works include the tomb of María de Molina in the centre of the transept, carved in alabaster with an effigy of the queen recumbent and decorative reliefs bearing the shields of the House of Burgundy represented by two castles and two lions (the lions borne crowned from the time of Sancho IV). Also notable is the tomb she inherited from her father Alfonso de Molina, a lion without a crown framed by several castles. The main altarpiece was designed by Francisco de Praves, with sculptures by Gregorio Fernández (≈1613) and paintings by Tomás de Prado.</string>
+    <string name="p12_desc">The monastery is located outside the medieval city walls, on the site of the former palace of the founding queen, near the La Magdalena suburb. Its establishment is linked to Queen María de Molina, who around 1282 ceded her own palace to found a Cistercian monastery under the invocation of Santa María la Real de las Huelgas. Shortly before her death, María de Molina requested in her will to be buried in this monastery. In 1328 the monastery was partially destroyed by a fire resulting from the repression of the city by royal troops. The church has a Latin-cross plan inscribed in a rectangle, with a single nave divided into bays and lateral chapels between buttresses. Notable interior works include the tomb of María de Molina in the centre of the transept, carved in alabaster with an effigy of the queen recumbent and decorative reliefs bearing the shields of the House of Burgundy represented by two castles and two lions (the lions borne crowned from the time of Sancho IV). Also notable is the tomb she inherited from her father Alfonso de Molina, a lion without a crown framed by several castles. The main altarpiece was designed by Francisco de Praves, with sculptures by Gregorio Fernández (≈1613) and paintings by Tomás de Prado.</string>
     <string name="p12_horarios">Closed on Mondays; Tue–Sat: 10:00–14:00 (last access 13:00) and 16:00–18:30 (last access 17:30); Free access: Wed &amp; Thu 16:00–18:30 (last access 17:30); Sundays and holidays: 10:30–15:00 (last access 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
@@ -243,6 +244,7 @@
     <string name="student_points_gained">+%d points</string>
     <string name="student_answer_sent">✓ Answer sent</string>
     <string name="student_waiting_all">Waiting for everyone to respond...</string>
+    <string name="student_waiting_teacher">Waiting for the teacher...</string>
     <string name="slide_counter">%1$d / %2$d</string>
     <string name="font_size_normal">Normal</string>
     <string name="font_size_large">Big</string>

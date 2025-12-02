@@ -9,7 +9,7 @@
     <string name="about_description">Diese Anwendung ist ein Beispiel über María Molina.</string>
 
     <!-- Allgemeine App-Strings (übersetzt aus español) -->
-    <string name="app_name">Pasos de María</string>
+    <string name="app_name">PasosDeMaría</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) war eine der bedeutendsten Frauen der kastilischen Geschichte, die ihr Leben der Bewahrung von Frieden und Stabilität des Königreichs widmete. Sie war Königin, Mutter eines Königs und Großmutter eines Königs, vor allem aber eine kluge und geachtete Herrscherin, die sich in schweren Zeiten die Unterstützung des Volkes und des Adels erwarb.</string>
     <string name="section_title_childhood_family">Kindheit und Familie</string>
@@ -68,7 +68,7 @@
     <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
 
     <!-- Data: Punto 4 -->
-    <string name="p4_titulo">Kirche Sankt Michael</string>
+    <string name="p4_titulo">Kirche San Miguel</string>
     <string name="p4_desc">Die ursprüngliche Kirche befand sich im Zentrum der heutigen Platz von San Miguel. Zunächst war sie dem Heiligen Pelayo geweiht und wechselte Mitte des 12. Jahrhunderts zur Widmung an den Heiligen Michael. In einer Urkunde vom 18. Januar 1151 wird sie bereits als Kirche Sankt Michael genannt und gilt als die älteste Pfarrei von Valladolid. 1478 wurde die ursprüngliche Kirche bei einem Brand zerstört und später am selben Ort auf Geheiß der Katholischen Könige Ende des 15. Jahrhunderts wiedererrichtet. Bei dem Brand gingen alle städtischen Dokumente verloren, die dort aufbewahrt wurden.</string>
     <string name="p4_horarios">Nicht verfügbar</string>
     <string name="p4_ubicacion">Nicht verfügbar</string>
@@ -202,6 +202,7 @@
     <string name="kids_dificultad_dificil">Schwer</string>
     <string name="kids_iniciar_quiz">Spiel starten!</string>
     <string name="kids_quiz_siguiente">Nächstes</string>
+    <string name="kids_quiz_puntuacion">Punktzahl: %d</string>
     <string name="kids_quiz_finalizado">Quiz beendet!</string>
     <string name="kids_quiz_resultado">Deine Endpunktzahl ist: %1$d / %2$d</string>
     <string name="kids_quiz_volver_menu">Zurück zum Menü</string>
@@ -242,6 +243,7 @@
     <string name="quiz_score_achieved">Du hast %d Punkte erreicht!</string>
     <string name="student_points_gained">+%d Punkte</string>
     <string name="student_answer_sent">✓ Antwort gesendet</string>
+    <string name="student_waiting_all">Warten darauf, dass alle antworten...</string>
     <string name="student_waiting_teacher">Warten auf den Lehrer...</string>
     <string name="slide_counter">%1$d / %2$d</string>
     <string name="font_size_normal">Normal</string>

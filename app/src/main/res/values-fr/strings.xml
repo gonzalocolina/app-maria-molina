@@ -9,7 +9,7 @@
     <string name="about_description">Cette application est un exemple sur María Molina.</string>
 
     <!-- Chaînes générales (traduction du espagnol) -->
-    <string name="app_name">MariaMolina</string>
+    <string name="app_name">PasosDeMaría</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) fut l\'une des femmes les plus importantes de l\'histoire de Castille ; elle consacra sa vie à préserver la paix et la stabilité du royaume. Reine, mère de roi et grand‑mère de roi, elle reste surtout une gouvernante prudente et respectée, qui sut gagner le soutien du peuple et de la noblesse en des temps difficiles.</string>
     <string name="section_title_childhood_family">Enfance et famille</string>
@@ -61,19 +61,19 @@
     <string name="p2_ubicacion">C. Arribas, 1, 47002 Valladolid</string>
 
     <!-- Point 3 -->
-    <string name="p3_titulo">Église Sainte-Marie de l\'Antique</string>
-    <string name="p3_desc">L\'église Santa María de  l\'Antique de Valladolid est une église romane du XIIe siècle, mais achevée dans un style gothique. Du XIIe siècle subsistent la tour et un porche. La tour, haute d\'environ 50 m, est considérée comme le clocher roman le plus haut d\'Espagne. Le reste du bâtiment est gothique et néogothique, probablement reconstruit au XIVe siècle sous le règne d\'Alfonso XI.</string>
+    <string name="p3_titulo">Église Santa María de la Antigua</string>
+    <string name="p3_desc">L\'église Santa María de la Antigua de Valladolid est une église romane du XIIe siècle, mais achevée dans un style gothique. Du XIIe siècle subsistent la tour et un porche. La tour, haute d\'environ 50 m, est considérée comme le clocher roman le plus haut d\'Espagne. Le reste du bâtiment est gothique et néogothique, probablement reconstruit au XIVe siècle sous le règne d\'Alfonso XI.</string>
     <string name="p3_horarios">Lundi–vendredi : 9:00–10:00, 18:30–20:00</string>
     <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
 
     <!-- Point 4 -->
-    <string name="p4_titulo">Église Saint-Michel</string>
-    <string name="p4_desc">L\'église primitive se trouvait au centre de l\'actuelle Place Saint-Michel. Elle fut d\'abord dédiée à San Pelayo, puis à San Miguel au milieu du XIIe siècle. Une charte du 18 janvier 1151 la mentionne déjà comme l\'église Saint-Michel, et elle est considérée comme la paroisse la plus ancienne de Valladolid. En 1478, elle fut détruite par un incendie et reconstruite par la volonté des Rois Catholiques à la fin du XVe siècle.</string>
+    <string name="p4_titulo">Église San Miguel</string>
+    <string name="p4_desc">L\'église primitive se trouvait au centre de l\'actuelle Place San Miguel. Elle fut d\'abord dédiée à San Pelayo, puis à San Miguel au milieu du XIIe siècle. Une charte du 18 janvier 1151 la mentionne déjà comme l\'église Saint-Michel, et elle est considérée comme la paroisse la plus ancienne de Valladolid. En 1478, elle fut détruite par un incendie et reconstruite par la volonté des Rois Catholiques à la fin du XVe siècle.</string>
     <string name="p4_horarios">Non disponible</string>
     <string name="p4_ubicacion">Non disponible</string>
 
     <!-- Point 5 -->
-    <string name="p5_titulo">Ancienne ermitage Sainte-Marie-Madeleine</string>
+    <string name="p5_titulo">Ancienne ermitage Santa María Magdalena</string>
     <string name="p5_desc">Elle fut construite sur l\'un des portails de l\'ancienne muraille de la ville, à l\'extérieur, dans le lieu qui fut plus tard appelé Prado de la Magdalena, une zone alors constituée de champs et de potagers. Cette petite chapelle conserva son aspect d\'origine jusqu\'en 1538, lorsqu\'une chapelle funéraire fut ajoutée sur ordre du docteur Corral, haut magistrat, assurant ainsi un emplacement d\'inhumation choisi.</string>
     <string name="p5_horarios">Lundi 18:00–20:15 ; Mardi 10:00–13:00, 16:00–20:15 ; Mercredi 10:00–13:00, 18:00–22:00 ; Jeudi 10:00–13:00, 18:00–20:30, 22:00–23:00 ; Vendredi 18:00–20:30 ; Samedi 18:30–22:00 ; Dimanche 11:15–14:00, 19:00–20:15</string>
     <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
@@ -231,6 +231,7 @@
     <string name="kids_dificultad_media">Moyenne</string>
     <string name="kids_dificultad_dificil">Difficile</string>
     <string name="kids_iniciar_quiz">Commencer à jouer !</string>
+    <string name="kids_quiz_siguiente">Suivant</string>
     <string name="kids_quiz_puntuacion">Score : %d</string>
     <string name="kids_quiz_finalizado">Questionnaire terminé !</string>
     <string name="kids_quiz_resultado">Ton score final est : %1$d / %2$d</string>
