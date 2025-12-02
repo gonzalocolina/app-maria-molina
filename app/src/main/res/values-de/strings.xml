@@ -1,0 +1,315 @@
+<resources>
+    <!-- Profile Screen -->
+    <string name="profile_title">Profil</string>
+    <string name="back_button_description">Zurück</string>
+    <string name="select_language_title">Sprache auswählen</string>
+    <string name="language_label">Sprache</string>
+    <string name="language_changed_toast">Sprache geändert zu %s</string>
+    <string name="about_title">Über</string>
+    <string name="about_description">Diese Anwendung ist ein Beispiel über María Molina.</string>
+
+    <!-- Allgemeine App-Strings (übersetzt aus español) -->
+    <string name="app_name">PasosDeMaría</string>
+    <string name="home_screen_title">María de Molina</string>
+    <string name="home_screen_intro_paragraph">María de Molina (1264–1321) war eine der bedeutendsten Frauen der kastilischen Geschichte, die ihr Leben der Bewahrung von Frieden und Stabilität des Königreichs widmete. Sie war Königin, Mutter eines Königs und Großmutter eines Königs, vor allem aber eine kluge und geachtete Herrscherin, die sich in schweren Zeiten die Unterstützung des Volkes und des Adels erwarb.</string>
+    <string name="section_title_childhood_family">Kindheit und Familie</string>
+    <string name="paragraph_childhood_family_1">Sie wurde um 1264 geboren, wahrscheinlich in der Nähe des Klosters Santa María de Palazuelos, zwischen den heutigen Orten Corcos del Valle und Cabezón de Pisuerga.</string>
+    <string name="paragraph_childhood_family_2">María stammte aus einer mächtigen Adelsfamilie. Sie war die Tochter von Alfonso de Molina, dem Bruder von König Fernando III, und von Mayor Alfonso de Meneses. Bereits in jungen Jahren wuchs sie im politischen Umfeld des kastilischen Hofes auf. Ihre Ausbildung bereitete sie auf Verantwortung vor; sie lernte lesen, schreiben und die Angelegenheiten des Reiches zu verstehen — etwas, das für Frauen ihrer Zeit ungewöhnlich war.</string>
+    <string name="section_title_marriage_sancho">Ehe mit Sancho</string>
+    <string name="paragraph_marriage_sancho">Im Jahr 1282 heiratete sie den Infant Sancho, den späteren König Sancho IV. Ihre Heirat stieß nicht bei allen auf Zustimmung: sie waren nahe Verwandte und benötigten eine päpstliche Dispense, die Jahre auf sich warten ließ. Dennoch stand María ihrem Gemahl in den härtesten Zeiten bei, auch als seine Thronansprüche angefochten wurden. Nach dem Tod seines Vaters Alfonso X wurde Sancho zum König gekrönt und sie zur Königin von Kastilien.</string>
+    <string name="section_title_queen_sancho_iv">Königin an der Seite von Sancho IV</string>
+    <string name="paragraph_queen_sancho_iv">Während der Herrschaft von Sancho IV (1284–1295) war María aktiv an politischen Entscheidungen beteiligt. Sie erwarb sich den Ruf einer intelligenten, besonnenen und gerechten Frau. Sie begleitete den König auf Feldzügen und verteidigte die Legitimität ihrer Familie gegen innere Feinde des Reiches. Ihre Zeit als Königin war geprägt von Auseinandersetzungen mit dem Adel und der Stärkung der kastilischen Monarchie.</string>
+    <string name="section_title_regencies">Die Regentschaften von María de Molina</string>
+    <string name="paragraph_regencies">Nach dem Tod ihres Mannes Sancho IV im Jahr 1295 übernahm María die Regentschaft für ihren Sohn Fernando IV, der damals nur neun Jahre alt war. Mit Umsicht und Entschlossenheit hielt sie die Krone inmitten innerer Konflikte und gewann den Respekt von Adel und Stadträten. Jahre später, 1312, regierte sie erneut als Regentin für ihren Enkel Alfonso XI und bewies abermals ihre Weisheit und Fähigkeit, Frieden und Einheit des Reiches in schwierigen Zeiten zu bewahren.</string>
+    <string name="section_title_legacy_works">Vermächtnis und Werke</string>
+    <string name="paragraph_legacy_works">María de Molina wird als eine der großen Königinnen Kastiliens in Erinnerung behalten, wegen ihrer politischen Fähigkeiten und ihres Sinns für Gerechtigkeit. Sie gründete und unterstützte zahlreiche Klöster, darunter das von Las Huelgas in Valladolid, wo sie beigesetzt wurde. Sie förderte Bildung, Religion und den Frieden in Kriegszeiten. Ihre Gestalt symbolisiert Besonnenheit, Loyalität und das Eintreten für das Gemeinwohl.</string>
+
+    <!-- Vista puntos de interes / Detail UI -->
+    <string name="detalle_descripcion">Beschreibung</string>
+    <string name="detalle_info_practica">Praktische Informationen</string>
+    <string name="detalle_horarios">Öffnungszeiten:</string>
+    <string name="detalle_ubicacion">Ort:</string>
+    <string name="detalle_ver_en_mapa">Im Karten ansehen</string>
+    <string name="detalle_marcar_visitado">Als besucht markieren</string>
+
+    <string name="detalle_visitado">Besucht</string>
+    <string name="detalle_subpuntos_titulo">Orte dieses Punktes</string>
+
+    <!-- Profile Screen (ya existentes mantenidos) -->
+    <!-- Datos de usuario -->
+    <string name="font_size_changed_toast">Schriftgröße geändert zu %s</string>
+    <string name="profile_user_section_title">Dein Nickname</string>
+    <string name="profile_nickname_label">Nickname</string>
+    <string name="profile_save_button">Nickname speichern</string>
+    <string name="profile_saved_success">Gespeichert!</string>
+    <string name="profile_error_message">Fehler: %1$s</string>
+
+    <!-- Data: Punto 1 (Palazuelos) -->
+    <string name="p1_titulo">Alcazarejo</string>
+    <string name="p1_desc">Der Alcázar Real von Valladolid (12.–13. Jahrhundert), im westlichen Teil der mittelalterlichen Stadt gelegen, nahe der Vereinigung des nördlichen Zweigs des Río Esgueva mit dem Pisuerga, war eine befestigte Palastanlage, die aus zwei Bereichen bestand: dem Alcazarejo (oder alten Alcázar) an der niedrigen Terrasse am Fluss Esgueva und dem größeren Alcázar auf der höheren Terrasse in der Nähe der Pfarrkirche San Julián. Nach Jahrhunderten königlicher Nutzung und mehreren Umbauten wurde es 1390 an die Benediktiner geschenkt. Heute sind seine Überreste in das Kloster San Benito el Real und das Museo Patio Herreriano integriert, wo noch Spuren der alten Anlage sichtbar sind. Der Alcazarejo hatte eine quadratische Form — etwa 31 Meter Seite laut Ausgrabungen — mit acht massiven Türmen: einem in der Mitte jeder Mauerfläche und einem an den Ecken.</string>
+    <string name="p1_ubicacion">Pl. de la Rinconada, 3, 47001 Valladolid</string>
+    <string name="p1_nombre_a">Museo Patio Herreriano</string>
+    <string name="p1_nombre_b">Kloster San Benito</string>
+    <string name="p1_horarios_a">11:00–14:00, 17:00–20:00 (Dienstag–Freitag); Samstag: 11:00–20:00 und Sonntag 11:00–15:00</string>
+    <string name="p1_horarios_b">Nicht verfügbar</string>
+    <string name="p1_ubicacion_a">C. Jorge Guillén, 6, 47003 Valladolid</string>
+    <string name="p1_ubicacion_b">C. San Benito, 3, 47003 Valladolid</string>
+
+    <!-- Data: Punto 2 -->
+    <string name="p2_titulo">Stiftskirche Santa María la Mayor</string>
+    <string name="p2_desc">Die Kollegiatkirche Santa María la Mayor von Valladolid wurde in ihrer ersten romanischen Version im letzten Viertel des 11. Jahrhunderts bis etwa 1180 auf Anordnung des Grafen Pedro Ansúrez erbaut. Später, in den 1220er Jahren, ließ Juan Domínguez Medina, der Abt der Kollegiatkirche, den ursprünglichen romanischen Tempel abreißen, um einen protogotischen Neubau zu errichten; erhalten blieb lediglich der Turm des ursprünglichen Ensembles. In späteren Jahrhunderten wurde die Kirche weiter verändert und heute ist nur noch eines der Eingangsportale erhalten.</string>
+    <string name="p2_horarios">Rund um die Uhr geöffnet</string>
+    <string name="p2_ubicacion">C. Arribas, 1, 47002 Valladolid</string>
+
+    <!-- Data: Punto 3 -->
+    <string name="p3_titulo">Kirche Santa María de la Antigua</string>
+    <string name="p3_desc">Die Kirche Santa María de la Antigua in Valladolid ist eine romanische Kirche aus dem 12. Jahrhundert, die später im gotischen Stil vollendet wurde. Vom 12. Jahrhundert stammen der Turm und ein Portikus. Der Turm erreicht eine Höhe von etwa 50 m und gilt als der höchste romanische Glockenturm Spaniens. Der Rest des Gebäudes ist gotisch und neugotisch, vermutlich im 14. Jahrhundert unter Alfonso XI. teilweise wiederaufgebaut, mit starken Einflüssen der Kathedrale Santa María von Burgos.</string>
+    <string name="p3_horarios">Montag–Freitag: 9:00–10:00, 18:30–20:00</string>
+    <string name="p3_ubicacion">C. del Arzobispo Gandasegui, s/n, 47002 Valladolid</string>
+
+    <!-- Data: Punto 4 -->
+    <string name="p4_titulo">Kirche San Miguel</string>
+    <string name="p4_desc">Die ursprüngliche Kirche befand sich im Zentrum der heutigen Platz von San Miguel. Zunächst war sie dem Heiligen Pelayo geweiht und wechselte Mitte des 12. Jahrhunderts zur Widmung an den Heiligen Michael. In einer Urkunde vom 18. Januar 1151 wird sie bereits als Kirche Sankt Michael genannt und gilt als die älteste Pfarrei von Valladolid. 1478 wurde die ursprüngliche Kirche bei einem Brand zerstört und später am selben Ort auf Geheiß der Katholischen Könige Ende des 15. Jahrhunderts wiedererrichtet. Bei dem Brand gingen alle städtischen Dokumente verloren, die dort aufbewahrt wurden.</string>
+    <string name="p4_horarios">Nicht verfügbar</string>
+    <string name="p4_ubicacion">Nicht verfügbar</string>
+
+    <!-- Data: Punto 5 -->
+    <string name="p5_titulo">Alte Eremita Santa María Magdalena</string>
+    <string name="p5_desc">Sie wurde auf einem der Tore der alten Stadtmauer außerhalb der Stadtmauern errichtet, an dem Ort, der später als Prado de la Magdalena bekannt wurde, einer Gegend, die damals Felder und Gärten war. Diese kleine Kapelle blieb in ihrem ursprünglichen Zustand bis 1538 erhalten, als eine Grabkapelle auf Veranlassung von Doktor Corral, Richter der Real Chancillería und Mitglied des Königlichen Rates, hinzugefügt wurde, um einen repräsentativen Begräbnisplatz mit guter Aussicht zu schaffen. Nach der Erweiterung wurde später die größere Renaissance-/gotische Kirche errichtet.</string>
+    <string name="p5_horarios">Montag 18:00–20:15; Dienstag 10:00–13:00, 16:00–20:15; Mittwoch 10:00–13:00, 18:00–22:00; Donnerstag 10:00–13:00, 18:00–20:30, 22:00–23:00; Freitag 18:00–20:30; Samstag 18:30–22:00; Sonntag 11:15–14:00, 19:00–20:15</string>
+    <string name="p5_ubicacion">C. Colón, 20, 47005 Valladolid</string>
+
+    <!-- Data: Punto 6 -->
+    <string name="p6_titulo">Marktplatz</string>
+    <string name="p6_desc">Der heutige Plaza Mayor von Valladolid war ursprünglich als "Plaza del Mercado" bekannt, da im Mittelalter der zentrale Markt der Stadt an diesem Ort stattfand. Dokumente belegen, dass seit 1260 an diesem Ort ein Handelsmarkt abgehalten wurde. Im Mittelalter war der Platz ein offener Raum vor den Stadtmauern oder am Stadtrand, wo der Hauptmarkt der Stadt entstand: Fleisch, Fisch, Gemüse und andere Erzeugnisse wurden dort verkauft. Mit der Zeit organisierte sich der Handel in Zunftstraßen rund um den Platz — z. B. die Straße der Leinenwaren oder die Straße der Drechsler — und spiegelte die handwerkliche und handelsmäßige Tätigkeit rund um den Markt wider. Im September 1561 zerstörte ein großer Brand einen großen Teil der Umgebung des Platzes, was eine städtebauliche Neuordnung zur Folge hatte.</string>
+    <string name="p6_horarios">Nicht verfügbar</string>
+    <string name="p6_ubicacion">Nicht verfügbar</string>
+
+    <!-- Data: Punto 7 -->
+    <string name="p7_titulo">Puente Mayor</string>
+    <string name="p7_desc">Valladolid, an der Mündung des Esgueva in den Pisuerga gelegen, verfügte seitdem über seine wichtigste Flussquerung über den Pisuerga — die sogenannte Hauptbrücke — die die Stadt mit den Ortschaften auf der anderen Seite verband und zur Entstehung des Viertels La Victoria beitrug. Der lokalen Überlieferung nach wird der Bau einer steinernen Brücke Doña Eylo, der Ehefrau von Pedro Ansúrez, gegen Ende des 11. Jahrhunderts (um 1080) zugeschrieben, wahrscheinlich über einen früheren Holzübergang; die sichtbaren Teile der heutigen Brücke stammen jedoch größtenteils aus späteren Bauphasen (13.–14. Jahrhundert), und die Zuschreibung an Eylo gehört eher in den Bereich der Legende als zu einer archäologischen Gewissheit.</string>
+    <string name="p7_horarios">Nicht verfügbar</string>
+    <string name="p7_ubicacion">C. del Puente Mayor, 47003 Valladolid</string>
+
+    <!-- Data: Punto 8 -->
+    <string name="p8_titulo">Kloster Santa María de Palazuelos</string>
+    <string name="p8_desc">Der Ursprung des Klosters hängt mit der Familie der Herren von Meneses zusammen. 1213 erhielt Alfonso Téllez de Meneses die Villa Palazuelos von Alfonso VIII als Belohnung für seine Teilnahme an der Schlacht von Las Navas de Tolosa. Später übergaben Alfonso Téllez und seine Frau diese Ländereien an das zisterziensische Kloster San Andrés de Valvení. 1313 trafen sich die kastilischen Räte in diesem Kloster, um die Regentschaft des jungen Königs Alfonso XI zu bestimmen. María wurde um 1264 in der Nähe des Klosters Santa María de Palazuelos geboren. Es handelt sich um einen zisterziensischen Klosterkomplex im Übergangsstil von Romanik zu Gotik: schlicht, streng, mit wenig Ornamentik, mächtigen Quadermauern und großen Gewölben. Die Kirche hat eine Basilikaform mit drei Schiffen und vier Jochen sowie eine polygonale Apsis in der Mitte und halbkreisförmige Seitenkapellen, eine ungewöhnliche Eigenschaft in zisterziensischen Klöstern.</string>
+    <string name="p8_horarios">Anruf unter 605 68 20 97</string>
+    <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
+
+    <!-- Data: Punto 9 -->
+    <string name="p9_titulo">Mudéjar-Bogen</string>
+    <string name="p9_desc">Der Palast diente als Residenz der Königsfamilie, unter anderem des Königs Sancho IV von Kastilien und seiner Frau María de Molina, auf einem Gelände, das im 13. Jahrhundert als königliche Residenz angepasst wurde. Nach dem Tod von Sancho IV im Jahr 1295 übte seine Witwe María de Molina die Regentschaft aus und geriet in politische Konflikte, die zu verstärkten Sicherheitsmaßnahmen am Palast führten und ihn in eine befestigte Anlage verwandelten. Mit der Zeit wurden die Gebäude verlassen oder umgenutzt; heute sind nur noch einige Reste erhalten, darunter das maurische Tor, bekannt als "Puerta de la Magdalena" oder "Puerta del Palacio de María de Molina". Das befestigte Tor zeigt mudéjar-Elemente: einen äußeren Hufeisenbogen, einen versetzten Zugang (also eine Drehung, um direkten Zutritt zu erschweren) und zwei Öffnungen, die wahrscheinlich als Wachhäuschen dienten.</string>
+    <string name="p9_horarios">Dauerhaft geschlossen</string>
+    <string name="p9_ubicacion">C. Estudios, 20, 47005 Valladolid</string>
+
+    <!-- Data: Punto 10 -->
+    <string name="p10_titulo">Burg von Tiedra</string>
+    <string name="p10_desc">Die Burg liegt in der Gemeinde Tiedra in der Provinz Valladolid, auf einem Hügel, der die Ebene der Montes Torozos überragt und ihr eine strategische und defensive Lage verleiht. Die erste schriftliche Erwähnung der Burg oder des Turms von Tiedra geht auf das 11. Jahrhundert zurück, zur Zeit von König Sancho II von Kastilien, als er El Cid anwies, mit der Infantin Urraca von Zamora über die Übergabe der Stadt Zamora zu verhandeln, unter anderem gegen die Burg von Tiedra. Im 12. und 13. Jahrhundert wechselte die Burg mehrfach den Besitzer und wurde 1203 von König Alfonso IX von León an seine Frau Berenguela von Kastilien übergeben. 1285 verlieh König Sancho IV die Stadt mit ihrem Turm an Pedro Álvarez de Asturias. Die Tochter Pedros heiratete Alfonso Téllez de Meneses, wodurch die Burg in den Besitz dieser mächtigen Familie gelangte. Vor dieser Zeit kontrollierte die Familie Meneses bereits mehrere nahegelegene Orte, sodass angenommen wird, dass María de Molina in dieser Umgebung aufgewachsen ist, die mit der Burg von Tiedra verbunden ist. Der älteste erhaltene Teil ist der Wehrturm oder Bergfried, datiert auf Ende des 12. oder Anfang des 13. Jahrhunderts. Dieser quadratische Turm besteht aus Quadermauerwerk und hat mehrere Ebenen: ein Kerkeruntergeschoss, gewölbte Zwischenräume und ein Aussichtsdach mit weitem Panorama über die Ebene.</string>
+    <string name="p10_horarios">Rufen Sie 983 791 405 order 667 763 852 an</string>
+    <string name="p10_ubicacion">Calle del Castillo, 47870 Tiedra, Valladolid</string>
+
+    <!-- Data: Punto 11 -->
+    <string name="p11_titulo">Burg von Montealegre</string>
+    <string name="p11_desc">Die Burg befindet sich in Montealegre de Campos in der Provinz Valladolid. Befestigungsbauten an diesem Ort sind seit 967 belegt, im Kontext der Auseinandersetzungen zwischen den Königreichen Kastilien und León. Die Burg erhebt sich strategisch auf dem höchsten Punkt des Hügels und beherrscht die Ebene von Tierra de Campos. Das heutige Bauwerk wurde im 13. Jahrhundert von Alfonso Téllez de Meneses errichtet; später geriet es in den Besitz der Familie Alburquerque (Herzöge von Alburquerque) und war in verschiedene Adelskonflikte verwickelt. Während des Aufstands der Gemeinden (1520–1521) diente es auch als Verteidigungs- und Zufluchtsort. Die Burg von Montealegre, die zur Familie Téllez de Meneses — der mütterlichen Linie von María de Molina — gehörte, war einer der Orte ihrer Kindheit und Teil ihres herrschaftlichen Umfelds. Architektonisch hat sie eine annähernd quadratische oder trapezförmige Grundrissform mit massiven Mauern von 4–5 Metern Dicke. Drei Ecken besitzen rechteckige Türme, während an der vierten Ecke der Bergfried mit fünfeckigem Grundriss steht, ein typisches Merkmal kastilischer Festungen des 14. Jahrhunderts. Der Bergfried erreicht eine Höhe von etwa 20 Metern und bietet einen weiten Ausblick über die Ebene der Montes Torozos.</string>
+    <string name="p11_horarios">Vorübergehend geschlossen</string>
+    <string name="p11_ubicacion">C. Nicolás Rodríguez, 1, 47816 Montealegre de Campos, Valladolid</string>
+
+    <!-- Data: Punto 12 -->
+    <string name="p12_titulo">Kloster der königlichen Huelgas</string>
+    <string name="p12_desc">Das Kloster liegt außerhalb der Mauern des mittelalterlichen Stadtkerns, an dem Ort des ehemaligen Palastes der Gründerkönigin in der Nähe des Vorortes La Magdalena. Seine Entstehung wird mit Königin María de Molina in Verbindung gebracht, die um 1282 ihren eigenen Palast zur Gründung eines Zisterzienserklosters unter dem Namen "Santa María la Real de las Huelgas" stiftete. Kurz vor ihrem Tod bat María de Molina in ihrem Testament darum, in diesem Kloster beigesetzt zu werden. 1328 wurde das Kloster teilweise durch einen Brand beschädigt, der im Zuge einer Unterdrückungsaktion der Stadt durch königliche Truppen entstand. Die Kirche hat einen lateinischen Kreuzgrundriss in einem Rechteck mit einem Schiff, das in Joche unterteilt ist, und Seitenkapellen zwischen den Strebepfeilern. Besonders hervorzuheben sind Werke von großem Wert, darunter das Grabmal von María de Molina im Zentrum des Kreuzgangs aus Alabaster mit Figuren der liegenden Königin und dekorativen Reliefs mit Wappen der burgundischen Königsfamilie, dargestellt durch zwei Burgen und zwei löwen (Löwen mit Krone, wie bei Sancho IV). Außerdem das Wappen ihres Vaters Alfonso de Molina, ein ungekrönter Löwe umgeben von Burgen. Hervorzuheben ist auch ein Hochaltar von Francisco de Praves mit Skulpturen von Gregorio Fernández (≈1613) und Gemälden von Tomás de Prado.</string>
+    <string name="p12_horarios">Montag geschlossen; Dienstag–Samstag: 10:00–14:00 (Zutritt bis 13:00) und 16:00–18:30 (Zutritt bis 17:30); Freier Eintritt: Mittwoch und Donnerstag 16:00–18:30 (letzter Einlass 17:30); Sonntage und Feiertage: 10:30–15:00 (Zutritt bis 14:00)</string>
+    <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
+
+    <!-- Deutsche Übersetzungen für die Kinder-Slides -->
+    <string name="slide_1_title">María de Molina</string>
+    <string name="slide_1_desc">Hallo! Ich bin María de Molina und werde dir meine Geschichte erzählen.</string>
+
+    <string name="slide_2_title">Meine Eltern</string>
+    <string name="slide_2_desc">Meine Eltern waren der Infant Alfonso de Molina und Doña Mayor de Meneses.</string>
+
+    <string name="slide_3_title">Schloss Montealegre</string>
+    <string name="slide_3_desc">Gewohntes Wohnsitz von María de Molina.</string>
+
+    <string name="slide_5_title">Prinz Sancho</string>
+    <string name="slide_5_desc">Als ich 15 war, verliebte sich ein Prinz namens Sancho in mich.</string>
+
+    <string name="slide_6_title">Unsere Hochzeit</string>
+    <string name="slide_6_desc">1282 heirateten wir in Toledo.</string>
+
+    <string name="slide_7_title">Palast von Valladolid</string>
+    <string name="slide_7_desc">Später zogen wir nach Valladolid in den Palast von Sancho.</string>
+
+    <string name="slide_8_title">Könige von Kastilien und León</string>
+    <string name="slide_8_desc">Als Sanchos Vater starb, wurde Sancho zum König von Kastilien und León gewählt und ich wurde Königin.</string>
+
+    <string name="slide_9_title">Die Schlachten</string>
+    <string name="slide_9_desc">Während der Herrschaft half ich Sancho in vielen Schlachten zu kämpfen.</string>
+
+    <string name="slide_10_title">König Fernando</string>
+    <string name="slide_10_desc">Jahre später erkrankte Sancho und starb. Ich sorgte dafür, dass mein Sohn Fernando zum König ernannt wurde.</string>
+
+    <string name="slide_11_title">Regentin von Fernando</string>
+    <string name="slide_11_desc">Fernando war noch klein und ich half ihm zu regieren, bis er volljährig war.</string>
+
+    <string name="slide_12_title">König Alfonso</string>
+    <string name="slide_12_desc">Fernando war ein guter König, starb jedoch später; ich half für meinen Enkel Alfonso zu regieren, als er noch zu jung war.</string>
+
+    <string name="slide_13_title">Meine letzte Ruhestätte</string>
+    <string name="slide_13_desc">Vor meinem Tod bat ich darum, im Kloster Santa María La Real de Huelgas beigesetzt zu werden.</string>
+
+    <string name="slide_14_title">Das Geheimnis meines Grabes</string>
+    <string name="slide_14_desc">An meinem Grab kann man erkennen, ob es regnen wird: Stunden vorher erscheinen Flecken darauf. Aber sei vorsichtig… wenn du sie berührst, piekst es!</string>
+
+    <string name="slide_15_title">Versteckte Figuren</string>
+    <string name="slide_15_desc">Auf meinem Grab sind außerdem Figuren einer Eidechse, eines Mönchs, der sich die Ohren zuhält, und eines Monsters versteckt. Versuche sie zu finden!</string>
+
+    <!-- Navigation -->
+    <string name="nav_home_title">Découvrez l\'histoire de María de Molina</string>
+    <string name="nav_home_subtitle">Entdecke die Geschichte von María de Molina</string>
+    <string name="nav_points_title">Sehenswürdigkeiten</string>
+    <string name="nav_points_subtitle">Historisches Valladolid</string>
+    <string name="nav_map_title">Karte</string>
+    <string name="nav_map_subtitle">Finde deine Route</string>
+    <string name="nav_kids_title">Kinder</string>
+    <string name="nav_kids_subtitle">Programme für Kinder</string>
+    <string name="nav_profile_title">Profil</string>
+    <string name="nav_home_bottom">Start</string>
+    <string name="nav_points_bottom">Sehenswürdigkeiten</string>
+    <string name="nav_map_bottom">Karte</string>
+    <string name="nav_kids_bottom">Kinder</string>
+
+    <!-- Strings extraídos (botones, contentDescriptions y formatos) -->
+    <string name="btn_volver">Zurück</string>
+    <string name="btn_ver_arbol">Stammbau anzeigen</string>
+    <string name="btn_ver_panorama">Kloster 360° ansehen</string>
+    <string name="cd_imagen_ejemplo">Beispielbild</string>
+    <string name="cd_panorama_monasterio">Panoramablick auf das Kloster Las Huelgas Reales</string>
+    <string name="cd_imagen_inicial">Startbild von María de Molina</string>
+    <string name="cd_volver">Zurück</string>
+    <string name="cd_horarios">Öffnungszeiten</string>
+    <string name="cd_ubicacion">Ort</string>
+    <string name="cd_perfil">Profil</string>
+    <string name="cd_ajustes">Einstellungen</string>
+
+    <!-- Sección infantil / Quiz -->
+    <string name="kids_entry_titulo">Kinderbereich</string>
+    <string name="kids_menu_titulo">Kinderquiz</string>
+    <string name="kids_entry_descripcion">Lerne die Geschichte von Maria de Molina auf eine unterhaltsamere Weise kennen und zeige, was du über die Geschichte, die wir dir erzählt haben, gelernt hast.</string>
+    <string name="kids_menu_descripcion">Zeige, was du über die Geschichte gelernt hast, die wir erzählt haben. Wähle einen Schwierigkeitsgrad!</string>
+    <string name="kids_dificultad_facil">Einfach</string>
+    <string name="kids_dificultad_media">Mittlere</string>
+    <string name="kids_dificultad_dificil">Schwer</string>
+    <string name="kids_iniciar_quiz">Spiel starten!</string>
+    <string name="kids_quiz_siguiente">Nächstes</string>
+    <string name="kids_quiz_puntuacion">Punktzahl: %d</string>
+    <string name="kids_quiz_finalizado">Quiz beendet!</string>
+    <string name="kids_quiz_resultado">Deine Endpunktzahl ist: %1$d / %2$d</string>
+    <string name="kids_quiz_volver_menu">Zurück zum Menü</string>
+    <string name="kids_quiz_ranking">Ranking ansehen</string>
+
+    <!-- Nuevas strings para la sección Kids añadidas por la navegación -->
+    <string name="kids_ver_diapositivas">Folien ansehen</string>
+    <string name="kids_opcion_cuestionarios">Quiz</string>
+    <string name="kids_slides_titulo">Kinderfolien</string>
+    <string name="kids_slides_descripcion">Hier kannst du die für Kinder angepassten Geschichtsfolien ansehen.</string>
+    <string name="kids_no_slides">Keine Folien verfügbar</string>
+    <string name="cd_back">Zurück</string>
+
+    <!-- Navigation -->
+    <string name="kids_prev">Zurück</string>
+    <string name="kids_next">Weiter</string>
+
+    <!-- Progress section for Points of Interest -->
+    <string name="correcta">Richtig</string>
+    <string name="points_progress_title">Dein Fortschritt</string>
+    <string name="points_visited">Besucht</string>
+    <string name="points_remaining">Verbleibend</string>
+    <string name="points_progress_percent">%d%% abgeschlossen</string>
+    <string name="visitado">Besucht</string>
+
+    <!-- Mapa -->
+    <string name="mi_ubicacion">Mein Standort</string>
+    <string name="inicio">Startseite</string>
+    <string name="calculando_ruta">Route wird berechnet...</string>
+    <string name="cerrar">Schließen</string>
+    <string name="calculando">Wird berechnet...</string>
+    <string name="como_llegar">Wegbeschreibung</string>
+    <string name="mas_informacion">Weitere Informationen</string>
+
+    <!-- Additional kids strings -->
+    <string name="join_game_enter_data">Gib deine Daten ein</string>
+    <string name="quiz_error">Fehler: %1$s</string>
+    <string name="quiz_score_achieved">Du hast %d Punkte erreicht!</string>
+    <string name="student_points_gained">+%d Punkte</string>
+    <string name="student_answer_sent">✓ Antwort gesendet</string>
+    <string name="student_waiting_all">Warten darauf, dass alle antworten...</string>
+    <string name="student_waiting_teacher">Warten auf den Lehrer...</string>
+    <string name="slide_counter">%1$d / %2$d</string>
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_large">Riesen</string>
+    <string name="font_size_very_large">Sehr groß</string>
+    <string name="font_size_title">Schriftgröße</string>
+    <string name="p1_horarios">Nicht verfügbar</string>
+    <string name="pantalla_de_ranking_proximamente">Ranglisten-Bildschirm (Demnächst!)</string>
+    <string name="unirse_a_partida">Rejoindre la partie</string>
+    <string name="tu_nombre">Dein Name</string>
+    <string name="pin_de_la_partida">Spiel-PIN</string>
+    <string name="entrar_button">EINTRETEN!</string>
+    <string name="elige_dificultad">Wähle den Schwierigkeitsgrad:</string>
+    <string name="unirse_a_partida_con_pin">Einem Spiel mit PIN beitreten</string>
+    <string name="acceso_profesor">Lehrerzugang</string>
+    <string name="zona_de_profesores">Lehrerbereich</string>
+    <string name="introduce_contrasena_panel">Geben Sie das Passwort ein, um auf das Bedienfeld zuzugreifen:</string>
+    <string name="contrasena">Passwort</string>
+    <string name="contrasena_incorrecta">Falsches Passwort</string>
+    <string name="entrar">Eintreten</string>
+    <string name="cancelar">Abbrechen</string>
+    <string name="caracteres_maximo">%d/%d Zeichen</string>
+    <string name="panel_del_profesor">Lehrer-Dashboard</string>
+    <string name="generando_sala">Raum wird erstellt...</string>
+    <string name="codigo_de_la_partida_pin">PARTIE-CODE (PIN)</string>
+    <string name="jugadores_conectados">Angeschlossene Spieler: %d</string>
+    <string name="empezar_el_juego">SPIEL STARTEN!</string>
+    <string name="sala_de_espera">Wartezimmer</string>
+    <string name="conectando_con_la_sala">Verbindung mit dem Raum wird hergestellt...</string>
+    <string name="salir">Ausgehen</string>
+    <string name="estas_dentro">Du bist dabei!</string>
+    <string name="esperando_profesor_inicie">Warten darauf, dass der Lehrer das Spiel startet...</string>
+    <string name="pin_de_la_sala">Raum-PIN</string>
+    <string name="puntos_label">Punkte:</string>
+    <string name="pregunta_label">Frage</string>
+    <string name="correcto_emoji">Richtig! 🎉</string>
+    <string name="incorrecto_emoji">Falsch 😔</string>
+    <string name="respuesta_correcta">Richtige Antwort!</string>
+    <string name="respuesta_incorrecta">Falsche Antwort</string>
+    <string name="tu_puntuacion">Dein Punktestand</string>
+    <string name="posicion_label">Position:</string>
+    <string name="esperando_siguiente_pregunta">Warten auf die nächste Frage...</string>
+    <string name="partida_label">Spiel:</string>
+    <string name="finalizar">Beenden</string>
+    <string name="de">von</string>
+    <string name="ver_ranking_final">ENDGÜLTIGE RANGLISTE ANSEHEN</string>
+    <string name="siguiente_pregunta">NÄCHSTE FRAGE</string>
+    <string name="todos_han_respondido">✓ Alle haben geantwortet - Du kannst weitermachen</string>
+    <string name="esperando_label">Warten:</string>
+    <string name="alumnos">Schüler</string>
+    <string name="ranking_actual">Aktuelle Rangliste</string>
+    <string name="pts">pts</string>
+    <string name="ranking_final">Endrangliste</string>
+    <string name="partida_finalizada">🎉 Spiel Beendet! 🎉</string>
+    <string name="tu_resultado">Dein Ergebnis</string>
+    <string name="numeral">#</string>
+    <string name="puntos_lower">punkte</string>
+    <string name="clasificacion_completa">Gesamtwertung</string>
+    <string name="volver_al_menu">Zurück zum Menü</string>
+    <string name="tu_emoji">Du!</string>
+    <string name="ok">OK</string>
+    <string name="panorama_screen_title">Kloster 360°</string>
+    <string name="panorama_instructions">Ziehe, um die Ansicht zu drehen • Kneife, um zu zoomen</string>
+    <string name="panorama_zoom_in">Annähern</string>
+    <string name="panorama_zoom_out">Fernhalten</string>
+    <string name="acceso_quiz">Zugang zum Quiz</string>
+    <string name="introduce_contrasena_quiz">Geben Sie das Passwort ein, um das Quiz zu starten:</string>
+
+</resources>

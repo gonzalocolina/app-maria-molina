@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MariaMolina" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Background used by the splash screen on Android 12+ -->
+        <item name="android:windowSplashScreenBackground">@color/app_primary_brown</item>
+        <!-- Icono del splash screen para Android 12+ -->
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo_inicio</item>
+        <!-- Duración mínima del splash screen (opcional, por defecto es 0) -->
+        <item name="android:windowSplashScreenAnimationDuration">500</item>
+    </style>
+</resources>
+

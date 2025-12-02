@@ -1,6 +1,5 @@
 package com.example.mariamolina.ui.screens.poi
 
-import androidx.annotation.ArrayRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,27 +15,30 @@ import androidx.compose.material.icons.filled.CheckCircleOutline
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.mariamolina.data.model.PuntoInteres
-import com.example.mariamolina.data.model.SubPuntoInteres // ¡Importamos SubPuntoInteres!
+import com.example.mariamolina.data.model.SubPuntoInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
-// import coil.compose.AsyncImage
+import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PointDetailScreen(
     punto: PuntoInteres,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onOpenMapClick: () -> Unit,
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit,
+    onMarkAsVisited: () -> Unit,
+    isVisited: Boolean
 ) {
     Scaffold(
         bottomBar = {
@@ -51,7 +53,7 @@ fun PointDetailScreen(
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clickable { /* TODO: Lógica de Firebase para marcar visitado */ }
+                    .clickable { onMarkAsVisited() }
             ) {
                 Row(
                     modifier = Modifier
@@ -64,30 +66,36 @@ fun PointDetailScreen(
                         imageVector = Icons.Default.CheckCircleOutline,
                         contentDescription = null,
                         modifier = Modifier.size(ButtonDefaults.IconSize),
-                        tint = MaterialTheme.colorScheme.primaryContainer
+                        tint = if (isVisited) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primaryContainer // Verde si visitado
                     )
                     Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                     Text(
-                        stringResource(id = R.string.detalle_marcar_visitado),
-                        color = MaterialTheme.colorScheme.primaryContainer
+                        stringResource(id = if (isVisited) R.string.detalle_visitado else R.string.detalle_marcar_visitado),
+                        color = if (isVisited) Color(0xFF4CAF50) else MaterialTheme.colorScheme.primaryContainer // Verde si visitado
                     )
                 }
             }
         }
     ) { innerPadding ->
-        Box(modifier = Modifier.fillMaxSize()) {
+        // Aplicamos innerPadding al Box para que el contenido tenga en cuenta el bottomBar y otros inset
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(bottom = innerPadding.calculateBottomPadding())
+                    // ...existing code...
             ) {
-                // ... (Imagen) ...
-                Box(
+                // ... Imagen ...
+                AsyncImage(
+                    model = punto.urlImagen,
+                    contentDescription = stringResource(id = punto.tituloResId),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(250.dp)
-                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .height(250.dp),
+                    contentScale = ContentScale.Crop
                 )
 
                 // --- Contenido de Texto ---
@@ -95,10 +103,9 @@ fun PointDetailScreen(
                     modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
-                    // ¡CAMBIO! Ya no pasamos duracionResId
+                    // ¡CAMBIO! Ya no pasamos duracionResId ni rating
                     TituloSection(
-                        tituloResId = punto.tituloResId,
-                        rating = punto.rating // Pasamos el rating nullable
+                        tituloResId = punto.tituloResId
                     )
 
                     // Esta sigue igual, descripcionLargaResId no es nullable
@@ -108,13 +115,17 @@ fun PointDetailScreen(
                     if (punto.horariosResId != null && punto.ubicacionResId != null) {
                         InfoPracticaSection(
                             horariosResId = punto.horariosResId,
-                            ubicacionResId = punto.ubicacionResId
+                            ubicacionResId = punto.ubicacionResId,
+                            onOpenMapClick = onOpenMapClick
                         )
                     }
 
                     // ¡CAMBIO! Comprobamos si hay subpuntos
                     if (punto.subpuntos.isNotEmpty()) {
-                        SubPuntosSection(subpuntos = punto.subpuntos)
+                        SubPuntosSection(
+                            subpuntos = punto.subpuntos,
+                            onOpenSubPointMapClick = onOpenSubPointMapClick
+                        )
                     }
 
                     // ¡CAMBIO! La sección Consejos ya no existe
@@ -143,29 +154,13 @@ fun PointDetailScreen(
 
 @Composable
 private fun TituloSection(
-    @StringRes tituloResId: Int,
-    rating: Double? // ¡CAMBIO! Acepta nullable
+    @StringRes tituloResId: Int
 ) {
-    Column {
-        Text(
-            text = stringResource(id = tituloResId),
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            // ¡CAMBIO! La duración se ha ido
-
-            // ¡CAMBIO! Mostramos el rating solo si no es nulo
-            if (rating != null) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.cd_rating), modifier = Modifier.size(16.dp))
-                    Spacer(Modifier.width(4.dp))
-                    Text(stringResource(R.string.fmt_rating_per_5, rating), style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        }
-    }
+    Text(
+        text = stringResource(id = tituloResId),
+        style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold
+    )
 }
 
 // ... (DescripcionSection no cambia) ...
@@ -194,7 +189,8 @@ private fun DescripcionSection(@StringRes descripcionResId: Int) {
 @Composable
 private fun InfoPracticaSection(
     @StringRes horariosResId: Int, // ¡CAMBIO! Ya no es nullable aquí
-    @StringRes ubicacionResId: Int // ¡CAMBIO! Ya no es nullable aquí
+    @StringRes ubicacionResId: Int, // ¡CAMBIO! Ya no es nullable aquí
+    onOpenMapClick: () -> Unit
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -224,7 +220,7 @@ private fun InfoPracticaSection(
                 Text(stringResource(id = ubicacionResId), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
             }
             Spacer(modifier = Modifier.height(16.dp))
-            TextButton(onClick = { /* TODO: Abrir mapa */ }) {
+            TextButton(onClick = onOpenMapClick ) {
                 Icon(Icons.Default.Map, contentDescription = null, modifier = Modifier.size(18.dp))
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
                 Text(stringResource(id = R.string.detalle_ver_en_mapa))
@@ -235,7 +231,10 @@ private fun InfoPracticaSection(
 
 // --- NUEVA SECCIÓN! ---
 @Composable
-private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
+private fun SubPuntosSection(
+    subpuntos: List<SubPuntoInteres>,
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(2.dp),
@@ -251,9 +250,12 @@ private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
 
             // Iteramos sobre los subpuntos
             subpuntos.forEachIndexed { index, subpunto ->
-                SubPuntoItem(subpunto = subpunto)
+                SubPuntoItem(
+                    subpunto = subpunto,
+                    onOpenSubPointMapClick = onOpenSubPointMapClick
+                )
                 if (index < subpuntos.lastIndex) {
-                    Divider(modifier = Modifier.padding(vertical = 12.dp))
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 12.dp))
                 }
             }
         }
@@ -261,27 +263,17 @@ private fun SubPuntosSection(subpuntos: List<SubPuntoInteres>) {
 }
 
 @Composable
-private fun SubPuntoItem(subpunto: SubPuntoInteres) {
+private fun SubPuntoItem(
+    subpunto: SubPuntoInteres,
+    onOpenSubPointMapClick: (SubPuntoInteres) -> Unit
+) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        // Título y Rating
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(id = subpunto.nombreResId),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold
-            )
-            if (subpunto.rating != null) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(Icons.Default.Star, contentDescription = stringResource(R.string.cd_rating), modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.primary)
-                    Spacer(Modifier.width(4.dp))
-                    Text(stringResource(R.string.fmt_rating_per_5, subpunto.rating), style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-        }
+        // Título
+        Text(
+            text = stringResource(id = subpunto.nombreResId),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold
+        )
 
         // Horarios
         if (subpunto.horariosResId != null) {
@@ -303,6 +295,14 @@ private fun SubPuntoItem(subpunto: SubPuntoInteres) {
                 Spacer(Modifier.width(8.dp))
                 Text(stringResource(id = subpunto.ubicacionResId), style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
             }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextButton(onClick = { onOpenSubPointMapClick(subpunto) }) {
+            Icon(Icons.Default.Map, contentDescription = null, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+            Text(stringResource(id = R.string.detalle_ver_en_mapa))
         }
     }
 }

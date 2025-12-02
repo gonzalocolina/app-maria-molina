@@ -1,6 +1,6 @@
 <resources>
-    //Vista inicio
-    <string name="app_name">MariaMolina</string>
+    <!-- Vista inicio -->
+    <string name="app_name">PasosDeMaría</string>
     <string name="home_screen_title">María de Molina</string>
     <string name="home_screen_intro_paragraph">María de Molina (1264–1321) fue una de las mujeres más importantes de la historia de Castilla ya que dedicó su vida a mantener la paz y la estabilidad del reino. Fue reina, madre de rey y abuela de rey, pero sobre todo una gobernante prudente y respetada, que supo ganarse el apoyo del pueblo y la nobleza en tiempos difíciles.</string>
     <string name="section_title_childhood_family">Infancia y familia</string>
@@ -14,7 +14,7 @@
     <string name="paragraph_regencies">Tras la muerte de su esposo Sancho IV en 1295, María asumió la regencia por su hijo Fernando IV, que solo tenía nueve años. Con prudencia y firmeza, logró mantener la corona en medio de conflictos internos, ganándose el respeto de nobles y concejos. Años después, en 1312, volvió a gobernar como regente de su nieto Alfonso XI, demostrando una vez más su sabiduría y su capacidad para mantener la paz y la unidad del reino en tiempos difíciles.</string>
     <string name="section_title_legacy_works">Legado y obras</string>
     <string name="paragraph_legacy_works">María de Molina es recordada como una de las grandes reinas de Castilla por su capacidad política y su sentido de justicia. Fundó y apoyó numerosos monasterios, como el de Las Huelgas de Valladolid, donde fue enterrada. Promovió la educación, la religión y la paz en tiempos de guerra. Su figura simboliza la prudencia, la lealtad y la defensa del bien común.</string>
-    //Vista puntos de interes
+    <!-- Vista puntos de interes -->
     <!-- Texto de la UI para la pantalla de detalle -->
     <string name="detalle_descripcion">Descripción</string>
     <string name="detalle_info_practica">Información práctica</string>
@@ -22,9 +22,47 @@
     <string name="detalle_ubicacion">Ubicación:</string>
     <string name="detalle_ver_en_mapa">Ver en mapa</string>
     <string name="detalle_marcar_visitado">Marcar como visitado</string>
-    <string name="detalle_rating">Valoración:</string>
+    <string name="detalle_visitado">Visitado</string>
 
     <string name="detalle_subpuntos_titulo">Lugares del punto</string>
+
+    <!-- Profile Screen -->
+    <string name="profile_title">Perfil</string>
+    <string name="back_button_description">Volver</string>
+    <string name="select_language_title">Seleccionar idioma</string>
+    <string name="language_label">Idioma</string>
+    <string name="language_changed_toast">Idioma cambiado a %s</string>
+    <string name="about_title">Acerca de</string>
+    <string name="about_description">Pasos de María es una guía educativa e interactiva dedicada a divulgar
+        la vida y el legado de María de Molina, así como a mostrar el patrimonio histórico de Valladolid.
+        La aplicación ofrece descripciones detalladas, imágenes, horarios y ubicaciones de los puntos de interés,
+        rutas en mapa, contenidos adaptados para público infantil y la opción de realizar cuestionarios de forma individual y multijugador.
+        La función de realizar los test de manera individual tiene una contraseña que será proporcionada por los
+        profesores, con el fin de que los alumnos no puedan aprenderse las preguntas antes de hacer el cuestionario
+        en multijugador pero que puedan luego por su cuenta afianzar los conocimientos. \n
+        Su objetivo es facilitar el acceso a la historia
+        local de forma didáctica y visual, y de una forma más moderna que pueda despertar aún más el interés
+        de los más jóvenes; los datos se han recopilado a partir de fuentes históricas y culturales.
+        La aplicación se ha creado para el Colegio Santa María La Real de Huelgas.\n\n
+        Aplicación creada por Miguel Bueno González, Gonzalo José Colina Báscones y Daniel Fernández García</string>
+
+
+    <!-- Font size options -->
+    <string name="font_size_normal">Normal</string>
+    <string name="font_size_large">Grande</string>
+    <string name="font_size_very_large">Muy grande</string>
+
+    <!-- Font size section -->
+    <string name="font_size_title">Tamaño de letra</string>
+    <string name="font_size_changed_toast">Tamaño de letra cambiado a %s</string>
+
+
+    <!-- Datos de usuario -->
+    <string name="profile_user_section_title">Tu Nickname</string>
+    <string name="profile_nickname_label">Nickname</string>
+    <string name="profile_save_button">Guardar Nickname</string>
+    <string name="profile_saved_success">¡Guardado!</string>
+    <string name="profile_error_message">Error: %1$s</string>
 
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
@@ -33,6 +71,8 @@
         integrados en el Monasterio de San Benito el Real y en el Museo Patio Herreriano, donde aún pueden apreciarse vestigios del antiguo conjunto. El alcazarejo tenía forma cuadrada —de unos 31 metros de lado según las excavaciones— y contaba con ocho cubos macizos:
         uno en el centro de cada lienzo y otro en las esquinas.
     </string>
+    <string name="p1_horarios">No disponible</string>
+    <string name="p1_ubicacion">Pl. de la Rinconada, 3, 47001 Valladolid</string>
     <string name="p1_nombre_a">Museo Patio Herreriano </string>
     <string name="p1_nombre_b">Monasterio de San Benito </string>
     <string name="p1_horarios_a">11:00–14:00, 17:00–20:00 (martes–viernes) ; sábados: 11.00–20:00 y domingo de 11:00 a 15:00</string>
@@ -64,10 +104,9 @@
     </string>
     <string name="p4_horarios">No disponible</string>
     <string name="p4_ubicacion">No disponible</string>
-    <string name="p4_rating">No disponible</string>
 
     <!-- Data: Punto 5 (Ermita de Santa María Magdalena) -->
-    <string name="p5_titulo">Ermita de Santa María Magdalena</string>
+    <string name="p5_titulo">Antigua Ermita de Santa María Magdalena</string>
     <string name="p5_desc">Se construyó sobre una de las puertas de la antigua muralla de la ciudad, situada en las afueras, en el lugar que posteriormente se llamó Prado de la Magdalena, una zona que en esos siglos era de campo y huertas.
         Esta pequeña capilla se mantuvo con su aspecto original hasta 1538, cuando se añadió una capilla sepulcral ordenada por el doctor Corral, oídor de la Real Chancillería y miembro del Consejo Real, asegurándose de esta forma un sitio con buenas vistas para ser enterrado y el protagonismo absoluto como única persona sepultada en el lugar.
         Posteriormente a la ampliación, se construyó la iglesia mayor renacentista/gótica.
@@ -85,7 +124,6 @@
     </string>
     <string name="p6_horarios">No disponible</string>
     <string name="p6_ubicacion">No disponible</string>
-    <string name="p6_rating">No disponible</string>
 
     <!-- Data: Punto 7 (Puente Mayor) -->
     <string name="p7_titulo">Puente Mayor</string>
@@ -107,7 +145,7 @@
     <string name="p8_ubicacion">VA-113, 47260 Cabezón de Pisuerga, Valladolid</string>
 
     <!-- Data: Punto 9 (Palacio de la Magdalena) -->
-    <string name="p9_titulo">Palacio de la Magdalena</string>
+    <string name="p9_titulo">Arco Mudéjar</string>
     <string name="p9_desc">El palacio fue residencia de la realeza, entre ellos del rey Sancho IV de Castilla junto con su esposa María de Molina, en un solar que se adaptó como residencia real en tiempos del siglo XIII.
         Tras la muerte de Sancho IV en 1295, su viuda María de Molina ejerció la regencia y entró en conflicto político que motivó reforzar la seguridad del palacio, convirtiéndolo en recinto fortificado.
         Con el tiempo, los edificios fueron abandonados o reutilizados. Finalmente, la mayor parte del palacio desapareció, y hoy sólo sobreviven algunos restos, entre los que destaca la puerta mudéjar denominada “Puerta de la Magdalena” o “Puerta del Palacio de María de Molina”.
@@ -125,7 +163,7 @@
         Antes de esa fecha, la familia Meneses ya controlaba varias villas cercanas —como Meneses o Montealegre—, por lo que se considera que María de Molina, perteneciente a este linaje por parte materna, pasó su infancia en este entorno familiar, vinculado al castillo de Tiedra.
         La parte más antigua conservada corresponde a la torre defensiva o torre del homenaje, datada a finales del siglo XII o principios del XIII. Esta torre, de planta cuadrada y construida en sillería, cuenta con varias plantas: un sótano-calabozo, niveles intermedios abovedados y una azotea-mirador que ofrece una amplia panorámica sobre la llanura.
     </string>
-    <string name="p10_horarios">983 791 405 / 667 763 852</string>
+    <string name="p10_horarios">Llamar a 983 791 405 o 667 763 852</string>
     <string name="p10_ubicacion">Calle del Castillo, 47870 Tiedra, Valladolid</string>
 
     <!-- Data: Punto 11 (Castillo de Montealegre) -->
@@ -156,16 +194,203 @@
     <string name="p12_horarios">Lunes cerrado; Martes–sábado: 10:00–14:00 (Acceso hasta las 13:00) y 16:00–18:30 (Acceso hasta las 17:30); Acceso gratuito: miércoles y jueves de 16:00 a 18:30 (último acceso a las 17:30); Domingos y festivos: 10:30–15:00 (Acceso hasta las 14:00)</string>
     <string name="p12_ubicacion">Av. Ramón y Cajal, 4A, 47005 Valladolid</string>
 
+    <!-- Mapa -->
+    <string name="mi_ubicacion">Mi ubicación</string>
+    <string name="inicio">Inicio</string>
+    <string name="calculando_ruta">Calculando ruta...</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="calculando">Calculando...</string>
+    <string name="como_llegar">Cómo llegar</string>
+    <string name="mas_informacion">Más información</string>
+
+
+    <!-- Navigation -->
+    <string name="nav_home_title">Pasos de María</string>
+    <string name="nav_home_subtitle">Descubre la historia de María de Molina</string>
+    <string name="nav_points_title">Puntos interés</string>
+    <string name="nav_points_subtitle">Valladolid Histórico</string>
+    <string name="nav_map_title">Mapa</string>
+    <string name="nav_map_subtitle">Encuentra tu ruta</string>
+    <string name="nav_kids_title">Infantil</string>
+    <string name="nav_kids_subtitle">Planes con niños</string>
+    <string name="nav_profile_title">Perfil</string>
+    <string name="nav_home_bottom">Home</string>
+    <string name="nav_points_bottom">Puntos interés</string>
+    <string name="nav_map_bottom">Mapa</string>
+    <string name="nav_kids_bottom">Infantil</string>
+
     <!-- Strings extraídos (botones, contentDescriptions y formatos) -->
     <string name="btn_volver">Volver</string>
     <string name="btn_ver_arbol">Ver árbol genealógico</string>
+    <string name="btn_ver_panorama">Ver Monasterio 360°</string>
     <string name="cd_imagen_ejemplo">Imagen de ejemplo</string>
+    
+    <!-- Pantalla Panorama 360 -->
+    <string name="panorama_screen_title">Monasterio 360°</string>
+    <string name="panorama_instructions">Arrastra para girar la vista • Pellizca para hacer zoom</string>
+    <string name="panorama_zoom_in">Acercar</string>
+    <string name="panorama_zoom_out">Alejar</string>
+    <string name="cd_panorama_monasterio">Vista panorámica del Monasterio de las Huelgas Reales</string>
     <string name="cd_imagen_inicial">Imagen inicial de María de Molina</string>
     <string name="cd_volver">Volver</string>
     <string name="cd_horarios">Horarios</string>
     <string name="cd_ubicacion">Ubicación</string>
-    <string name="cd_rating">Valoración</string>
     <string name="cd_perfil">Perfil</string>
-    <!-- Formato para mostrar rating (un decimal) -->
-    <string name="fmt_rating_per_5">%1$.1f/5</string>
+    <string name="cd_ajustes">Ajustes</string>
+
+    <!-- Seccion infantil -->
+    <!-- ... (El resto de tus strings) ... -->
+
+    <!-- ================== -->
+    <!-- SECCIÓN INFANTIL (QUIZ) -->
+    <!-- ================== -->
+
+    <!-- Texto de la UI -->
+    <string name="kids_entry_titulo">Sección Infantil</string>
+    <string name="kids_menu_titulo">Cuestionario Infantil</string>
+    <string name="kids_entry_descripcion">Conoce la historia de María de Molina de una forma más amena y demuestra lo que has aprendido sobre la historia que te hemos contado.</string>
+    <string name="kids_menu_descripcion">Demuestra lo que has aprendido sobre la historia que te hemos contado. ¡Elige una dificultad!</string>
+    <string name="kids_dificultad_facil">Fácil</string>
+    <string name="kids_dificultad_media">Media</string>
+    <string name="kids_dificultad_dificil">Difícil</string>
+    <string name="kids_iniciar_quiz">¡Empezar a jugar!</string>
+    <string name="kids_quiz_siguiente">Siguiente</string>
+    <string name="kids_quiz_puntuacion">Puntuación: %d</string> <!-- El %d se reemplaza por un número -->
+    <string name="kids_quiz_finalizado">¡Cuestionario terminado!</string>
+    <string name="kids_quiz_resultado">Tu puntuación final es: %d / %d</string>
+    <string name="kids_quiz_volver_menu">Volver al menú</string>
+    <string name="kids_quiz_ranking">Ver Ranking</string>
+
+    <!-- Nuevas strings para la sección Kids añadidas por la navegación -->
+    <string name="kids_ver_diapositivas">Ver diapositivas</string>
+    <string name="kids_opcion_cuestionarios">Cuestionarios</string>
+    <string name="kids_slides_titulo">Diapositivas infantiles</string>
+    <string name="kids_slides_descripcion">Aquí puedes ver las diapositivas de la historia adaptadas para niños.</string>
+    <string name="kids_no_slides">No hay diapositivas disponibles</string>
+    <string name="cd_back">Volver</string>
+
+    <!-- Nuevas strings para las slides infantiles -->
+    <string name="slide_1_title">María de Molina</string>
+    <string name="slide_1_desc">¡Hola! Soy María de Molina y te voy a contar mi historia.</string>
+
+    <string name="slide_2_title">Mis Padres</string>
+    <string name="slide_2_desc">Mis padres fueron el infante Alfonso de Molina y mi madre Doña Mayor de Meneses.</string>
+
+    <string name="slide_3_title">Castillo de Montealegre</string>
+    <string name="slide_3_desc">Residencia habitual de María de Molina</string>
+
+    <string name="slide_5_title">El Príncipe Sancho</string>
+    <string name="slide_5_desc">Cuando tenía 15 años, un príncipe llamado Sancho se enamoró de mí.</string>
+
+    <string name="slide_6_title">Nuestra Boda</string>
+    <string name="slide_6_desc">En 1282 nos casamos en Toledo.</string>
+
+    <string name="slide_7_title">Palacio de Valladolid</string>
+    <string name="slide_7_desc">Después nos fuimos a vivir a Valladolid al palacio de Sancho.</string>
+
+    <string name="slide_8_title">Reyes de Castilla y León</string>
+    <string name="slide_8_desc">Cuando murió el padre de Sancho, que era rey, eligieron a Sancho como Rey de Castilla y León. En ese momento yo me convertí en Reina de Castilla y León.</string>
+
+    <string name="slide_9_title">Las Batallas</string>
+    <string name="slide_9_desc">Durante el reinado, ayudé a Sancho a pelear en muchas batallas.</string>
+
+    <string name="slide_10_title">El Rey Fernando</string>
+    <string name="slide_10_desc">Años más tarde, Sancho se puso enfermo y murió. Entonces conseguí que nombraran rey a mi hijo Fernando.</string>
+
+    <string name="slide_11_title">Regente de Fernando</string>
+    <string name="slide_11_desc">Fernando todavía era pequeño y le ayudé a reinar hasta ser mayor de edad.</string>
+
+    <string name="slide_12_title">El Rey Alfonso</string>
+    <string name="slide_12_desc">Fernando fue muy buen rey, pero también se puso enfermo y murió. Como su hijo Alfonso (mi nieto) era muy pequeño, le ayudé a reinar.</string>
+
+    <string name="slide_13_title">Mi Descanso Final</string>
+    <string name="slide_13_desc">Antes de morir pedí que me enterraran en el monasterio de Santa María La Real de Huelgas.</string>
+
+    <string name="slide_14_title">El Secreto de mi Tumba</string>
+    <string name="slide_14_desc">Con mi tumba se puede saber si va a llover, ya que unas horas antes aparecen unas manchas encima. Pero ten cuidado… ¡si las tocas pica!</string>
+
+    <string name="slide_15_title">Figuras Escondidas</string>
+    <string name="slide_15_desc">Además, en mi tumba están escondidas las figuras de una lagartija, un monje tapándose los oídos y un monstruo. ¡Intenta encontrarlas!</string>
+
+    <!-- Navegación en KidsSlidesScreen -->
+    <string name="kids_prev">Anterior</string>
+    <string name="kids_next">Siguiente</string>
+
+    <!-- Additional kids strings -->
+    <string name="join_game_enter_data">Introduce tus datos</string>
+    <string name="quiz_error">Error: %1$s</string>
+    <string name="quiz_score_achieved">¡Has conseguido %d puntos!</string>
+    <string name="student_points_gained">+%d puntos</string>
+    <string name="student_answer_sent">✓ Respuesta enviada</string>
+    <string name="student_waiting_all">Esperando a que todos respondan...</string>
+    <string name="student_waiting_teacher">Esperando al profesor...</string>
+    <string name="slide_counter">%d / %d</string>
+
+    <!-- Nuevos strings extraídos de la sección kids -->
+    <string name="pantalla_de_ranking_proximamente">Pantalla de Ranking (¡Próximamente!)</string>
+    <string name="unirse_a_partida">Unirse a Partida</string>
+    <string name="tu_nombre">Tu Nombre</string>
+    <string name="pin_de_la_partida">PIN de la Partida</string>
+    <string name="entrar_button">¡ENTRAR!</string>
+    <string name="elige_dificultad">Elige dificultad:</string>
+    <string name="unirse_a_partida_con_pin">Unirse a Partida con PIN</string>
+    <string name="acceso_profesor">Acceso Profesor</string>
+    <string name="zona_de_profesores">Zona de Profesores</string>
+    <string name="introduce_contrasena_panel">Introduce la contraseña para acceder al panel de control:</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="contrasena_incorrecta">Contraseña incorrecta</string>
+    <string name="entrar">Entrar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="acceso_quiz">Acceso al Quiz</string>
+    <string name="introduce_contrasena_quiz">Introduce la contraseña para iniciar el quiz:</string>
+    <string name="caracteres_maximo">%d/%d caracteres</string>
+    <string name="panel_del_profesor">Panel del Profesor</string>
+    <string name="generando_sala">Generando sala...</string>
+    <string name="codigo_de_la_partida_pin">CÓDIGO DE LA PARTIDA (PIN)</string>
+    <string name="jugadores_conectados">Jugadores conectados: %d</string>
+    <string name="empezar_el_juego">¡EMPEZAR EL JUEGO!</string>
+    <string name="sala_de_espera">Sala de Espera</string>
+    <string name="conectando_con_la_sala">Conectando con la sala...</string>
+    <string name="salir">Salir</string>
+    <string name="estas_dentro">¡Estás dentro!</string>
+    <string name="esperando_profesor_inicie">Esperando a que el profesor inicie el juego...</string>
+    <string name="pin_de_la_sala">PIN de la sala</string>
+    <string name="puntos_label">Puntos:</string>
+    <string name="pregunta_label">Pregunta</string>
+    <string name="correcto_emoji">¡Correcto! 🎉</string>
+    <string name="incorrecto_emoji">Incorrecto 😔</string>
+    <string name="respuesta_correcta">¡Respuesta correcta!</string>
+    <string name="respuesta_incorrecta">Respuesta incorrecta</string>
+    <string name="tu_puntuacion">Tu puntuación</string>
+    <string name="posicion_label">Posición:</string>
+    <string name="esperando_siguiente_pregunta">Esperando siguiente pregunta...</string>
+    <string name="partida_label">Partida:</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="de">de</string>
+    <string name="ver_ranking_final">VER RANKING FINAL</string>
+    <string name="siguiente_pregunta">SIGUIENTE PREGUNTA</string>
+    <string name="todos_han_respondido">✓ Todos han respondido - Puedes avanzar</string>
+    <string name="esperando_label">Esperando:</string>
+    <string name="alumnos">alumnos</string>
+    <string name="ranking_actual">Ranking actual</string>
+    <string name="pts">pts</string>
+    <string name="ranking_final">Ranking Final</string>
+    <string name="partida_finalizada">🎉 ¡Partida Finalizada! 🎉</string>
+    <string name="tu_resultado">Tu resultado</string>
+    <string name="numeral">#</string>
+    <string name="puntos_lower">puntos</string>
+    <string name="clasificacion_completa">Clasificación completa</string>
+    <string name="volver_al_menu">Volver al Menú</string>
+    <string name="tu_emoji">¡Tú!</string>
+    <string name="ok">OK</string>
+    <string name="correcta">Correcta</string>
+
+    <!-- Progress section for Points of Interest -->
+    <string name="points_progress_title">Tu progreso</string>
+    <string name="points_visited">Visitados</string>
+    <string name="points_remaining">Restantes</string>
+    <string name="points_progress_percent">%d%% completado</string>
+    <string name="visitado">Visitado</string>
+
+
 </resources>
