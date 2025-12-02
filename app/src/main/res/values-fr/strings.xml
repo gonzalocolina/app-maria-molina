@@ -205,13 +205,16 @@
     <string name="nav_kids_bottom">Enfantin</string>
     <string name="btn_volver">Retour</string>
     <string name="btn_ver_arbol">Voir l\'arbre généalogique</string>
-    <string name="btn_ver_panorama">See 360º monastery</string>
+    <string name="btn_ver_panorama">Voir le monastère à 360°</string>
+    <string name="btn_ver_panorama">Voir le monastère à 360°</string>
     <string name="cd_imagen_ejemplo">Image d\'exemple</string>
+    <string name="cd_panorama_monasterio">Vue panoramique du Monastère des Huelgas Reales</string>
     <string name="cd_imagen_inicial">Image initiale de María de Molina</string>
     <string name="cd_volver">Retour</string>
     <string name="cd_horarios">Horaires</string>
     <string name="cd_ubicacion">Emplacement</string>
     <string name="cd_perfil">Profil</string>
+    <string name="cd_ajustes">Paramètres</string>
     <string name="kids_entry_titulo">Section Enfants</string>
     <string name="kids_menu_titulo">Questionnaire pour enfants</string>
     <string name="kids_entry_descripcion">Découvrez l\'histoire de María de Molina de manière plus agréable et montrez ce que vous avez appris sur l\'histoire que nous vous avons racontée.</string>
@@ -245,6 +248,7 @@
     <string name="contrasena_incorrecta">Mot de passe incorrect</string>
     <string name="entrar">Entrer</string>
     <string name="cancelar">Annuler</string>
+    <string name="caracteres_maximo">%d/%d caractères</string>
     <string name="panel_del_profesor">Panneau du Professeur</string>
     <string name="generando_sala">Création de la salle...</string>
     <string name="codigo_de_la_partida_pin">CODE DE LA PARTIE (PIN)</string>
@@ -285,5 +289,11 @@
     <string name="tu_emoji">Toi !</string>
     <string name="ok">OK</string>
     <string name="panorama_screen_title">360º Monastery</string>
+    <string name="panorama_screen_title">Monastère 360°</string>
+    <string name="panorama_instructions">Faites glisser pour faire tourner la vue • Pincez pour zoomer</string>
+    <string name="panorama_zoom_in">Approcher</string>
+    <string name="panorama_zoom_out">Éloigner</string>
+    <string name="acceso_quiz">Accès au quiz</string>
+    <string name="introduce_contrasena_quiz">Entrez le mot de passe pour commencer le quiz :</string>
 
 </resources>

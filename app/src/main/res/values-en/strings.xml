@@ -46,14 +46,16 @@
     <string name="nav_kids_subtitle">Plans with kids</string>
     <string name="nav_profile_title">Profile</string>
     <string name="nav_home_bottom">Home</string>
-    <string name="nav_points_bottom">Points of interest</string>
+    <string name="nav_points_bottom">Interest Points</string>
     <string name="nav_map_bottom">Map</string>
     <string name="nav_kids_bottom">Kids</string>
 
     <!-- Extracted strings (buttons, contentDescriptions and formats) -->
     <string name="btn_volver">Back</string>
     <string name="btn_ver_arbol">View family tree</string>
+    <string name="btn_ver_panorama">See 360º monastery</string>
     <string name="cd_imagen_ejemplo">Example image</string>
+    <string name="cd_panorama_monasterio">Panoramic view of the Monastery of Las Huelgas Reales</string>
     <string name="cd_imagen_inicial">Initial image of María de Molina</string>
     <string name="cd_volver">Back</string>
     <string name="cd_horarios">Hours</string>
@@ -254,6 +256,7 @@
     <string name="contrasena_incorrecta">Incorrect password</string>
     <string name="entrar">Enter</string>
     <string name="cancelar">Cancel</string>
+    <string name="caracteres_maximo">%d/%d characters</string>
     <string name="panel_del_profesor">Teacher\'s Panel</string>
     <string name="generando_sala">Generating room...</string>
     <string name="codigo_de_la_partida_pin">ITEM CODE (PIN)</string>
@@ -293,5 +296,11 @@
     <string name="volver_al_menu">Return to Menu</string>
     <string name="tu_emoji">You!</string>
     <string name="ok">OK</string>
+    <string name="panorama_screen_title">360º monastery</string>
+    <string name="panorama_instructions">Drag to rotate the view • Pinch to zoom</string>
+    <string name="panorama_zoom_in">To bring closer</string>
+    <string name="panorama_zoom_out">Move away</string>
+    <string name="acceso_quiz">Access to the Quiz</string>
+    <string name="introduce_contrasena_quiz">Enter the password to start the quiz:</string>
 
 </resources>

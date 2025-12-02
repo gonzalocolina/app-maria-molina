@@ -182,7 +182,9 @@
     <!-- Strings extraídos (botones, contentDescriptions y formatos) -->
     <string name="btn_volver">Zurück</string>
     <string name="btn_ver_arbol">Stammbau anzeigen</string>
+    <string name="btn_ver_panorama">Kloster 360° ansehen</string>
     <string name="cd_imagen_ejemplo">Beispielbild</string>
+    <string name="cd_panorama_monasterio">Panoramablick auf das Kloster Las Huelgas Reales</string>
     <string name="cd_imagen_inicial">Startbild von María de Molina</string>
     <string name="cd_volver">Zurück</string>
     <string name="cd_horarios">Öffnungszeiten</string>
@@ -254,6 +256,7 @@
     <string name="contrasena_incorrecta">Falsches Passwort</string>
     <string name="entrar">Eintreten</string>
     <string name="cancelar">Abbrechen</string>
+    <string name="caracteres_maximo">%d/%d Zeichen</string>
     <string name="panel_del_profesor">Lehrer-Dashboard</string>
     <string name="generando_sala">Raum wird erstellt...</string>
     <string name="codigo_de_la_partida_pin">PARTIE-CODE (PIN)</string>
@@ -293,5 +296,11 @@
     <string name="volver_al_menu">Zurück zum Menü</string>
     <string name="tu_emoji">Du!</string>
     <string name="ok">OK</string>
+    <string name="panorama_screen_title">Kloster 360°</string>
+    <string name="panorama_instructions">Ziehe, um die Ansicht zu drehen • Kneife, um zu zoomen</string>
+    <string name="panorama_zoom_in">Annähern</string>
+    <string name="panorama_zoom_out">Fernhalten</string>
+    <string name="acceso_quiz">Zugang zum Quiz</string>
+    <string name="introduce_contrasena_quiz">Geben Sie das Passwort ein, um das Quiz zu starten:</string>
 
 </resources>
