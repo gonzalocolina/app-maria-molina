@@ -221,6 +221,7 @@
     <string name="cd_horarios">Horarios</string>
     <string name="cd_ubicacion">Ubicación</string>
     <string name="cd_perfil">Perfil</string>
+    <string name="cd_ajustes">Ajustes</string>
 
     <!-- Seccion infantil -->
     <!-- ... (El resto de tus strings) ... -->
@@ -325,6 +326,9 @@
     <string name="contrasena_incorrecta">Contraseña incorrecta</string>
     <string name="entrar">Entrar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="acceso_quiz">Acceso al Quiz</string>
+    <string name="introduce_contrasena_quiz">Introduce la contraseña para iniciar el quiz:</string>
+    <string name="caracteres_maximo">%d/%d caracteres</string>
     <string name="panel_del_profesor">Panel del Profesor</string>
     <string name="generando_sala">Generando sala...</string>
     <string name="codigo_de_la_partida_pin">CÓDIGO DE LA PARTIDA (PIN)</string>
