@@ -100,7 +100,7 @@ object SlidesProvider {
             id = "slide15",
             titleRes = R.string.slide_15_title,
             descriptionRes = R.string.slide_15_desc,
-            imageUrl = "https://ik.imagekit.io/fn2wdosiw/tumba.jpg?updatedAt=1764025089820-",
+            imageUrl = "https://ik.imagekit.io/fn2wdosiw/MonjeTumba.jpeg?updatedAt=1764671290311",
             hasSpeechBubble = false
         )
     )
