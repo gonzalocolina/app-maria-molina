@@ -188,6 +188,7 @@
     <string name="cd_horarios">Öffnungszeiten</string>
     <string name="cd_ubicacion">Ort</string>
     <string name="cd_perfil">Profil</string>
+    <string name="cd_ajustes">Einstellungen</string>
 
     <!-- Sección infantil / Quiz -->
     <string name="kids_entry_titulo">Kinderbereich</string>

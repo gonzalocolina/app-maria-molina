@@ -48,6 +48,11 @@ fun KidsEntryScreen(
     var passwordInput by remember { mutableStateOf("") }
     var passwordError by remember { mutableStateOf(false) }
 
+    // Estados para el diálogo de contraseña del quiz
+    var showQuizPasswordDialog by remember { mutableStateOf(false) }
+    var quizPasswordInput by remember { mutableStateOf("") }
+    var quizPasswordError by remember { mutableStateOf(false) }
+
     // Reconectar automáticamente si hay sesión activa
     LaunchedEffect(uiState.shouldNavigateTo) {
         uiState.shouldNavigateTo?.let { route ->
@@ -177,7 +182,11 @@ fun KidsEntryScreen(
 
         // Botón Iniciar Quiz
         Button(
-            onClick = { onStartQuiz(dificultadSeleccionada) },
+            onClick = {
+                showQuizPasswordDialog = true
+                quizPasswordInput = ""
+                quizPasswordError = false
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
@@ -215,7 +224,7 @@ fun KidsEntryScreen(
         Spacer(modifier = Modifier.height(32.dp))
     }
 
-    // --- DIÁLOGO DE CONTRASEÑA ---
+    // --- DIÁLOGO DE CONTRASEÑA PROFESOR ---
     if (showAdminDialog) {
         AlertDialog(
             onDismissRequest = { showAdminDialog = false },
@@ -256,6 +265,53 @@ fun KidsEntryScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showAdminDialog = false }) {
+                    Text(stringResource(id = R.string.cancelar))
+                }
+            }
+        )
+    }
+
+    // --- DIÁLOGO DE CONTRASEÑA QUIZ ---
+    if (showQuizPasswordDialog) {
+        AlertDialog(
+            onDismissRequest = { showQuizPasswordDialog = false },
+            title = { Text(stringResource(id = R.string.acceso_quiz)) },
+            text = {
+                Column {
+                    Text(stringResource(id = R.string.introduce_contrasena_quiz))
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = quizPasswordInput,
+                        onValueChange = {
+                            quizPasswordInput = it
+                            quizPasswordError = false
+                        },
+                        label = { Text(stringResource(id = R.string.contrasena)) },
+                        singleLine = true,
+                        visualTransformation = PasswordVisualTransformation(),
+                        isError = quizPasswordError,
+                        supportingText = {
+                            if (quizPasswordError) Text(stringResource(id = R.string.contrasena_incorrecta))
+                        }
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (quizPasswordInput == "123456") {
+                            showQuizPasswordDialog = false
+                            onStartQuiz(dificultadSeleccionada)
+                        } else {
+                            quizPasswordError = true
+                        }
+                    }
+                ) {
+                    Text(stringResource(id = R.string.entrar))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showQuizPasswordDialog = false }) {
                     Text(stringResource(id = R.string.cancelar))
                 }
             }

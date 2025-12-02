@@ -1,6 +1,7 @@
 package com.example.mariamolina.ui.screens.kids
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -8,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.R
@@ -64,20 +66,26 @@ fun JoinGameScreen(
 
             OutlinedTextField(
                 value = nickname,
-                onValueChange = { nickname = it },
+                onValueChange = { if (it.length <= 20) nickname = it },
                 label = { Text(stringResource(id = R.string.tu_nombre)) },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                supportingText = { Text("${nickname.length}/20") }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = pin,
-                onValueChange = { pin = it },
+                onValueChange = { newValue ->
+                    if (newValue.all { it.isDigit() }) {
+                        pin = newValue
+                    }
+                },
                 label = { Text(stringResource(id = R.string.pin_de_la_partida)) },
                 modifier = Modifier.fillMaxWidth(),
-                singleLine = true
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
             Spacer(modifier = Modifier.height(32.dp))

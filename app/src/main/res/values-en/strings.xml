@@ -59,6 +59,7 @@
     <string name="cd_horarios">Hours</string>
     <string name="cd_ubicacion">Location</string>
     <string name="cd_perfil">Profile</string>
+    <string name="cd_ajustes">Settings</string>
 
     <!-- Missing English translations -->
     <!-- User profile section -->
