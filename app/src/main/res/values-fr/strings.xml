@@ -6,7 +6,18 @@
     <string name="language_label">Langue</string>
     <string name="language_changed_toast">Langue changée à %s</string>
     <string name="about_title">À propos</string>
-    <string name="about_description">Cette application est un exemple sur María Molina.</string>
+    <string name="about_description">Pasos de María est un guide éducatif et interactif dédié à la diffusion
+        de la vie et de l\'héritage de María de Molina, ainsi qu\'à la mise en valeur du patrimoine historique de Valladolid.
+        L\'application propose des descriptions détaillées, des images, des horaires et des emplacements des points d\'intérêt,
+        des itinéraires sur carte, des contenus adaptés au jeune public et la possibilité de répondre à des questionnaires individuellement et en mode multijoueur.
+        La fonction de test individuel dispose d\'un mot de passe qui sera fourni par les
+        enseignants, afin que les élèves ne puissent pas apprendre les questions avant de passer le questionnaire
+        en mode multijoueur, mais puissent ensuite consolider leurs connaissances de manière autonome. \n
+        Son objectif est de faciliter l\'accès à l\'histoire locale
+        de manière didactique et visuelle, et dans un format plus moderne qui peut susciter davantage l\'intérêt
+        des jeunes ; les données ont été compilées à partir de sources historiques et culturelles.
+        L\'application a été créée pour l\'école Santa María La Real de Huelgas.\n\n
+        Application créée par Miguel Bueno González, Gonzalo José Colina Báscones et Daniel Fernández García</string>
 
     <!-- Chaînes générales (traduction du espagnol) -->
     <string name="app_name">PasosDeMaría</string>
