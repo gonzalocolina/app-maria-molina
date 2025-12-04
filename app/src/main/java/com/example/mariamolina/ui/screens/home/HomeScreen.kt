@@ -368,7 +368,7 @@ fun ContentSection(
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 0.sp
                 ),
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.tertiary
             )
 
             paragraphs.forEach { paragraph ->
@@ -399,7 +399,7 @@ fun ElegantTitle(modifier: Modifier = Modifier, text: String, large: Boolean = f
             letterSpacing = 5.sp,
             fontWeight = FontWeight.Bold
         ),
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.tertiary
     )
 }
 

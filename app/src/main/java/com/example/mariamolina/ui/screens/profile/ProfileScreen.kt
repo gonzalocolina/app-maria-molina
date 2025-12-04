@@ -103,7 +103,8 @@ fun ProfileScreen(
             Text(
                 text = stringResource(R.string.select_language_title),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.tertiary
             )
 
             Button(
@@ -127,7 +128,8 @@ fun ProfileScreen(
                                 text = stringResource(R.string.select_language_title),
                                 style = MaterialTheme.typography.headlineSmall,
                                 modifier = Modifier.fillMaxWidth(),
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
+                                color = Color.Black
                             )
                             Spacer(modifier = Modifier.height(16.dp))
                             languages.forEach { language ->
@@ -170,7 +172,8 @@ fun ProfileScreen(
             Text(
                 text = stringResource(R.string.font_size_title),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.tertiary
             )
 
             Column {
@@ -214,7 +217,8 @@ fun ProfileScreen(
             Text(
                 text = stringResource(R.string.about_title),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.tertiary
             )
 
             Text(

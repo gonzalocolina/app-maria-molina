@@ -15,6 +15,11 @@ val AppPrimaryBlueDark = Color(0xFFBBDEFB)
 val AppUnselectedGrayDark = Color(0xFFBDBDBD)
 val AppIndicatorBackgroundDark = Color(0xFF1E2A32)
 
+// Color claro para títulos en modo oscuro (mejor legibilidad sobre fondo oscuro)
+val AppPrimaryBrownLight = Color(0xFFD4A08A)
+// Color secundario más claro para botones en modo oscuro
+val AppSecondaryDark = Color(0xFF9E7B6D)
+
 //Colores originales
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)

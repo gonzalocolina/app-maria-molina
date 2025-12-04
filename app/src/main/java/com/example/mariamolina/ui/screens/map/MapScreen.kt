@@ -7,6 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -615,7 +616,25 @@ fun DestinoPanel(
                         }
                     }
 
-                    OutlinedButton(onClick = onNavigate) {
+                    val isDarkTheme = isSystemInDarkTheme()
+                    OutlinedButton(
+                        onClick = onNavigate,
+                        colors = if (isDarkTheme) {
+                            ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.primaryContainer
+                            )
+                        } else {
+                            ButtonDefaults.outlinedButtonColors()
+                        },
+                        border = if (isDarkTheme) {
+                            androidx.compose.foundation.BorderStroke(
+                                1.dp,
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        } else {
+                            ButtonDefaults.outlinedButtonBorder(enabled = true)
+                        }
+                    ) {
                         Text(stringResource(id = R.string.mas_informacion))
                     }
                 }

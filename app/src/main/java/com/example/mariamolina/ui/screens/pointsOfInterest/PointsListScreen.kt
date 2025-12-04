@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.mariamolina.R
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.border
 import androidx.compose.foundation.BorderStroke
 
@@ -66,8 +67,7 @@ fun PuntoInteresCard(
     visitado: Boolean,
     onClick: () -> Unit
 ) {
-    // Siempre en modo claro
-    val isDark = false
+    val isDark = isSystemInDarkTheme()
 
     // Creamos un modifier que añade un borde claro solo en modo oscuro para simular una sombra "clara".
     val cardModifier = Modifier
