@@ -3,7 +3,7 @@ package com.example.mariamolina.ui.screens.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -45,10 +45,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import com.example.mariamolina.ui.theme.PanoramaButtonDark
 
 
-// 5. La primera pantalla, en su propio archivo.
-// He renombrado "VistaInicio" a "HomeScreen", que es una
-// convención de nombres más común.
-
 @Composable
 fun HomeScreen(
     onNavigateToImage: () -> Unit,
@@ -61,7 +57,7 @@ fun HomeScreen(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()) {
             // Consideramos "phone" a cualquier dispositivo cuya smallestScreenWidthDp < 600.
             // Los phones usarán siempre la vista vertical (imagen encima del texto), incluso en landscape.
             // Solo los tablets (smallestScreenWidthDp >= 600) podrán usar el layout lado-a-lado en landscape.
@@ -72,9 +68,10 @@ fun HomeScreen(
             val horizontalPadding = if (isTablet) 32.dp else 16.dp
 
             // Row lateral: solo en tablets en landscape y con ancho/alto suficientes
-            val availableWidth = this.maxWidth
+            // Usamos screenWidthDp/screenHeightDp del LocalConfiguration (enteros en dp)
+            val screenWidthDp = configuration.screenWidthDp
             val screenHeightDp = configuration.screenHeightDp
-            val useSideBySide = isTablet && isLandscape && availableWidth >= 900.dp && screenHeightDp >= 600
+            val useSideBySide = isTablet && isLandscape && screenWidthDp >= 900 && screenHeightDp >= 600
 
             if (useSideBySide) {
                 // Layout en Row para tablets o landscape: imagen a la izquierda, contenido a la derecha

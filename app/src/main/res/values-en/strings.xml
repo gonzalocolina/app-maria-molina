@@ -242,9 +242,9 @@
     <!-- Mapa -->
     <string name="mi_ubicacion">My location</string>
     <string name="centrar">Center</string>
-    <string name="calculando_ruta">Calculating route...</string>
+    <string name="calculando_ruta">Calculating route…</string>
     <string name="cerrar">Close</string>
-    <string name="calculando">Calculating...</string>
+    <string name="calculando">Calculating…</string>
     <string name="como_llegar">Directions</string>
     <string name="mas_informacion">More information</string>
 
@@ -254,8 +254,8 @@
     <string name="quiz_score_achieved">You have achieved %d points!</string>
     <string name="student_points_gained">+%d points</string>
     <string name="student_answer_sent">✓ Answer sent</string>
-    <string name="student_waiting_all">Waiting for everyone to respond...</string>
-    <string name="student_waiting_teacher">Waiting for the teacher...</string>
+    <string name="student_waiting_all">Waiting for everyone to respond…</string>
+    <string name="student_waiting_teacher">Waiting for the teacher…</string>
     <string name="slide_counter">%1$d / %2$d</string>
     <string name="font_size_normal">Normal</string>
     <string name="font_size_large">Big</string>
@@ -278,15 +278,15 @@
     <string name="cancelar">Cancel</string>
     <string name="caracteres_maximo">%d/%d characters</string>
     <string name="panel_del_profesor">Teacher\'s Panel</string>
-    <string name="generando_sala">Generating room...</string>
+    <string name="generando_sala">Generating room…</string>
     <string name="codigo_de_la_partida_pin">ITEM CODE (PIN)</string>
     <string name="jugadores_conectados">Players connected: %d</string>
     <string name="empezar_el_juego">START THE GAME!</string>
     <string name="sala_de_espera">Waiting Room</string>
-    <string name="conectando_con_la_sala">Connecting to the room...</string>
+    <string name="conectando_con_la_sala">Connecting to the room…</string>
     <string name="salir">Go out</string>
     <string name="estas_dentro">You\'re in!</string>
-    <string name="esperando_profesor_inicie">Waiting for the teacher to start the game...</string>
+    <string name="esperando_profesor_inicie">Waiting for the teacher to start the game…</string>
     <string name="pin_de_la_sala">Room PIN</string>
     <string name="puntos_label">Points:</string>
     <string name="pregunta_label">Question</string>
@@ -296,7 +296,7 @@
     <string name="respuesta_incorrecta">Incorrect answer</string>
     <string name="tu_puntuacion">Your score</string>
     <string name="posicion_label">Position:</string>
-    <string name="esperando_siguiente_pregunta">Waiting for the next question...</string>
+    <string name="esperando_siguiente_pregunta">Waiting for the next question…</string>
     <string name="partida_label">Game:</string>
     <string name="finalizar">Finish</string>
     <string name="de">of</string>
@@ -322,5 +322,25 @@
     <string name="panorama_zoom_out">Move away</string>
     <string name="acceso_quiz">Access to the Quiz</string>
     <string name="introduce_contrasena_quiz">Enter the password to start the quiz:</string>
+
+    <!-- AddQuestionScreen strings -->
+    <string name="add_question_title">Add Question</string>
+    <string name="translate_auto_title">Automatic translation</string>
+    <string name="translate_auto_subtitle">Type in Spanish. It will be translated automatically to English, French and German.</string>
+    <string name="models_needed_title">Translation models required</string>
+    <string name="models_needed_subtitle">Download the models to enable question translation. Wi‑Fi recommended.</string>
+    <string name="downloading">Downloading…</string>
+    <string name="download_models">Download models</string>
+    <string name="question_label">Question (in Spanish)</string>
+    <string name="difficulty_label">Difficulty:</string>
+    <string name="answer_options_title">Answer options:</string>
+    <string name="mark_correct_note">Tap the circle to mark the correct answer</string>
+    <string name="option_label">Option %1$d</string>
+    <string name="add_option">Add another option</string>
+    <string name="save_and_translate">Save and Translate</string>
+    <string name="saving">Saving…</string>
+    <string name="cd_answer_correct">Correct answer</string>
+    <string name="cd_mark_as_correct">Mark as correct</string>
+    <string name="delete_option">Delete option</string>
 
 </resources>

@@ -14,7 +14,7 @@
         damit die Schüler die Fragen nicht vor dem Mehrspielermodus-Quiz lernen können,
         aber später ihr Wissen selbstständig festigen können. \n
         Ihr Ziel ist es, den Zugang zur lokalen Geschichte
-        auf didaktische und visuelle Weise zu ermöglichen, und in einem moderneren Format, das das Interesse
+        auf didaktische und visuelle Weise zu ermöglichen, und in einem moderneren Format, das Interesse
         der Jugendlichen noch mehr wecken kann; die Daten wurden aus historischen und kulturellen Quellen zusammengestellt.
         Die Anwendung wurde für die Schule Santa María La Real de Huelgas erstellt.\n\n
         Anwendung erstellt von Miguel Bueno González, Gonzalo José Colina Báscones und Daniel Fernández García</string>
@@ -242,9 +242,9 @@
     <!-- Mapa -->
     <string name="mi_ubicacion">Mein Standort</string>
     <string name="centrar">Zentrieren</string>
-    <string name="calculando_ruta">Route wird berechnet...</string>
+    <string name="calculando_ruta">Route wird berechnet…</string>
     <string name="cerrar">Schließen</string>
-    <string name="calculando">Wird berechnet...</string>
+    <string name="calculando">Wird berechnet…</string>
     <string name="como_llegar">Wegbeschreibung</string>
     <string name="mas_informacion">Weitere Informationen</string>
 
@@ -254,8 +254,8 @@
     <string name="quiz_score_achieved">Du hast %d Punkte erreicht!</string>
     <string name="student_points_gained">+%d Punkte</string>
     <string name="student_answer_sent">✓ Antwort gesendet</string>
-    <string name="student_waiting_all">Warten darauf, dass alle antworten...</string>
-    <string name="student_waiting_teacher">Warten auf den Lehrer...</string>
+    <string name="student_waiting_all">Warten darauf, dass alle antworten…</string>
+    <string name="student_waiting_teacher">Warten auf den Lehrer…</string>
     <string name="slide_counter">%1$d / %2$d</string>
     <string name="font_size_normal">Normal</string>
     <string name="font_size_large">Riesen</string>
@@ -278,15 +278,15 @@
     <string name="cancelar">Abbrechen</string>
     <string name="caracteres_maximo">%d/%d Zeichen</string>
     <string name="panel_del_profesor">Lehrer-Dashboard</string>
-    <string name="generando_sala">Raum wird erstellt...</string>
+    <string name="generando_sala">Raum wird erstellt…</string>
     <string name="codigo_de_la_partida_pin">PARTIE-CODE (PIN)</string>
     <string name="jugadores_conectados">Angeschlossene Spieler: %d</string>
     <string name="empezar_el_juego">SPIEL STARTEN!</string>
     <string name="sala_de_espera">Wartezimmer</string>
-    <string name="conectando_con_la_sala">Verbindung mit dem Raum wird hergestellt...</string>
+    <string name="conectando_con_la_sala">Verbindung mit dem Raum wird hergestellt…</string>
     <string name="salir">Ausgehen</string>
     <string name="estas_dentro">Du bist dabei!</string>
-    <string name="esperando_profesor_inicie">Warten darauf, dass der Lehrer das Spiel startet...</string>
+    <string name="esperando_profesor_inicie">Warten darauf, dass der Lehrer das Spiel startet…</string>
     <string name="pin_de_la_sala">Raum-PIN</string>
     <string name="puntos_label">Punkte:</string>
     <string name="pregunta_label">Frage</string>
@@ -296,7 +296,7 @@
     <string name="respuesta_incorrecta">Falsche Antwort</string>
     <string name="tu_puntuacion">Dein Punktestand</string>
     <string name="posicion_label">Position:</string>
-    <string name="esperando_siguiente_pregunta">Warten auf die nächste Frage...</string>
+    <string name="esperando_siguiente_pregunta">Warten auf die nächste Frage…</string>
     <string name="partida_label">Spiel:</string>
     <string name="finalizar">Beenden</string>
     <string name="de">von</string>
@@ -322,5 +322,25 @@
     <string name="panorama_zoom_out">Fernhalten</string>
     <string name="acceso_quiz">Zugang zum Quiz</string>
     <string name="introduce_contrasena_quiz">Geben Sie das Passwort ein, um das Quiz zu starten:</string>
+
+    <!-- AddQuestionScreen (de) -->
+    <string name="add_question_title">Frage hinzufügen</string>
+    <string name="translate_auto_title">Automatische Übersetzung</string>
+    <string name="translate_auto_subtitle">Geben Sie auf Spanisch ein. Es wird automatisch ins Englische, Französische und Deutsche übersetzt.</string>
+    <string name="models_needed_title">Übersetzungsmodelle erforderlich</string>
+    <string name="models_needed_subtitle">Laden Sie die Modelle herunter, um die Übersetzungsfunktion zu aktivieren. WLAN empfohlen.</string>
+    <string name="downloading">Wird heruntergeladen…</string>
+    <string name="download_models">Modelle herunterladen</string>
+    <string name="question_label">Frage (auf Spanisch)</string>
+    <string name="difficulty_label">Schwierigkeit:</string>
+    <string name="answer_options_title">Antwortoptionen:</string>
+    <string name="mark_correct_note">Tippen Sie auf den Kreis, um die richtige Antwort zu markieren</string>
+    <string name="option_label">Option %1$d</string>
+    <string name="add_option">Weitere Option hinzufügen</string>
+    <string name="save_and_translate">Speichern und Übersetzen</string>
+    <string name="saving">Speichert…</string>
+    <string name="cd_answer_correct">Richtige Antwort</string>
+    <string name="cd_mark_as_correct">Als richtig markieren</string>
+    <string name="delete_option">Option löschen</string>
 
 </resources>

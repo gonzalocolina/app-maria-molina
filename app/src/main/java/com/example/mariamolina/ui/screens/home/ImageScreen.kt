@@ -45,9 +45,9 @@ fun ImageScreen(onBackClick: () -> Unit) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        val maxWidthDp = this.maxWidth
-        val isTablet = maxWidthDp >= 600.dp
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Determinamos tablet basándonos en smallestScreenWidthDp (recomendado y consistente)
+        val isTablet = configuration.smallestScreenWidthDp >= 600
 
         // Si entramos en modo tablet vertical, reseteamos zoom/offset para mostrar la imagen completa
         LaunchedEffect(isTablet, isLandscape) {

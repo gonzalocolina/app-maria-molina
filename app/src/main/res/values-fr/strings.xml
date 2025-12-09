@@ -159,7 +159,6 @@
 
     <string name="slide_10_title">Le roi Fernando</string>
     <string name="slide_10_desc">Des années plus tard, Sancho tomba malade et mourut. J\'ai fait en sorte que mon fils Fernando soit proclamé roi.</string>
-
     <string name="slide_11_title">Régente de Fernando</string>
     <string name="slide_11_desc">Fernando était encore jeune et je l\'ai aidé à gouverner jusqu\'à sa majorité.</string>
 
@@ -190,9 +189,9 @@
     <!-- Mapa -->
     <string name="mi_ubicacion">Ma position</string>
     <string name="centrar">Centre</string>
-    <string name="calculando_ruta">Calcul de l’itinéraire...</string>
+    <string name="calculando_ruta">Calcul de l’itinéraire…</string>
     <string name="cerrar">Fermer</string>
-    <string name="calculando">Calcul en cours...</string>
+    <string name="calculando">Calcul en cours…</string>
     <string name="como_llegar">Itinéraire</string>
     <string name="mas_informacion">Plus d’informations</string>
 
@@ -202,8 +201,8 @@
     <string name="quiz_score_achieved">Vous avez obtenu %d points !</string>
     <string name="student_points_gained">+%d points</string>
     <string name="student_answer_sent">✓ Réponse envoyée</string>
-    <string name="student_waiting_all">En attente que tout le monde réponde...</string>
-    <string name="student_waiting_teacher">En attente du professeur...</string>
+    <string name="student_waiting_all">En attente que tout le monde réponde…</string>
+    <string name="student_waiting_teacher">En attente du professeur…</string>
     <string name="slide_counter">%d / %d</string>
     <string name="font_size_normal">Normal</string>
     <string name="font_size_large">Grand</string>
@@ -269,15 +268,15 @@
     <string name="cancelar">Annuler</string>
     <string name="caracteres_maximo">%d/%d caractères</string>
     <string name="panel_del_profesor">Panneau du Professeur</string>
-    <string name="generando_sala">Création de la salle...</string>
+    <string name="generando_sala">Création de la salle…</string>
     <string name="codigo_de_la_partida_pin">CODE DE LA PARTIE (PIN)</string>
     <string name="jugadores_conectados">Joueurs connectés : %d</string>
     <string name="empezar_el_juego">COMMENCER LE JEU !</string>
     <string name="sala_de_espera">Salle d\'attente</string>
-    <string name="conectando_con_la_sala">Connexion à la salle...</string>
+    <string name="conectando_con_la_sala">Connexion à la salle…</string>
     <string name="salir">Sortir</string>
     <string name="estas_dentro">Tu es dedans !</string>
-    <string name="esperando_profesor_inicie">En attendant que le professeur commence le jeu...</string>
+    <string name="esperando_profesor_inicie">En attendant que le professeur commence le jeu…</string>
     <string name="pin_de_la_sala">Code PIN de la salle</string>
     <string name="puntos_label">Points:</string>
     <string name="pregunta_label">Question</string>
@@ -287,7 +286,7 @@
     <string name="respuesta_incorrecta">Réponse incorrecte</string>
     <string name="tu_puntuacion">Ton score</string>
     <string name="posicion_label">Position:</string>
-    <string name="esperando_siguiente_pregunta">En attendant la prochaine question...</string>
+    <string name="esperando_siguiente_pregunta">En attendant la prochaine question…</string>
     <string name="partida_label">Partie:</string>
     <string name="finalizar">Terminer</string>
     <string name="de">de</string>
@@ -313,5 +312,25 @@
     <string name="panorama_zoom_out">Éloigner</string>
     <string name="acceso_quiz">Accès au quiz</string>
     <string name="introduce_contrasena_quiz">Entrez le mot de passe pour commencer le quiz :</string>
+
+    <!-- AddQuestionScreen (fr) -->
+    <string name="add_question_title">Ajouter une question</string>
+    <string name="translate_auto_title">Traduction automatique</string>
+    <string name="translate_auto_subtitle">Écrivez en espagnol. Ce texte sera automatiquement traduit en anglais, français et allemand.</string>
+    <string name="models_needed_title">Modèles de traduction requis</string>
+    <string name="models_needed_subtitle">Téléchargez les modèles pour activer la traduction des questions. Wi‑Fi recommandé.</string>
+    <string name="downloading">Téléchargement…</string>
+    <string name="download_models">Télécharger les modèles</string>
+    <string name="question_label">Question (en espagnol)</string>
+    <string name="difficulty_label">Difficulté :</string>
+    <string name="answer_options_title">Options de réponse :</string>
+    <string name="mark_correct_note">Appuyez sur le cercle pour marquer la réponse correcte</string>
+    <string name="option_label">Option %1$d</string>
+    <string name="add_option">Ajouter une autre option</string>
+    <string name="save_and_translate">Enregistrer et traduire</string>
+    <string name="saving">Enregistrement…</string>
+    <string name="cd_answer_correct">Réponse correcte</string>
+    <string name="cd_mark_as_correct">Marquer comme correcte</string>
+    <string name="delete_option">Supprimer l\'option</string>
 
 </resources>

@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,7 +51,6 @@ import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
-import com.example.mariamolina.ui.screens.kids.AdminLobbyScreen
 import com.example.mariamolina.ui.screens.kids.QuizGameScreen
 import com.example.mariamolina.ui.screens.kids.KidsEntryScreen
 import com.example.mariamolina.ui.screens.kids.KidsSlidesScreen
@@ -67,9 +65,7 @@ import com.example.mariamolina.ui.screens.kids.StudentGameScreen
 import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
 import com.example.mariamolina.ui.screens.kids.RankRewardScreen
 import com.example.mariamolina.ui.screens.panorama.Panorama360Screen
-import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
-import com.example.mariamolina.ui.viewmodel.KidsSessionViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
@@ -90,8 +86,7 @@ fun AppNavigation() {
         ?: Pantalla.Home
 
     val isProfile = currentDestination?.route == Pantalla.Profile.ruta
-
-    // Detectamos si la ruta actual es la del mapa (esto lo necesitamos antes del bloque `key`)
+    // Detectamos si la ruta actual es la del mapa
     val esRutaMapaGlobal = currentDestination?.route?.startsWith("map") == true
 
     // Notamos que el estado del TopAppBar debe resetearse cuando cambiamos de pantalla. Para
@@ -117,9 +112,6 @@ fun AppNavigation() {
         val shouldUseScrollBehavior = !isTablet && !(esRutaMapaGlobal && !isLandscape) && !esRutaConScaffoldPropio
 
         val topAppBarScrollBehavior: TopAppBarScrollBehavior? = if (shouldUseScrollBehavior) {
-            // Crear directamente el scrollBehavior en el contexto composable; al estar dentro
-            // de `key(currentDestination?.route)` se recreará al cambiar la ruta, lo que
-            // efectivamente resetea su estado.
             TopAppBarDefaults.enterAlwaysScrollBehavior()
         } else {
             null
