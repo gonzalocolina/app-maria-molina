@@ -66,10 +66,11 @@ data class RespuestaJugador(
     val esCorrecta: Boolean = false,
     val tiempoRespuestaMs: Long = 0,   // Tiempo en ms que tardó en responder
     val puntosObtenidos: Int = 0,
-    val timestamp: Timestamp? = null
+    val timestamp: Timestamp? = null,
+    val puntosContabilizados: Boolean = false  // Si los puntos ya se sumaron al total
 ) {
     // Constructor sin argumentos requerido por Firestore
-    constructor() : this(0, -1, false, 0, 0, null)
+    constructor() : this(0, -1, false, 0, 0, null, false)
 }
 
 /**

@@ -45,7 +45,9 @@ data class StudentGameUiState(
     val totalJugadores: Int = 0,
     val jugadoresQueRespondieron: Int = 0,
     val allAnswered: Boolean = false,
-    val tiempoAgotado: Boolean = false
+    val tiempoAgotado: Boolean = false,
+    val opcionSeleccionadaIndex: Int = -1,  // Índice de la opción seleccionada por el alumno
+    val puntosContabilizados: Boolean = false  // Si los puntos de la pregunta actual ya se sumaron
 )
 
 /**
@@ -148,14 +150,22 @@ class StudentGameViewModel @Inject constructor(
 
     /**
      * Observa cuántos jugadores han respondido.
+     * Cuando todos responden, contabiliza los puntos.
      */
     private fun observeAnsweredCount(pin: String) {
         answeredObserverJob?.cancel()
         answeredObserverJob = viewModelScope.launch {
             repository.observeAnsweredCount(pin).collect { count ->
-                _uiState.update { state ->
-                    val allAnswered = count >= state.totalJugadores && state.totalJugadores > 0
-                    state.copy(
+                val state = _uiState.value
+                val allAnswered = count >= state.totalJugadores && state.totalJugadores > 0
+
+                // Si todos han respondido y los puntos no se han contabilizado aún
+                if (allAnswered && state.respuestaEnviada && !state.puntosContabilizados && state.puntosObtenidos > 0) {
+                    contabilizarPuntos()
+                }
+
+                _uiState.update { s ->
+                    s.copy(
                         jugadoresQueRespondieron = count,
                         allAnswered = allAnswered
                     )
@@ -222,6 +232,33 @@ class StudentGameViewModel @Inject constructor(
                     _uiState.value.opcionesAleatorias
                 }
                 
+                // Variables para el estado de respuesta (pueden ser sobrescritas por Firebase)
+                var respuestaEnviada = if (shouldResetAnswer) false else _uiState.value.respuestaEnviada
+                var respuestaCorrecta = if (shouldResetAnswer) null else _uiState.value.respuestaCorrecta
+                var puntosObtenidos = if (shouldResetAnswer) 0 else _uiState.value.puntosObtenidos
+                var opcionSeleccionadaIndex = if (shouldResetAnswer) -1 else _uiState.value.opcionSeleccionadaIndex
+                var tiempoAgotado = if (shouldResetAnswer) false else _uiState.value.tiempoAgotado
+                var puntosContabilizados = if (shouldResetAnswer) false else _uiState.value.puntosContabilizados
+
+                // Verificar si ya respondió esta pregunta (cuando entra/vuelve a la pantalla)
+                // Solo verificar si estamos en SHOWING_QUESTION y no hemos marcado respuestaEnviada localmente
+                if (currentPhase == GamePhase.SHOWING_QUESTION && !respuestaEnviada) {
+                    try {
+                        val respuestaPrevia = repository.getPlayerAnswer(pin, currentIndex)
+                        if (respuestaPrevia != null) {
+                            // El jugador ya respondió esta pregunta, restaurar el estado
+                            respuestaEnviada = true
+                            respuestaCorrecta = respuestaPrevia.esCorrecta
+                            puntosObtenidos = respuestaPrevia.puntosObtenidos
+                            opcionSeleccionadaIndex = respuestaPrevia.opcionSeleccionada
+                            tiempoAgotado = respuestaPrevia.opcionSeleccionada == -1
+                            puntosContabilizados = respuestaPrevia.puntosContabilizados
+                        }
+                    } catch (e: Exception) {
+                        // Ignorar error, si falla la verificación seguimos con el estado actual
+                    }
+                }
+
                 _uiState.update { state ->
                     state.copy(
                         isLoading = false,
@@ -229,9 +266,12 @@ class StudentGameViewModel @Inject constructor(
                         gamePhase = currentPhase,
                         preguntaActual = preguntaActual,
                         opcionesAleatorias = opcionesAleatorias,
-                        respuestaEnviada = if (shouldResetAnswer) false else state.respuestaEnviada,
-                        respuestaCorrecta = if (shouldResetAnswer) null else state.respuestaCorrecta,
-                        puntosObtenidos = if (shouldResetAnswer) 0 else state.puntosObtenidos,
+                        respuestaEnviada = respuestaEnviada,
+                        respuestaCorrecta = respuestaCorrecta,
+                        puntosObtenidos = puntosObtenidos,
+                        opcionSeleccionadaIndex = opcionSeleccionadaIndex,
+                        tiempoAgotado = tiempoAgotado,
+                        puntosContabilizados = puntosContabilizados,
                         gameFinished = currentPhase == GamePhase.FINISHED
                     )
                 }
@@ -285,8 +325,9 @@ class StudentGameViewModel @Inject constructor(
             it.copy(
                 respuestaEnviada = true,
                 respuestaCorrecta = esCorrecta,
-                puntosObtenidos = puntos
-            ) 
+                puntosObtenidos = puntos,
+                opcionSeleccionadaIndex = opcionIndex  // Guardar índice de opción seleccionada
+            )
         }
         
         // Enviar a Firebase
@@ -337,6 +378,31 @@ class StudentGameViewModel @Inject constructor(
                 )
             } catch (e: Exception) {
                 // Ignorar error si no se pudo enviar
+            }
+        }
+    }
+
+    /**
+     * Contabiliza los puntos de la respuesta actual.
+     * Se llama solo cuando se muestra el feedback (todos respondieron o tiempo agotado).
+     */
+    private fun contabilizarPuntos() {
+        val state = _uiState.value
+        if (state.puntosContabilizados || state.puntosObtenidos <= 0) return
+
+        // Marcar como contabilizados inmediatamente para evitar duplicados
+        _uiState.update { it.copy(puntosContabilizados = true) }
+
+        viewModelScope.launch {
+            try {
+                repository.addPointsForAnswer(
+                    pin = state.pin,
+                    preguntaIndex = state.partida?.preguntaActualIndex ?: 0,
+                    puntos = state.puntosObtenidos
+                )
+            } catch (e: Exception) {
+                // Si falla, desmarcar para reintentar después
+                _uiState.update { it.copy(puntosContabilizados = false) }
             }
         }
     }

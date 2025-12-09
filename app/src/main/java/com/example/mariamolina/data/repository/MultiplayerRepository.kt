@@ -401,7 +401,8 @@ class MultiplayerRepository @Inject constructor(
     // ==================== RESPUESTAS (ALUMNO) ====================
     
     /**
-     * Envía la respuesta de un jugador.
+     * Envía la respuesta de un jugador (sin sumar puntos todavía).
+     * Los puntos se suman después cuando se muestra el feedback.
      */
     suspend fun submitAnswer(
         pin: String,
@@ -413,7 +414,7 @@ class MultiplayerRepository @Inject constructor(
     ) {
         val uid = getCurrentUserUid()
         
-        // Guardar respuesta
+        // Guardar respuesta (con los puntos calculados, pero sin sumarlos todavía)
         val respuesta = RespuestaJugador(
             preguntaIndex = preguntaIndex,
             opcionSeleccionada = opcionSeleccionada,
@@ -432,20 +433,49 @@ class MultiplayerRepository @Inject constructor(
             .set(respuesta)
             .await()
         
-        // Actualizar puntuación del jugador y marcar que respondió
+        // Solo marcar que ha respondido, NO sumar puntos todavía
+        val jugadorRef = firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .collection(COLLECTION_JUGADORES)
+            .document(uid)
+
+        jugadorRef.update("hasAnswered", true).await()
+    }
+
+    /**
+     * Suma los puntos de una respuesta al jugador.
+     * Se llama solo cuando se muestra el feedback (todos respondieron o tiempo agotado).
+     * También marca los puntos como contabilizados para evitar duplicados.
+     */
+    suspend fun addPointsForAnswer(pin: String, preguntaIndex: Int, puntos: Int) {
+        val uid = getCurrentUserUid()
+
         val jugadorRef = firestore.collection(COLLECTION_PARTIDAS)
             .document(pin)
             .collection(COLLECTION_JUGADORES)
             .document(uid)
         
+        val respuestaRef = firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .collection(COLLECTION_JUGADORES)
+            .document(uid)
+            .collection(COLLECTION_RESPUESTAS)
+            .document(preguntaIndex.toString())
+
         firestore.runTransaction { transaction ->
-            val jugadorDoc = transaction.get(jugadorRef)
-            val puntuacionActual = jugadorDoc.getLong("puntuacion")?.toInt() ?: 0
-            
-            transaction.update(jugadorRef, mapOf(
-                "puntuacion" to puntuacionActual + puntosObtenidos,
-                "hasAnswered" to true
-            ))
+            // Verificar si ya se contabilizaron los puntos
+            val respuestaDoc = transaction.get(respuestaRef)
+            val yaContabilizados = respuestaDoc.getBoolean("puntosContabilizados") ?: false
+
+            if (!yaContabilizados) {
+                // Sumar puntos al jugador
+                val jugadorDoc = transaction.get(jugadorRef)
+                val puntuacionActual = jugadorDoc.getLong("puntuacion")?.toInt() ?: 0
+                transaction.update(jugadorRef, "puntuacion", puntuacionActual + puntos)
+
+                // Marcar puntos como contabilizados
+                transaction.update(respuestaRef, "puntosContabilizados", true)
+            }
         }.await()
     }
     
@@ -465,6 +495,29 @@ class MultiplayerRepository @Inject constructor(
             .await()
         
         return respuestaDoc.exists()
+    }
+
+    /**
+     * Obtiene la respuesta del jugador actual para una pregunta específica.
+     * Retorna null si no ha respondido aún.
+     */
+    suspend fun getPlayerAnswer(pin: String, preguntaIndex: Int): RespuestaJugador? {
+        val uid = getCurrentUserUid()
+
+        val respuestaDoc = firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .collection(COLLECTION_JUGADORES)
+            .document(uid)
+            .collection(COLLECTION_RESPUESTAS)
+            .document(preguntaIndex.toString())
+            .get()
+            .await()
+
+        return if (respuestaDoc.exists()) {
+            respuestaDoc.toObject(RespuestaJugador::class.java)
+        } else {
+            null
+        }
     }
 
     // ==================== PREGUNTAS ====================
