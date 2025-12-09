@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
@@ -146,7 +149,19 @@ fun MapScreen(
                     .padding(16.dp)
                     .align(Alignment.TopEnd)
             ) {
-                Text(stringResource(id = R.string.mi_ubicacion))
+                // Añadido padding horizontal para separar texto y borde
+                Row(modifier = Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.MyLocation,
+                        contentDescription = stringResource(id = R.string.mi_ubicacion),
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        stringResource(id = R.string.mi_ubicacion),
+                        color = Color.Black
+                    )
+                }
             }
         }
 
@@ -156,7 +171,19 @@ fun MapScreen(
                 .padding(16.dp)
                 .align(Alignment.TopStart)
         ) {
-            Text(stringResource(id = R.string.inicio))
+            // Añadido padding horizontal para separar texto y borde
+            Row(modifier = Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.LocationOn,
+                    contentDescription = stringResource(id = R.string.centrar),
+                    tint = Color.Black
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    stringResource(id = R.string.centrar),
+                    color = Color.Black
+                )
+            }
         }
 
         // Indicador de carga para la ruta

@@ -196,7 +196,7 @@
 
     <!-- Mapa -->
     <string name="mi_ubicacion">Mi ubicación</string>
-    <string name="inicio">Inicio</string>
+    <string name="centrar">Centrar</string>
     <string name="calculando_ruta">Calculando ruta...</string>
     <string name="cerrar">Cerrar</string>
     <string name="calculando">Calculando...</string>

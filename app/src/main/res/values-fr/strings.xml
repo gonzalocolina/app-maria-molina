@@ -189,7 +189,7 @@
 
     <!-- Mapa -->
     <string name="mi_ubicacion">Ma position</string>
-    <string name="inicio">Accueil</string>
+    <string name="centrar">Centre</string>
     <string name="calculando_ruta">Calcul de l’itinéraire...</string>
     <string name="cerrar">Fermer</string>
     <string name="calculando">Calcul en cours...</string>

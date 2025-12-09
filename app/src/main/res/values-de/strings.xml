@@ -241,7 +241,7 @@
 
     <!-- Mapa -->
     <string name="mi_ubicacion">Mein Standort</string>
-    <string name="inicio">Startseite</string>
+    <string name="centrar">Zentrieren</string>
     <string name="calculando_ruta">Route wird berechnet...</string>
     <string name="cerrar">Schließen</string>
     <string name="calculando">Wird berechnet...</string>

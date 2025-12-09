@@ -41,6 +41,8 @@ import androidx.compose.foundation.verticalScroll
 import android.content.res.Configuration
 import com.example.mariamolina.R
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
+import androidx.compose.foundation.isSystemInDarkTheme
+import com.example.mariamolina.ui.theme.PanoramaButtonDark
 
 
 // 5. La primera pantalla, en su propio archivo.
@@ -175,7 +177,7 @@ fun HomeScreen(
                                 .padding(vertical = 8.dp)
                                 .shadow(4.dp, RoundedCornerShape(8.dp)),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary
+                                containerColor = if (isSystemInDarkTheme()) PanoramaButtonDark else MaterialTheme.colorScheme.secondary
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {
@@ -313,7 +315,7 @@ fun HomeScreen(
                                 .padding(vertical = 8.dp)
                                 .shadow(4.dp, RoundedCornerShape(8.dp)),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.secondary
+                                containerColor = if (isSystemInDarkTheme()) PanoramaButtonDark else MaterialTheme.colorScheme.secondary
                             ),
                             shape = RoundedCornerShape(8.dp)
                         ) {

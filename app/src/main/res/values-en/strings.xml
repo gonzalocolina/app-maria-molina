@@ -241,7 +241,7 @@
 
     <!-- Mapa -->
     <string name="mi_ubicacion">My location</string>
-    <string name="inicio">Home</string>
+    <string name="centrar">Center</string>
     <string name="calculando_ruta">Calculating route...</string>
     <string name="cerrar">Close</string>
     <string name="calculando">Calculating...</string>
