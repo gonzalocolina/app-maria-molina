@@ -43,7 +43,10 @@ fun StudentLobbyScreen(
             TopAppBar(
                 title = { Text(stringResource(id = R.string.sala_de_espera)) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = {
+                        viewModel.leaveLobby()
+                        onBack()
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(id = R.string.btn_volver)

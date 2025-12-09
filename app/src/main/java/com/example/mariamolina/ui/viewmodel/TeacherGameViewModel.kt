@@ -161,15 +161,31 @@ class TeacherGameViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, error = null) }
             
             try {
+                // Cargar datos de la partida existente
+                val partida = repository.observeGame(pin).first()
+
+                if (partida == null) {
+                    throw Exception("La partida no existe")
+                }
+
                 // Cargar preguntas de la partida existente
                 val preguntas = repository.getQuestionsForGame(pin)
                 
-                _uiState.update { 
+                // Obtener la dificultad de la partida
+                val dificultad = try {
+                    Dificultad.valueOf(partida.dificultad)
+                } catch (e: Exception) {
+                    Dificultad.FACIL
+                }
+
+                _uiState.update {
                     it.copy(
                         isLoading = false, 
                         pin = pin,
-                        preguntas = preguntas
-                    ) 
+                        preguntas = preguntas,
+                        dificultadSeleccionada = dificultad,
+                        tiempoPorPreguntaSeleccionado = partida.tiempoPorPregunta
+                    )
                 }
                 
                 // Iniciar observers
@@ -231,6 +247,24 @@ class TeacherGameViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    /**
+     * Abandona el lobby y limpia la sesión.
+     * Se usa cuando el profesor decide salir del lobby con el botón Volver.
+     */
+    fun abandonarLobby() {
+        // Cancelar observers
+        gameObserverJob?.cancel()
+        playersObserverJob?.cancel()
+        answeredObserverJob?.cancel()
+        rankingObserverJob?.cancel()
+
+        // Limpiar sesión activa
+        activeGameSession.clearSession()
+
+        // Resetear estado
+        _uiState.update { TeacherGameUiState() }
     }
 
     /**

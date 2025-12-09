@@ -65,7 +65,10 @@ fun TeacherLobbyScreen(
             TopAppBar(
                 title = { Text("Panel del Profesor") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = {
+                        viewModel.abandonarLobby()
+                        onBack()
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver"

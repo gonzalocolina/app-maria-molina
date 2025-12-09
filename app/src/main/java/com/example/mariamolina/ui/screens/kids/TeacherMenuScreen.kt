@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TeacherMenuScreen(
     onBack: () -> Unit,
+    onLogout: () -> Unit,
     onCreateRoom: () -> Unit,
     onAddQuestions: () -> Unit
 ) {
@@ -31,7 +32,10 @@ fun TeacherMenuScreen(
             TopAppBar(
                 title = { Text("Panel del Profesor") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = {
+                        onLogout()
+                        onBack()
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Volver"

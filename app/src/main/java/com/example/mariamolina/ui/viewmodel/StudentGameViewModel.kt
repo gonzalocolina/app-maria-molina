@@ -342,6 +342,32 @@ class StudentGameViewModel @Inject constructor(
     }
 
     /**
+     * Abandona el lobby de la partida (elimina al jugador de la lista).
+     * Se usa cuando el alumno pulsa "Volver" en la sala de espera.
+     */
+    fun leaveLobby() {
+        val pin = _uiState.value.pin
+        if (pin.isBlank()) return
+
+        viewModelScope.launch {
+            // Eliminar al jugador de Firebase
+            repository.leaveGame(pin)
+
+            // Cancelar observers
+            gameObserverJob?.cancel()
+            rankingObserverJob?.cancel()
+            answeredObserverJob?.cancel()
+            playersObserverJob?.cancel()
+
+            // Limpiar sesión activa
+            activeGameSession.clearSession()
+
+            // Resetear estado
+            _uiState.value = StudentGameUiState()
+        }
+    }
+
+    /**
      * Limpia el error actual.
      */
     fun clearError() {

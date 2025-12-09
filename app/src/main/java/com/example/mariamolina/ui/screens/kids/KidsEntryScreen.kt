@@ -254,6 +254,7 @@ fun KidsEntryScreen(
                     onClick = {
                         if (passwordInput == "Profesor47005") {
                             showAdminDialog = false
+                            viewModel.setTeacherAuthenticated()
                             onNavigateToAdmin()
                         } else {
                             passwordError = true

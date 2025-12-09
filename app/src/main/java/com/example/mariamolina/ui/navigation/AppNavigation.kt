@@ -69,6 +69,7 @@ import com.example.mariamolina.ui.screens.kids.RankRewardScreen
 import com.example.mariamolina.ui.screens.panorama.Panorama360Screen
 import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
+import com.example.mariamolina.ui.viewmodel.KidsSessionViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 
 
@@ -310,7 +311,8 @@ fun AppNavigation() {
                         },
                         onReconnectToGame = { route ->
                             navControllerPrincipal.navigate(route) {
-                                popUpTo(Pantalla.Kids.ruta) { inclusive = true }
+                                // No usar inclusive = true para mantener Kids en el backstack
+                                popUpTo(Pantalla.Kids.ruta) { inclusive = false }
                             }
                         }
                     )
@@ -375,8 +377,10 @@ fun AppNavigation() {
 
                 // F. Menú del Profesor (después de introducir contraseña)
                 composable("admin_lobby") {
+                    val kidsSessionViewModel: com.example.mariamolina.ui.viewmodel.KidsSessionViewModel = hiltViewModel()
                     TeacherMenuScreen(
                         onBack = { navControllerPrincipal.popBackStack() },
+                        onLogout = { kidsSessionViewModel.logoutTeacher() },
                         onCreateRoom = {
                             navControllerPrincipal.navigate("teacher_lobby")
                         },
@@ -399,7 +403,12 @@ fun AppNavigation() {
                 ) { backStackEntry ->
                     val existingPin = backStackEntry.arguments?.getString("pin")
                     TeacherLobbyScreen(
-                        onBack = { navControllerPrincipal.popBackStack() },
+                        onBack = {
+                            // Navegar a admin_lobby limpiando el backstack del lobby
+                            navControllerPrincipal.navigate("admin_lobby") {
+                                popUpTo("admin_lobby") { inclusive = true }
+                            }
+                        },
                         onGameStarted = { pin ->
                             navControllerPrincipal.navigate("teacher_game/$pin") {
                                 popUpTo("teacher_lobby?pin={pin}") { inclusive = true }

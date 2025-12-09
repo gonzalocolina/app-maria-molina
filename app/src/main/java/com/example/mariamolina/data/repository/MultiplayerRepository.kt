@@ -211,6 +211,28 @@ class MultiplayerRepository @Inject constructor(
         }
     }
 
+    /**
+     * Elimina un jugador de una partida (cuando sale del lobby).
+     * @param pin PIN de la partida
+     */
+    suspend fun leaveGame(pin: String): Result<Unit> {
+        return try {
+            val uid = getCurrentUserUid()
+
+            // Eliminar jugador de la subcolección
+            firestore.collection(COLLECTION_PARTIDAS)
+                .document(pin)
+                .collection(COLLECTION_JUGADORES)
+                .document(uid)
+                .delete()
+                .await()
+
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
     // ==================== OBSERVAR PARTIDA (TIEMPO REAL) ====================
     
     /**
