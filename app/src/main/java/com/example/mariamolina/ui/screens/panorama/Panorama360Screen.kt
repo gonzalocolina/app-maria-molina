@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.ZoomOut
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -27,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,7 +33,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.example.mariamolina.R
+
+/**
+ * Composable wrapper para GLSurfaceView que evita el warning de UiComposable.
+ */
+@Composable
+private fun PanoramaGLView(
+    glSurfaceView: Panorama360GLSurfaceView,
+    modifier: Modifier = Modifier
+) {
+    AndroidView(
+        factory = { glSurfaceView },
+        modifier = modifier
+    )
+}
 
 /**
  * Pantalla de visualización panorámica 360° del Monasterio.
@@ -69,33 +82,33 @@ fun Panorama360Screen(
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
-        
+
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
             glSurfaceView.onPause()
         }
     }
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color.Black
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            // Vista OpenGL 360°
-            AndroidView(
-                factory = { glSurfaceView },
-                modifier = Modifier.fillMaxSize()
-            )
+        // Vista OpenGL 360°
+        PanoramaGLView(
+            glSurfaceView = glSurfaceView,
+            modifier = Modifier.fillMaxSize()
+        )
 
-            // Overlay con controles
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
-            ) {
-                // Barra superior con botón de volver y título
-
-                if (!isLandscape) Box(
+        // Overlay con controles
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .statusBarsPadding()
+        ) {
+            // Barra superior con botón de volver y título
+            if (!isLandscape) {
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(Color.Black.copy(alpha = 0.5f))
@@ -130,59 +143,57 @@ fun Panorama360Screen(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+            }
 
-                // Espacio flexible para empujar los controles hacia abajo
-                Box(modifier = Modifier.weight(1f))
+            // Espacio flexible para empujar los controles hacia abajo
+            Box(modifier = Modifier.weight(1f))
 
-
-
-                // Controles de zoom en la esquina inferior derecha
-                Column(
+            // Controles de zoom en la esquina inferior derecha
+            Column(
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Botón de zoom in
+                IconButton(
+                    onClick = {
+                        renderer.zoom = (renderer.zoom * 1.2f).coerceIn(0.5f, 3f)
+                    },
                     modifier = Modifier
-                        .align(Alignment.End)
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .size(48.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                            shape = CircleShape
+                        )
                 ) {
-                    // Botón de zoom in
-                    IconButton(
-                        onClick = {
-                            renderer.zoom = (renderer.zoom * 1.2f).coerceIn(0.5f, 3f)
-                        },
-                        modifier = Modifier
-                            .size(48.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                shape = CircleShape
-                            )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ZoomIn,
-                            contentDescription = stringResource(R.string.panorama_zoom_in),
-                            tint = Color.White
-                        )
-                    }
+                    Icon(
+                        imageVector = Icons.Default.ZoomIn,
+                        contentDescription = stringResource(R.string.panorama_zoom_in),
+                        tint = Color.White
+                    )
+                }
 
-                    // Espacio entre botones
-                    Box(modifier = Modifier.size(8.dp))
+                // Espacio entre botones
+                Box(modifier = Modifier.size(8.dp))
 
-                    // Botón de zoom out
-                    IconButton(
-                        onClick = {
-                            renderer.zoom = (renderer.zoom / 1.2f).coerceIn(0.5f, 3f)
-                        },
-                        modifier = Modifier
-                            .size(48.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
-                                shape = CircleShape
-                            )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ZoomOut,
-                            contentDescription = stringResource(R.string.panorama_zoom_out),
-                            tint = Color.White
+                // Botón de zoom out
+                IconButton(
+                    onClick = {
+                        renderer.zoom = (renderer.zoom / 1.2f).coerceIn(0.5f, 3f)
+                    },
+                    modifier = Modifier
+                        .size(48.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                            shape = CircleShape
                         )
-                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ZoomOut,
+                        contentDescription = stringResource(R.string.panorama_zoom_out),
+                        tint = Color.White
+                    )
                 }
             }
         }

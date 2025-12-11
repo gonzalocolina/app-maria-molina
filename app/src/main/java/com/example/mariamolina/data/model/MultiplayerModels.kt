@@ -7,12 +7,10 @@ import com.google.firebase.Timestamp
  */
 data class Jugador(
     val uid: String = "",         // ID de Firebase (secreto)
-    val nickname: String = "",    // Nombre visible (ej. "Roberto")
+    val nickname: String = "",    // Nombre visible
     val puntuacion: Int = 0,
     val hasAnswered: Boolean = false  // Si ha respondido la pregunta actual
 ) {
-    // Constructor sin argumentos requerido por Firestore
-    constructor() : this("", "", 0, false)
 }
 
 /**
@@ -21,7 +19,6 @@ data class Jugador(
 enum class EstadoPartida {
     ESPERANDO,   // En el lobby, esperando jugadores
     JUGANDO,     // Partida en curso
-    RESULTADOS,  // Mostrando ranking final
     FINALIZADO   // Partida terminada
 }
 
@@ -53,8 +50,6 @@ data class Partida(
     val createdAt: Timestamp? = null,
     val hostUid: String = ""  // UID del profesor que creó la partida
 ) {
-    // Constructor sin argumentos requerido por Firestore
-    constructor() : this("", EstadoPartida.ESPERANDO, GamePhase.LOBBY, 0, 10, Dificultad.FACIL.name, emptyList(), 20, null, null, "")
 }
 
 /**
@@ -69,8 +64,6 @@ data class RespuestaJugador(
     val timestamp: Timestamp? = null,
     val puntosContabilizados: Boolean = false  // Si los puntos ya se sumaron al total
 ) {
-    // Constructor sin argumentos requerido por Firestore
-    constructor() : this(0, -1, false, 0, 0, null, false)
 }
 
 /**
@@ -85,8 +78,6 @@ data class HistorialPartida(
     val duracionSegundos: Long = 0,
     val jugadores: List<JugadorHistorial> = emptyList()
 ) {
-    // Constructor sin argumentos requerido por Firestore
-    constructor() : this("", "", "", 0, null, 0, emptyList())
 }
 
 /**
@@ -98,23 +89,5 @@ data class JugadorHistorial(
     val posicionFinal: Int = 0,
     val respuestasCorrectas: Int = 0
 ) {
-    // Constructor sin argumentos requerido por Firestore
-    constructor() : this("", 0, 0, 0)
 }
 
-/**
- * Estado completo del juego multijugador para la UI.
- */
-data class MultiplayerGameState(
-    val isLoading: Boolean = false,
-    val error: String? = null,
-    val partida: Partida? = null,
-    val jugadores: List<Jugador> = emptyList(),
-    val preguntaActual: QuizQuestion? = null,
-    val respuestaEnviada: Boolean = false,
-    val tiempoRestanteMs: Long = 20000L,
-    val ranking: List<Jugador> = emptyList(),
-    val miPuntuacion: Int = 0,
-    val totalJugadores: Int = 0,
-    val jugadoresQueRespondieron: Int = 0
-)

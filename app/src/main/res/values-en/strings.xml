@@ -30,7 +30,6 @@
     <string name="profile_title">Profile</string>
     <string name="back_button_description">Back</string>
     <string name="select_language_title">Select language</string>
-    <string name="language_label">Language</string>
     <string name="language_changed_toast">Language changed to %s</string>
     <string name="about_title">About</string>
     <string name="about_description">Pasos de María is an educational and interactive guide dedicated to spreading
@@ -66,22 +65,15 @@
     <string name="btn_ver_arbol">View family tree</string>
     <string name="btn_ver_panorama">See 360º monastery</string>
     <string name="cd_imagen_ejemplo">Example image</string>
-    <string name="cd_panorama_monasterio">Panoramic view of the Monastery of Las Huelgas Reales</string>
     <string name="cd_imagen_inicial">Initial image of María de Molina</string>
     <string name="cd_volver">Back</string>
     <string name="cd_horarios">Hours</string>
     <string name="cd_ubicacion">Location</string>
-    <string name="cd_perfil">Profile</string>
     <string name="cd_ajustes">Settings</string>
 
     <!-- Missing English translations -->
     <!-- User profile section -->
     <string name="font_size_changed_toast">Font size changed to %s</string>
-    <string name="profile_user_section_title">Your nickname</string>
-    <string name="profile_nickname_label">Nickname</string>
-    <string name="profile_save_button">Save nickname</string>
-    <string name="profile_saved_success">Saved!</string>
-    <string name="profile_error_message">Error: %1$s</string>
 
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
@@ -162,25 +154,17 @@
 
     <!-- Strings for kids section -->
     <string name="kids_entry_titulo">Children\'s Section</string>
-    <string name="kids_menu_titulo">Kids Quiz</string>
     <string name="kids_entry_descripcion">Learn the story of Maria of Molina in a more enjoyable way and show what you have learned about the history we have told you.</string>
-    <string name="kids_menu_descripcion">Show what you\'ve learned about the story we told you. Choose a difficulty!</string>
     <string name="kids_dificultad_facil">Easy</string>
     <string name="kids_dificultad_media">Medium</string>
     <string name="kids_dificultad_dificil">Hard</string>
     <string name="kids_iniciar_quiz">Start playing!</string>
-    <string name="kids_quiz_siguiente">Next</string>
     <string name="kids_quiz_puntuacion">Score: %d</string>
-    <string name="kids_quiz_finalizado">Quiz finished!</string>
-    <string name="kids_quiz_resultado">Your final score is: %1$d / %2$d</string>
-    <string name="kids_quiz_volver_menu">Back to menu</string>
     <string name="kids_quiz_ranking">View Ranking</string>
 
     <!-- New kids strings added by navigation -->
     <string name="kids_ver_diapositivas">View slides</string>
-    <string name="kids_opcion_cuestionarios">Quizzes</string>
     <string name="kids_slides_titulo">Kids slides</string>
-    <string name="kids_slides_descripcion">Here you can view the story slides adapted for children.</string>
     <string name="kids_no_slides">No slides available</string>
     <string name="cd_back">Back</string>
 
@@ -232,7 +216,6 @@
     <string name="kids_next">Next</string>
 
     <!-- Progress section for Points of Interest -->
-    <string name="correcta">Correct</string>
     <string name="points_progress_title">Your progress</string>
     <string name="points_visited">Visited</string>
     <string name="points_remaining">Remaining</string>
@@ -250,8 +233,6 @@
 
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Enter your data</string>
-    <string name="quiz_error">Error: %1$s</string>
-    <string name="quiz_score_achieved">You have achieved %d points!</string>
     <string name="student_points_gained">+%d points</string>
     <string name="student_answer_sent">✓ Answer sent</string>
     <string name="student_waiting_all">Waiting for everyone to respond…</string>
@@ -276,12 +257,6 @@
     <string name="contrasena_incorrecta">Incorrect password</string>
     <string name="entrar">Enter</string>
     <string name="cancelar">Cancel</string>
-    <string name="caracteres_maximo">%d/%d characters</string>
-    <string name="panel_del_profesor">Teacher\'s Panel</string>
-    <string name="generando_sala">Generating room…</string>
-    <string name="codigo_de_la_partida_pin">ITEM CODE (PIN)</string>
-    <string name="jugadores_conectados">Players connected: %d</string>
-    <string name="empezar_el_juego">START THE GAME!</string>
     <string name="sala_de_espera">Waiting Room</string>
     <string name="conectando_con_la_sala">Connecting to the room…</string>
     <string name="salir">Go out</string>
@@ -297,27 +272,16 @@
     <string name="tu_puntuacion">Your score</string>
     <string name="posicion_label">Position:</string>
     <string name="esperando_siguiente_pregunta">Waiting for the next question…</string>
-    <string name="partida_label">Game:</string>
-    <string name="finalizar">Finish</string>
-    <string name="de">of</string>
-    <string name="ver_ranking_final">SEE FINAL RANKING</string>
-    <string name="siguiente_pregunta">NEXT QUESTION</string>
-    <string name="todos_han_respondido">✓ Everyone has responded - You can proceed</string>
-    <string name="esperando_label">Waiting:</string>
-    <string name="alumnos">students</string>
-    <string name="ranking_actual">Current ranking</string>
     <string name="pts">pts</string>
     <string name="ranking_final">Final Ranking</string>
     <string name="partida_finalizada">🎉 Game Over! 🎉</string>
     <string name="tu_resultado">Your result</string>
-    <string name="numeral">#</string>
     <string name="puntos_lower">points</string>
     <string name="clasificacion_completa">Full ranking</string>
     <string name="volver_al_menu">Return to Menu</string>
     <string name="tu_emoji">You!</string>
     <string name="ok">OK</string>
     <string name="panorama_screen_title">360º monastery</string>
-    <string name="panorama_instructions">Drag to rotate the view • Pinch to zoom</string>
     <string name="panorama_zoom_in">To bring closer</string>
     <string name="panorama_zoom_out">Move away</string>
     <string name="acceso_quiz">Access to the Quiz</string>

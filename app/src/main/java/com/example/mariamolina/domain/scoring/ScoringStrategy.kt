@@ -17,14 +17,13 @@ interface ScoringStrategy {
 }
 
 /**
- * Estrategia de puntuación estilo Kahoot.
+ * Estrategia de puntuación:
  * - Respuesta correcta: puntos base + bonus por velocidad
  * - Respuesta incorrecta: 0 puntos
  * - Cuanto más rápido responda, más puntos bonus
  */
 class KahootScoringStrategy(
-    private val basePoints: Int = 1000,
-    private val maxBonusPoints: Int = 0  // El bonus está incluido en el factor de tiempo
+    private val basePoints: Int = 1000
 ) : ScoringStrategy {
     
     override fun calculateScore(isCorrect: Boolean, timeRemainingMs: Long, totalTimeMs: Long): Int {
@@ -39,31 +38,3 @@ class KahootScoringStrategy(
     }
 }
 
-/**
- * Estrategia de puntuación simple sin bonus por tiempo.
- * - Respuesta correcta: puntos fijos
- * - Respuesta incorrecta: 0 puntos
- */
-class SimpleScoringStrategy(
-    private val pointsPerCorrectAnswer: Int = 100
-) : ScoringStrategy {
-    
-    override fun calculateScore(isCorrect: Boolean, timeRemainingMs: Long, totalTimeMs: Long): Int {
-        return if (isCorrect) pointsPerCorrectAnswer else 0
-    }
-}
-
-/**
- * Estrategia de puntuación con penalización.
- * - Respuesta correcta: puntos positivos
- * - Respuesta incorrecta: puntos negativos
- */
-class PenaltyScoringStrategy(
-    private val correctPoints: Int = 100,
-    private val incorrectPenalty: Int = 25
-) : ScoringStrategy {
-    
-    override fun calculateScore(isCorrect: Boolean, timeRemainingMs: Long, totalTimeMs: Long): Int {
-        return if (isCorrect) correctPoints else -incorrectPenalty
-    }
-}

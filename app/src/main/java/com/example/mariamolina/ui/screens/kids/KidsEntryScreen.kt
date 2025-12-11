@@ -227,7 +227,7 @@ fun KidsEntryScreen(
     // --- DIÁLOGO DE CONTRASEÑA PROFESOR ---
     if (showAdminDialog) {
         AlertDialog(
-            onDismissRequest = { showAdminDialog = false },
+            onDismissRequest = { },
             title = { Text(stringResource(id = R.string.zona_de_profesores)) },
             text = {
                 Column {
@@ -253,11 +253,8 @@ fun KidsEntryScreen(
                 Button(
                     onClick = {
                         if (passwordInput == "Profesor47005") {
-                            showAdminDialog = false
                             viewModel.setTeacherAuthenticated()
                             onNavigateToAdmin()
-                        } else {
-                            passwordError = true
                         }
                     }
                 ) {
@@ -265,7 +262,7 @@ fun KidsEntryScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showAdminDialog = false }) {
+                TextButton(onClick = { }) {
                     Text(stringResource(id = R.string.cancelar))
                 }
             }
@@ -275,7 +272,7 @@ fun KidsEntryScreen(
     // --- DIÁLOGO DE CONTRASEÑA QUIZ ---
     if (showQuizPasswordDialog) {
         AlertDialog(
-            onDismissRequest = { showQuizPasswordDialog = false },
+            onDismissRequest = { },
             title = { Text(stringResource(id = R.string.acceso_quiz)) },
             text = {
                 Column {
@@ -301,10 +298,7 @@ fun KidsEntryScreen(
                 Button(
                     onClick = {
                         if (quizPasswordInput == "6909") {
-                            showQuizPasswordDialog = false
                             onStartQuiz(dificultadSeleccionada)
-                        } else {
-                            quizPasswordError = true
                         }
                     }
                 ) {
@@ -312,7 +306,7 @@ fun KidsEntryScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showQuizPasswordDialog = false }) {
+                TextButton(onClick = { }) {
                     Text(stringResource(id = R.string.cancelar))
                 }
             }

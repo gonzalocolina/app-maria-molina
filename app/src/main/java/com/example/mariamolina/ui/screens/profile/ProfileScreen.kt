@@ -7,10 +7,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,21 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.edit
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mariamolina.R
-import com.example.mariamolina.ui.viewmodel.ProfileViewModel
 import com.example.mariamolina.ui.theme.AppPrimaryBrown
-import androidx.hilt.navigation.compose.hiltViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    onBackClick: () -> Unit,
-    viewModel: ProfileViewModel = hiltViewModel()
+    onBackClick: () -> Unit
 ) {
-    // --- ESTADO DEL USUARIO (Firebase) ---
-    val uiState by viewModel.uiState.collectAsState()
-
     // --- ESTADO DEL IDIOMA ---
     val context = LocalContext.current
     val spanish = "Español"
@@ -119,6 +109,14 @@ fun ProfileScreen(
             }
 
             if (showDialog) {
+                // Pre-cargar los mensajes de toast para cada idioma
+                val toastMessages = mapOf(
+                    spanish to stringResource(R.string.language_changed_toast, spanish),
+                    english to stringResource(R.string.language_changed_toast, english),
+                    german to stringResource(R.string.language_changed_toast, german),
+                    french to stringResource(R.string.language_changed_toast, french)
+                )
+
                 BasicAlertDialog(
                     onDismissRequest = { showDialog = false }
                 ) {
@@ -148,7 +146,7 @@ fun ProfileScreen(
                                         prefs.edit { putString("language", languageCode) }
                                         Toast.makeText(
                                             context,
-                                            context.getString(R.string.language_changed_toast, language),
+                                            toastMessages[language] ?: "",
                                             Toast.LENGTH_SHORT
                                         ).show()
                                         (context as? androidx.activity.ComponentActivity)?.recreate()
@@ -176,6 +174,13 @@ fun ProfileScreen(
                 color = MaterialTheme.colorScheme.tertiary
             )
 
+            // Pre-cargar los mensajes de toast para cada tamaño
+            val fontSizeToastMessages = mapOf(
+                normal to stringResource(R.string.font_size_changed_toast, normal),
+                grande to stringResource(R.string.font_size_changed_toast, grande),
+                muyGrande to stringResource(R.string.font_size_changed_toast, muyGrande)
+            )
+
             Column {
                 fontSizes.forEach { size ->
                     Row(
@@ -196,7 +201,7 @@ fun ProfileScreen(
                                 prefs.edit { putString("font_size", sizeCode) }
                                 Toast.makeText(
                                     context,
-                                    context.getString(R.string.font_size_changed_toast, size),
+                                    fontSizeToastMessages[size] ?: "",
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 (context as? androidx.activity.ComponentActivity)?.recreate()

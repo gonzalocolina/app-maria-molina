@@ -148,20 +148,6 @@ class KidsSessionViewModel @Inject constructor(
     }
 
     /**
-     * El usuario decidió no reconectar - limpiar sesión.
-     */
-    fun declineReconnect() {
-        activeGameSession.clearSession()
-        _uiState.update { 
-            it.copy(
-                activeSession = null,
-                sessionValid = false,
-                shouldNavigateTo = null
-            ) 
-        }
-    }
-
-    /**
      * Resetea el estado de navegación después de navegar.
      */
     fun onNavigated() {

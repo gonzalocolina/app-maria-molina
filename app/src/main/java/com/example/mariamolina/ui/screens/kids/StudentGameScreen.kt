@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.GamePhase
@@ -76,7 +75,7 @@ fun StudentGameScreen(
     val preguntaStartedAt = uiState.partida?.preguntaStartedAt
     
     // Temporizador sincronizado con el servidor
-    var tiempoRestante by remember { mutableStateOf(tiempoPorPreguntaMs) }
+    var tiempoRestante by remember { mutableLongStateOf(tiempoPorPreguntaMs) }
 
     // Calcular y actualizar el tiempo restante basándose en el timestamp del servidor
     LaunchedEffect(uiState.partida?.preguntaActualIndex, uiState.gamePhase, preguntaStartedAt) {

@@ -415,13 +415,6 @@ class TeacherGameViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Limpia el error actual.
-     */
-    fun clearError() {
-        _uiState.update { it.copy(error = null) }
-    }
-
     override fun onCleared() {
         super.onCleared()
         gameObserverJob?.cancel()

@@ -46,7 +46,7 @@ import com.example.mariamolina.ui.screens.home.HomeScreen
 import com.example.mariamolina.ui.screens.home.ImageScreen
 import com.example.mariamolina.ui.screens.map.MapScreen
 import com.example.mariamolina.ui.screens.pointsOfInterest.PointsOfInterestScreen
-import com.example.mariamolina.ui.screens.poi.PointDetailScreen
+import com.example.mariamolina.ui.screens.pointsOfInterest.PointDetailScreen
 import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R

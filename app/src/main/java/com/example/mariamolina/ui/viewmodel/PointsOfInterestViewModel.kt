@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import androidx.core.content.edit
 
 @HiltViewModel
 class PointsOfInterestViewModel @Inject constructor(
@@ -25,7 +26,7 @@ class PointsOfInterestViewModel @Inject constructor(
 
     private fun saveVisitedPoints(visited: Set<String>) {
         val joined = visited.joinToString(",")
-        prefs.edit().putString("visited", joined).apply()
+        prefs.edit { putString("visited", joined) }
     }
 
     // Función para alternar el estado de un punto

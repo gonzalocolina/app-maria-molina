@@ -55,7 +55,7 @@ fun QuizGameScreen(
     // --- ESTADO LOCAL (Temporizador y selección) ---
     val tiempoTotalPorPregunta = 20000L
     // Usamos 'remember(indicePreguntaActual)' para reiniciar el timer en cada pregunta nueva
-    var tiempoRestante by remember(indicePreguntaActual) { mutableStateOf(tiempoTotalPorPregunta) }
+    var tiempoRestante by remember(indicePreguntaActual) { mutableLongStateOf(tiempoTotalPorPregunta) }
     var respuestaSeleccionada by remember { mutableStateOf<OpcionRespuesta?>(null) }
     var estadoRespuesta by remember { mutableStateOf<EstadoRespuesta?>(null) }
 

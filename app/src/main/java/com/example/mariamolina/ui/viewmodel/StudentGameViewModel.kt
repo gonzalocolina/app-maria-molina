@@ -1,6 +1,5 @@
 package com.example.mariamolina.ui.viewmodel
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mariamolina.data.local.ActiveGameSession
@@ -57,8 +56,7 @@ data class StudentGameUiState(
 @HiltViewModel
 class StudentGameViewModel @Inject constructor(
     private val repository: MultiplayerRepository,
-    private val activeGameSession: ActiveGameSession,
-    private val savedStateHandle: SavedStateHandle
+    private val activeGameSession: ActiveGameSession
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StudentGameUiState())

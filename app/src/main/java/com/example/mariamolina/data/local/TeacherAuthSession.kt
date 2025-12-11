@@ -13,7 +13,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class TeacherAuthSession @Inject constructor(
-    @ApplicationContext private val context: Context
+    @param:ApplicationContext private val context: Context
 ) {
     companion object {
         private const val PREFS_NAME = "teacher_auth_session"

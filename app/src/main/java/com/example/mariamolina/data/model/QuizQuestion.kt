@@ -64,8 +64,4 @@ data class QuizQuestion(
             ?: pregunta
     }
 
-    // Función de utilidad para convertir la dificultad de String a Enum
-    fun getDificultadEnum(): Dificultad {
-        return Dificultad.valueOf(dificultad.uppercase())
-    }
 }
