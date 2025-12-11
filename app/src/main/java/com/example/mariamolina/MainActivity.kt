@@ -64,7 +64,7 @@ class MainActivity : ComponentActivity() {
         // Prefetch de las imágenes remotas de las diapositivas
         prefetchSlideImages(applicationContext)
 
-        val fontSizeScale = when (getSharedPreferences("app_prefs", Context.MODE_PRIVATE).getString("font_size", "normal")) {
+        val fontSizeScale = when (getSharedPreferences("app_prefs", MODE_PRIVATE).getString("font_size", "normal")) {
             "normal" -> 1.0f
             "large" -> 1.2f
             "very_large" -> 1.5f

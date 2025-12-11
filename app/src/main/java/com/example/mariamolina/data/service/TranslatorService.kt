@@ -1,13 +1,11 @@
 package com.example.mariamolina.data.service
 
-import android.content.Context
 import com.example.mariamolina.data.model.IdiomasSoportados
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -17,10 +15,11 @@ import javax.inject.Singleton
 /**
  * Servicio de traducción usando ML Kit.
  * Traduce texto de español a inglés, francés y alemán.
+ * Utilizado para la traducción auntomática de las preguntas añadidas por el profesor
+ * en español a los otros idiomas.
  */
 @Singleton
 class TranslatorService @Inject constructor(
-    @ApplicationContext private val context: Context
 ) {
     
     // Caché de traductores para evitar recrearlos

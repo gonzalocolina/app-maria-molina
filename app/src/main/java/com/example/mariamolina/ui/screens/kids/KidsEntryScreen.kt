@@ -227,7 +227,7 @@ fun KidsEntryScreen(
     // --- DIÁLOGO DE CONTRASEÑA PROFESOR ---
     if (showAdminDialog) {
         AlertDialog(
-            onDismissRequest = { showAdminDialog = false },
+            onDismissRequest = { },
             title = { Text(stringResource(id = R.string.zona_de_profesores)) },
             text = {
                 Column {
@@ -253,6 +253,7 @@ fun KidsEntryScreen(
                 Button(
                     onClick = {
                         if (passwordInput == "Profesor47005") {
+                            viewModel.setTeacherAuthenticated()
                             showAdminDialog = false
                             onNavigateToAdmin()
                         } else {
@@ -274,7 +275,7 @@ fun KidsEntryScreen(
     // --- DIÁLOGO DE CONTRASEÑA QUIZ ---
     if (showQuizPasswordDialog) {
         AlertDialog(
-            onDismissRequest = { showQuizPasswordDialog = false },
+            onDismissRequest = { },
             title = { Text(stringResource(id = R.string.acceso_quiz)) },
             text = {
                 Column {
@@ -299,9 +300,9 @@ fun KidsEntryScreen(
             confirmButton = {
                 Button(
                     onClick = {
-                        if (quizPasswordInput == "6909") {
-                            showQuizPasswordDialog = false
+                        if (quizPasswordInput == "6906") {
                             onStartQuiz(dificultadSeleccionada)
+                            showQuizPasswordDialog = false
                         } else {
                             quizPasswordError = true
                         }

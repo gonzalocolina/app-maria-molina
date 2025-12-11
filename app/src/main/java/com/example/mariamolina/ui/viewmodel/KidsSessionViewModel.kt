@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mariamolina.data.local.ActiveGameData
 import com.example.mariamolina.data.local.ActiveGameSession
 import com.example.mariamolina.data.local.GameRole
+import com.example.mariamolina.data.local.TeacherAuthSession
 import com.example.mariamolina.data.model.GamePhase
 import com.example.mariamolina.data.repository.MultiplayerRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,8 @@ data class KidsSessionUiState(
     val isChecking: Boolean = true,
     val activeSession: ActiveGameData? = null,
     val sessionValid: Boolean = false,  // True si la partida sigue activa en Firebase
-    val shouldNavigateTo: String? = null  // Ruta a la que debe navegar
+    val shouldNavigateTo: String? = null,  // Ruta a la que debe navegar
+    val isTeacherAuthenticated: Boolean = false  // True si el profesor ya introdujo la contraseña
 )
 
 /**
@@ -33,7 +35,8 @@ data class KidsSessionUiState(
 @HiltViewModel
 class KidsSessionViewModel @Inject constructor(
     private val activeGameSession: ActiveGameSession,
-    private val repository: MultiplayerRepository
+    private val repository: MultiplayerRepository,
+    private val teacherAuthSession: TeacherAuthSession
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(KidsSessionUiState())
@@ -50,17 +53,21 @@ class KidsSessionViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isChecking = true) }
 
+            // Verificar si el profesor está autenticado
+            val isTeacherAuth = teacherAuthSession.isAuthenticated()
+
             val session = activeGameSession.getActiveSession()
 
             if (session == null) {
-                // No hay sesión guardada
-                _uiState.update { 
+                // No hay sesión guardada - pero verificar si profesor está autenticado
+                _uiState.update {
                     it.copy(
                         isChecking = false, 
                         activeSession = null,
                         sessionValid = false,
-                        shouldNavigateTo = null
-                    ) 
+                        shouldNavigateTo = if (isTeacherAuth) "admin_lobby" else null,
+                        isTeacherAuthenticated = isTeacherAuth
+                    )
                 }
                 return@launch
             }
@@ -77,8 +84,9 @@ class KidsSessionViewModel @Inject constructor(
                             isChecking = false, 
                             activeSession = null,
                             sessionValid = false,
-                            shouldNavigateTo = null
-                        ) 
+                            shouldNavigateTo = if (isTeacherAuth) "admin_lobby" else null,
+                            isTeacherAuthenticated = isTeacherAuth
+                        )
                     }
                 } else {
                     // La partida sigue activa - determinar a dónde navegar
@@ -102,37 +110,41 @@ class KidsSessionViewModel @Inject constructor(
                             isChecking = false, 
                             activeSession = session,
                             sessionValid = true,
-                            shouldNavigateTo = destination
-                        ) 
+                            shouldNavigateTo = destination,
+                            isTeacherAuthenticated = isTeacherAuth
+                        )
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Error al verificar - limpiar sesión por seguridad
                 activeGameSession.clearSession()
                 _uiState.update { 
                     it.copy(
-                        isChecking = false, 
+                        isChecking = false,
                         activeSession = null,
                         sessionValid = false,
-                        shouldNavigateTo = null
-                    ) 
+                        shouldNavigateTo = if (isTeacherAuth) "admin_lobby" else null,
+                        isTeacherAuthenticated = isTeacherAuth
+                    )
                 }
             }
         }
     }
 
     /**
-     * El usuario decidió no reconectar - limpiar sesión.
+     * Marca al profesor como autenticado.
      */
-    fun declineReconnect() {
-        activeGameSession.clearSession()
-        _uiState.update { 
-            it.copy(
-                activeSession = null,
-                sessionValid = false,
-                shouldNavigateTo = null
-            ) 
-        }
+    fun setTeacherAuthenticated() {
+        teacherAuthSession.setAuthenticated(true)
+        _uiState.update { it.copy(isTeacherAuthenticated = true) }
+    }
+
+    /**
+     * Cierra la sesión del profesor (logout).
+     */
+    fun logoutTeacher() {
+        teacherAuthSession.clearAuthentication()
+        _uiState.update { it.copy(isTeacherAuthenticated = false) }
     }
 
     /**

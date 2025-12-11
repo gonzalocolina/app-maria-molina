@@ -24,7 +24,6 @@ import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.data.model.OpcionRespuesta
 import com.example.mariamolina.ui.viewmodel.QuizViewModel
-import com.example.mariamolina.ui.screens.kids.RankRewardScreen
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
 
@@ -56,7 +55,7 @@ fun QuizGameScreen(
     // --- ESTADO LOCAL (Temporizador y selección) ---
     val tiempoTotalPorPregunta = 20000L
     // Usamos 'remember(indicePreguntaActual)' para reiniciar el timer en cada pregunta nueva
-    var tiempoRestante by remember(indicePreguntaActual) { mutableStateOf(tiempoTotalPorPregunta) }
+    var tiempoRestante by remember(indicePreguntaActual) { mutableLongStateOf(tiempoTotalPorPregunta) }
     var respuestaSeleccionada by remember { mutableStateOf<OpcionRespuesta?>(null) }
     var estadoRespuesta by remember { mutableStateOf<EstadoRespuesta?>(null) }
 
@@ -71,7 +70,7 @@ fun QuizGameScreen(
                 tiempoRestante -= 100L
             }
             // Si el tiempo llega a 0 y no se respondió -> INCORRECTA
-            if (estadoRespuesta == null && tiempoRestante <= 0) {
+            if (estadoRespuesta == null) {
                 estadoRespuesta = EstadoRespuesta.INCORRECTA
             }
         }
@@ -86,8 +85,7 @@ fun QuizGameScreen(
             // Calculamos puntos
             val puntosGanados = calcularPuntos(
                 respuesta = respuestaSeleccionada,
-                tiempoRestante = tiempoRestante,
-                tiempoTotal = tiempoTotalPorPregunta
+                tiempoRestante = tiempoRestante
             )
 
             // Llamamos al ViewModel para actualizar puntuación y pasar de pregunta
@@ -323,7 +321,7 @@ fun QuizGameScreen(
 // --- LÓGICA AUXILIAR ---
 
 // Función pura para calcular puntos
-private fun calcularPuntos(respuesta: OpcionRespuesta?, tiempoRestante: Long, tiempoTotal: Long): Int {
+private fun calcularPuntos(respuesta: OpcionRespuesta?, tiempoRestante: Long): Int {
     // Si no respondió o respondió mal -> 0 puntos
     if (respuesta?.esCorrecta != true) {
         return 0
@@ -331,6 +329,7 @@ private fun calcularPuntos(respuesta: OpcionRespuesta?, tiempoRestante: Long, ti
 
     // Puntuación Kahoot: Base + Bonus por velocidad
     val puntosBase = 1000
+    val tiempoTotal = 20000L
     val factorTiempo = tiempoRestante.toFloat() / tiempoTotal.toFloat()
 
     // Mínimo 1 punto si acierta en el último milisegundo
@@ -375,49 +374,5 @@ fun OpcionCard(
             style = if (isCompact) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
             fontWeight = if (seleccionada) FontWeight.Bold else FontWeight.Normal
         )
-    }
-}
-
-@Composable
-fun QuizResultScreen(
-    puntuacion: Int,
-    totalPreguntas: Int,
-    onVolverAlMenu: () -> Unit,
-    onNavigateToRanking: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(id = R.string.kids_quiz_finalizado),
-            style = MaterialTheme.typography.headlineMedium
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = stringResource(id = R.string.quiz_score_achieved, puntuacion),
-            style = MaterialTheme.typography.titleLarge,
-            textAlign = TextAlign.Center
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-        Button(
-            onClick = onVolverAlMenu,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(stringResource(id = R.string.kids_quiz_volver_menu))
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedButton(
-            onClick = onNavigateToRanking,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(stringResource(id = R.string.kids_quiz_ranking))
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.mariamolina.ui.screens.poi
+package com.example.mariamolina.ui.screens.pointsOfInterest
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background

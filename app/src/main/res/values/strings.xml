@@ -30,7 +30,6 @@
     <string name="profile_title">Perfil</string>
     <string name="back_button_description">Volver</string>
     <string name="select_language_title">Seleccionar idioma</string>
-    <string name="language_label">Idioma</string>
     <string name="language_changed_toast">Idioma cambiado a %s</string>
     <string name="about_title">Acerca de</string>
     <string name="about_description">Pasos de María es una guía educativa e interactiva dedicada a divulgar
@@ -58,11 +57,6 @@
 
 
     <!-- Datos de usuario -->
-    <string name="profile_user_section_title">Tu Nickname</string>
-    <string name="profile_nickname_label">Nickname</string>
-    <string name="profile_save_button">Guardar Nickname</string>
-    <string name="profile_saved_success">¡Guardado!</string>
-    <string name="profile_error_message">Error: %1$s</string>
 
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
@@ -196,10 +190,10 @@
 
     <!-- Mapa -->
     <string name="mi_ubicacion">Mi ubicación</string>
-    <string name="inicio">Inicio</string>
-    <string name="calculando_ruta">Calculando ruta...</string>
+    <string name="centrar">Centrar</string>
+    <string name="calculando_ruta">Calculando ruta…</string>
     <string name="cerrar">Cerrar</string>
-    <string name="calculando">Calculando...</string>
+    <string name="calculando">Calculando…</string>
     <string name="como_llegar">Cómo llegar</string>
     <string name="mas_informacion">Más información</string>
 
@@ -227,15 +221,12 @@
     
     <!-- Pantalla Panorama 360 -->
     <string name="panorama_screen_title">Monasterio 360°</string>
-    <string name="panorama_instructions">Arrastra para girar la vista • Pellizca para hacer zoom</string>
     <string name="panorama_zoom_in">Acercar</string>
     <string name="panorama_zoom_out">Alejar</string>
-    <string name="cd_panorama_monasterio">Vista panorámica del Monasterio de las Huelgas Reales</string>
     <string name="cd_imagen_inicial">Imagen inicial de María de Molina</string>
     <string name="cd_volver">Volver</string>
     <string name="cd_horarios">Horarios</string>
     <string name="cd_ubicacion">Ubicación</string>
-    <string name="cd_perfil">Perfil</string>
     <string name="cd_ajustes">Ajustes</string>
 
     <!-- Seccion infantil -->
@@ -247,25 +238,17 @@
 
     <!-- Texto de la UI -->
     <string name="kids_entry_titulo">Sección Infantil</string>
-    <string name="kids_menu_titulo">Cuestionario Infantil</string>
     <string name="kids_entry_descripcion">Conoce la historia de María de Molina de una forma más amena y demuestra lo que has aprendido sobre la historia que te hemos contado.</string>
-    <string name="kids_menu_descripcion">Demuestra lo que has aprendido sobre la historia que te hemos contado. ¡Elige una dificultad!</string>
     <string name="kids_dificultad_facil">Fácil</string>
     <string name="kids_dificultad_media">Media</string>
     <string name="kids_dificultad_dificil">Difícil</string>
     <string name="kids_iniciar_quiz">¡Empezar a jugar!</string>
-    <string name="kids_quiz_siguiente">Siguiente</string>
     <string name="kids_quiz_puntuacion">Puntuación: %d</string> <!-- El %d se reemplaza por un número -->
-    <string name="kids_quiz_finalizado">¡Cuestionario terminado!</string>
-    <string name="kids_quiz_resultado">Tu puntuación final es: %d / %d</string>
-    <string name="kids_quiz_volver_menu">Volver al menú</string>
     <string name="kids_quiz_ranking">Ver Ranking</string>
 
     <!-- Nuevas strings para la sección Kids añadidas por la navegación -->
     <string name="kids_ver_diapositivas">Ver diapositivas</string>
-    <string name="kids_opcion_cuestionarios">Cuestionarios</string>
     <string name="kids_slides_titulo">Diapositivas infantiles</string>
-    <string name="kids_slides_descripcion">Aquí puedes ver las diapositivas de la historia adaptadas para niños.</string>
     <string name="kids_no_slides">No hay diapositivas disponibles</string>
     <string name="cd_back">Volver</string>
 
@@ -318,12 +301,10 @@
 
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Introduce tus datos</string>
-    <string name="quiz_error">Error: %1$s</string>
-    <string name="quiz_score_achieved">¡Has conseguido %d puntos!</string>
     <string name="student_points_gained">+%d puntos</string>
     <string name="student_answer_sent">✓ Respuesta enviada</string>
-    <string name="student_waiting_all">Esperando a que todos respondan...</string>
-    <string name="student_waiting_teacher">Esperando al profesor...</string>
+    <string name="student_waiting_all">Esperando a que todos respondan…</string>
+    <string name="student_waiting_teacher">Esperando al profesor…</string>
     <string name="slide_counter">%d / %d</string>
 
     <!-- Nuevos strings extraídos de la sección kids -->
@@ -343,17 +324,11 @@
     <string name="cancelar">Cancelar</string>
     <string name="acceso_quiz">Acceso al Quiz</string>
     <string name="introduce_contrasena_quiz">Introduce la contraseña para iniciar el quiz:</string>
-    <string name="caracteres_maximo">%d/%d caracteres</string>
-    <string name="panel_del_profesor">Panel del Profesor</string>
-    <string name="generando_sala">Generando sala...</string>
-    <string name="codigo_de_la_partida_pin">CÓDIGO DE LA PARTIDA (PIN)</string>
-    <string name="jugadores_conectados">Jugadores conectados: %d</string>
-    <string name="empezar_el_juego">¡EMPEZAR EL JUEGO!</string>
     <string name="sala_de_espera">Sala de Espera</string>
-    <string name="conectando_con_la_sala">Conectando con la sala...</string>
+    <string name="conectando_con_la_sala">Conectando con la sala…</string>
     <string name="salir">Salir</string>
     <string name="estas_dentro">¡Estás dentro!</string>
-    <string name="esperando_profesor_inicie">Esperando a que el profesor inicie el juego...</string>
+    <string name="esperando_profesor_inicie">Esperando a que el profesor inicie el juego…</string>
     <string name="pin_de_la_sala">PIN de la sala</string>
     <string name="puntos_label">Puntos:</string>
     <string name="pregunta_label">Pregunta</string>
@@ -363,27 +338,16 @@
     <string name="respuesta_incorrecta">Respuesta incorrecta</string>
     <string name="tu_puntuacion">Tu puntuación</string>
     <string name="posicion_label">Posición:</string>
-    <string name="esperando_siguiente_pregunta">Esperando siguiente pregunta...</string>
-    <string name="partida_label">Partida:</string>
-    <string name="finalizar">Finalizar</string>
-    <string name="de">de</string>
-    <string name="ver_ranking_final">VER RANKING FINAL</string>
-    <string name="siguiente_pregunta">SIGUIENTE PREGUNTA</string>
-    <string name="todos_han_respondido">✓ Todos han respondido - Puedes avanzar</string>
-    <string name="esperando_label">Esperando:</string>
-    <string name="alumnos">alumnos</string>
-    <string name="ranking_actual">Ranking actual</string>
+    <string name="esperando_siguiente_pregunta">Esperando siguiente pregunta…</string>
     <string name="pts">pts</string>
     <string name="ranking_final">Ranking Final</string>
     <string name="partida_finalizada">🎉 ¡Partida Finalizada! 🎉</string>
     <string name="tu_resultado">Tu resultado</string>
-    <string name="numeral">#</string>
     <string name="puntos_lower">puntos</string>
     <string name="clasificacion_completa">Clasificación completa</string>
     <string name="volver_al_menu">Volver al Menú</string>
     <string name="tu_emoji">¡Tú!</string>
     <string name="ok">OK</string>
-    <string name="correcta">Correcta</string>
 
     <!-- Progress section for Points of Interest -->
     <string name="points_progress_title">Tu progreso</string>
@@ -392,5 +356,25 @@
     <string name="points_progress_percent">%d%% completado</string>
     <string name="visitado">Visitado</string>
 
+
+    <!-- Nuevos strings para AddQuestionScreen -->
+    <string name="add_question_title">Añadir Pregunta</string>
+    <string name="translate_auto_title">Traducción automática</string>
+    <string name="translate_auto_subtitle">Escribe en español. Se traducirá automáticamente a inglés, francés y alemán.</string>
+    <string name="models_needed_title">Se necesitan los modelos de traducción</string>
+    <string name="models_needed_subtitle">Descarga los modelos para poder traducir las preguntas. Requiere conexión WiFi.</string>
+    <string name="downloading">Descargando…</string>
+    <string name="download_models">Descargar modelos</string>
+    <string name="question_label">Pregunta (en español)</string>
+    <string name="difficulty_label">Dificultad:</string>
+    <string name="answer_options_title">Opciones de respuesta:</string>
+    <string name="mark_correct_note">Toca el círculo para marcar la respuesta correcta</string>
+    <string name="option_label">Opción %1$d</string>
+    <string name="add_option">Añadir otra opción</string>
+    <string name="save_and_translate">Guardar y Traducir</string>
+    <string name="saving">Guardando…</string>
+    <string name="cd_answer_correct">Respuesta correcta</string>
+    <string name="cd_mark_as_correct">Marcar como correcta</string>
+    <string name="delete_option">Eliminar opción</string>
 
 </resources>

@@ -22,13 +22,17 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.foundation.isSystemInDarkTheme
 import android.content.res.Configuration
 import com.example.mariamolina.R
 import kotlin.math.max
 
 @Composable
 fun ImageScreen(onBackClick: () -> Unit) {
-    val painter = painterResource(id = R.drawable.arbol)
+    val isDarkTheme = isSystemInDarkTheme()
+    val painter = painterResource(
+        id = if (isDarkTheme) R.drawable.arbol_modo_oscuro else R.drawable.arbol
+    )
 
     var scale by remember { mutableFloatStateOf(1f) }
     var offset by remember { mutableStateOf(Offset.Zero) } // en px
@@ -41,9 +45,9 @@ fun ImageScreen(onBackClick: () -> Unit) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
-        val maxWidthDp = this.maxWidth
-        val isTablet = maxWidthDp >= 600.dp
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Determinamos tablet basándonos en smallestScreenWidthDp (recomendado y consistente)
+        val isTablet = configuration.smallestScreenWidthDp >= 600
 
         // Si entramos en modo tablet vertical, reseteamos zoom/offset para mostrar la imagen completa
         LaunchedEffect(isTablet, isLandscape) {

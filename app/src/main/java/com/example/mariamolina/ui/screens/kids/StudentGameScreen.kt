@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.GamePhase
@@ -76,7 +75,7 @@ fun StudentGameScreen(
     val preguntaStartedAt = uiState.partida?.preguntaStartedAt
     
     // Temporizador sincronizado con el servidor
-    var tiempoRestante by remember { mutableStateOf(tiempoPorPreguntaMs) }
+    var tiempoRestante by remember { mutableLongStateOf(tiempoPorPreguntaMs) }
 
     // Calcular y actualizar el tiempo restante basándose en el timestamp del servidor
     LaunchedEffect(uiState.partida?.preguntaActualIndex, uiState.gamePhase, preguntaStartedAt) {
@@ -141,7 +140,8 @@ fun StudentGameScreen(
                     totalPreguntas = uiState.partida?.totalPreguntas ?: 0,
                     onOptionSelected = { index -> viewModel.submitAnswer(index) },
                     mostrarFeedback = uiState.allAnswered || uiState.tiempoAgotado,
-                    idioma = idioma
+                    idioma = idioma,
+                    opcionSeleccionadaIndex = uiState.opcionSeleccionadaIndex
                 )
             }
             
@@ -238,7 +238,8 @@ private fun QuestionScreen(
     totalPreguntas: Int,
     onOptionSelected: (Int) -> Unit,
     mostrarFeedback: Boolean,  // Solo mostrar si acertó cuando todos respondan o tiempo agotado
-    idioma: String = IdiomasSoportados.ESPANOL  // Idioma para mostrar las preguntas
+    idioma: String = IdiomasSoportados.ESPANOL,  // Idioma para mostrar las preguntas
+    opcionSeleccionadaIndex: Int = -1  // Índice de la opción que el alumno seleccionó
 ) {
     if (pregunta == null) {
         CircularProgressIndicator()
@@ -323,18 +324,23 @@ private fun QuestionScreen(
         opciones.forEachIndexed { index, opcion ->
             // Solo mostrar colores de feedback cuando mostrarFeedback es true
             val showFeedbackColors = respuestaEnviada && mostrarFeedback
-            
+            val isSelected = index == opcionSeleccionadaIndex
+
             val backgroundColor = when {
-                !showFeedbackColors -> MaterialTheme.colorScheme.surface
-                opcion.esCorrecta -> Color(0xFF4CAF50).copy(alpha = 0.2f)
-                !opcion.esCorrecta -> Color(0xFFF44336).copy(alpha = 0.2f)
+                // Cuando ya hay feedback, mostrar verde/rojo
+                showFeedbackColors && opcion.esCorrecta -> Color(0xFF4CAF50).copy(alpha = 0.2f)
+                showFeedbackColors && !opcion.esCorrecta -> Color(0xFFF44336).copy(alpha = 0.2f)
+                // Mientras espera, marcar la opción seleccionada con color onSecondary
+                !showFeedbackColors && isSelected -> MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.15f)
                 else -> MaterialTheme.colorScheme.surface
             }
             
             val borderColor = when {
-                !showFeedbackColors -> MaterialTheme.colorScheme.outline
-                opcion.esCorrecta -> Color(0xFF4CAF50)
-                !opcion.esCorrecta -> Color(0xFFF44336)
+                // Cuando ya hay feedback, mostrar verde/rojo
+                showFeedbackColors && opcion.esCorrecta -> Color(0xFF4CAF50)
+                showFeedbackColors && !opcion.esCorrecta -> Color(0xFFF44336)
+                // Mientras espera, marcar la opción seleccionada con color onSecondary
+                !showFeedbackColors && isSelected -> MaterialTheme.colorScheme.onSecondary
                 else -> MaterialTheme.colorScheme.outline
             }
 
@@ -356,6 +362,7 @@ private fun QuestionScreen(
                     Text(
                         text = opcion.getTexto(idioma),
                         style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
                         modifier = Modifier.weight(1f)
                     )
                     

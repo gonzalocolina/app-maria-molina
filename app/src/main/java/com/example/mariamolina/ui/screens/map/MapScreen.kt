@@ -7,11 +7,14 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.example.mariamolina.ui.theme.MariaMolinaTheme
@@ -29,7 +33,6 @@ import com.example.mariamolina.data.model.PuntoInteres
 import com.example.mariamolina.data.model.SubPuntoInteres
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
-import java.net.HttpURLConnection
 import java.net.URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,6 +43,9 @@ import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.Polyline
+import org.osmdroid.views.overlay.MapEventsOverlay
+import org.osmdroid.events.MapEventsReceiver
+import androidx.appcompat.content.res.AppCompatResources
 
 @Composable
 fun MapScreen(
@@ -145,7 +151,19 @@ fun MapScreen(
                     .padding(16.dp)
                     .align(Alignment.TopEnd)
             ) {
-                Text(stringResource(id = R.string.mi_ubicacion))
+                // Añadido padding horizontal para separar texto y borde
+                Row(modifier = Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.MyLocation,
+                        contentDescription = stringResource(id = R.string.mi_ubicacion),
+                        tint = Color.Black
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        stringResource(id = R.string.mi_ubicacion),
+                        color = Color.Black
+                    )
+                }
             }
         }
 
@@ -155,7 +173,19 @@ fun MapScreen(
                 .padding(16.dp)
                 .align(Alignment.TopStart)
         ) {
-            Text(stringResource(id = R.string.inicio))
+            // Añadido padding horizontal para separar texto y borde
+            Row(modifier = Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Default.LocationOn,
+                    contentDescription = stringResource(id = R.string.centrar),
+                    tint = Color.Black
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    stringResource(id = R.string.centrar),
+                    color = Color.Black
+                )
+            }
         }
 
         // Indicador de carga para la ruta
@@ -259,9 +289,12 @@ fun MapViewComposable(
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
 
-    val defaultMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!
-    val selectedMarkerDrawable = defaultMarkerDrawable.constantState?.newDrawable()?.mutate()!!
-    val subPuntoMarkerDrawable = context.getDrawable(org.osmdroid.library.R.drawable.marker_default)!!.constantState?.newDrawable()?.mutate()!!
+    val defaultMarkerDrawable = remember { AppCompatResources.getDrawable(context.applicationContext, org.osmdroid.library.R.drawable.marker_default)!! }
+    val selectedMarkerDrawable = remember { defaultMarkerDrawable.constantState?.newDrawable()?.mutate()!! }
+    val subPuntoMarkerDrawable = remember { AppCompatResources.getDrawable(context.applicationContext, org.osmdroid.library.R.drawable.marker_default)!!.constantState?.newDrawable()?.mutate()!! }
+
+    val destinoTitulos = remember { puntosDeInteres.associate { it to context.applicationContext.getString(it.tituloResId) } }
+    val subPuntoTitulos = remember(selectedSubPunto) { selectedSubPunto?.let { context.applicationContext.getString(it.nombreResId) } }
 
     var userLocation by remember { mutableStateOf<GeoPoint?>(null) }
     var currentRoutePolyline by remember { mutableStateOf<Polyline?>(null) }
@@ -332,8 +365,8 @@ fun MapViewComposable(
                     if (routePoints.isNotEmpty()) {
                         val routePolyline = Polyline().apply {
                             setPoints(routePoints)
-                            setColor(0xAA0066CC.toInt())
-                            setWidth(14.0f)
+                            outlinePaint.color = 0xAA0066CC.toInt()
+                            outlinePaint.strokeWidth = 14.0f
                         }
                         mapView.overlays.add(routePolyline)
                         currentRoutePolyline = routePolyline
@@ -348,7 +381,7 @@ fun MapViewComposable(
                         // Fallback a línea recta si no se pudo obtener ruta
                         createFallbackRoute(mapView, userLocation!!, targetPoint)
                     }
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     // Fallback a línea recta en caso de error
                     createFallbackRoute(mapView, userLocation!!, targetPoint)
                 }
@@ -404,18 +437,25 @@ fun MapViewComposable(
                 }
             }
 
-            map.setOnTouchListener { _, event ->
-                if (event.action == android.view.MotionEvent.ACTION_DOWN) {
+            // Usar MapEventsOverlay para detectar taps en el mapa (forma correcta en osmdroid)
+            val mapEventsReceiver = object : MapEventsReceiver {
+                override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
                     onMapTap()
+                    return false
                 }
-                false
+
+                override fun longPressHelper(p: GeoPoint?): Boolean {
+                    return false
+                }
             }
+            val mapEventsOverlay = MapEventsOverlay(mapEventsReceiver)
+            map.overlays.add(0, mapEventsOverlay) // Añadir al principio para que reciba eventos primero
 
             // Marcadores de destinos principales
             puntosDeInteres.forEach { destino ->
                 val marker = Marker(map).apply {
                     position = GeoPoint(destino.latitud, destino.longitud)
-                    title = context.getString(destino.tituloResId)
+                    title = destinoTitulos[destino]
                     icon = if (destino == selectedDestino) selectedMarkerDrawable else defaultMarkerDrawable
                     setOnMarkerClickListener { _, _ ->
                         onMarkerClick(destino)
@@ -429,7 +469,7 @@ fun MapViewComposable(
             if (selectedSubPunto != null) {
                 val marker = Marker(map).apply {
                     position = GeoPoint(selectedSubPunto.latitud, selectedSubPunto.longitud)
-                    title = context.getString(selectedSubPunto.nombreResId)
+                    title = subPuntoTitulos
                     icon = selectedMarkerDrawable
                     setOnMarkerClickListener { _, _ ->
                         onSubPuntoMarkerClick(selectedSubPunto)
@@ -475,26 +515,100 @@ fun MapViewComposable(
 // Función para obtener ruta desde OSRM
 private suspend fun getRouteFromOSRM(start: GeoPoint, end: GeoPoint): List<GeoPoint> {
     return withContext(Dispatchers.IO) {
-        try {
-            val url = "https://router.project-osrm.org/route/v1/driving/" +
-                    "${start.longitude},${start.latitude};${end.longitude},${end.latitude}?" +
-                    "overview=full&geometries=geojson"
+        // Intentar primero con OSRM
+        var routePoints = tryOSRM(start, end)
 
-            val connection = URL(url).openConnection() as HttpURLConnection
-            connection.requestMethod = "GET"
-            connection.connectTimeout = 15000
-            connection.readTimeout = 15000
-            connection.setRequestProperty("User-Agent", "MariamolinaApp/1.0")
+        // Si OSRM falla, intentar con el servicio alternativo
+        if (routePoints.isEmpty()) {
+            android.util.Log.d("MapScreen", "OSRM failed, trying alternative routing service...")
+            routePoints = tryOpenRouteService(start, end)
+        }
 
-            if (connection.responseCode == 200) {
-                val response = connection.inputStream.bufferedReader().use { it.readText() }
-                parseOSRMResponse(response)
-            } else {
-                emptyList()
-            }
-        } catch (e: Exception) {
+        routePoints
+    }
+}
+
+// Intento con OSRM
+private fun tryOSRM(start: GeoPoint, end: GeoPoint): List<GeoPoint> {
+    return try {
+        val url = "https://router.project-osrm.org/route/v1/driving/" +
+                "${start.longitude},${start.latitude};${end.longitude},${end.latitude}?" +
+                "overview=full&geometries=geojson"
+
+        val connection = URL(url).openConnection() as javax.net.ssl.HttpsURLConnection
+        connection.requestMethod = "GET"
+        connection.connectTimeout = 10000
+        connection.readTimeout = 10000
+        connection.setRequestProperty("User-Agent", "MariamolinaApp/1.0")
+        connection.setRequestProperty("Accept", "application/json")
+
+        val responseCode = connection.responseCode
+        if (responseCode == 200) {
+            val response = connection.inputStream.bufferedReader().use { it.readText() }
+            parseOSRMResponse(response)
+        } else {
+            android.util.Log.e("MapScreen", "OSRM error: HTTP $responseCode")
             emptyList()
         }
+    } catch (e: Exception) {
+        android.util.Log.e("MapScreen", "Error getting route from OSRM", e)
+        emptyList()
+    }
+}
+
+// Intento con BRouter (servicio alternativo gratuito sin API key)
+private fun tryOpenRouteService(start: GeoPoint, end: GeoPoint): List<GeoPoint> {
+    return try {
+        // Usando BRouter que es gratuito y no requiere API key
+        val url = "https://brouter.de/brouter?" +
+                "lonlats=${start.longitude},${start.latitude}|${end.longitude},${end.latitude}&" +
+                "profile=car-fast&alternativeidx=0&format=geojson"
+
+        val connection = URL(url).openConnection() as javax.net.ssl.HttpsURLConnection
+        connection.requestMethod = "GET"
+        connection.connectTimeout = 15000
+        connection.readTimeout = 15000
+        connection.setRequestProperty("User-Agent", "MariamolinaApp/1.0")
+        connection.setRequestProperty("Accept", "application/json, application/geo+json")
+
+        val responseCode = connection.responseCode
+        if (responseCode == 200) {
+            val response = connection.inputStream.bufferedReader().use { it.readText() }
+            parseBRouterResponse(response)
+        } else {
+            android.util.Log.e("MapScreen", "BRouter error: HTTP $responseCode")
+            emptyList()
+        }
+    } catch (e: Exception) {
+        android.util.Log.e("MapScreen", "Error getting route from BRouter", e)
+        emptyList()
+    }
+}
+
+// Parsear respuesta de BRouter (formato GeoJSON)
+private fun parseBRouterResponse(jsonResponse: String): List<GeoPoint> {
+    return try {
+        val jsonObject = JSONObject(jsonResponse)
+        val features = jsonObject.getJSONArray("features")
+        if (features.length() > 0) {
+            val feature = features.getJSONObject(0)
+            val geometry = feature.getJSONObject("geometry")
+            val coordinates = geometry.getJSONArray("coordinates")
+
+            val points = mutableListOf<GeoPoint>()
+            for (i in 0 until coordinates.length()) {
+                val coord = coordinates.getJSONArray(i)
+                val longitude = coord.getDouble(0)
+                val latitude = coord.getDouble(1)
+                points.add(GeoPoint(latitude, longitude))
+            }
+            points
+        } else {
+            emptyList()
+        }
+    } catch (e: Exception) {
+        android.util.Log.e("MapScreen", "Error parsing BRouter response", e)
+        emptyList()
     }
 }
 
@@ -519,7 +633,7 @@ private fun parseOSRMResponse(jsonResponse: String): List<GeoPoint> {
         } else {
             emptyList()
         }
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         emptyList()
     }
 }
@@ -529,8 +643,8 @@ private fun createFallbackRoute(mapView: MapView, start: GeoPoint, end: GeoPoint
     val fallbackPolyline = Polyline().apply {
         addPoint(start)
         addPoint(end)
-        setColor(0xAAFF6600.toInt()) // Naranja para indicar fallback
-        setWidth(10.0f)
+        outlinePaint.color = 0xAAFF6600.toInt() // Naranja para indicar fallback
+        outlinePaint.strokeWidth = 10.0f
     }
     mapView.overlays.add(fallbackPolyline)
     return fallbackPolyline
@@ -579,12 +693,13 @@ fun DestinoPanel(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top
                 ) {
                     Text(
                         text = stringResource(destino.tituloResId),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.weight(1f)
                     )
 
                     IconButton(onClick = onClose) {
@@ -615,7 +730,25 @@ fun DestinoPanel(
                         }
                     }
 
-                    OutlinedButton(onClick = onNavigate) {
+                    val isDarkTheme = isSystemInDarkTheme()
+                    OutlinedButton(
+                        onClick = onNavigate,
+                        colors = if (isDarkTheme) {
+                            ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.primaryContainer
+                            )
+                        } else {
+                            ButtonDefaults.outlinedButtonColors()
+                        },
+                        border = if (isDarkTheme) {
+                            androidx.compose.foundation.BorderStroke(
+                                1.dp,
+                                MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        } else {
+                            ButtonDefaults.outlinedButtonBorder(enabled = true)
+                        }
+                    ) {
                         Text(stringResource(id = R.string.mas_informacion))
                     }
                 }
@@ -649,12 +782,13 @@ fun SubPuntoPanel(
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top
                 ) {
                     Text(
                         text = stringResource(subPunto.nombreResId),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.weight(1f)
                     )
 
                     IconButton(onClick = onClose) {

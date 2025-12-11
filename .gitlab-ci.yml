@@ -1,0 +1,14 @@
+image: alpine:latest
+
+pages:
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp PRIVACY_POLICY.md public/PRIVACY_POLICY.md
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+
