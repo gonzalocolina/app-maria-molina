@@ -254,7 +254,10 @@ fun KidsEntryScreen(
                     onClick = {
                         if (passwordInput == "Profesor47005") {
                             viewModel.setTeacherAuthenticated()
+                            showAdminDialog = false
                             onNavigateToAdmin()
+                        } else {
+                            passwordError = true
                         }
                     }
                 ) {
@@ -262,7 +265,7 @@ fun KidsEntryScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { }) {
+                TextButton(onClick = { showAdminDialog = false }) {
                     Text(stringResource(id = R.string.cancelar))
                 }
             }
@@ -297,8 +300,11 @@ fun KidsEntryScreen(
             confirmButton = {
                 Button(
                     onClick = {
-                        if (quizPasswordInput == "6909") {
+                        if (quizPasswordInput == "6906") {
                             onStartQuiz(dificultadSeleccionada)
+                            showQuizPasswordDialog = false
+                        } else {
+                            quizPasswordError = true
                         }
                     }
                 ) {
@@ -306,7 +312,7 @@ fun KidsEntryScreen(
                 }
             },
             dismissButton = {
-                TextButton(onClick = { }) {
+                TextButton(onClick = { showQuizPasswordDialog = false }) {
                     Text(stringResource(id = R.string.cancelar))
                 }
             }

@@ -155,7 +155,7 @@ class StudentGameViewModel @Inject constructor(
         answeredObserverJob = viewModelScope.launch {
             repository.observeAnsweredCount(pin).collect { count ->
                 val state = _uiState.value
-                val allAnswered = count >= state.totalJugadores && state.totalJugadores > 0
+                val allAnswered = state.totalJugadores in 1..count
 
                 // Si todos han respondido y los puntos no se han contabilizado aún
                 if (allAnswered && state.respuestaEnviada && !state.puntosContabilizados && state.puntosObtenidos > 0) {
@@ -252,7 +252,7 @@ class StudentGameViewModel @Inject constructor(
                             tiempoAgotado = respuestaPrevia.opcionSeleccionada == -1
                             puntosContabilizados = respuestaPrevia.puntosContabilizados
                         }
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         // Ignorar error, si falla la verificación seguimos con el estado actual
                     }
                 }
@@ -285,7 +285,7 @@ class StudentGameViewModel @Inject constructor(
         rankingObserverJob = viewModelScope.launch {
             repository.observeRanking(pin).collect { ranking ->
                 // Encontrar mi posición
-                val uid = try { repository.getCurrentUserUid() } catch (e: Exception) { "" }
+                val uid = try { repository.getCurrentUserUid() } catch (_: Exception) { "" }
                 val miPosicion = ranking.indexOfFirst { it.uid == uid } + 1
                 val miPuntuacion = ranking.find { it.uid == uid }?.puntuacion ?: 0
                 
@@ -306,8 +306,7 @@ class StudentGameViewModel @Inject constructor(
     fun submitAnswer(opcionIndex: Int) {
         val state = _uiState.value
         if (state.respuestaEnviada) return
-        
-        val pregunta = state.preguntaActual ?: return
+
         val opcion = state.opcionesAleatorias.getOrNull(opcionIndex) ?: return
         
         // Calcular tiempo de respuesta
@@ -374,7 +373,7 @@ class StudentGameViewModel @Inject constructor(
                     tiempoRespuestaMs = totalTimeMs,
                     puntosObtenidos = 0
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Ignorar error si no se pudo enviar
             }
         }
@@ -398,7 +397,7 @@ class StudentGameViewModel @Inject constructor(
                     preguntaIndex = state.partida?.preguntaActualIndex ?: 0,
                     puntos = state.puntosObtenidos
                 )
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Si falla, desmarcar para reintentar después
                 _uiState.update { it.copy(puntosContabilizados = false) }
             }

@@ -2,7 +2,6 @@ package com.example.mariamolina.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.mariamolina.data.model.Jugador
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,6 @@ data class AdminUiState(
 
 @HiltViewModel
 class AdminGameViewModel @Inject constructor(
-    private val db: FirebaseFirestore
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AdminUiState())

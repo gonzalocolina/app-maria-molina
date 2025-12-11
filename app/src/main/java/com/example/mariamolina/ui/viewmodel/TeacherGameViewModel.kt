@@ -162,11 +162,8 @@ class TeacherGameViewModel @Inject constructor(
             
             try {
                 // Cargar datos de la partida existente
-                val partida = repository.observeGame(pin).first()
-
-                if (partida == null) {
-                    throw Exception("La partida no existe")
-                }
+                val partida =
+                    repository.observeGame(pin).first() ?: throw Exception("La partida no existe")
 
                 // Cargar preguntas de la partida existente
                 val preguntas = repository.getQuestionsForGame(pin)
@@ -174,7 +171,7 @@ class TeacherGameViewModel @Inject constructor(
                 // Obtener la dificultad de la partida
                 val dificultad = try {
                     Dificultad.valueOf(partida.dificultad)
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                     Dificultad.FACIL
                 }
 
@@ -192,7 +189,7 @@ class TeacherGameViewModel @Inject constructor(
                 observeGame(pin)
                 observePlayers(pin)
                 
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Si falla (partida no existe), limpiar sesión y crear nueva
                 activeGameSession.clearSession()
                 _uiState.update { 

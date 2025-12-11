@@ -115,7 +115,7 @@ class KidsSessionViewModel @Inject constructor(
                         )
                     }
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Error al verificar - limpiar sesión por seguridad
                 activeGameSession.clearSession()
                 _uiState.update { 
