@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -52,7 +51,6 @@ import com.example.mariamolina.ui.screens.profile.ProfileScreen
 import com.example.mariamolina.data.model.puntosDeInteres
 import com.example.mariamolina.R
 import com.example.mariamolina.data.model.Dificultad
-import com.example.mariamolina.ui.screens.kids.AdminLobbyScreen
 import com.example.mariamolina.ui.screens.kids.QuizGameScreen
 import com.example.mariamolina.ui.screens.kids.KidsEntryScreen
 import com.example.mariamolina.ui.screens.kids.KidsSlidesScreen
@@ -67,9 +65,8 @@ import com.example.mariamolina.ui.screens.kids.StudentGameScreen
 import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
 import com.example.mariamolina.ui.screens.kids.RankRewardScreen
 import com.example.mariamolina.ui.screens.panorama.Panorama360Screen
-import com.example.mariamolina.ui.theme.White
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 
 
