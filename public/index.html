@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad - María Molina App</title>
+    <style>
+        :root {
+            --primary-color: #6750A4;
+            --primary-light: #EADDFF;
+            --background: #FFFBFE;
+            --surface: #FFFFFF;
+            --on-surface: #1C1B1F;
+            --on-surface-variant: #49454F;
+            --outline: #79747E;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #D0BCFF;
+                --primary-light: #4F378B;
+                --background: #1C1B1F;
+                --surface: #2B2930;
+                --on-surface: #E6E1E5;
+                --on-surface-variant: #CAC4D0;
+                --outline: #938F99;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--background);
+            color: var(--on-surface);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        section {
+            background-color: var(--surface);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        h3 {
+            color: var(--on-surface);
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        p {
+            color: var(--on-surface-variant);
+            margin-bottom: 0.75rem;
+        }
+
+        ul, ol {
+            color: var(--on-surface-variant);
+            margin-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        strong {
+            color: var(--on-surface);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--outline);
+        }
+
+        th {
+            background-color: var(--primary-light);
+            color: var(--on-surface);
+            font-weight: 500;
+        }
+
+        td {
+            color: var(--on-surface-variant);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .highlight-box {
+            background-color: var(--primary-light);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .highlight-box p {
+            color: var(--on-surface);
+            margin: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--on-surface-variant);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--outline);
+        }
+
+        .app-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-radius: 20px;
+            margin: 0 auto 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            section {
+                padding: 1rem;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="app-icon">👑</div>
+        <h1>Política de Privacidad</h1>
+        <p>María Molina App</p>
+    </header>
+
+    <main>
+        <section>
+            <p><strong>Última actualización:</strong> 12 de julio de 2025</p>
+        </section>
+
+        <section>
+            <h2>Introducción</h2>
+            <p>Esta Política de Privacidad describe cómo la aplicación <strong>María Molina</strong> ("nosotros", "la aplicación") recopila, utiliza y protege la información de los usuarios ("usted", "usuario").</p>
+            <p>La aplicación María Molina es una herramienta educativa diseñada para dar a conocer la figura histórica de María Molina y los lugares de interés relacionados con ella.</p>
+        </section>
+
+        <section>
+            <h2>Información que Recopilamos</h2>
+
+            <h3>1. Datos de Autenticación Anónima</h3>
+            <ul>
+                <li>Utilizamos <strong>Firebase Authentication</strong> para crear sesiones anónimas.</li>
+                <li>Se genera un identificador único (UID) para cada dispositivo.</li>
+                <li><strong>No recopilamos</strong> nombres reales, correos electrónicos ni contraseñas.</li>
+            </ul>
+
+            <h3>2. Datos de Usuario</h3>
+            <ul>
+                <li><strong>Nickname/Alias:</strong> Si el usuario decide participar en el modo multijugador (quiz), puede introducir un nombre de usuario o alias.</li>
+                <li>Este dato se almacena en <strong>Firebase Firestore</strong> y se asocia únicamente al UID anónimo.</li>
+            </ul>
+
+            <h3>3. Datos de Ubicación</h3>
+            <div class="highlight-box">
+                <p>⚠️ El permiso de ubicación es <strong>opcional</strong> y los datos de ubicación <strong>NO se almacenan en nuestros servidores</strong>.</p>
+            </div>
+            <ul>
+                <li>La aplicación puede solicitar acceso a la ubicación del dispositivo (GPS).</li>
+                <li>Se utiliza únicamente para mostrar su posición en el mapa interactivo y calcular rutas hacia los puntos de interés.</li>
+                <li>La ubicación se procesa localmente en el dispositivo.</li>
+            </ul>
+
+            <h3>4. Datos de Rendimiento y Errores</h3>
+            <ul>
+                <li>Utilizamos <strong>Firebase Crashlytics</strong> para recopilar información sobre errores y fallos.</li>
+                <li>Incluye: tipo de dispositivo, versión del sistema operativo, estado de la aplicación y trazas de errores.</li>
+                <li>Esta información se utiliza exclusivamente para mejorar la estabilidad de la aplicación.</li>
+            </ul>
+
+            <h3>5. Datos del Quiz/Juego</h3>
+            <ul>
+                <li>Puntuaciones y progreso en las partidas (datos temporales).</li>
+                <li>Estos datos se eliminan al finalizar la sesión de juego.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Cómo Utilizamos la Información</h2>
+            <ol>
+                <li><strong>Proporcionar funcionalidades:</strong> Mostrar mapas, puntos de interés y contenido educativo.</li>
+                <li><strong>Habilitar el modo multijugador:</strong> Gestionar partidas y mostrar rankings.</li>
+                <li><strong>Mejorar la aplicación:</strong> Identificar y corregir errores técnicos.</li>
+                <li><strong>Personalizar la experiencia:</strong> Recordar preferencias del usuario.</li>
+            </ol>
+        </section>
+
+        <section>
+            <h2>Almacenamiento y Seguridad</h2>
+            <ul>
+                <li>Los datos se almacenan en servidores de <strong>Google Firebase</strong>, ubicados en la Unión Europea.</li>
+                <li>Implementamos medidas de seguridad estándar de la industria.</li>
+                <li>Los datos de autenticación anónima se gestionan de forma segura.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Compartición de Datos</h2>
+            <div class="highlight-box">
+                <p>✅ <strong>No vendemos, comercializamos ni transferimos</strong> su información personal a terceros.</p>
+            </div>
+            <p>Los únicos servicios de terceros que procesan datos son:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Servicio</th>
+                        <th>Propósito</th>
+                        <th>Política</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Firebase Authentication</td>
+                        <td>Autenticación anónima</td>
+                        <td><a href="https://policies.google.com/privacy" target="_blank">Google</a></td>
+                    </tr>
+                    <tr>
+                        <td>Firebase Firestore</td>
+                        <td>Almacenamiento de datos</td>
+                        <td><a href="https://policies.google.com/privacy" target="_blank">Google</a></td>
+                    </tr>
+                    <tr>
+                        <td>Firebase Crashlytics</td>
+                        <td>Informes de errores</td>
+                        <td><a href="https://policies.google.com/privacy" target="_blank">Google</a></td>
+                    </tr>
+                    <tr>
+                        <td>OpenStreetMap</td>
+                        <td>Mapas y cartografía</td>
+                        <td><a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank">OSM</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>Derechos del Usuario</h2>
+            <p>Usted tiene derecho a:</p>
+            <ul>
+                <li><strong>Acceder</strong> a sus datos personales.</li>
+                <li><strong>Rectificar</strong> información incorrecta.</li>
+                <li><strong>Eliminar</strong> sus datos (desinstalando la aplicación).</li>
+                <li><strong>Revocar permisos</strong> de ubicación desde la configuración de su dispositivo.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Uso por Menores de Edad</h2>
+            <p>Esta aplicación está diseñada para uso educativo y puede ser utilizada por menores de edad bajo supervisión de padres, tutores o educadores.</p>
+            <ul>
+                <li>No recopilamos intencionadamente información personal de menores.</li>
+                <li>El modo de juego multijugador requiere únicamente un alias/nickname, sin datos personales reales.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Cambios en esta Política</h2>
+            <p>Podemos actualizar esta Política de Privacidad ocasionalmente. Notificaremos cualquier cambio significativo mediante:</p>
+            <ul>
+                <li>Actualización de la fecha de "Última actualización" en esta página.</li>
+                <li>Notificación dentro de la aplicación si los cambios son sustanciales.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Contacto</h2>
+            <p>Si tiene preguntas sobre esta Política de Privacidad, puede contactarnos en:</p>
+            <ul>
+                <li><strong>Email:</strong> <a href="mailto:mariamolina.app@gmail.com">mariamolina.app@gmail.com</a></li>
+                <li><strong>Institución:</strong> Universidad de Valladolid</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Consentimiento</h2>
+            <p>Al utilizar nuestra aplicación, usted acepta los términos de esta Política de Privacidad.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 María Molina App - Universidad de Valladolid</p>
+        <p style="margin-top: 0.5rem;">
+            <a href="https://play.google.com/store/apps" target="_blank">Descargar en Google Play</a>
+        </p>
+    </footer>
+</body>
+</html>
+

@@ -8,7 +8,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.example.mariamolina" />
+                  <option name="appId" value="es.uva.inf.mariamolina" />
                   <option name="mobileSdkAppId" value="1:22661975820:android:445086cd4f1ccb23828329" />
                   <option name="projectId" value="mariamolinaapp-164c1" />
                   <option name="projectNumber" value="22661975820" />

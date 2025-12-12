@@ -12,6 +12,7 @@ build/
 # Signing keys
 *.jks
 *.keystore
+keystore.properties
 
 # Android Studio
 /.idea/
