@@ -42,4 +42,19 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun updateNickname(newNickname: String) {
+        _uiState.value = _uiState.value.copy(nickname = newNickname, isSaved = false)
+    }
+
+    fun saveProfile() {
+        _uiState.value = _uiState.value.copy(isLoading = true)
+        viewModelScope.launch {
+            try {
+                repository.saveNickname(_uiState.value.nickname)
+                _uiState.value = _uiState.value.copy(isLoading = false, isSaved = true)
+            } catch (e: Exception) {
+                _uiState.value = _uiState.value.copy(isLoading = false, error = e.message)
+            }
+        }
+    }
 }

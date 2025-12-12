@@ -4,6 +4,7 @@ import com.example.mariamolina.data.model.*
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -210,28 +211,6 @@ class MultiplayerRepository @Inject constructor(
         }
     }
 
-    /**
-     * Elimina un jugador de una partida (cuando sale del lobby).
-     * @param pin PIN de la partida
-     */
-    suspend fun leaveGame(pin: String): Result<Unit> {
-        return try {
-            val uid = getCurrentUserUid()
-
-            // Eliminar jugador de la subcolección
-            firestore.collection(COLLECTION_PARTIDAS)
-                .document(pin)
-                .collection(COLLECTION_JUGADORES)
-                .document(uid)
-                .delete()
-                .await()
-
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
     // ==================== OBSERVAR PARTIDA (TIEMPO REAL) ====================
     
     /**
@@ -309,7 +288,7 @@ class MultiplayerRepository @Inject constructor(
                     "estado" to EstadoPartida.JUGANDO.name,
                     "fase" to GamePhase.SHOWING_QUESTION.name,
                     "preguntaActualIndex" to 0,
-                    "preguntaStartedAt" to Timestamp.now()  // Timestamp de inicio
+                    "preguntaStartedAt" to com.google.firebase.Timestamp.now()  // Timestamp de inicio
                 )
             )
             .await()
@@ -341,7 +320,7 @@ class MultiplayerRepository @Inject constructor(
                     mapOf(
                         "preguntaActualIndex" to nextIndex,
                         "fase" to GamePhase.SHOWING_QUESTION.name,
-                        "preguntaStartedAt" to Timestamp.now()  // Timestamp de inicio
+                        "preguntaStartedAt" to com.google.firebase.Timestamp.now()  // Timestamp de inicio
                     )
                 )
                 .await()
@@ -350,7 +329,17 @@ class MultiplayerRepository @Inject constructor(
             resetPlayersAnsweredStatus(pin)
         }
     }
-
+    
+    /**
+     * Cambia la fase a WAITING_FOR_NEXT (todos respondieron).
+     */
+    suspend fun setWaitingForNext(pin: String) {
+        firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .update("fase", GamePhase.WAITING_FOR_NEXT.name)
+            .await()
+    }
+    
     /**
      * Finaliza la partida y guarda en historial.
      */
@@ -390,8 +379,7 @@ class MultiplayerRepository @Inject constructor(
     // ==================== RESPUESTAS (ALUMNO) ====================
     
     /**
-     * Envía la respuesta de un jugador (sin sumar puntos todavía).
-     * Los puntos se suman después cuando se muestra el feedback.
+     * Envía la respuesta de un jugador.
      */
     suspend fun submitAnswer(
         pin: String,
@@ -403,7 +391,7 @@ class MultiplayerRepository @Inject constructor(
     ) {
         val uid = getCurrentUserUid()
         
-        // Guardar respuesta (con los puntos calculados, pero sin sumarlos todavía)
+        // Guardar respuesta
         val respuesta = RespuestaJugador(
             preguntaIndex = preguntaIndex,
             opcionSeleccionada = opcionSeleccionada,
@@ -422,59 +410,29 @@ class MultiplayerRepository @Inject constructor(
             .set(respuesta)
             .await()
         
-        // Solo marcar que ha respondido, NO sumar puntos todavía
-        val jugadorRef = firestore.collection(COLLECTION_PARTIDAS)
-            .document(pin)
-            .collection(COLLECTION_JUGADORES)
-            .document(uid)
-
-        jugadorRef.update("hasAnswered", true).await()
-    }
-
-    /**
-     * Suma los puntos de una respuesta al jugador.
-     * Se llama solo cuando se muestra el feedback (todos respondieron o tiempo agotado).
-     * También marca los puntos como contabilizados para evitar duplicados.
-     */
-    suspend fun addPointsForAnswer(pin: String, preguntaIndex: Int, puntos: Int) {
-        val uid = getCurrentUserUid()
-
+        // Actualizar puntuación del jugador y marcar que respondió
         val jugadorRef = firestore.collection(COLLECTION_PARTIDAS)
             .document(pin)
             .collection(COLLECTION_JUGADORES)
             .document(uid)
         
-        val respuestaRef = firestore.collection(COLLECTION_PARTIDAS)
-            .document(pin)
-            .collection(COLLECTION_JUGADORES)
-            .document(uid)
-            .collection(COLLECTION_RESPUESTAS)
-            .document(preguntaIndex.toString())
-
         firestore.runTransaction { transaction ->
-            // Verificar si ya se contabilizaron los puntos
-            val respuestaDoc = transaction.get(respuestaRef)
-            val yaContabilizados = respuestaDoc.getBoolean("puntosContabilizados") ?: false
-
-            if (!yaContabilizados) {
-                // Sumar puntos al jugador
-                val jugadorDoc = transaction.get(jugadorRef)
-                val puntuacionActual = jugadorDoc.getLong("puntuacion")?.toInt() ?: 0
-                transaction.update(jugadorRef, "puntuacion", puntuacionActual + puntos)
-
-                // Marcar puntos como contabilizados
-                transaction.update(respuestaRef, "puntosContabilizados", true)
-            }
+            val jugadorDoc = transaction.get(jugadorRef)
+            val puntuacionActual = jugadorDoc.getLong("puntuacion")?.toInt() ?: 0
+            
+            transaction.update(jugadorRef, mapOf(
+                "puntuacion" to puntuacionActual + puntosObtenidos,
+                "hasAnswered" to true
+            ))
         }.await()
     }
-
+    
     /**
-     * Obtiene la respuesta del jugador actual para una pregunta específica.
-     * Retorna null si no ha respondido aún.
+     * Verifica si el jugador actual ya respondió la pregunta.
      */
-    suspend fun getPlayerAnswer(pin: String, preguntaIndex: Int): RespuestaJugador? {
+    suspend fun hasPlayerAnswered(pin: String, preguntaIndex: Int): Boolean {
         val uid = getCurrentUserUid()
-
+        
         val respuestaDoc = firestore.collection(COLLECTION_PARTIDAS)
             .document(pin)
             .collection(COLLECTION_JUGADORES)
@@ -483,12 +441,8 @@ class MultiplayerRepository @Inject constructor(
             .document(preguntaIndex.toString())
             .get()
             .await()
-
-        return if (respuestaDoc.exists()) {
-            respuestaDoc.toObject(RespuestaJugador::class.java)
-        } else {
-            null
-        }
+        
+        return respuestaDoc.exists()
     }
 
     // ==================== PREGUNTAS ====================
@@ -629,6 +583,45 @@ class MultiplayerRepository @Inject constructor(
             .set(historial)
             .await()
     }
+    
+    /**
+     * Obtiene el historial de partidas.
+     */
+    suspend fun getGameHistory(limit: Int = 20): List<HistorialPartida> {
+        val snapshot = firestore.collection(COLLECTION_HISTORIAL)
+            .orderBy("fechaPartida", Query.Direction.DESCENDING)
+            .limit(limit.toLong())
+            .get()
+            .await()
+        
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(HistorialPartida::class.java)
+        }
+    }
 
-
+    // ==================== LIMPIEZA ====================
+    
+    /**
+     * Elimina una partida y todos sus datos.
+     */
+    suspend fun deleteGame(pin: String) {
+        // Eliminar jugadores
+        val jugadoresSnapshot = firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .collection(COLLECTION_JUGADORES)
+            .get()
+            .await()
+        
+        val batch = firestore.batch()
+        jugadoresSnapshot.documents.forEach { doc ->
+            batch.delete(doc.reference)
+        }
+        batch.commit().await()
+        
+        // Eliminar partida
+        firestore.collection(COLLECTION_PARTIDAS)
+            .document(pin)
+            .delete()
+            .await()
+    }
 }

@@ -165,7 +165,7 @@ fun TeacherGameScreen(
                             text = pregunta.getPregunta(languageCode),
                             style = MaterialTheme.typography.headlineSmall,
                             textAlign = TextAlign.Center,
-                            fontWeight = FontWeight.Bold,
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
@@ -240,9 +240,7 @@ fun TeacherGameScreen(
                         fontWeight = FontWeight.Bold,
                         color = if (tiempoExpirado || tiempoRestante <= 5) 
                             MaterialTheme.colorScheme.error 
-                        else if (tiempoRestante > 10)
-                            MaterialTheme.colorScheme.error
-                        else
+                        else 
                             MaterialTheme.colorScheme.onTertiaryContainer
                     )
                 }

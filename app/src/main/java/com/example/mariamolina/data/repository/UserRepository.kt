@@ -30,4 +30,11 @@ class UserRepository @Inject constructor(
         }
     }
 
+    // Guarda el nickname
+    suspend fun saveNickname(nickname: String) {
+        val firebaseUser = auth.currentUser ?: throw Exception("Usuario no logueado")
+
+        val usuario = Usuario(uid = firebaseUser.uid, nickname = nickname)
+        db.collection("users").document(firebaseUser.uid).set(usuario).await()
+    }
 }

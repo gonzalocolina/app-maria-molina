@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permisos necesarios para la aplicación -->
-    <!-- IMPORTANTE: Debes proporcionar una URL de política de privacidad en Google Play Console
-         que explique cómo usas estos permisos (Internet, Ubicación) -->
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -14,17 +12,16 @@
     <application
         android:name=".MariaMolinaApplication"
         android:allowBackup="true"
-        android:fullBackupContent="@xml/data_extraction_rules"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/mariamolinalogo"
         android:roundIcon="@mipmap/mariamolinalogo_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.MariaMolina">
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:label="@string/app_name"
             android:theme="@style/Theme.MariaMolina">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

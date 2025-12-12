@@ -59,6 +59,7 @@ class QuizViewModel @Inject constructor(
                         errorMessage = result.message
                     )
                 }
+                else -> { /* Ignorar Idle/Loading */ }
             }
         }
     }

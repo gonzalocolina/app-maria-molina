@@ -15,14 +15,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.data.model.Dificultad
 import com.example.mariamolina.ui.viewmodel.AddQuestionViewModel
-import com.example.mariamolina.R
 
 /**
  * Pantalla para añadir nuevas preguntas al cuestionario.
@@ -37,36 +35,15 @@ fun AddQuestionScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    // Strings localizados usados en la pantalla
-    val title = stringResource(R.string.add_question_title)
-    val translateTitle = stringResource(R.string.translate_auto_title)
-    val translateSubtitle = stringResource(R.string.translate_auto_subtitle)
-    val modelsNeededTitle = stringResource(R.string.models_needed_title)
-    val modelsNeededSubtitle = stringResource(R.string.models_needed_subtitle)
-    val downloadingText = stringResource(R.string.downloading)
-    val downloadModelsText = stringResource(R.string.download_models)
-    val questionLabel = stringResource(R.string.question_label)
-    val difficultyLabel = stringResource(R.string.difficulty_label)
-    val answerOptionsTitle = stringResource(R.string.answer_options_title)
-    val markCorrectNote = stringResource(R.string.mark_correct_note)
-    val addOptionText = stringResource(R.string.add_option)
-    val saveAndTranslateText = stringResource(R.string.save_and_translate)
-    val savingText = stringResource(R.string.saving)
-    val okText = stringResource(R.string.ok)
-    val contentBack = stringResource(R.string.btn_volver)
-    val cdAnswerCorrect = stringResource(R.string.cd_answer_correct)
-    val cdMarkAsCorrect = stringResource(R.string.cd_mark_as_correct)
-    val deleteOptionDesc = stringResource(R.string.delete_option)
-
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title) },
+                title = { Text("Añadir Pregunta") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = contentBack
+                            contentDescription = "Volver"
                         )
                     }
                 }
@@ -103,12 +80,12 @@ fun AddQuestionScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            translateTitle,
+                            "Traducción automática",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            translateSubtitle,
+                            "Escribe en español. Se traducirá automáticamente a inglés, francés y alemán.",
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -129,13 +106,13 @@ fun AddQuestionScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            modelsNeededTitle,
+                            "Se necesitan los modelos de traducción",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            modelsNeededSubtitle,
+                            "Descarga los modelos para poder traducir las preguntas. Requiere conexión WiFi.",
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center
                         )
@@ -150,11 +127,11 @@ fun AddQuestionScreen(
                                     strokeWidth = 2.dp
                                 )
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(downloadingText)
+                                Text("Descargando...")
                             } else {
                                 Icon(Icons.Default.Download, contentDescription = null)
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Text(downloadModelsText)
+                                Text("Descargar modelos")
                             }
                         }
                     }
@@ -165,7 +142,7 @@ fun AddQuestionScreen(
             OutlinedTextField(
                 value = uiState.pregunta,
                 onValueChange = { viewModel.updatePregunta(it) },
-                label = { Text(questionLabel) },
+                label = { Text("Pregunta (en español)") },
                 modifier = Modifier.fillMaxWidth(),
                 minLines = 2,
                 maxLines = 4,
@@ -174,7 +151,7 @@ fun AddQuestionScreen(
 
             // Selector de dificultad
             Text(
-                difficultyLabel,
+                "Dificultad:",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold
             )
@@ -199,13 +176,13 @@ fun AddQuestionScreen(
 
             // Opciones de respuesta
             Text(
-                answerOptionsTitle,
+                "Opciones de respuesta:",
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.Bold
             )
 
             Text(
-                markCorrectNote,
+                "Toca el círculo para marcar la respuesta correcta",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -223,7 +200,7 @@ fun AddQuestionScreen(
                         Icon(
                             Icons.Default.CheckCircle,
                             contentDescription = if (uiState.opcionCorrectaIndex == index)
-                                cdAnswerCorrect else cdMarkAsCorrect,
+                                "Respuesta correcta" else "Marcar como correcta",
                             tint = if (uiState.opcionCorrectaIndex == index)
                                 Color(0xFF4CAF50) else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                         )
@@ -233,7 +210,7 @@ fun AddQuestionScreen(
                     OutlinedTextField(
                         value = opcion,
                         onValueChange = { viewModel.updateOpcion(index, it) },
-                        label = { Text(stringResource(R.string.option_label, index + 1)) },
+                        label = { Text("Opción ${index + 1}") },
                         modifier = Modifier.weight(1f),
                         singleLine = true,
                         enabled = !uiState.isLoading,
@@ -255,7 +232,7 @@ fun AddQuestionScreen(
                         ) {
                             Icon(
                                 Icons.Default.Delete,
-                                contentDescription = deleteOptionDesc,
+                                contentDescription = "Eliminar opción",
                                 tint = MaterialTheme.colorScheme.error
                             )
                         }
@@ -271,7 +248,7 @@ fun AddQuestionScreen(
                 ) {
                     Icon(Icons.Default.Add, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(addOptionText)
+                    Text("Añadir otra opción")
                 }
             }
 
@@ -292,11 +269,11 @@ fun AddQuestionScreen(
                         strokeWidth = 2.dp
                     )
                     Spacer(modifier = Modifier.width(12.dp))
-                    Text(uiState.translationProgress.ifEmpty { savingText })
+                    Text(uiState.translationProgress.ifEmpty { "Guardando..." })
                 } else {
                     Icon(Icons.Default.Translate, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(saveAndTranslateText)
+                    Text("Guardar y Traducir")
                 }
             }
 
@@ -310,7 +287,7 @@ fun AddQuestionScreen(
                     .padding(16.dp),
                 action = {
                     TextButton(onClick = { viewModel.clearMessages() }) {
-                        Text(okText)
+                        Text("OK")
                     }
                 },
                 containerColor = MaterialTheme.colorScheme.errorContainer,
@@ -327,7 +304,7 @@ fun AddQuestionScreen(
                     .padding(16.dp),
                 action = {
                     TextButton(onClick = { viewModel.clearMessages() }) {
-                        Text(okText)
+                        Text("OK")
                     }
                 },
                 containerColor = Color(0xFF4CAF50),

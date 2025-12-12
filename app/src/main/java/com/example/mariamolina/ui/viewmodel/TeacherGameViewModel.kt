@@ -161,35 +161,22 @@ class TeacherGameViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true, error = null) }
             
             try {
-                // Cargar datos de la partida existente
-                val partida =
-                    repository.observeGame(pin).first() ?: throw Exception("La partida no existe")
-
                 // Cargar preguntas de la partida existente
                 val preguntas = repository.getQuestionsForGame(pin)
                 
-                // Obtener la dificultad de la partida
-                val dificultad = try {
-                    Dificultad.valueOf(partida.dificultad)
-                } catch (_: Exception) {
-                    Dificultad.FACIL
-                }
-
-                _uiState.update {
+                _uiState.update { 
                     it.copy(
                         isLoading = false, 
                         pin = pin,
-                        preguntas = preguntas,
-                        dificultadSeleccionada = dificultad,
-                        tiempoPorPreguntaSeleccionado = partida.tiempoPorPregunta
-                    )
+                        preguntas = preguntas
+                    ) 
                 }
                 
                 // Iniciar observers
                 observeGame(pin)
                 observePlayers(pin)
                 
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 // Si falla (partida no existe), limpiar sesión y crear nueva
                 activeGameSession.clearSession()
                 _uiState.update { 
@@ -244,24 +231,6 @@ class TeacherGameViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    /**
-     * Abandona el lobby y limpia la sesión.
-     * Se usa cuando el profesor decide salir del lobby con el botón Volver.
-     */
-    fun abandonarLobby() {
-        // Cancelar observers
-        gameObserverJob?.cancel()
-        playersObserverJob?.cancel()
-        answeredObserverJob?.cancel()
-        rankingObserverJob?.cancel()
-
-        // Limpiar sesión activa
-        activeGameSession.clearSession()
-
-        // Resetear estado
-        _uiState.update { TeacherGameUiState() }
     }
 
     /**
@@ -410,6 +379,13 @@ class TeacherGameViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    /**
+     * Limpia el error actual.
+     */
+    fun clearError() {
+        _uiState.update { it.copy(error = null) }
     }
 
     override fun onCleared() {

@@ -8,10 +8,12 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
-// Posibles estados de carga
+// Definimos los posibles estados de carga
 sealed class DataState<out T> {
     data class Success<out T>(val data: T) : DataState<T>()
     data class Error(val message: String) : DataState<Nothing>()
+    object Loading : DataState<Nothing>()
+    object Idle : DataState<Nothing>()
 }
 
 @Singleton

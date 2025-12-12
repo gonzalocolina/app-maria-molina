@@ -77,6 +77,14 @@ class ActiveGameSession @Inject constructor(
     }
 
     /**
+     * Verifica si hay una sesión activa.
+     */
+    fun hasActiveSession(): Boolean {
+        return prefs.getBoolean(KEY_IS_ACTIVE, false) && 
+               prefs.getString(KEY_PIN, null) != null
+    }
+
+    /**
      * Limpia la sesión activa (cuando termina la partida).
      */
     fun clearSession() {

@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.mariamolina.R
 
+// --- ¡Añadimos el parámetro "subtitulo"! ---
 sealed class Pantalla(
     val ruta: String,
     val tituloTopBarResId: Int,
@@ -16,7 +17,7 @@ sealed class Pantalla(
     val subtituloResId: Int?, // <-- Puede ser nulo si una vista no tiene
     val icono: ImageVector
 ) {
-
+    // --- ¡Añadimos los subtítulos a cada objeto! ---
     data object Home : Pantalla(
         ruta = "home",
         tituloTopBarResId = R.string.nav_home_title,

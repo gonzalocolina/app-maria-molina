@@ -1,16 +1,17 @@
 package com.example.mariamolina.data.model
 
 import androidx.annotation.StringRes
+import androidx.annotation.ArrayRes
 import com.example.mariamolina.R
 
 // 1. Definimos la estructura de datos actualizada
 data class PuntoInteres(
     val id: String,
-    @param:StringRes val tituloResId: Int,
+    @StringRes val tituloResId: Int,
     val urlImagen: String,
-    @param:StringRes val descripcionLargaResId: Int,
-    @param:StringRes val horariosResId: Int?,
-    @param:StringRes val ubicacionResId: Int?,
+    @StringRes val descripcionLargaResId: Int,
+    @StringRes val horariosResId: Int? ,
+    @StringRes val ubicacionResId: Int?,
 
     // Para el mapa
     val latitud: Double,
@@ -21,9 +22,9 @@ data class PuntoInteres(
 
 data class SubPuntoInteres(
     val id: String,
-    @param:StringRes val nombreResId: Int,
-    @param:StringRes val horariosResId: Int?,
-    @param:StringRes val ubicacionResId: Int?,
+    @StringRes val nombreResId: Int,
+    @StringRes val horariosResId: Int?,
+    @StringRes val ubicacionResId: Int?,
 
     // Para el mapa
     val latitud: Double,

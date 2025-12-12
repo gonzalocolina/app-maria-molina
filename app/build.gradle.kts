@@ -17,44 +17,18 @@ android {
         minSdk = 24
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        create("release") {
-            // NOTA: Para publicar en Google Play, debes crear un keystore y configurar estas variables
-            // en el archivo gradle.properties o en variables de entorno:
-            // KEYSTORE_FILE=path/to/your/keystore.jks
-            // KEYSTORE_PASSWORD=your_keystore_password
-            // KEY_ALIAS=your_key_alias
-            // KEY_PASSWORD=your_key_password
-
-            // Ejemplo de configuración (descomentar y ajustar cuando tengas el keystore):
-            // storeFile = file(System.getenv("KEYSTORE_FILE") ?: project.property("KEYSTORE_FILE") as String)
-            // storePassword = System.getenv("KEYSTORE_PASSWORD") ?: project.property("KEYSTORE_PASSWORD") as String
-            // keyAlias = System.getenv("KEY_ALIAS") ?: project.property("KEY_ALIAS") as String
-            // keyPassword = System.getenv("KEY_PASSWORD") ?: project.property("KEY_PASSWORD") as String
-        }
-    }
-
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            // Descomentar cuando tengas el keystore configurado:
-            // signingConfig = signingConfigs.getByName("release")
-        }
-        debug {
-            isDebuggable = true
-            // applicationIdSuffix eliminado para evitar conflicto con Firebase
-            // Firebase espera el package name 'com.example.mariamolina' sin sufijos
-            versionNameSuffix = "-debug"
         }
     }
     compileOptions {

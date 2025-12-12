@@ -3,20 +3,10 @@
     <string name="profile_title">Profil</string>
     <string name="back_button_description">Retour</string>
     <string name="select_language_title">Sélectionner la langue</string>
+    <string name="language_label">Langue</string>
     <string name="language_changed_toast">Langue changée à %s</string>
     <string name="about_title">À propos</string>
-    <string name="about_description">Pasos de María est un guide éducatif et interactif dédié à la diffusion
-        de la vie et de l\'héritage de María de Molina, ainsi qu\'à la mise en valeur du patrimoine historique de Valladolid.
-        L\'application propose des descriptions détaillées, des images, des horaires et des emplacements des points d\'intérêt,
-        des itinéraires sur carte, des contenus adaptés au jeune public et la possibilité de répondre à des questionnaires individuellement et en mode multijoueur.
-        La fonction de test individuel dispose d\'un mot de passe qui sera fourni par les
-        enseignants, afin que les élèves ne puissent pas apprendre les questions avant de passer le questionnaire
-        en mode multijoueur, mais puissent ensuite consolider leurs connaissances de manière autonome. \n
-        Son objectif est de faciliter l\'accès à l\'histoire locale
-        de manière didactique et visuelle, et dans un format plus moderne qui peut susciter davantage l\'intérêt
-        des jeunes ; les données ont été compilées à partir de sources historiques et culturelles.
-        L\'application a été créée pour l\'école Santa María La Real de Huelgas.\n\n
-        Application créée par Miguel Bueno González, Gonzalo José Colina Báscones et Daniel Fernández García</string>
+    <string name="about_description">Cette application est un exemple sur María Molina.</string>
 
     <!-- Chaînes générales (traduction du espagnol) -->
     <string name="app_name">PasosDeMaría</string>
@@ -47,6 +37,11 @@
 
     <!-- Données utilisateur -->
     <string name="font_size_changed_toast">Taille de police modifiée à %s</string>
+    <string name="profile_user_section_title">Ton pseudonyme</string>
+    <string name="profile_nickname_label">Pseudonyme</string>
+    <string name="profile_save_button">Enregistrer le pseudonyme</string>
+    <string name="profile_saved_success">Enregistré !</string>
+    <string name="profile_error_message">Erreur : %1$s</string>
 
     <!-- Point 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
@@ -153,6 +148,7 @@
 
     <string name="slide_10_title">Le roi Fernando</string>
     <string name="slide_10_desc">Des années plus tard, Sancho tomba malade et mourut. J\'ai fait en sorte que mon fils Fernando soit proclamé roi.</string>
+
     <string name="slide_11_title">Régente de Fernando</string>
     <string name="slide_11_desc">Fernando était encore jeune et je l\'ai aidé à gouverner jusqu\'à sa majorité.</string>
 
@@ -173,6 +169,7 @@
     <string name="kids_next">Suivant</string>
 
     <!-- Progress section for Points of Interest -->
+    <string name="correcta">Correcte</string>
     <string name="points_progress_title">Votre progression</string>
     <string name="points_visited">Visités</string>
     <string name="points_remaining">Restants</string>
@@ -181,19 +178,21 @@
 
     <!-- Mapa -->
     <string name="mi_ubicacion">Ma position</string>
-    <string name="centrar">Centre</string>
-    <string name="calculando_ruta">Calcul de l’itinéraire…</string>
+    <string name="inicio">Accueil</string>
+    <string name="calculando_ruta">Calcul de l’itinéraire...</string>
     <string name="cerrar">Fermer</string>
-    <string name="calculando">Calcul en cours…</string>
+    <string name="calculando">Calcul en cours...</string>
     <string name="como_llegar">Itinéraire</string>
     <string name="mas_informacion">Plus d’informations</string>
 
     <!-- Additional kids strings -->
     <string name="join_game_enter_data">Saisissez vos données</string>
+    <string name="quiz_error">Erreur : %1$s</string>
+    <string name="quiz_score_achieved">Vous avez obtenu %d points !</string>
     <string name="student_points_gained">+%d points</string>
     <string name="student_answer_sent">✓ Réponse envoyée</string>
-    <string name="student_waiting_all">En attente que tout le monde réponde…</string>
-    <string name="student_waiting_teacher">En attente du professeur…</string>
+    <string name="student_waiting_all">En attente que tout le monde réponde...</string>
+    <string name="student_waiting_teacher">En attente du professeur...</string>
     <string name="slide_counter">%d / %d</string>
     <string name="font_size_normal">Normal</string>
     <string name="font_size_large">Grand</string>
@@ -217,21 +216,31 @@
     <string name="btn_ver_arbol">Voir l\'arbre généalogique</string>
     <string name="btn_ver_panorama">Voir le monastère à 360°</string>
     <string name="cd_imagen_ejemplo">Image d\'exemple</string>
+    <string name="cd_panorama_monasterio">Vue panoramique du Monastère des Huelgas Reales</string>
     <string name="cd_imagen_inicial">Image initiale de María de Molina</string>
     <string name="cd_volver">Retour</string>
     <string name="cd_horarios">Horaires</string>
     <string name="cd_ubicacion">Emplacement</string>
+    <string name="cd_perfil">Profil</string>
     <string name="cd_ajustes">Paramètres</string>
     <string name="kids_entry_titulo">Section Enfants</string>
+    <string name="kids_menu_titulo">Questionnaire pour enfants</string>
     <string name="kids_entry_descripcion">Découvrez l\'histoire de María de Molina de manière plus agréable et montrez ce que vous avez appris sur l\'histoire que nous vous avons racontée.</string>
+    <string name="kids_menu_descripcion">Montre ce que tu as appris sur l\'histoire que nous t\'avons racontée. Choisis un niveau de difficulté !</string>
     <string name="kids_dificultad_facil">Facile</string>
     <string name="kids_dificultad_media">Moyenne</string>
     <string name="kids_dificultad_dificil">Difficile</string>
     <string name="kids_iniciar_quiz">Commencer à jouer !</string>
+    <string name="kids_quiz_siguiente">Suivant</string>
     <string name="kids_quiz_puntuacion">Score : %d</string>
+    <string name="kids_quiz_finalizado">Questionnaire terminé !</string>
+    <string name="kids_quiz_resultado">Ton score final est : %1$d / %2$d</string>
+    <string name="kids_quiz_volver_menu">Retour au menu</string>
     <string name="kids_quiz_ranking">Voir le classement</string>
     <string name="kids_ver_diapositivas">Voir les diapositives</string>
+    <string name="kids_opcion_cuestionarios">Questionnaires</string>
     <string name="kids_slides_titulo">Diapositives pour enfants</string>
+    <string name="kids_slides_descripcion">Ici, vous pouvez voir les diapositives de l\'histoire adaptées pour les enfants.</string>
     <string name="kids_no_slides">Il n\'y a pas de diapositives disponibles</string>
     <string name="pantalla_de_ranking_proximamente">Écran de classement (Bientôt !)</string>
     <string name="unirse_a_partida">Rejoindre la partie</string>
@@ -247,11 +256,17 @@
     <string name="contrasena_incorrecta">Mot de passe incorrect</string>
     <string name="entrar">Entrer</string>
     <string name="cancelar">Annuler</string>
+    <string name="caracteres_maximo">%d/%d caractères</string>
+    <string name="panel_del_profesor">Panneau du Professeur</string>
+    <string name="generando_sala">Création de la salle...</string>
+    <string name="codigo_de_la_partida_pin">CODE DE LA PARTIE (PIN)</string>
+    <string name="jugadores_conectados">Joueurs connectés : %d</string>
+    <string name="empezar_el_juego">COMMENCER LE JEU !</string>
     <string name="sala_de_espera">Salle d\'attente</string>
-    <string name="conectando_con_la_sala">Connexion à la salle…</string>
+    <string name="conectando_con_la_sala">Connexion à la salle...</string>
     <string name="salir">Sortir</string>
     <string name="estas_dentro">Tu es dedans !</string>
-    <string name="esperando_profesor_inicie">En attendant que le professeur commence le jeu…</string>
+    <string name="esperando_profesor_inicie">En attendant que le professeur commence le jeu...</string>
     <string name="pin_de_la_sala">Code PIN de la salle</string>
     <string name="puntos_label">Points:</string>
     <string name="pregunta_label">Question</string>
@@ -261,40 +276,31 @@
     <string name="respuesta_incorrecta">Réponse incorrecte</string>
     <string name="tu_puntuacion">Ton score</string>
     <string name="posicion_label">Position:</string>
-    <string name="esperando_siguiente_pregunta">En attendant la prochaine question…</string>
+    <string name="esperando_siguiente_pregunta">En attendant la prochaine question...</string>
+    <string name="partida_label">Partie:</string>
+    <string name="finalizar">Terminer</string>
+    <string name="de">de</string>
+    <string name="ver_ranking_final">VOIR LE CLASSEMENT FINAL</string>
+    <string name="siguiente_pregunta">PROCHAINE QUESTION</string>
+    <string name="todos_han_respondido">✓ Tout le monde a répondu - Vous pouvez avancer</string>
+    <string name="esperando_label">En attente :</string>
+    <string name="alumnos">élèves</string>
+    <string name="ranking_actual">Classement actuel</string>
     <string name="pts">pts</string>
     <string name="ranking_final">Classement final</string>
     <string name="partida_finalizada">🎉 Partie Terminée ! 🎉</string>
     <string name="tu_resultado">Ton résultat</string>
+    <string name="numeral">#</string>
     <string name="puntos_lower">points</string>
     <string name="clasificacion_completa">Classement complet</string>
     <string name="volver_al_menu">Retour au menu</string>
     <string name="tu_emoji">Toi !</string>
     <string name="ok">OK</string>
     <string name="panorama_screen_title">Monastère 360°</string>
+    <string name="panorama_instructions">Faites glisser pour faire tourner la vue • Pincez pour zoomer</string>
     <string name="panorama_zoom_in">Approcher</string>
     <string name="panorama_zoom_out">Éloigner</string>
     <string name="acceso_quiz">Accès au quiz</string>
     <string name="introduce_contrasena_quiz">Entrez le mot de passe pour commencer le quiz :</string>
-
-    <!-- AddQuestionScreen (fr) -->
-    <string name="add_question_title">Ajouter une question</string>
-    <string name="translate_auto_title">Traduction automatique</string>
-    <string name="translate_auto_subtitle">Écrivez en espagnol. Ce texte sera automatiquement traduit en anglais, français et allemand.</string>
-    <string name="models_needed_title">Modèles de traduction requis</string>
-    <string name="models_needed_subtitle">Téléchargez les modèles pour activer la traduction des questions. Wi‑Fi recommandé.</string>
-    <string name="downloading">Téléchargement…</string>
-    <string name="download_models">Télécharger les modèles</string>
-    <string name="question_label">Question (en espagnol)</string>
-    <string name="difficulty_label">Difficulté :</string>
-    <string name="answer_options_title">Options de réponse :</string>
-    <string name="mark_correct_note">Appuyez sur le cercle pour marquer la réponse correcte</string>
-    <string name="option_label">Option %1$d</string>
-    <string name="add_option">Ajouter une autre option</string>
-    <string name="save_and_translate">Enregistrer et traduire</string>
-    <string name="saving">Enregistrement…</string>
-    <string name="cd_answer_correct">Réponse correcte</string>
-    <string name="cd_mark_as_correct">Marquer comme correcte</string>
-    <string name="delete_option">Supprimer l\'option</string>
 
 </resources>

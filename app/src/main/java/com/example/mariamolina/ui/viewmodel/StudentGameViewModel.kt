@@ -1,5 +1,6 @@
 package com.example.mariamolina.ui.viewmodel
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mariamolina.data.local.ActiveGameSession
@@ -44,9 +45,7 @@ data class StudentGameUiState(
     val totalJugadores: Int = 0,
     val jugadoresQueRespondieron: Int = 0,
     val allAnswered: Boolean = false,
-    val tiempoAgotado: Boolean = false,
-    val opcionSeleccionadaIndex: Int = -1,  // Índice de la opción seleccionada por el alumno
-    val puntosContabilizados: Boolean = false  // Si los puntos de la pregunta actual ya se sumaron
+    val tiempoAgotado: Boolean = false
 )
 
 /**
@@ -56,7 +55,8 @@ data class StudentGameUiState(
 @HiltViewModel
 class StudentGameViewModel @Inject constructor(
     private val repository: MultiplayerRepository,
-    private val activeGameSession: ActiveGameSession
+    private val activeGameSession: ActiveGameSession,
+    private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(StudentGameUiState())
@@ -148,22 +148,14 @@ class StudentGameViewModel @Inject constructor(
 
     /**
      * Observa cuántos jugadores han respondido.
-     * Cuando todos responden, contabiliza los puntos.
      */
     private fun observeAnsweredCount(pin: String) {
         answeredObserverJob?.cancel()
         answeredObserverJob = viewModelScope.launch {
             repository.observeAnsweredCount(pin).collect { count ->
-                val state = _uiState.value
-                val allAnswered = state.totalJugadores in 1..count
-
-                // Si todos han respondido y los puntos no se han contabilizado aún
-                if (allAnswered && state.respuestaEnviada && !state.puntosContabilizados && state.puntosObtenidos > 0) {
-                    contabilizarPuntos()
-                }
-
-                _uiState.update { s ->
-                    s.copy(
+                _uiState.update { state ->
+                    val allAnswered = count >= state.totalJugadores && state.totalJugadores > 0
+                    state.copy(
                         jugadoresQueRespondieron = count,
                         allAnswered = allAnswered
                     )
@@ -230,33 +222,6 @@ class StudentGameViewModel @Inject constructor(
                     _uiState.value.opcionesAleatorias
                 }
                 
-                // Variables para el estado de respuesta (pueden ser sobrescritas por Firebase)
-                var respuestaEnviada = if (shouldResetAnswer) false else _uiState.value.respuestaEnviada
-                var respuestaCorrecta = if (shouldResetAnswer) null else _uiState.value.respuestaCorrecta
-                var puntosObtenidos = if (shouldResetAnswer) 0 else _uiState.value.puntosObtenidos
-                var opcionSeleccionadaIndex = if (shouldResetAnswer) -1 else _uiState.value.opcionSeleccionadaIndex
-                var tiempoAgotado = if (shouldResetAnswer) false else _uiState.value.tiempoAgotado
-                var puntosContabilizados = if (shouldResetAnswer) false else _uiState.value.puntosContabilizados
-
-                // Verificar si ya respondió esta pregunta (cuando entra/vuelve a la pantalla)
-                // Solo verificar si estamos en SHOWING_QUESTION y no hemos marcado respuestaEnviada localmente
-                if (currentPhase == GamePhase.SHOWING_QUESTION && !respuestaEnviada) {
-                    try {
-                        val respuestaPrevia = repository.getPlayerAnswer(pin, currentIndex)
-                        if (respuestaPrevia != null) {
-                            // El jugador ya respondió esta pregunta, restaurar el estado
-                            respuestaEnviada = true
-                            respuestaCorrecta = respuestaPrevia.esCorrecta
-                            puntosObtenidos = respuestaPrevia.puntosObtenidos
-                            opcionSeleccionadaIndex = respuestaPrevia.opcionSeleccionada
-                            tiempoAgotado = respuestaPrevia.opcionSeleccionada == -1
-                            puntosContabilizados = respuestaPrevia.puntosContabilizados
-                        }
-                    } catch (_: Exception) {
-                        // Ignorar error, si falla la verificación seguimos con el estado actual
-                    }
-                }
-
                 _uiState.update { state ->
                     state.copy(
                         isLoading = false,
@@ -264,12 +229,9 @@ class StudentGameViewModel @Inject constructor(
                         gamePhase = currentPhase,
                         preguntaActual = preguntaActual,
                         opcionesAleatorias = opcionesAleatorias,
-                        respuestaEnviada = respuestaEnviada,
-                        respuestaCorrecta = respuestaCorrecta,
-                        puntosObtenidos = puntosObtenidos,
-                        opcionSeleccionadaIndex = opcionSeleccionadaIndex,
-                        tiempoAgotado = tiempoAgotado,
-                        puntosContabilizados = puntosContabilizados,
+                        respuestaEnviada = if (shouldResetAnswer) false else state.respuestaEnviada,
+                        respuestaCorrecta = if (shouldResetAnswer) null else state.respuestaCorrecta,
+                        puntosObtenidos = if (shouldResetAnswer) 0 else state.puntosObtenidos,
                         gameFinished = currentPhase == GamePhase.FINISHED
                     )
                 }
@@ -285,7 +247,7 @@ class StudentGameViewModel @Inject constructor(
         rankingObserverJob = viewModelScope.launch {
             repository.observeRanking(pin).collect { ranking ->
                 // Encontrar mi posición
-                val uid = try { repository.getCurrentUserUid() } catch (_: Exception) { "" }
+                val uid = try { repository.getCurrentUserUid() } catch (e: Exception) { "" }
                 val miPosicion = ranking.indexOfFirst { it.uid == uid } + 1
                 val miPuntuacion = ranking.find { it.uid == uid }?.puntuacion ?: 0
                 
@@ -306,7 +268,8 @@ class StudentGameViewModel @Inject constructor(
     fun submitAnswer(opcionIndex: Int) {
         val state = _uiState.value
         if (state.respuestaEnviada) return
-
+        
+        val pregunta = state.preguntaActual ?: return
         val opcion = state.opcionesAleatorias.getOrNull(opcionIndex) ?: return
         
         // Calcular tiempo de respuesta
@@ -322,9 +285,8 @@ class StudentGameViewModel @Inject constructor(
             it.copy(
                 respuestaEnviada = true,
                 respuestaCorrecta = esCorrecta,
-                puntosObtenidos = puntos,
-                opcionSeleccionadaIndex = opcionIndex  // Guardar índice de opción seleccionada
-            )
+                puntosObtenidos = puntos
+            ) 
         }
         
         // Enviar a Firebase
@@ -373,60 +335,9 @@ class StudentGameViewModel @Inject constructor(
                     tiempoRespuestaMs = totalTimeMs,
                     puntosObtenidos = 0
                 )
-            } catch (_: Exception) {
+            } catch (e: Exception) {
                 // Ignorar error si no se pudo enviar
             }
-        }
-    }
-
-    /**
-     * Contabiliza los puntos de la respuesta actual.
-     * Se llama solo cuando se muestra el feedback (todos respondieron o tiempo agotado).
-     */
-    private fun contabilizarPuntos() {
-        val state = _uiState.value
-        if (state.puntosContabilizados || state.puntosObtenidos <= 0) return
-
-        // Marcar como contabilizados inmediatamente para evitar duplicados
-        _uiState.update { it.copy(puntosContabilizados = true) }
-
-        viewModelScope.launch {
-            try {
-                repository.addPointsForAnswer(
-                    pin = state.pin,
-                    preguntaIndex = state.partida?.preguntaActualIndex ?: 0,
-                    puntos = state.puntosObtenidos
-                )
-            } catch (_: Exception) {
-                // Si falla, desmarcar para reintentar después
-                _uiState.update { it.copy(puntosContabilizados = false) }
-            }
-        }
-    }
-
-    /**
-     * Abandona el lobby de la partida (elimina al jugador de la lista).
-     * Se usa cuando el alumno pulsa "Volver" en la sala de espera.
-     */
-    fun leaveLobby() {
-        val pin = _uiState.value.pin
-        if (pin.isBlank()) return
-
-        viewModelScope.launch {
-            // Eliminar al jugador de Firebase
-            repository.leaveGame(pin)
-
-            // Cancelar observers
-            gameObserverJob?.cancel()
-            rankingObserverJob?.cancel()
-            answeredObserverJob?.cancel()
-            playersObserverJob?.cancel()
-
-            // Limpiar sesión activa
-            activeGameSession.clearSession()
-
-            // Resetear estado
-            _uiState.value = StudentGameUiState()
         }
     }
 

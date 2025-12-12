@@ -3,6 +3,7 @@ package com.example.mariamolina.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mariamolina.data.model.Dificultad
+import com.example.mariamolina.data.model.IdiomasSoportados
 import com.example.mariamolina.data.model.OpcionRespuesta
 import com.example.mariamolina.data.model.QuizQuestion
 import com.example.mariamolina.data.service.TranslatorService

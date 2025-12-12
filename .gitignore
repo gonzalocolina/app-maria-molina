@@ -8,14 +8,10 @@ build/
 
 # Local configuration
 /local.properties
-gradle.properties
 
-# Signing keys (NUNCA subir esto a git)
+# Signing keys
 *.jks
 *.keystore
-*.pepk
-keystore.properties
-release-keystore.properties
 
 # Android Studio
 /.idea/

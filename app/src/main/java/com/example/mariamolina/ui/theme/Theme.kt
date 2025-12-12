@@ -9,13 +9,14 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.graphics.Color
+import com.example.mariamolina.ui.theme.LightGrey
+
 
 
 private val DarkColorScheme = darkColorScheme(
     primary = AppPrimaryBrown,
-    secondary = AppSecondaryDark,
-    tertiary = White,  // Color claro para títulos sobre fondo oscuro
+    secondary = PurpleGrey80,
+    tertiary = Pink80,
     primaryContainer = AppTextPrimaryColor,
     onSurfaceVariant = AppUnselectedGray,
     background = DarkGrey,
@@ -23,17 +24,12 @@ private val DarkColorScheme = darkColorScheme(
     onPrimary = AppTextPrimaryColor,
     onSecondary = AppTextSecondaryColor,
     surface = LightLightBlack,
-    outline = LightLightBlack,
-    onTertiaryContainer = Black
+    outline = LightLightBlack
 
     )
 
-// Nuevo color específico para el botón "Ver Monasterio 360°" en modo oscuro
-val PanoramaButtonDark = Color(0xFF12327E) // marrón oscuro (ajustable)
-
 private val LightColorScheme = lightColorScheme(
     primary = AppPrimaryBrown,
-    tertiary = AppPrimaryBrown,  // Mismo color que primary en modo claro
 
     primaryContainer = AppTextPrimaryColor,
     // Color del icono/texto NO seleccionado

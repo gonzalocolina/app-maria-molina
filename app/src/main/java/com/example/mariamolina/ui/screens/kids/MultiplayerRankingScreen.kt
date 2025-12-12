@@ -12,17 +12,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mariamolina.data.model.Jugador
 import com.example.mariamolina.ui.viewmodel.StudentGameViewModel
 import kotlinx.coroutines.delay
-import com.example.mariamolina.R
-
 
 /**
  * Pantalla de ranking final de una partida multijugador.
@@ -36,14 +33,14 @@ fun MultiplayerRankingScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     
-    // Comprobar si aún no está observando
+    // Observar si aún no está observando
     LaunchedEffect(pin) {
         if (uiState.pin.isEmpty()) {
             viewModel.startObservingGame(pin)
         }
     }
 
-    // Animación de celebración
+    // Animación de confeti/celebración
     var showConfetti by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         delay(500)
@@ -53,7 +50,7 @@ fun MultiplayerRankingScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.ranking_final)) },
+                title = { Text("Ranking Final") },
                 navigationIcon = {
                     IconButton(onClick = {
                         viewModel.reset()
@@ -61,7 +58,7 @@ fun MultiplayerRankingScreen(
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.cd_volver)
+                            contentDescription = "Volver"
                         )
                     }
                 }
@@ -80,7 +77,7 @@ fun MultiplayerRankingScreen(
             if (showConfetti) {
                 item {
                     Text(
-                        stringResource(R.string.partida_finalizada),
+                        "🎉 ¡Partida Finalizada! 🎉",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold,
                         textAlign = TextAlign.Center
@@ -104,7 +101,7 @@ fun MultiplayerRankingScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            stringResource(R.string.tu_resultado),
+                            "Tu resultado",
                             style = MaterialTheme.typography.labelLarge
                         )
                         
@@ -136,9 +133,9 @@ fun MultiplayerRankingScreen(
                         }
                         
                         Spacer(modifier = Modifier.height(8.dp))
-
+                        
                         Text(
-                            "${uiState.miPuntuacionTotal} ${stringResource(R.string.puntos_lower)}",
+                            "${uiState.miPuntuacionTotal} puntos",
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold
                         )
@@ -150,7 +147,7 @@ fun MultiplayerRankingScreen(
             item {
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    stringResource(R.string.clasificacion_completa),
+                    "Clasificación completa",
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -180,7 +177,7 @@ fun MultiplayerRankingScreen(
                 ) {
                     Icon(Icons.Default.Home, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(stringResource(R.string.volver_al_menu), fontSize = 16.sp)
+                    Text("Volver al Menú", fontSize = 16.sp)
                 }
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -248,16 +245,16 @@ private fun RankingItem(
                     )
                     if (isCurrentUser) {
                         Text(
-                            stringResource(R.string.tu_emoji),
+                            "¡Tú!",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
             }
-
+            
             Text(
-                "${jugador.puntuacion} ${stringResource(R.string.pts)}",
+                "${jugador.puntuacion} pts",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary
