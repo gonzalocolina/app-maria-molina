@@ -66,7 +66,9 @@ import com.example.mariamolina.ui.screens.kids.MultiplayerRankingScreen
 import com.example.mariamolina.ui.screens.kids.RankRewardScreen
 import com.example.mariamolina.ui.screens.panorama.Panorama360Screen
 import com.example.mariamolina.ui.viewmodel.PointsOfInterestViewModel
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+
+
 
 
 
