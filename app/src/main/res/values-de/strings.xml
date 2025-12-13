@@ -49,6 +49,9 @@
     <!-- Datos de usuario -->
     <string name="font_size_changed_toast">Schriftgröße geändert zu %s</string>
 
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_button">Datenschutzerklärung ansehen</string>
+
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
     <string name="p1_desc">Der Alcázar Real von Valladolid (12.–13. Jahrhundert), im westlichen Teil der mittelalterlichen Stadt gelegen, nahe der Vereinigung des nördlichen Zweigs des Río Esgueva mit dem Pisuerga, war eine befestigte Palastanlage, die aus zwei Bereichen bestand: dem Alcazarejo (oder alten Alcázar) an der niedrigen Terrasse am Fluss Esgueva und dem größeren Alcázar auf der höheren Terrasse in der Nähe der Pfarrkirche San Julián. Nach Jahrhunderten königlicher Nutzung und mehreren Umbauten wurde es 1390 an die Benediktiner geschenkt. Heute sind seine Überreste in das Kloster San Benito el Real und das Museo Patio Herreriano integriert, wo noch Spuren der alten Anlage sichtbar sind. Der Alcazarejo hatte eine quadratische Form — etwa 31 Meter Seite laut Ausgrabungen — mit acht massiven Türmen: einem in der Mitte jeder Mauerfläche und einem an den Ecken.</string>

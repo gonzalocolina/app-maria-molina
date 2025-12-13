@@ -1,6 +1,8 @@
 package com.example.mariamolina.ui.screens.profile
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -8,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.outlined.Policy
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -230,6 +233,28 @@ fun ProfileScreen(
                 text = stringResource(R.string.about_description),
                 style = MaterialTheme.typography.bodyMedium,
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // --- SECCIÓN 4: POLÍTICA DE PRIVACIDAD ---
+            OutlinedButton(
+                onClick = {
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://gonzalocolina.github.io/mariamolina/"))
+                    context.startActivity(intent)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.tertiary
+                )
+            ) {
+                Icon(
+                    Icons.Outlined.Policy,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(stringResource(R.string.privacy_policy_button))
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
         }

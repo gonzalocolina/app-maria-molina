@@ -75,6 +75,9 @@
     <!-- User profile section -->
     <string name="font_size_changed_toast">Font size changed to %s</string>
 
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_button">View privacy policy</string>
+
     <!-- Data: Punto 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
     <string name="p1_desc">The Royal Alcázar of Valladolid (12th–13th centuries), located at the western end of the medieval town near the confluence of the northern branch of the Esgueva with the Pisuerga, was a fortified and palatial complex composed of two enclosures: the alcazarejo (or old alcázar), on the lower terrace by the Esgueva river, and the main alcázar, on the higher terrace near the parish of San Julián. After centuries of royal use and several reforms, it was donated to the Benedictines in 1390. Its remains are today integrated into the Monastery of San Benito el Real and the Patio Herreriano Museum, where traces of the old complex can still be seen. The alcazarejo had a roughly square plan — about 31 metres per side according to excavations — and featured eight solid towers: one in the middle of each curtain wall and one at each corner.</string>

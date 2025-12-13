@@ -48,6 +48,9 @@
     <!-- Données utilisateur -->
     <string name="font_size_changed_toast">Taille de police modifiée à %s</string>
 
+    <!-- Privacy Policy -->
+    <string name="privacy_policy_button">Voir la politique de confidentialité</string>
+
     <!-- Point 1 (Palazuelos) -->
     <string name="p1_titulo">Alcazarejo</string>
     <string name="p1_desc">Le Alcázar Real de Valladolid (XIIe–XIIIe siècles), situé à l\'extrémité ouest de la ville médiévale près de la confluence du bras nord de l\'Esgueva avec le Pisuerga, était un ensemble fortifié et palatial composé de deux enceintes : l\'alcazarejo (ou vieux alcázar), sur la terrasse basse au bord de l\'Esgueva, et l\'alcázar majeur sur la terrasse haute, près de la paroisse de San Julián. Après des siècles d\'utilisation royale et plusieurs réformes, il fut donné aux bénédictins en 1390. Aujourd\'hui, ses vestiges font partie du Monastère de San Benito el Real et du Museo Patio Herreriano.</string>
