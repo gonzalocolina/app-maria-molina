@@ -5,10 +5,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,6 +29,10 @@ fun TeacherMenuScreen(
     onCreateRoom: () -> Unit,
     onAddQuestions: () -> Unit
 ) {
+
+    val uriHandler = LocalUriHandler.current
+    val urlFormularioSolicitud = "https://docs.google.com/forms/d/e/1FAIpQLSeLhc10MoLr6Ze5FM16zIlVPmbgMyyqKk5lvKit0SSNMCYNQg/viewform?usp=dialog"
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -104,37 +110,32 @@ fun TeacherMenuScreen(
             
             Spacer(modifier = Modifier.height(24.dp))
             
-            // Botón secundario: Añadir Preguntas (color más apagado)
+            // Botón secundario:
             FilledTonalButton(
-                onClick = onAddQuestions,
+                onClick = {
+                    uriHandler.openUri(urlFormularioSolicitud)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(56.dp),
+                    .height(60.dp),
                 colors = ButtonDefaults.filledTonalButtonColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             ) {
                 Icon(
-                    Icons.Default.Add,
+                    Icons.Default.MailOutline,
                     contentDescription = null,
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    "Añadir Preguntas",
-                    fontSize = 14.sp
+                    text = "Solicitar acceso para añadir preguntas",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center
                 )
             }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            Text(
-                text = "Las preguntas se traducirán automáticamente\na 4 idiomas (ES, EN, FR, DE)",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                textAlign = TextAlign.Center
-            )
         }
     }
 }
