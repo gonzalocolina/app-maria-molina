@@ -43,16 +43,6 @@ fun KidsEntryScreen(
     // Estado para selector de dificultad
     var dificultadSeleccionada by remember { mutableStateOf(Dificultad.FACIL) }
 
-    // Estados para el diálogo de contraseña del profesor
-    var showAdminDialog by remember { mutableStateOf(false) }
-    var passwordInput by remember { mutableStateOf("") }
-    var passwordError by remember { mutableStateOf(false) }
-
-    // Estados para el diálogo de contraseña del quiz
-    var showQuizPasswordDialog by remember { mutableStateOf(false) }
-    var quizPasswordInput by remember { mutableStateOf("") }
-    var quizPasswordError by remember { mutableStateOf(false) }
-
     // Reconectar automáticamente si hay sesión activa
     LaunchedEffect(uiState.shouldNavigateTo) {
         uiState.shouldNavigateTo?.let { route ->
@@ -183,9 +173,7 @@ fun KidsEntryScreen(
         // Botón Iniciar Quiz
         Button(
             onClick = {
-                showQuizPasswordDialog = true
-                quizPasswordInput = ""
-                quizPasswordError = false
+                onStartQuiz(dificultadSeleccionada)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -208,12 +196,11 @@ fun KidsEntryScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Botón Acceso Profesor (protegido)
+        // Botón Acceso Profesor
         TextButton(
             onClick = {
-                showAdminDialog = true
-                passwordInput = ""
-                passwordError = false
+                viewModel.setTeacherAuthenticated()
+                onNavigateToAdmin()
             }
         ) {
             Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(16.dp))
@@ -224,100 +211,6 @@ fun KidsEntryScreen(
         Spacer(modifier = Modifier.height(32.dp))
     }
 
-    // --- DIÁLOGO DE CONTRASEÑA PROFESOR ---
-    if (showAdminDialog) {
-        AlertDialog(
-            onDismissRequest = { },
-            title = { Text(stringResource(id = R.string.zona_de_profesores)) },
-            text = {
-                Column {
-                    Text(stringResource(id = R.string.introduce_contrasena_panel))
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
-                        value = passwordInput,
-                        onValueChange = {
-                            passwordInput = it
-                            passwordError = false
-                        },
-                        label = { Text(stringResource(id = R.string.contrasena)) },
-                        singleLine = true,
-                        visualTransformation = PasswordVisualTransformation(),
-                        isError = passwordError,
-                        supportingText = {
-                            if (passwordError) Text(stringResource(id = R.string.contrasena_incorrecta))
-                        }
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        if (passwordInput == "Profesor47005") {
-                            viewModel.setTeacherAuthenticated()
-                            showAdminDialog = false
-                            onNavigateToAdmin()
-                        } else {
-                            passwordError = true
-                        }
-                    }
-                ) {
-                    Text(stringResource(id = R.string.entrar))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showAdminDialog = false }) {
-                    Text(stringResource(id = R.string.cancelar))
-                }
-            }
-        )
-    }
-
-    // --- DIÁLOGO DE CONTRASEÑA QUIZ ---
-    if (showQuizPasswordDialog) {
-        AlertDialog(
-            onDismissRequest = { },
-            title = { Text(stringResource(id = R.string.acceso_quiz)) },
-            text = {
-                Column {
-                    Text(stringResource(id = R.string.introduce_contrasena_quiz))
-                    Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(
-                        value = quizPasswordInput,
-                        onValueChange = {
-                            quizPasswordInput = it
-                            quizPasswordError = false
-                        },
-                        label = { Text(stringResource(id = R.string.contrasena)) },
-                        singleLine = true,
-                        visualTransformation = PasswordVisualTransformation(),
-                        isError = quizPasswordError,
-                        supportingText = {
-                            if (quizPasswordError) Text(stringResource(id = R.string.contrasena_incorrecta))
-                        }
-                    )
-                }
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        if (quizPasswordInput == "6906") {
-                            onStartQuiz(dificultadSeleccionada)
-                            showQuizPasswordDialog = false
-                        } else {
-                            quizPasswordError = true
-                        }
-                    }
-                ) {
-                    Text(stringResource(id = R.string.entrar))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showQuizPasswordDialog = false }) {
-                    Text(stringResource(id = R.string.cancelar))
-                }
-            }
-        )
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
