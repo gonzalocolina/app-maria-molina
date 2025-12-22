@@ -8,6 +8,7 @@ import com.example.mariamolina.data.local.GameRole
 import com.example.mariamolina.data.local.TeacherAuthSession
 import com.example.mariamolina.data.model.GamePhase
 import com.example.mariamolina.data.repository.MultiplayerRepository
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,11 +37,52 @@ data class KidsSessionUiState(
 class KidsSessionViewModel @Inject constructor(
     private val activeGameSession: ActiveGameSession,
     private val repository: MultiplayerRepository,
-    private val teacherAuthSession: TeacherAuthSession
+    private val teacherAuthSession: TeacherAuthSession,
+    private val auth: FirebaseAuth
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(KidsSessionUiState())
     val uiState: StateFlow<KidsSessionUiState> = _uiState.asStateFlow()
+
+    // Estado para errores de login
+    private val _loginError = MutableStateFlow<String?>(null)
+    val loginError: StateFlow<String?> = _loginError.asStateFlow()
+
+    // FUNCIÓN: Iniciar sesión con Email y Contraseña
+    fun signInWithEmail(email: String, pass: String, onSuccess: () -> Unit) {
+        _loginError.value = null
+        if (email.isBlank() || pass.isBlank()) {
+            _loginError.value = "Por favor, rellena todos los campos"
+            return
+        }
+
+        auth.signInWithEmailAndPassword(email, pass)
+            .addOnSuccessListener {
+                setTeacherAuthenticated() // Marcamos como profe
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                // Si falla, probamos a registrarlo (por si es usuario nuevo)
+                // Ojo: En una app real, lo ideal es tener botones separados,
+                // pero para simplificar, si falla el login, intentamos el registro.
+                registerWithEmail(email, pass, onSuccess)
+            }
+    }
+
+    private fun registerWithEmail(email: String, pass: String, onSuccess: () -> Unit) {
+        auth.createUserWithEmailAndPassword(email, pass)
+            .addOnSuccessListener {
+                setTeacherAuthenticated()
+                onSuccess()
+            }
+            .addOnFailureListener { e ->
+                _loginError.value = "Error: ${e.localizedMessage}"
+            }
+    }
+
+    fun clearError() {
+        _loginError.value = null
+    }
 
     init {
         checkActiveSession()

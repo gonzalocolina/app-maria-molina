@@ -43,6 +43,13 @@ fun KidsEntryScreen(
     // Estado para selector de dificultad
     var dificultadSeleccionada by remember { mutableStateOf(Dificultad.FACIL) }
 
+    var showLoginDialog by remember { mutableStateOf(false) }
+    var emailInput by remember { mutableStateOf("") }
+    var passwordInput by remember { mutableStateOf("") }
+
+    // Observamos si hay error
+    val loginError by viewModel.loginError.collectAsState()
+
     // Reconectar automáticamente si hay sesión activa
     LaunchedEffect(uiState.shouldNavigateTo) {
         uiState.shouldNavigateTo?.let { route ->
@@ -199,16 +206,71 @@ fun KidsEntryScreen(
         // Botón Acceso Profesor
         TextButton(
             onClick = {
-                viewModel.setTeacherAuthenticated()
-                onNavigateToAdmin()
+                showLoginDialog = true
+                viewModel.clearError()
             }
         ) {
             Icon(Icons.Default.Lock, contentDescription = null, modifier = Modifier.size(16.dp))
             Spacer(Modifier.width(8.dp))
             Text(stringResource(id = R.string.acceso_profesor), color = MaterialTheme.colorScheme.secondary)
         }
+    }
 
-        Spacer(modifier = Modifier.height(32.dp))
+    // --- DIÁLOGO DE EMAIL / CONTRASEÑA ---
+    if (showLoginDialog) {
+        AlertDialog(
+            onDismissRequest = { showLoginDialog = false },
+            title = { Text("Acceso Profesor") },
+            text = {
+                Column {
+                    Text("Introduce tu correo y contraseña. Si no tienes cuenta, se creará automáticamente.")
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedTextField(
+                        value = emailInput,
+                        onValueChange = { emailInput = it },
+                        label = { Text("Correo electrónico") },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = passwordInput,
+                        onValueChange = { passwordInput = it },
+                        label = { Text("Contraseña") },
+                        singleLine = true,
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    if (loginError != null) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = loginError!!,
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.signInWithEmail(emailInput, passwordInput) {
+                            showLoginDialog = false
+                            onNavigateToAdmin()
+                        }
+                    }
+                ) {
+                    Text("Entrar / Registrar")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showLoginDialog = false }) {
+                    Text("Cancelar")
+                }
+            }
+        )
     }
 
 }

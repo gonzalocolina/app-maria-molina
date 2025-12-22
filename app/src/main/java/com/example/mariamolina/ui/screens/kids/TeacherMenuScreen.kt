@@ -5,6 +5,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Groups
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -15,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.mariamolina.ui.viewmodel.TeacherMenuViewModel
 
 /**
  * Pantalla del menú del profesor con dos opciones:
@@ -27,11 +30,15 @@ fun TeacherMenuScreen(
     onBack: () -> Unit,
     onLogout: () -> Unit,
     onCreateRoom: () -> Unit,
-    onAddQuestions: () -> Unit
+    onAddQuestions: () -> Unit,
+    viewModel: TeacherMenuViewModel = hiltViewModel()
 ) {
 
     val uriHandler = LocalUriHandler.current
     val urlFormularioSolicitud = "https://docs.google.com/forms/d/e/1FAIpQLSeLhc10MoLr6Ze5FM16zIlVPmbgMyyqKk5lvKit0SSNMCYNQg/viewform?usp=dialog"
+
+    val canAddQuestions by viewModel.canAddQuestions.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
 
     Scaffold(
         topBar = {
@@ -66,18 +73,18 @@ fun TeacherMenuScreen(
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
-            
+
             Spacer(modifier = Modifier.height(8.dp))
-            
+
             Text(
                 text = "Selecciona una opción para continuar",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
             )
-            
+
             Spacer(modifier = Modifier.height(48.dp))
-            
+
             // Botón principal: Crear Sala
             Button(
                 onClick = onCreateRoom,
@@ -107,35 +114,72 @@ fun TeacherMenuScreen(
                     )
                 }
             }
-            
+
             Spacer(modifier = Modifier.height(24.dp))
-            
+
             // Botón secundario:
-            FilledTonalButton(
-                onClick = {
-                    uriHandler.openUri(urlFormularioSolicitud)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp),
-                colors = ButtonDefaults.filledTonalButtonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            ) {
-                Icon(
-                    Icons.Default.MailOutline,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Solicitar acceso para añadir preguntas",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center
-                )
-            }
+            if (isLoading) {
+                // Mientras carga, mostramos un indicador pequeño
+                CircularProgressIndicator(modifier = Modifier.size(32.dp))
+            } else {
+                if (canAddQuestions) {
+                    // CASO A: TIENE PERMISO -> Botón normal que lleva a la pantalla de añadir
+                    FilledTonalButton(
+                        onClick = onAddQuestions,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp)
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = null)
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "Añadir Preguntas",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(
+                        text = "Las preguntas se traducirán automáticamente\na 4 idiomas (ES, EN, FR, DE)",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        textAlign = TextAlign.Center
+                    )
+
+                } else {
+                    // CASO B: NO TIENE PERMISO -> Botón de "Solicitar Acceso" (Abre formulario)
+                    OutlinedButton(
+                        onClick = {
+                            uriHandler.openUri(urlFormularioSolicitud)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            // Usamos un color rojizo o secundario para indicar que está "bloqueado"
+                            contentColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Icon(
+                            Icons.Default.Lock, // Icono de candado
+                            contentDescription = null,
+                            modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Column {
+                            Text(
+                                text = "Solicitar acceso para añadir preguntas",
+                                style = MaterialTheme.typography.bodyMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "Requiere aprobación del administrador",
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    }
+                }
         }
     }
-}
+}}
