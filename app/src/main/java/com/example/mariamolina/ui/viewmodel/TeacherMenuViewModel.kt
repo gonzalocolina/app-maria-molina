@@ -1,14 +1,12 @@
 package com.example.mariamolina.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -38,10 +36,11 @@ class TeacherMenuViewModel @Inject constructor(
     private fun checkPermissions() {
         val user = auth.currentUser
         _isAnonymous.value = user?.isAnonymous ?: true
-        if (user != null && user.email != null) {
+        val email = user?.email
+        if (user != null && !email.isNullOrBlank()) {
             // Buscamos en la colección 'permisos_profesor' el documento con el ID del email
             firestore.collection("permisos_profesor")
-                .document(user.email!!)
+                .document(email)
                 .get()
                 .addOnSuccessListener { document ->
                     if (document.exists() && document.getBoolean("canAddQuestions") == true) {

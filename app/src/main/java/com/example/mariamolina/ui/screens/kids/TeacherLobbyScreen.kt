@@ -3,6 +3,8 @@ package com.example.mariamolina.ui.screens.kids
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
@@ -79,7 +81,8 @@ fun TeacherLobbyScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(16.dp),
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (uiState.isLoading) {
@@ -199,13 +202,13 @@ fun TeacherLobbyScreen(
                     )
                 }
 
-                LazyColumn(
+                Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .heightIn(min = 100.dp, max = 300.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(uiState.jugadores) { jugador ->
+                    uiState.jugadores.forEach { jugador ->
                         Card(
                             elevation = CardDefaults.cardElevation(2.dp)
                         ) {
