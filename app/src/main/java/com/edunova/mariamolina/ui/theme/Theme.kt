@@ -1,0 +1,71 @@
+package com.edunova.mariamolina.ui.theme
+
+import android.os.Build
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
+
+
+private val DarkColorScheme = darkColorScheme(
+    primary = AppPrimaryBrown,
+    secondary = AppSecondaryDark,
+    tertiary = White,  // Color claro para títulos sobre fondo oscuro
+    primaryContainer = AppTextPrimaryColor,
+    onSurfaceVariant = AppUnselectedGray,
+    background = DarkGrey,
+    // Color del icono/texto NO seleccionado
+    onPrimary = AppTextPrimaryColor,
+    onSecondary = AppTextSecondaryColor,
+    surface = LightLightBlack,
+    outline = LightLightBlack,
+    onTertiaryContainer = Black
+
+    )
+
+// Nuevo color específico para el botón "Ver Monasterio 360°" en modo oscuro
+val PanoramaButtonDark = Color(0xFF12327E) // marrón oscuro (ajustable)
+
+private val LightColorScheme = lightColorScheme(
+    primary = AppPrimaryBrown,
+    tertiary = AppPrimaryBrown,  // Mismo color que primary en modo claro
+
+    primaryContainer = AppTextPrimaryColor,
+    // Color del icono/texto NO seleccionado
+    onSurfaceVariant = AppUnselectedGray,
+    onPrimary = AppTextPrimaryColor,
+    onSecondary = AppTextSecondaryColor,
+    background = White,
+    surface =  LightGrey,
+    outline = LightGrey
+)
+
+@Composable
+fun MariaMolinaTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = false,
+    fontSizeScale: Float = 1.0f,
+    content: @Composable () -> Unit
+) {
+    val colorScheme = when {
+        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+            val context = LocalContext.current
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+        }
+
+        darkTheme -> DarkColorScheme
+        else -> LightColorScheme
+    }
+
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = Typography.scaled(fontSizeScale),
+        content = content
+    )
+}

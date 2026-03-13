@@ -9,33 +9,26 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mariamolina"
+    namespace = "com.edunova.mariamolina"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.mariamolina"
+        applicationId = "com.edunova.mariamolina"
         minSdk = 24
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.2.0"
+
+        androidResources {
+            localeFilters += listOf("es", "en", "de", "fr")
+        }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     signingConfigs {
         create("release") {
-            // NOTA: Para publicar en Google Play, debes crear un keystore y configurar estas variables
-            // en el archivo gradle.properties o en variables de entorno:
-            // KEYSTORE_FILE=path/to/your/keystore.jks
-            // KEYSTORE_PASSWORD=your_keystore_password
-            // KEY_ALIAS=your_key_alias
-            // KEY_PASSWORD=your_key_password
 
-            // Ejemplo de configuración (descomentar y ajustar cuando tengas el keystore):
-            // storeFile = file(System.getenv("KEYSTORE_FILE") ?: project.property("KEYSTORE_FILE") as String)
-            // storePassword = System.getenv("KEYSTORE_PASSWORD") ?: project.property("KEYSTORE_PASSWORD") as String
-            // keyAlias = System.getenv("KEY_ALIAS") ?: project.property("KEY_ALIAS") as String
-            // keyPassword = System.getenv("KEY_PASSWORD") ?: project.property("KEY_PASSWORD") as String
         }
     }
 
@@ -53,7 +46,7 @@ android {
         debug {
             isDebuggable = true
             // applicationIdSuffix eliminado para evitar conflicto con Firebase
-            // Firebase espera el package name 'com.example.mariamolina' sin sufijos
+            // Firebase espera el package name 'com.edunova.mariamolina' sin sufijos
             versionNameSuffix = "-debug"
         }
     }
@@ -105,7 +98,7 @@ dependencies {
     implementation("com.github.mkergall:osmbonuspack:6.9.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.datastore:datastore-preferences:1.1.1")
-    
+
     // ML Kit Translation para traducción automática
     implementation("com.google.mlkit:translate:17.0.3")
 }

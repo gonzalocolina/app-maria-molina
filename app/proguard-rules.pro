@@ -70,8 +70,8 @@
 
 # ===== DATA MODELS =====
 # Keep all model classes used with Firebase or serialization
--keep class com.example.mariamolina.data.model.** { *; }
--keepclassmembers class com.example.mariamolina.data.model.** { *; }
+-keep class com.edunova.mariamolina.data.model.** { *; }
+-keepclassmembers class com.edunova.mariamolina.data.model.** { *; }
 
 # ===== NAVIGATION =====
 -keep class androidx.navigation.** { *; }
