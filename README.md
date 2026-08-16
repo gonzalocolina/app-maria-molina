@@ -1,6 +1,6 @@
 # María Molina App
 
-Aplicación educativa para Android que permite conocer la figura histórica de María de Molina y los lugares de interés relacionados con ella en Valladolid.
+Aplicación educativa para Android que permite conocer la figura histórica de María de Molina y los lugares de interés relacionados con ella en Valladolid disponible en [Play Store](https://play.google.com/store/apps/details?id=com.edunova.mariamolina).
 
 ## Características
 
@@ -10,6 +10,7 @@ Aplicación educativa para Android que permite conocer la figura histórica de M
 - 👥 **Modo profesor** para crear partidas en clase
 - 🌓 **Tema claro/oscuro** adaptativo
 - 📱 **Soporte para tablets** y diferentes orientaciones
+- 🌍 Implementada por completo en en **español, inglés, francés y alemán**
 
 ## Tecnologías
 
@@ -19,7 +20,9 @@ Aplicación educativa para Android que permite conocer la figura histórica de M
 - **OpenStreetMap** para mapas
 
 ## Instalación
+Puedes descargar la aplicación en [Play Store](https://play.google.com/store/apps/details?id=com.edunova.mariamolina).
 
+También existe la opción de instalarla mediante el repositorio siguiendo estos pasos:
 1. Clona el repositorio:
    ```bash
    git clone https://gitlab.inf.uva.es/goncoli/edunovamariamolina.git
@@ -51,21 +54,6 @@ app/src/main/java/com/example/mariamolina/
 └── MariaMolinaApplication.kt
 ```
 
-## Publicación en Google Play
-
-### Requisitos previos
-
-1. ✅ Política de privacidad publicada
-2. ⬜ Cambiar `applicationId` de `com.example.*` a uno definitivo
-3. ⬜ Generar keystore de firma para release
-4. ⬜ Configurar firma en `build.gradle.kts`
-5. ⬜ Crear cuenta de desarrollador en Google Play Console
-
-### Generar APK/AAB de release
-
-```bash
-./gradlew bundleRelease
-```
 
 ## Licencia
 
